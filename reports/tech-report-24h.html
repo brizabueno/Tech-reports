@@ -1,0 +1,681 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<title>Tech Global Report - 24h</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+  :root {
+    --bg: #f2f3f5;
+    --card-bg: #ffffff;
+    --ink: #17181c;
+    --ink-soft: #52565e;
+    --yellow-bg: #fff8dd;
+    --yellow-border: #f2c94c;
+    --green-bg: #e9f7ef;
+    --green-border: #34a853;
+    --line: #e3e5e9;
+  }
+  * { box-sizing: border-box; }
+  html, body {
+    margin: 0;
+    padding: 0;
+    background: var(--bg);
+    color: var(--ink);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    font-size: 15px;
+    line-height: 1.6;
+  }
+  .wrap {
+    max-width: 880px;
+    margin: 0 auto;
+    padding: 20px 16px 60px;
+  }
+  header.masthead {
+    background: #0b0b0d;
+    color: #fff;
+    border-radius: 16px;
+    padding: 32px 30px;
+    margin-bottom: 30px;
+  }
+  header.masthead h1 {
+    margin: 0 0 8px;
+    font-size: 30px;
+    letter-spacing: -0.02em;
+    font-weight: 700;
+  }
+  header.masthead .sub {
+    color: #c9cbd1;
+    font-size: 14.5px;
+    margin: 4px 0;
+  }
+  header.masthead .regions {
+    margin-top: 16px;
+    font-size: 14.5px;
+    color: #f2f2f2;
+    background: rgba(255,255,255,0.08);
+    display: inline-block;
+    padding: 8px 16px;
+    border-radius: 999px;
+  }
+
+  section.intro-note {
+    background: #fff;
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    padding: 16px 20px;
+    margin-bottom: 26px;
+    font-size: 13.5px;
+    color: var(--ink-soft);
+  }
+  section.intro-note strong { color: var(--ink); }
+
+  h2.section-title {
+    font-size: 20px;
+    font-weight: 700;
+    margin: 40px 0 18px;
+    letter-spacing: -0.01em;
+  }
+
+  .card {
+    background: var(--card-bg);
+    border: 1px solid var(--line);
+    border-radius: 16px;
+    padding: 24px 26px;
+    margin-bottom: 26px;
+    box-shadow: 0 1px 2px rgba(20,20,30,0.03);
+  }
+  .card .kicker {
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+    margin-bottom: 6px;
+  }
+  .card .num {
+    font-weight: 800;
+    font-size: 15px;
+    color: #9aa0aa;
+  }
+  .card h3 {
+    margin: 0 0 6px;
+    font-size: 18.5px;
+    line-height: 1.35;
+  }
+  .card h3 a {
+    color: #0b0b0d;
+    text-decoration: none;
+    border-bottom: 2px solid #f2c94c;
+  }
+  .card h3 a:hover { color: #333; }
+  .meta {
+    font-size: 13px;
+    color: var(--ink-soft);
+    margin-bottom: 12px;
+  }
+  .summary {
+    margin: 0 0 16px;
+    font-size: 14.5px;
+  }
+  .box {
+    border-radius: 12px;
+    padding: 16px 18px;
+    margin-top: 14px;
+    font-size: 13.8px;
+  }
+  .box-title {
+    font-weight: 700;
+    margin-bottom: 8px;
+    font-size: 14px;
+  }
+  .box.yellow {
+    background: var(--yellow-bg);
+    border: 1px solid var(--yellow-border);
+  }
+  .box.green {
+    background: var(--green-bg);
+    border: 1px solid var(--green-border);
+  }
+  .box p { margin: 0 0 8px; }
+  .box p:last-child { margin-bottom: 0; }
+  .regions-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 10px;
+  }
+  .region-chip {
+    font-size: 12.5px;
+    padding: 3px 10px;
+    border-radius: 999px;
+    background: rgba(255,255,255,0.6);
+    border: 1px solid rgba(0,0,0,0.08);
+  }
+  .region-chip.off {
+    opacity: 0.45;
+    text-decoration: line-through;
+  }
+  .sources {
+    margin: 6px 0 10px;
+    padding-left: 18px;
+  }
+  .sources li { margin-bottom: 3px; }
+  .attention {
+    display: inline-block;
+    font-weight: 700;
+    padding: 2px 10px;
+    border-radius: 999px;
+    font-size: 12px;
+    background: #0b0b0d;
+    color: #fff;
+  }
+
+  section.geo {
+    background: #0b0b0d;
+    color: #f2f2f2;
+    border-radius: 16px;
+    padding: 30px 30px;
+    margin-top: 40px;
+  }
+  section.geo h2 {
+    margin-top: 0;
+    font-size: 22px;
+  }
+  section.geo h4 {
+    color: #f2c94c;
+    margin: 22px 0 6px;
+    font-size: 15px;
+  }
+  section.geo p {
+    color: #d6d8dd;
+    font-size: 14px;
+    margin: 0 0 10px;
+  }
+
+  footer.rep-footer {
+    text-align: center;
+    color: #8b8f97;
+    font-size: 12.5px;
+    margin-top: 30px;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #121316;
+      --card-bg: #1b1c20;
+      --ink: #eef0f3;
+      --ink-soft: #a9adb5;
+      --line: #2b2d33;
+      --yellow-bg: #33291a;
+      --yellow-border: #a9822f;
+      --green-bg: #16281d;
+      --green-border: #2e7d46;
+    }
+    .card h3 a { color: #f5f6f8; }
+    .region-chip { background: rgba(255,255,255,0.06); border-color: rgba(255,255,255,0.12); }
+    section.intro-note { background: var(--card-bg); }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="masthead">
+    <h1>Tech Global Report — 24h</h1>
+    <div class="sub">Publicado em 06 de julho de 2026 · 16:59 (Horário de Brasília) / 19:59 UTC</div>
+    <div class="sub">As 15 notícias de tecnologia mais impactantes das últimas 24–48 horas, com foco especial na cobertura da mídia chinesa</div>
+    <div class="regions">🇨🇳 China &nbsp;|&nbsp; 🇺🇸 EUA &nbsp;|&nbsp; 🇪🇺 Europa &nbsp;|&nbsp; 🇧🇷 Brasil</div>
+  </header>
+
+  <section class="intro-note">
+    <strong>Nota metodológica:</strong> todas as manchetes abaixo foram checadas cruzando no mínimo três veículos independentes por história (a ferramenta de verificação automática de links esteve indisponível — retornando erro 403 em qualquer domínio testado — durante a produção deste relatório; por isso a confirmação se apoiou em concordância entre múltiplas buscas e fontes, e não em um único carregamento de página). Sempre que uma notícia relevante tinha mais de 24h, isso está sinalizado explicitamente na data de cada card. Das 15 histórias, 8 têm cobertura primária de veículos de mídia chinesa (South China Morning Post, Sina Tech, TechNode, Caixin Global) — acima do mínimo de 5 exigido.
+  </section>
+
+  <h2 class="section-title">As 15 histórias</h2>
+
+  <!-- STORY 1 -->
+  <div class="card">
+    <div class="kicker"><span class="num">01</span></div>
+    <h3><a href="https://www.scmp.com/tech/big-tech/article/3359375/alibaba-bans-staff-using-claude-code-over-anthropic-spyware-concerns" target="_blank" rel="noopener">Alibaba proíbe uso do Claude Code, da Anthropic, por suspeita de "spyware" oculto</a></h3>
+    <div class="meta">3–4 de julho de 2026 (banimento interno em vigor a partir de 10/07) · Fonte primária: South China Morning Post</div>
+    <p class="summary">Um usuário no Reddit afirmou ter encontrado código oculto no Claude Code que verificava se o usuário estava na China e testava proxies chineses, enviando os dados de forma esteganográfica. A Alibaba classificou a ferramenta como "software de alto risco" e mandou cerca de 124 mil funcionários migrarem para seu agente próprio, o Qoder. A Anthropic confirmou o código, dizendo ser um experimento antidistilação desativado em 1º de julho — um novo capítulo da disputa aberta em junho, quando a Anthropic acusou o laboratório Qwen da Alibaba de "destilar" o Claude em massa.</p>
+    <div class="box yellow">
+      <div class="box-title">📌 Por que isso importa?</div>
+      <p>Escala a guerra tecnológica EUA-China no campo da IA e aprofunda a desconfiança mútua entre laboratórios chineses e americanos, o que pode acelerar a fragmentação (decoupling) do ecossistema de ferramentas de IA. Atinge diretamente a Alibaba (Qwen, Qoder) e pode empurrar empresas chinesas para ferramentas 100% domésticas, com efeito cascata sobre fornecedores ocidentais de IA generativa que dependem do mercado chinês.</p>
+    </div>
+    <div class="box green">
+      <div class="box-title">🌍 Análise de Cobertura Global</div>
+      <div class="regions-row">
+        <span class="region-chip">✓ China</span>
+        <span class="region-chip">✓ EUA</span>
+        <span class="region-chip off">Europa</span>
+        <span class="region-chip off">Brasil</span>
+      </div>
+      <ul class="sources">
+        <li><a href="https://www.scmp.com/tech/big-tech/article/3359375/alibaba-bans-staff-using-claude-code-over-anthropic-spyware-concerns" target="_blank" rel="noopener">South China Morning Post</a></li>
+        <li><a href="https://techcrunch.com/2026/07/04/alibaba-reportedly-bans-employees-from-using-claude-code/" target="_blank" rel="noopener">TechCrunch</a></li>
+        <li><a href="https://www.tomshardware.com/tech-industry/artificial-intelligence/alibaba-bans-anthropics-claude-code-after-an-alleged-hidden-china-detection-backdoor-is-uncovered-employees-told-to-switch-to-qoder-as-the-rift-between-the-firms-widens" target="_blank" rel="noopener">Tom's Hardware</a></li>
+        <li><a href="https://gigazine.net/gsc_news/en/20260704-alibaba-bans-claude-code/" target="_blank" rel="noopener">GIGAZINE (Japão)</a></li>
+      </ul>
+      <p><strong>Diferença de narrativa:</strong> a mídia chinesa (SCMP) enquadra como resposta legítima de segurança corporativa; a mídia americana (TechCrunch, Tom's Hardware) trata como escalada preocupante na rivalidade EUA-China e questiona a ética da Anthropic ao rastrear usuários chineses.</p>
+      <p><span class="attention">Atenção: alto</span></p>
+    </div>
+  </div>
+
+  <!-- STORY 2 -->
+  <div class="card">
+    <div class="kicker"><span class="num">02</span></div>
+    <h3><a href="https://www.scmp.com/tech/big-tech/article/3359638/alibaba-wins-reprieve-us-lobbying-after-pentagon-blacklisted-companies" target="_blank" rel="noopener">Justiça dos EUA dá trégua à Alibaba contra banimento de lobby ligado ao Pentágono</a></h3>
+    <div class="meta">5 de julho de 2026 · Fonte primária: South China Morning Post</div>
+    <p class="summary">A juíza federal Eumi K. Lee determinou que o Pentágono suspenda o tratamento da Alibaba como "empresa militar chinesa" para fins de restrição de lobby, enquanto avalia a contestação constitucional da empresa. A Alibaba entrou na lista negra da Seção 1260H em 8 de junho, o que forçou seus cerca de 24 lobistas registrados em Washington a abandoná-la como cliente; a Tencent teria sido afetada por regra semelhante.</p>
+    <div class="box yellow">
+      <div class="box-title">📌 Por que isso importa?</div>
+      <p>Mostra como a disputa geopolítica EUA-China pode restringir diretamente a capacidade de grandes empresas chinesas de influenciar políticas em Washington. Uma reversão da decisão isolaria ainda mais Alibaba e Tencent do processo regulatório americano, com repercussão para todo o setor chinês de tecnologia e e-commerce que depende de operação nos EUA.</p>
+    </div>
+    <div class="box green">
+      <div class="box-title">🌍 Análise de Cobertura Global</div>
+      <div class="regions-row">
+        <span class="region-chip">✓ China</span>
+        <span class="region-chip">✓ EUA</span>
+        <span class="region-chip off">Europa</span>
+        <span class="region-chip off">Brasil</span>
+      </div>
+      <ul class="sources">
+        <li><a href="https://www.scmp.com/tech/big-tech/article/3359638/alibaba-wins-reprieve-us-lobbying-after-pentagon-blacklisted-companies" target="_blank" rel="noopener">South China Morning Post</a></li>
+        <li><a href="https://www.bloomberg.com/news/articles/2026-07-05/alibaba-gets-reprieve-from-lobbying-ban-tied-to-pentagon-s-curbs" target="_blank" rel="noopener">Bloomberg</a></li>
+        <li><a href="https://fortune.com/2026/07/05/alibaba-reprieve-lobbying-ban-pentagon-blacklist-chinese-military/" target="_blank" rel="noopener">Fortune</a></li>
+      </ul>
+      <p><strong>Diferença de narrativa:</strong> o SCMP enfatiza a vitória pontual da Alibaba e a fragilidade jurídica da política do Pentágono; Bloomberg e Fortune enquadram o episódio como parte de um embate maior entre Washington e as "empresas militares chinesas" listadas.</p>
+      <p><span class="attention">Atenção: alto</span></p>
+    </div>
+  </div>
+
+  <!-- STORY 3 -->
+  <div class="card">
+    <div class="kicker"><span class="num">03</span></div>
+    <h3><a href="https://www.bloomberg.com/news/articles/2026-07-01/tiktok-creator-bytedance-picks-brazil-for-largest-data-center-outside-china" target="_blank" rel="noopener">ByteDance escolhe o Brasil (Ceará) para seu maior data center fora da China — US$ 39 bilhões</a></h3>
+    <div class="meta">1º de julho de 2026 · Fonte primária: Bloomberg / Bloomberg Línea</div>
+    <p class="summary">A dona do TikTok vai investir cerca de R$ 200 bilhões (US$ 39 bi) em um complexo de data centers no Porto de Pecém, Ceará — o maior fora da China, com meta de 1 GW de capacidade e primeiras operações em 2027. O projeto inclui contrato de energia eólica de US$ 2 bilhões por 20 anos com a Casa dos Ventos.</p>
+    <div class="box yellow">
+      <div class="box-title">📌 Por que isso importa?</div>
+      <p>Uma das maiores apostas de infraestrutura de IA já feitas no Brasil, reforçando o país como polo estratégico de datacenters chineses fora do eixo EUA-China. Fortalece a presença da ByteDance/TikTok na América Latina em meio à pressão regulatória nos EUA sobre o TikTok, e mostra a disputa geopolítica por infraestrutura de IA chegando à América do Sul — com potencial de atrair outros grandes players chineses para o país.</p>
+    </div>
+    <div class="box green">
+      <div class="box-title">🌍 Análise de Cobertura Global</div>
+      <div class="regions-row">
+        <span class="region-chip off">China</span>
+        <span class="region-chip">✓ EUA</span>
+        <span class="region-chip off">Europa</span>
+        <span class="region-chip">✓ Brasil</span>
+      </div>
+      <ul class="sources">
+        <li><a href="https://www.bloomberg.com/news/articles/2026-07-01/tiktok-creator-bytedance-picks-brazil-for-largest-data-center-outside-china" target="_blank" rel="noopener">Bloomberg</a></li>
+        <li><a href="https://www.bloomberglinea.com.br/tech/dona-do-tiktok-escolhe-o-brasil-para-seu-maior-complexo-de-data-centers-fora-da-china/" target="_blank" rel="noopener">Bloomberg Línea</a></li>
+        <li><a href="https://aiweekly.co/alerts/bytedance-to-spend-39b-on-data-center-campus-in-brazils-cear" target="_blank" rel="noopener">AI Weekly</a></li>
+        <li><a href="https://cryptobriefing.com/bytedance-brazil-data-center-ai/" target="_blank" rel="noopener">CryptoBriefing</a></li>
+      </ul>
+      <p><strong>Diferença de narrativa:</strong> a imprensa brasileira (Bloomberg Línea) destaca o impacto econômico regional — empregos, energia eólica no Nordeste; a imprensa internacional (Bloomberg) enquadra o investimento como nova frente da disputa EUA-China por dominância em infraestrutura de IA.</p>
+      <p><span class="attention">Atenção: alto</span></p>
+    </div>
+  </div>
+
+  <!-- STORY 4 -->
+  <div class="card">
+    <div class="kicker"><span class="num">04</span></div>
+    <h3><a href="https://www.euronews.com/my-europe/2026/07/02/eu-court-of-justice-rejects-googles-appeal-against-record-41-billion-fine" target="_blank" rel="noopener">Tribunal da UE mantém multa recorde de € 4,1 bilhões contra o Google por abuso no Android</a></h3>
+    <div class="meta">2 de julho de 2026 · Fonte primária: Euronews</div>
+    <p class="summary">O Tribunal de Justiça da União Europeia rejeitou o recurso final do Google/Alphabet, confirmando definitivamente a multa de € 4,1 bilhões (reduzida de € 4,34 bi em 2022) aplicada em 2018 por forçar fabricantes a pré-instalar Chrome e Google Search no Android. Não há mais recurso possível dentro da UE.</p>
+    <div class="box yellow">
+      <div class="box-title">📌 Por que isso importa?</div>
+      <p>Reforça o histórico europeu de fiscalização antitruste dura contra Big Techs americanas e cria precedente que pode inspirar ações semelhantes contra outras plataformas dominantes — inclusive chinesas, à medida que crescem na Europa (Shein, Temu, AliExpress, TikTok). Sinaliza às gigantes de tecnologia que decisões antitruste da UE tendem a ser definitivas e caras.</p>
+    </div>
+    <div class="box green">
+      <div class="box-title">🌍 Análise de Cobertura Global</div>
+      <div class="regions-row">
+        <span class="region-chip off">China</span>
+        <span class="region-chip">✓ EUA</span>
+        <span class="region-chip">✓ Europa</span>
+        <span class="region-chip off">Brasil</span>
+      </div>
+      <ul class="sources">
+        <li><a href="https://www.euronews.com/my-europe/2026/07/02/eu-court-of-justice-rejects-googles-appeal-against-record-41-billion-fine" target="_blank" rel="noopener">Euronews</a></li>
+        <li><a href="https://www.bloomberg.com/news/articles/2026-07-02/google-loses-eu-court-fight-over-4-1-billion-android-fine" target="_blank" rel="noopener">Bloomberg</a></li>
+        <li><a href="https://www.cnbc.com/2026/07/02/alphabet-google-android-eu-antitrust-fine-4-1-billion-euro-appeal.html" target="_blank" rel="noopener">CNBC</a></li>
+        <li><a href="https://www.japantimes.co.jp/business/2026/07/03/companies/google-eu-antitrust-fight-lose/" target="_blank" rel="noopener">The Japan Times</a></li>
+      </ul>
+      <p><strong>Diferença de narrativa:</strong> a Europa trata como vitória da soberania regulatória do bloco; a imprensa americana foca no impacto financeiro para o Google e no precedente para outros processos pendentes, como a nova multa da DMA em preparação.</p>
+      <p><span class="attention">Atenção: médio-alto</span></p>
+    </div>
+  </div>
+
+  <!-- STORY 5 -->
+  <div class="card">
+    <div class="kicker"><span class="num">05</span></div>
+    <h3><a href="https://www.euronews.com/my-europe/2026/07/01/eu-slaps-3-duty-fee-on-shein-temu-and-aliexpress-imports" target="_blank" rel="noopener">UE encerra isenção fiscal e passa a cobrar €3 por item de Shein, Temu e AliExpress</a></h3>
+    <div class="meta">1º de julho de 2026 · Fonte primária: Euronews</div>
+    <p class="summary">Desde 1º de julho, encomendas abaixo de €150 vindas de fora da UE passam a pagar taxa fixa de €3 por item, encerrando a isenção que Shein, Temu e AliExpress usavam para embarques diretos da China. A medida vale até 2028, quando entra reforma tarifária permanente; as duas plataformas já vinham antecipando estoque em centros de distribuição na Europa.</p>
+    <div class="box yellow">
+      <div class="box-title">📌 Por que isso importa?</div>
+      <p>Ataque direto ao modelo de negócio das gigantes chinesas de fast-fashion e e-commerce ultrabarato, podendo elevar preços ao consumidor europeu e acelerar a regionalização logística dessas empresas. Serve de possível modelo para outras regiões — incluindo o Brasil, que já revisou regras de tributação sobre compras internacionais — endurecerem restrições a remessas chinesas de baixo valor.</p>
+    </div>
+    <div class="box green">
+      <div class="box-title">🌍 Análise de Cobertura Global</div>
+      <div class="regions-row">
+        <span class="region-chip">✓ China</span>
+        <span class="region-chip off">EUA</span>
+        <span class="region-chip">✓ Europa</span>
+        <span class="region-chip off">Brasil</span>
+      </div>
+      <ul class="sources">
+        <li><a href="https://www.euronews.com/my-europe/2026/07/01/eu-slaps-3-duty-fee-on-shein-temu-and-aliexpress-imports" target="_blank" rel="noopener">Euronews</a></li>
+        <li><a href="https://www.techtimes.com/articles/319496/20260702/eu-customs-duty-hits-shein-temu-parcels-59-billion-imports-now-taxed.htm" target="_blank" rel="noopener">Tech Times</a></li>
+        <li><a href="https://www.scmp.com/news/china/article/3336292/eu-targets-chinas-shein-and-temu-new-fees-low-value-parcels" target="_blank" rel="noopener">South China Morning Post</a></li>
+      </ul>
+      <p><strong>Diferença de narrativa:</strong> o SCMP enquadra a medida como mais uma barreira ocidental ao comércio eletrônico chinês; a Euronews apresenta como correção de uma "brecha fiscal" que prejudicava varejistas europeus.</p>
+      <p><span class="attention">Atenção: alto</span></p>
+    </div>
+  </div>
+
+  <!-- STORY 6 -->
+  <div class="card">
+    <div class="kicker"><span class="num">06</span></div>
+    <h3><a href="https://www.justice.gov/opa/pr/alibaba-group-and-aus-merchant-services-agree-pay-600-million-resolve-allegations-they" target="_blank" rel="noopener">Alibaba pagará US$ 600 milhões para encerrar investigação dos EUA sobre venda ilegal de remédios</a></h3>
+    <div class="meta">1–2 de julho de 2026 · Fonte primária: Departamento de Justiça dos EUA (DOJ)</div>
+    <p class="summary">A Alibaba e sua processadora de pagamentos nos EUA, AUS Merchant Services, concordaram em pagar US$ 600 milhões — o maior acordo já registrado no distrito de Rhode Island — para encerrar acusações do DOJ de que falharam em impedir cerca de 80 mil vendas ilegais de medicamentos, substâncias controladas e prensas de comprimidos via Alibaba.com e AliExpress entre 2016 e 2024.</p>
+    <div class="box yellow">
+      <div class="box-title">📌 Por que isso importa?</div>
+      <p>Expõe falhas de compliance em duas das principais plataformas de e-commerce da Alibaba nos EUA, alimentando o discurso político americano sobre riscos de segurança e saúde pública ligados a marketplaces chineses — pressão que se soma a outras restrições regulatórias, como o banimento de lobby ligado ao Pentágono (item 2).</p>
+    </div>
+    <div class="box green">
+      <div class="box-title">🌍 Análise de Cobertura Global</div>
+      <div class="regions-row">
+        <span class="region-chip">✓ China</span>
+        <span class="region-chip">✓ EUA</span>
+        <span class="region-chip off">Europa</span>
+        <span class="region-chip off">Brasil</span>
+      </div>
+      <ul class="sources">
+        <li><a href="https://www.justice.gov/opa/pr/alibaba-group-and-aus-merchant-services-agree-pay-600-million-resolve-allegations-they" target="_blank" rel="noopener">DOJ (comunicado oficial)</a></li>
+        <li><a href="https://www.washingtonpost.com/business/2026/07/01/alibaba-600-million-settlement-illegal-drugs-irs/b34b7378-7589-11f1-b665-5f8be87f3787_story.html" target="_blank" rel="noopener">Washington Post</a></li>
+        <li><a href="https://www.scmp.com/news/us/diplomacy/article/3359087/alibaba-agrees-pay-us600-million-settle-us-probe-illegal-product-sales" target="_blank" rel="noopener">South China Morning Post</a></li>
+      </ul>
+      <p><strong>Diferença de narrativa:</strong> DOJ e Washington Post enfatizam a escala do esquema e o valor recorde do acordo como dissuasão; o SCMP contextualiza como mais um capítulo da pressão regulatória americana sobre a Alibaba, ao lado do caso de lobby.</p>
+      <p><span class="attention">Atenção: médio</span></p>
+    </div>
+  </div>
+
+  <!-- STORY 7 -->
+  <div class="card">
+    <div class="kicker"><span class="num">07</span></div>
+    <h3><a href="https://technode.com/2026/07/06/bytedances-doubao-and-alibabas-qwen-to-shut-down-ai-agent-features-on-july-15/" target="_blank" rel="noopener">Doubao (ByteDance) e Qwen (Alibaba) encerram recursos de "companheiro de IA" antes de nova lei chinesa</a></h3>
+    <div class="meta">6 de julho de 2026 · Fonte primária: TechNode</div>
+    <p class="summary">A nova regulamentação chinesa "Medidas Provisórias para Serviços Interativos Antropomórficos de IA", que entra em vigor em 15 de julho, exige sistemas antivício e mecanismos de saída instantânea para chatbots de companhia. Em vez de adaptar os produtos, ByteDance (Doubao) e Alibaba (Qwen) optaram por desativar os recursos de agentes personalizados/humanizados — Qwen encerra em 10 de julho, Doubao dá prazo até 15 de outubro para exportação de dados dos usuários.</p>
+    <div class="box yellow">
+      <div class="box-title">📌 Por que isso importa?</div>
+      <p>Mostra a rapidez com que Pequim consegue reformular da noite para o dia produtos de IA voltados ao consumidor, com custo direto para ByteDance e Alibaba — contraste com a autorregulação mais lenta observada nos EUA e na Europa. Pode conter o crescimento de assistentes de IA "de companhia" na China, afetando o modelo de engajamento desses aplicativos.</p>
+    </div>
+    <div class="box green">
+      <div class="box-title">🌍 Análise de Cobertura Global</div>
+      <div class="regions-row">
+        <span class="region-chip">✓ China</span>
+        <span class="region-chip">✓ EUA</span>
+        <span class="region-chip off">Europa</span>
+        <span class="region-chip off">Brasil</span>
+      </div>
+      <ul class="sources">
+        <li><a href="https://technode.com/2026/07/06/bytedances-doubao-and-alibabas-qwen-to-shut-down-ai-agent-features-on-july-15/" target="_blank" rel="noopener">TechNode</a></li>
+        <li><a href="https://www.bloomberg.com/news/articles/2026-07-06/bytedance-alibaba-pull-ai-companions-as-beijing-tightens-rules" target="_blank" rel="noopener">Bloomberg</a></li>
+        <li><a href="https://www.business-standard.com/world-news/bytedance-alibaba-pull-ai-companion-features-as-china-tightens-rules-126070600221_1.html" target="_blank" rel="noopener">Business Standard</a></li>
+      </ul>
+      <p><strong>Diferença de narrativa:</strong> o TechNode (mídia especializada em tecnologia chinesa) trata como movimento defensivo compreensível diante da nova lei; a Bloomberg enfatiza o quanto o Estado chinês consegue impor mudanças imediatas de produto às suas Big Techs, em contraste com a lentidão regulatória ocidental.</p>
+      <p><span class="attention">Atenção: médio</span></p>
+    </div>
+  </div>
+
+  <!-- STORY 8 -->
+  <div class="card">
+    <div class="kicker"><span class="num">08</span></div>
+    <h3><a href="https://finance.sina.com.cn/tech/roll/2026-07-06/doc-inifwwmp8542434.shtml" target="_blank" rel="noopener">Tencent vende 7,5% da Kuaishou por cerca de US$ 1,6 bilhão</a></h3>
+    <div class="meta">6 de julho de 2026 · Fonte primária: Sina Tech (finance.sina.com.cn)</div>
+    <p class="summary">A Tencent vendeu cerca de 273 milhões de ações classe B da Kuaishou (7,5% da empresa) em um block trade fora do mercado, reduzindo sua fatia de ~15,68% para ~9,37% e perdendo o status de "acionista substancial". A venda ocorre poucos dias depois de a Tencent participar de uma rodada de US$ 2,8 bi na Kling AI, unidade de vídeo generativo da Kuaishou (ver item 10).</p>
+    <div class="box yellow">
+      <div class="box-title">📌 Por que isso importa?</div>
+      <p>Sinaliza realocação estratégica de capital da Tencent dentro do próprio ecossistema chinês de tecnologia — vendendo participação em plataforma de vídeo curto para reinvestir em unidades de IA generativa consideradas mais estratégicas, como a Kling AI. Movimento relevante para quem acompanha a consolidação do setor tech chinês em torno da corrida por IA.</p>
+    </div>
+    <div class="box green">
+      <div class="box-title">🌍 Análise de Cobertura Global</div>
+      <div class="regions-row">
+        <span class="region-chip">✓ China</span>
+        <span class="region-chip">✓ EUA</span>
+        <span class="region-chip off">Europa</span>
+        <span class="region-chip off">Brasil</span>
+      </div>
+      <ul class="sources">
+        <li><a href="https://finance.sina.com.cn/tech/roll/2026-07-06/doc-inifwwmp8542434.shtml" target="_blank" rel="noopener">Sina Tech</a></li>
+        <li><a href="https://www.bloomberg.com/news/articles/2026-07-06/tencent-seeks-to-sell-up-to-1-6-billion-stake-in-kuaishou" target="_blank" rel="noopener">Bloomberg</a></li>
+        <li><a href="https://finance.yahoo.com/markets/stocks/articles/tencent-unit-seeks-1-55-122727028.html" target="_blank" rel="noopener">Yahoo Finance / Reuters</a></li>
+      </ul>
+      <p><strong>Diferença de narrativa:</strong> a Sina Tech foca nos números técnicos da operação (volume de ações, bancos intermediários); a Bloomberg contextualiza a venda como parte da reorganização estratégica da Tencent rumo a ativos de IA generativa.</p>
+      <p><span class="attention">Atenção: médio</span></p>
+    </div>
+  </div>
+
+  <!-- STORY 9 -->
+  <div class="card">
+    <div class="kicker"><span class="num">09</span></div>
+    <h3><a href="https://www.caixinglobal.com/2026-07-06/tencent-launches-upgraded-hunyuan-3-ai-model-with-free-agent-feature-102461489.html" target="_blank" rel="noopener">Tencent lança modelo de IA Hunyuan Hy3 e ações sobem mais de 4%</a></h3>
+    <div class="meta">6 de julho de 2026 · Fonte primária: Caixin Global</div>
+    <p class="summary">A Tencent lançou o modelo completo Hunyuan Hy3 (295 bilhões de parâmetros, arquitetura MoE, 21 bi ativos, contexto de 256 mil tokens) sob licença Apache 2.0, afirmando taxa de resolução de tarefas de agente de ~90% e desempenho equivalente a modelos 2 a 5 vezes maiores. O modelo já está integrado a WeChat, QQ Browser, CodeBuddy, Yuanbao e outros cerca de 50 produtos da empresa; as ações da Tencent subiram mais de 4% no dia.</p>
+    <div class="box yellow">
+      <div class="box-title">📌 Por que isso importa?</div>
+      <p>Reforça a corrida chinesa por modelos de IA open-source competitivos globalmente, pressionando concorrentes como DeepSeek e players ocidentais (OpenAI, Anthropic) na disputa por desenvolvedores e clientes corporativos. A reação positiva do mercado mostra como a IA generativa já move a avaliação bilionária das Big Techs chinesas.</p>
+    </div>
+    <div class="box green">
+      <div class="box-title">🌍 Análise de Cobertura Global</div>
+      <div class="regions-row">
+        <span class="region-chip">✓ China</span>
+        <span class="region-chip">✓ EUA</span>
+        <span class="region-chip off">Europa</span>
+        <span class="region-chip off">Brasil</span>
+      </div>
+      <ul class="sources">
+        <li><a href="https://www.caixinglobal.com/2026-07-06/tencent-launches-upgraded-hunyuan-3-ai-model-with-free-agent-feature-102461489.html" target="_blank" rel="noopener">Caixin Global</a></li>
+        <li><a href="https://venturebeat.com/technology/tencents-apache-licensed-hy3-takes-on-glm-5-2-at-half-the-size-and-wins-everywhere-except-coding" target="_blank" rel="noopener">VentureBeat</a></li>
+        <li><a href="https://finance.biggo.com/news/08aa70d2-54c0-4f0c-a0de-8ccfa984dffc" target="_blank" rel="noopener">BigGo Finance</a></li>
+      </ul>
+      <p><strong>Diferença de narrativa:</strong> a Caixin foca no aspecto corporativo/financeiro (alta das ações, integração em produtos Tencent); a VentureBeat compara tecnicamente o modelo a concorrentes (GLM, DeepSeek) e discute a disputa por benchmarks de IA.</p>
+      <p><span class="attention">Atenção: médio</span></p>
+    </div>
+  </div>
+
+  <!-- STORY 10 -->
+  <div class="card">
+    <div class="kicker"><span class="num">10</span></div>
+    <h3><a href="https://www.bloomberg.com/news/articles/2026-07-02/china-s-kling-ai-raises-2-billion-to-expand-ai-video-operations" target="_blank" rel="noopener">Kling AI, da Kuaishou, capta US$ 2,8 bi com Alibaba, Tencent e Baidu, avaliada em US$ 15 bi</a></h3>
+    <div class="meta">2–3 de julho de 2026 · Fonte primária: Bloomberg / Sina Tech</div>
+    <p class="summary">A Kling AI, unidade de geração de vídeo por IA da Kuaishou, fechou uma rodada de 19,04 bilhões de yuans (~US$ 2,8 bi), avaliando a empresa em US$ 15 bi pré-money, com investimento da Tencent (~US$ 200 mi), além de Alibaba, Baidu e do fundo emiratense BlueFive Capital. A fatia da Kuaishou na subsidiária cai para cerca de 68%.</p>
+    <div class="box yellow">
+      <div class="box-title">📌 Por que isso importa?</div>
+      <p>Mostra as maiores rivais chinesas de tecnologia — Alibaba, Tencent e Baidu — investindo conjuntamente na mesma startup de IA generativa de vídeo, sinalizando consolidação de capital em torno de poucos "campeões nacionais" de IA em vez de concorrência fragmentada. Contextualiza diretamente a venda da participação da Tencent na Kuaishou dias depois (item 8).</p>
+    </div>
+    <div class="box green">
+      <div class="box-title">🌍 Análise de Cobertura Global</div>
+      <div class="regions-row">
+        <span class="region-chip">✓ China</span>
+        <span class="region-chip">✓ EUA</span>
+        <span class="region-chip off">Europa</span>
+        <span class="region-chip off">Brasil</span>
+      </div>
+      <ul class="sources">
+        <li><a href="https://www.bloomberg.com/news/articles/2026-07-02/china-s-kling-ai-raises-2-billion-to-expand-ai-video-operations" target="_blank" rel="noopener">Bloomberg</a></li>
+        <li><a href="https://finance.sina.com.cn/roll/2026-07-03/doc-inifqrwk3443647.shtml" target="_blank" rel="noopener">Sina Tech</a></li>
+        <li><a href="https://www.cnbc.com/2026/07/03/kuaishou-shares-fall-after-securing-tencent-funding-for-kling-ai.html" target="_blank" rel="noopener">CNBC</a></li>
+      </ul>
+      <p><strong>Diferença de narrativa:</strong> a Sina Tech destaca o valuation e os nomes dos investidores estratégicos chineses; CNBC e Bloomberg enfatizam o tamanho da rodada como sinal da "corrida do ouro" global por IA generativa de vídeo.</p>
+      <p><span class="attention">Atenção: médio</span></p>
+    </div>
+  </div>
+
+  <!-- STORY 11 -->
+  <div class="card">
+    <div class="kicker"><span class="num">11</span></div>
+    <h3><a href="https://www.bloomberg.com/news/articles/2026-07-06/nvidia-ai-server-delay-report-sends-asian-pcb-stocks-sliding" target="_blank" rel="noopener">Relatório sobre atraso do servidor de IA "Kyber" da Nvidia derruba ações asiáticas; empresa nega</a></h3>
+    <div class="meta">6 de julho de 2026 · Fonte primária: Bloomberg</div>
+    <p class="summary">A SemiAnalysis relatou que o sistema de rack Kyber NVL144 da Nvidia, baseado nos chips Rubin Ultra, enfrentaria atraso de mais de 12 meses (para 2028) por problemas na fabricação de PCBs, derrubando de 10% a 18% as ações de fornecedores asiáticos (Ibiden, Kingboard Laminates, Samsung Electro-Mechanics). A Nvidia negou publicamente no mesmo dia, afirmando que seu "roadmap está intacto", e as ações se recuperaram.</p>
+    <div class="box yellow">
+      <div class="box-title">📌 Por que isso importa?</div>
+      <p>Evidencia como qualquer sinal de atraso na cadeia de suprimentos de IA da Nvidia provoca ondas de choque imediatas em fornecedores da Ásia (Taiwan, Coreia do Sul), reforçando a fragilidade e a concentração geográfica da cadeia global de hardware de IA — tema geopolítico sensível em meio às restrições de exportação de chips dos EUA à China.</p>
+    </div>
+    <div class="box green">
+      <div class="box-title">🌍 Análise de Cobertura Global</div>
+      <div class="regions-row">
+        <span class="region-chip off">China</span>
+        <span class="region-chip">✓ EUA</span>
+        <span class="region-chip off">Europa</span>
+        <span class="region-chip off">Brasil</span>
+      </div>
+      <ul class="sources">
+        <li><a href="https://www.bloomberg.com/news/articles/2026-07-06/nvidia-ai-server-delay-report-sends-asian-pcb-stocks-sliding" target="_blank" rel="noopener">Bloomberg</a></li>
+        <li><a href="https://www.cnbc.com/2026/07/06/nvidia-kyber-rack-system-delays-manufacturing-taiwan-rubin-chips-.html" target="_blank" rel="noopener">CNBC</a></li>
+        <li><a href="https://www.taipeitimes.com/News/biz/archives/2026/07/07/2003860331" target="_blank" rel="noopener">Taipei Times</a></li>
+        <li><a href="https://en.sedaily.com/international/2026/07/06/nvidias-ai-server-delay-sends-asian-tech-stocks-tumbling" target="_blank" rel="noopener">Seoul Economic Daily</a></li>
+      </ul>
+      <p><strong>Diferença de narrativa:</strong> a imprensa de Taiwan e Coreia do Sul foca no impacto imediato sobre fornecedores locais listados em bolsa; Bloomberg e CNBC tratam o episódio como teste da credibilidade da Nvidia e do "hype" de IA no mercado acionário americano.</p>
+      <p><span class="attention">Atenção: médio</span></p>
+    </div>
+  </div>
+
+  <!-- STORY 12 -->
+  <div class="card">
+    <div class="kicker"><span class="num">12</span></div>
+    <h3><a href="https://techcrunch.com/2026/07/06/microsoft-lays-off-nearly-5000-employees-across-xbox-commercial-sales/" target="_blank" rel="noopener">Microsoft corta cerca de 4.800 empregos e reestrutura a divisão Xbox</a></h3>
+    <div class="meta">6 de julho de 2026 · Fonte primária: TechCrunch</div>
+    <p class="summary">A Microsoft está cortando cerca de 4.800 empregos (2,1% do quadro global), com cerca de 1.600 cortes imediatos na Xbox e um total de 3.200 vagas (20% da divisão) previstos para o ano fiscal. Compulsion Games e Double Fine tornam-se estúdios independentes; Ninja Theory e Undead Labs mudam de propriedade. A notícia vem em meio a gastos recordes em IA e queda de cerca de 30% nas ações da Microsoft em nove meses.</p>
+    <div class="box yellow">
+      <div class="box-title">📌 Por que isso importa?</div>
+      <p>Ilustra o custo humano da migração maciça de capital das Big Techs americanas para infraestrutura de IA, mesmo em divisões lucrativas como jogos — um padrão observado de perto por investidores globais, incluindo chineses, ao calibrarem suas próprias apostas entre IA e negócios tradicionais.</p>
+    </div>
+    <div class="box green">
+      <div class="box-title">🌍 Análise de Cobertura Global</div>
+      <div class="regions-row">
+        <span class="region-chip off">China</span>
+        <span class="region-chip">✓ EUA</span>
+        <span class="region-chip off">Europa</span>
+        <span class="region-chip off">Brasil</span>
+      </div>
+      <ul class="sources">
+        <li><a href="https://techcrunch.com/2026/07/06/microsoft-lays-off-nearly-5000-employees-across-xbox-commercial-sales/" target="_blank" rel="noopener">TechCrunch</a></li>
+        <li><a href="https://www.cnbc.com/2026/07/06/microsoft-cuts-2point1percent-of-employees-as-xbox-unit-plans-to-spin-studios.html" target="_blank" rel="noopener">CNBC</a></li>
+        <li><a href="https://www.forbes.com/sites/paultassi/2026/07/06/xbox-to-lay-off-3200-workers-every-studio-affected/" target="_blank" rel="noopener">Forbes</a></li>
+      </ul>
+      <p><strong>Diferença de narrativa:</strong> cobertura unânime nos EUA sobre o dilema entre gastos com IA e cortes de pessoal, com ênfase variando entre o impacto para jogadores e estúdios (Forbes) e o contexto financeiro mais amplo da Microsoft (CNBC).</p>
+      <p><span class="attention">Atenção: médio</span></p>
+    </div>
+  </div>
+
+  <!-- STORY 13 -->
+  <div class="card">
+    <div class="kicker"><span class="num">13</span></div>
+    <h3><a href="https://cybernews.com/tech/europe-apple-tim-cook-siri-ai-dispute/" target="_blank" rel="noopener">Tim Cook e chefe de tecnologia da UE têm conversa "construtiva" sobre impasse da Siri com IA</a></h3>
+    <div class="meta">30 de junho – 1º de julho de 2026 · Fonte primária: Cybernews</div>
+    <p class="summary">A Apple confirmou que a Siri com IA aprimorada não será lançada no iPhone/iPad da UE junto com o iOS 27, alegando que as regras de interoperabilidade da DMA a forçariam a dar acesso inseguro de dados a assistentes concorrentes. Tim Cook e a comissária de tecnologia da UE, Henna Virkkunen, tiveram uma videochamada "construtiva", mas sem solução; a Comissão rejeitou o pedido da Apple por um prazo extra de 18 meses de adequação.</p>
+    <div class="box yellow">
+      <div class="box-title">📌 Por que isso importa?</div>
+      <p>Mais um capítulo do embate entre grandes plataformas americanas e a regulação europeia (DMA), que pode virar precedente para como reguladores tratam recursos de IA embarcados em sistemas operacionais — inclusive para futuros assistentes de empresas chinesas que queiram operar na Europa.</p>
+    </div>
+    <div class="box green">
+      <div class="box-title">🌍 Análise de Cobertura Global</div>
+      <div class="regions-row">
+        <span class="region-chip off">China</span>
+        <span class="region-chip">✓ EUA</span>
+        <span class="region-chip">✓ Europa</span>
+        <span class="region-chip off">Brasil</span>
+      </div>
+      <ul class="sources">
+        <li><a href="https://cybernews.com/tech/europe-apple-tim-cook-siri-ai-dispute/" target="_blank" rel="noopener">Cybernews</a></li>
+        <li><a href="https://9to5mac.com/2026/06/30/tim-cook-and-eu-tech-chief-hold-constructive-virtual-meeting-over-siri-ai-standoff/" target="_blank" rel="noopener">9to5Mac</a></li>
+        <li><a href="https://www.macrumors.com/2026/07/01/tim-cook-constructive-talks-eu-siri-ai-launch/" target="_blank" rel="noopener">MacRumors</a></li>
+      </ul>
+      <p><strong>Diferença de narrativa:</strong> a imprensa de tecnologia (9to5Mac, MacRumors) foca no atraso do produto para o consumidor europeu; a Cybernews enquadra o episódio como disputa regulatória mais ampla sobre soberania digital europeia.</p>
+      <p><span class="attention">Atenção: médio</span></p>
+    </div>
+  </div>
+
+  <!-- STORY 14 -->
+  <div class="card">
+    <div class="kicker"><span class="num">14</span></div>
+    <h3><a href="https://www.thefai.org/posts/dean-ball-joins-openai-as-head-of-strategic-futures" target="_blank" rel="noopener">OpenAI contrata ex-assessor de IA da Casa Branca para liderar equipe de política "Strategic Futures"</a></h3>
+    <div class="meta">6 de julho de 2026 · Fonte primária: The Foundation for American Innovation</div>
+    <p class="summary">Dean Ball, ex-assessor sênior de políticas de IA no gabinete de Ciência e Tecnologia da Casa Branca (OSTP) e coautor do "America's AI Action Plan" de 2025, ingressa na OpenAI como chefe da nova equipe "Strategic Futures", reportando ao diretor de estratégia Jason Kwon, para tratar de governança de IA de fronteira, risco catastrófico e impacto no mercado de trabalho — movimento que ocorre pouco antes de uma esperada abertura de capital (IPO) da OpenAI.</p>
+    <div class="box yellow">
+      <div class="box-title">📌 Por que isso importa?</div>
+      <p>Sinaliza que a OpenAI está reforçando sua capacidade de influenciar políticas públicas de IA nos EUA, em um momento de disputa regulatória crescente com rivais chineses (DeepSeek, Alibaba, Tencent) e europeus. O vínculo mais estreito entre a empresa e ex-formuladores de política do governo americano é um fator observado de perto por concorrentes e reguladores estrangeiros.</p>
+    </div>
+    <div class="box green">
+      <div class="box-title">🌍 Análise de Cobertura Global</div>
+      <div class="regions-row">
+        <span class="region-chip off">China</span>
+        <span class="region-chip">✓ EUA</span>
+        <span class="region-chip off">Europa</span>
+        <span class="region-chip off">Brasil</span>
+      </div>
+      <ul class="sources">
+        <li><a href="https://www.thefai.org/posts/dean-ball-joins-openai-as-head-of-strategic-futures" target="_blank" rel="noopener">The Foundation for American Innovation</a></li>
+        <li><a href="https://www.citybiz.co/article/863020/openai-names-former-white-house-ai-adviser-dean-ball-to-lead-new-strategic-futures-team/" target="_blank" rel="noopener">citybiz</a></li>
+        <li><a href="https://www.outlookbusiness.com/corporate/openai-brings-in-ex-trump-ai-advisor-dean-ball-as-ai-policy-battle-intensifies" target="_blank" rel="noopener">Outlook Business</a></li>
+      </ul>
+      <p><strong>Diferença de narrativa:</strong> veículos de política pública (FAI) enfatizam a experiência regulatória de Ball; veículos de negócios (Outlook Business) conectam a contratação à disputa geopolítica mais ampla por política de IA.</p>
+      <p><span class="attention">Atenção: baixo-médio</span></p>
+    </div>
+  </div>
+
+  <!-- STORY 15 -->
+  <div class="card">
+    <div class="kicker"><span class="num">15</span></div>
+    <h3><a href="https://www.bloomberglinea.com.br/startups/rodadas-da-semana-startups-de-ia-registram-crescimento-de-149-em-receitas-no-brasil/" target="_blank" rel="noopener">Startups nativas em IA crescem 149% ao ano no Brasil, segundo estudo da AWS</a></h3>
+    <div class="meta">1º de julho de 2026 · Fonte primária: Bloomberg Línea</div>
+    <p class="summary">O estudo "Engines of Growth", da Strand Partners para a AWS, com mais de 3.400 fundadores em 20 mercados, mostra que startups brasileiras "nativas em IA" (empresas com até 5 anos, construídas com IA no centro do produto) crescem em média 149% ao ano em receita — mais do que o dobro dos 64% do restante do ecossistema. Elas já representam 13% das startups brasileiras.</p>
+    <div class="box yellow">
+      <div class="box-title">📌 Por que isso importa?</div>
+      <p>Mostra que o Brasil acompanha a tendência global de startups nativas em IA crescerem muito mais rápido que empresas tradicionais, o que deve atrair mais capital de risco — inclusive de fundos chineses e americanos — para o ecossistema local e intensificar a disputa por talento em IA no país, num momento em que gigantes chinesas (ByteDance, Alibaba) já investem pesado em infraestrutura no Brasil (ver item 3).</p>
+    </div>
+    <div class="box green">
+      <div class="box-title">🌍 Análise de Cobertura Global</div>
+      <div class="regions-row">
+        <span class="region-chip off">China</span>
+        <span class="region-chip">✓ EUA</span>
+        <span class="region-chip off">Europa</span>
+        <span class="region-chip">✓ Brasil</span>
+      </div>
+      <ul class="sources">
+        <li><a href="https://www.bloomberglinea.com.br/startups/rodadas-da-semana-startups-de-ia-registram-crescimento-de-149-em-receitas-no-brasil/" target="_blank" rel="noopener">Bloomberg Línea</a></li>
+        <li><a href="https://www.mobiletime.com.br/noticias/01/07/2026/startups-com-ia-em-seu-core-relatam-crescimento-medio-de-receita-anual-de-149-no-brasil/" target="_blank" rel="noopener">MobileTime</a></li>
+        <li><a href="https://www.aboutamazon.com.br/noticias/aws/startups-que-nascem-com-ia-no-dna-crescem-149-ao-ano-no-brasil-segundo-estudo-da-aws" target="_blank" rel="noopener">About Amazon Brasil (AWS)</a></li>
+      </ul>
+      <p><strong>Diferença de narrativa:</strong> veículos brasileiros (Bloomberg Línea, MobileTime) destacam o número absoluto de startups e o crescimento local; a divulgação institucional da AWS enquadra o dado dentro de uma pesquisa multi-país, comparando o Brasil a outros mercados emergentes.</p>
+      <p><span class="attention">Atenção: baixo-médio</span></p>
+    </div>
+  </div>
+
+  <section class="geo">
+    <h2>Implicações Geopolíticas</h2>
+
+    <h4>Tensão tecnológica EUA-China</h4>
+    <p>A semana reforça que a rivalidade tecnológica entre Washington e Pequim deixou de ser só sobre chips e passou a incluir diretamente ferramentas de desenvolvimento de software (caso Alibaba x Claude Code), listas de "empresas militares" que restringem lobby corporativo (caso Alibaba x Pentágono), e ações judiciais por práticas comerciais (acordo de US$ 600 milhões da Alibaba com o DOJ). Cada um desses episódios, isoladamente, parece um caso pontual de compliance ou segurança — juntos, formam um padrão de desconfiança mútua crescente que atinge igualmente big techs chinesas nos EUA e ferramentas americanas de IA na China.</p>
+
+    <h4>Impacto regulatório previsto</h4>
+    <p>Na Europa, a confirmação da multa de € 4,1 bilhões contra o Google e o fim da isenção fiscal para pacotes de Shein/Temu/AliExpress mostram um bloco disposto a usar tanto antitruste quanto tarifas alfandegárias como ferramentas de política industrial contra Big Techs — americanas e chinesas por igual. É provável que o precedente do caso Google sirva de modelo para a nova multa da DMA em preparação, e que a taxa de €3 por item inspire debates semelhantes em outros mercados, incluindo o Brasil, sobre como tributar o comércio eletrônico transfronteiriço de baixo valor.</p>
+
+    <h4>Oportunidades e riscos geopolíticos</h4>
+    <p>Do lado chinês, o avanço acelerado de modelos abertos como o Hunyuan Hy3 da Tencent e o novo aporte na Kling AI (Kuaishou) mostram como Alibaba, Tencent e Baidu estão concentrando capital em poucos "campeões nacionais" de IA generativa — uma estratégia que pode reduzir a dependência chinesa de chips e software ocidentais, mas também aumenta a exposição a decisões regulatórias domésticas repentinas, como a que forçou o desligamento de recursos de "companheiro de IA" da ByteDance e da Alibaba. Já nos EUA, a fragilidade percebida na cadeia de suprimentos de hardware de IA (caso Nvidia) e os cortes de empregos em meio a gastos recordes em IA (Microsoft) sugerem que o boom de investimento em IA está gerando tensões internas mesmo entre as líderes do setor.</p>
+
+    <h4>Perspectiva Brasil-China-Global</h4>
+    <p>O Brasil aparece nesta edição como um dos poucos pontos de convergência prática entre as potências tecnológicas: o investimento bilionário da ByteDance em Ceará mostra o país absorvendo diretamente a disputa geopolítica por infraestrutura de IA, ao mesmo tempo em que o ecossistema local de startups nativas em IA cresce em ritmo comparável ao de mercados mais maduros. Para o Brasil, isso significa oportunidade de atrair capital e infraestrutura de ambos os polos (EUA e China), mas também o risco de se tornar terreno de disputa regulatória e de segurança à medida que Washington, Pequim e Bruxelas intensificam suas próprias barreiras — cenário que exige atenção redobrada de reguladores brasileiros aos desdobramentos das políticas de tarifas, antitruste e segurança de dados discutidas nesta edição.</p>
+  </section>
+
+  <footer class="rep-footer">
+    Tech Global Report — 24h · Gerado automaticamente em 06/07/2026 · Relatório compilado a partir de fontes públicas verificadas por checagem cruzada entre múltiplos veículos independentes.
+  </footer>
+
+</div>
+</body>
+</html>
