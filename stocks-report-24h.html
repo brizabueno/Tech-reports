@@ -1,0 +1,739 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<title>Stocks Report — Últimas 24h</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+  :root{
+    --bg:#f2f3f5;
+    --card:#ffffff;
+    --ink:#111318;
+    --ink-soft:#5b6270;
+    --border:#e4e6eb;
+    --yellow-bg:#fff8e1;
+    --yellow-border:#f2c94c;
+    --yellow-ink:#7a5c00;
+    --green-bg:#e9f7ef;
+    --green-border:#34c77b;
+    --green-ink:#1a6b41;
+    --black:#0b0c0f;
+    --radius:16px;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;background:var(--bg);color:var(--ink);
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
+    font-size:15px;line-height:1.6;}
+  a{color:#1a56db;text-decoration:none;}
+  a:hover{text-decoration:underline;}
+  .wrap{max-width:1080px;margin:0 auto;padding:0 20px 60px;}
+
+  header.top{
+    background:var(--black);
+    color:#fff;
+    width:100%;
+    padding:28px 20px 26px;
+    border-radius:0 0 var(--radius) var(--radius);
+    margin-bottom:32px;
+  }
+  header.top .inner{max-width:1080px;margin:0 auto;}
+  .brand{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap;}
+  .brand .logo{font-size:26px;font-weight:700;letter-spacing:-0.02em;}
+  .brand .tag{font-size:13px;color:#a9adb8;font-weight:500;}
+  .meta-row{margin-top:10px;font-size:13.5px;color:#c7cad1;display:flex;gap:18px;flex-wrap:wrap;}
+  .regions{margin-top:16px;display:flex;gap:10px;flex-wrap:wrap;}
+  .region-chip{
+    background:rgba(255,255,255,0.08);
+    border:1px solid rgba(255,255,255,0.18);
+    border-radius:999px;
+    padding:6px 14px;
+    font-size:13px;
+    font-weight:600;
+  }
+  .disclosure{
+    background:#fff3f3;
+    border:1px solid #f3b4b4;
+    border-radius:var(--radius);
+    padding:18px 22px;
+    margin-bottom:32px;
+    font-size:13.5px;
+    color:#7a1f1f;
+  }
+  .disclosure strong{display:block;font-size:14.5px;margin-bottom:6px;color:#5c1414;}
+
+  h2.section-title{
+    font-size:22px;
+    font-weight:700;
+    letter-spacing:-0.01em;
+    margin:44px 0 6px;
+    display:flex;
+    align-items:center;
+    gap:10px;
+  }
+  .section-sub{color:var(--ink-soft);font-size:13.5px;margin-bottom:22px;}
+
+  .story-card{
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:var(--radius);
+    padding:24px 26px;
+    margin-bottom:22px;
+    box-shadow:0 1px 2px rgba(16,24,40,0.04);
+  }
+  .story-head{display:flex;gap:14px;align-items:flex-start;}
+  .story-num{
+    flex:0 0 auto;
+    width:32px;height:32px;
+    border-radius:50%;
+    background:var(--black);
+    color:#fff;
+    font-size:14px;font-weight:700;
+    display:flex;align-items:center;justify-content:center;
+  }
+  .story-title{font-size:17px;font-weight:700;line-height:1.35;margin:0;}
+  .story-title a{color:var(--ink);}
+  .ticker-badge{
+    display:inline-block;
+    background:#eef1ff;
+    color:#3547c4;
+    font-size:11.5px;
+    font-weight:700;
+    border-radius:6px;
+    padding:2px 7px;
+    margin-right:6px;
+    letter-spacing:0.02em;
+  }
+  .story-sub{
+    margin:8px 0 0 46px;
+    font-size:12.5px;
+    color:var(--ink-soft);
+  }
+  .story-summary{margin:14px 0 0 46px;font-size:14.5px;color:#2c2f36;}
+
+  .box{
+    border-radius:12px;
+    padding:14px 18px;
+    margin:14px 0 0 46px;
+    font-size:13.5px;
+  }
+  .box-title{font-weight:700;font-size:13px;margin-bottom:6px;display:block;}
+  .box.yellow{background:var(--yellow-bg);border:1px solid var(--yellow-border);color:var(--yellow-ink);}
+  .box.green{background:var(--green-bg);border:1px solid var(--green-border);color:var(--green-ink);}
+  .box ul{margin:6px 0 0 18px;padding:0;}
+  .box li{margin-bottom:3px;}
+  .coverage-regions{margin-top:8px;font-size:13px;}
+  .attention{display:inline-block;margin-top:6px;font-weight:700;font-size:12px;padding:2px 9px;border-radius:6px;}
+  .attention.high{background:#fde2e2;color:#a11313;}
+  .attention.medium{background:#fdf1d6;color:#8a5b00;}
+  .attention.low{background:#e6eef9;color:#2255a4;}
+
+  .links-row{margin:12px 0 0 46px;font-size:13px;}
+  .links-row .lbl{font-weight:700;margin-right:6px;color:var(--ink-soft);}
+  .links-row a{margin-right:14px;}
+
+  .thin-note{
+    margin-top:16px;
+    background:#f5f6f8;
+    border:1px dashed #cfd3da;
+    border-radius:12px;
+    padding:14px 18px;
+    font-size:13px;
+    color:var(--ink-soft);
+  }
+
+  .analysis-card{
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:var(--radius);
+    padding:24px 26px;
+    margin-bottom:18px;
+  }
+  .analysis-card h3{margin:0 0 8px;font-size:16px;}
+  .analysis-card p{margin:6px 0;font-size:14px;}
+  .persp-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(240px,1fr));
+    gap:16px;
+    margin-top:16px;
+  }
+  .persp-grid .card-mini{
+    background:#fafbfc;border:1px solid var(--border);border-radius:12px;padding:16px 18px;
+  }
+  .persp-grid .card-mini h4{margin:0 0 6px;font-size:13.5px;}
+
+  footer.foot{
+    margin-top:40px;
+    text-align:center;
+    color:var(--ink-soft);
+    font-size:12.5px;
+  }
+</style>
+</head>
+<body>
+<header class="top">
+  <div class="inner">
+    <div class="brand">
+      <span class="logo">📈 Stocks Report</span>
+      <span class="tag">Relatório de Notícias — Últimas 24h</span>
+    </div>
+    <div class="meta-row">
+      <span>Publicado em: 09 de julho de 2026, 15:50 (horário de Brasília)</span>
+      <span>Janela de cobertura: 08–09 de julho de 2026</span>
+    </div>
+    <div class="regions">
+      <span class="region-chip">🇨🇳 China</span>
+      <span class="region-chip">🇺🇸 EUA</span>
+      <span class="region-chip">🇪🇺 Europa</span>
+      <span class="region-chip">🇧🇷 Brasil</span>
+    </div>
+  </div>
+</header>
+
+<div class="wrap">
+
+  <div class="disclosure">
+    <strong>⚠️ Nota de transparência sobre este relatório</strong>
+    Duas limitações reais afetaram esta edição e precisam ficar registradas: (1) o ambiente de execução bloqueou o acesso direto a todas as URLs testadas nesta sessão (falha de política de rede/proxy — mesmo domínios de controle não relacionados a notícias retornaram erro 403), portanto os links abaixo <strong>não puderam ser abertos e confirmados diretamente</strong>; cada fato foi, em vez disso, cruzado entre múltiplas buscas independentes que convergiram nos mesmos títulos, datas e números antes de ser incluído. (2) Para boa parte da lista de tickers monitorados (CMIG4, CPFE3, TAEE3/TAEE4, ISAE4, ITSA4, BRSR6, ABCB4, BAZA3, SAPR4, UNIP6, KLBN4, IRBR3, MGLU3, AMER3, XPML11, HCTR11, GGRC11, OHI, SGOV, VYM, VYMI) não foi encontrada nenhuma notícia genuinamente publicada nas últimas 24 horas com impacto relevante — apenas fatos com mais de uma semana ou itens rotineiros (calendário de dividendos, cotações). Optamos por <strong>não preencher artificialmente as 30 histórias solicitadas</strong> com material desatualizado ou inventado. Este relatório traz as histórias que passaram, de fato, no critério de "últimas 24h + alto impacto + múltiplas fontes".
+  </div>
+
+  <h2 class="section-title">🇧🇷 Brasil — Principais Notícias</h2>
+  <p class="section-sub">9 histórias verificadas por convergência entre múltiplas fontes independentes (meta original: 15 — ver nota de transparência acima).</p>
+
+  <!-- BRAZIL STORY 1 -->
+  <div class="story-card">
+    <div class="story-head">
+      <div class="story-num">1</div>
+      <div>
+        <p class="story-title"><span class="ticker-badge">PETR4</span><a href="https://www.moneytimes.com.br/petroreconcavo-recv3-petrobras-petr4-e-outras-petroleiras-tem-forte-alta-na-b3-lils/" target="_blank" rel="noopener">Petrobras (PETR4) dispara acompanhando forte alta do petróleo após escalada EUA–Irã</a></p>
+      </div>
+    </div>
+    <div class="story-sub">🗞️ Money Times / InfoMoney · 08/07/2026</div>
+    <p class="story-summary">Petrobras liderou a alta do setor de petróleo na B3 depois que o presidente Trump declarou rompido o entendimento de cessar-fogo com o Irã e anunciou novos ataques, reavivando o temor de disrupção no Estreito de Ormuz. O Brent saltou cerca de 5,5%, superando US$ 78/barril intradia, e o Tesouro americano revogou a autorização que permitia ao Irã vender petróleo. PETR4 fechou em alta de 3,15%, a R$ 39,65, e PETR3 subiu 2,79%, a R$ 44,16.</p>
+    <div class="box yellow">
+      <span class="box-title">📌 Por que isso é importante?</span>
+      <ul>
+        <li><strong>Impacto nos fundamentos:</strong> petróleo mais caro amplia margem e fluxo de caixa da Petrobras no curto prazo.</li>
+        <li><strong>Impacto no preço:</strong> alta de mais de 3% em um único pregão, acima da média do Ibovespa.</li>
+        <li><strong>Visão de analistas:</strong> Petrobras volta a ser tratada como "termômetro" doméstico do conflito no Oriente Médio, com potencial reflexo positivo na capacidade de distribuição de dividendos do 2T26/3T26.</li>
+      </ul>
+    </div>
+    <div class="box green">
+      <span class="box-title">🌍 Análise de Cobertura Global</span>
+      <div class="coverage-regions">Regiões que cobriram: ✓ China (indireta, via mercado de petróleo) &nbsp;✓ EUA (Bloomberg, CNBC, NBC News) &nbsp;— Europa (Al Jazeera) &nbsp;✓ Brasil (Money Times, InfoMoney)</div>
+      <div>Veículos: Money Times, InfoMoney, Bloomberg, CNBC, NBC News, Al Jazeera</div>
+      <span class="attention high">Atenção: Alta</span>
+    </div>
+    <div class="links-row">
+      <span class="lbl">Fontes:</span>
+      <a href="https://www.moneytimes.com.br/petroreconcavo-recv3-petrobras-petr4-e-outras-petroleiras-tem-forte-alta-na-b3-lils/" target="_blank" rel="noopener">Money Times</a>
+      <a href="https://www.infomoney.com.br/mercados/acoes-da-petrobras-sobem-acompanhando-alta-do-petroleo-recv3-e-maior-alta-da-sessao/" target="_blank" rel="noopener">InfoMoney</a>
+      <a href="https://www.bloomberg.com/news/articles/2026-07-08" target="_blank" rel="noopener">Bloomberg (Oil Extends Surge)</a>
+    </div>
+  </div>
+
+  <!-- BRAZIL STORY 2 -->
+  <div class="story-card">
+    <div class="story-head">
+      <div class="story-num">2</div>
+      <div>
+        <p class="story-title"><span class="ticker-badge">VALE3</span><a href="https://www.moneytimes.com.br/vale-vale3-morgan-stanley-rebaixa-recomendacao-com-piora-da-perspectiva-para-minerio-de-ferro/" target="_blank" rel="noopener">Vale (VALE3) despenca 4,6% após rebaixamento do Morgan Stanley</a></p>
+      </div>
+    </div>
+    <div class="story-sub">🗞️ Money Times / InfoMoney · 08/07/2026</div>
+    <p class="story-summary">O Morgan Stanley cortou a recomendação para Vale de "Overweight" para "Equal-Weight" e reduziu o preço-alvo do ADR de US$ 19,50 para US$ 16,50, citando produção global de aço mais fraca (liderada pela China), superávit crescente na oferta de minério de ferro e custos caixa C1 mais altos — projetados em US$ 23/tonelada para 2026, acima do guidance da própria empresa (US$ 20–21,50). VALE3 fechou em queda de 4,59%, a R$ 72,70.</p>
+    <div class="box yellow">
+      <span class="box-title">📌 Por que isso é importante?</span>
+      <ul>
+        <li><strong>Visão de analistas:</strong> corte de 7–9% no EBITDA 2026 estimado e de 6–13% no EPS abaixo do consenso.</li>
+        <li><strong>Impacto nos fundamentos:</strong> tese central de minério de ferro pressionada por excesso de oferta e demanda chinesa mais fraca.</li>
+        <li><strong>Impacto no preço:</strong> queda de 4,6% em um único pregão — a maior baixa da sessão entre as blue chips.</li>
+      </ul>
+    </div>
+    <div class="box green">
+      <span class="box-title">🌍 Análise de Cobertura Global</span>
+      <div class="coverage-regions">Regiões que cobriram: ✓ China (tema da demanda por aço) &nbsp;✓ EUA (Investing.com, GuruFocus, Yahoo Finance) &nbsp;— Europa &nbsp;✓ Brasil (Money Times, InfoMoney)</div>
+      <div>Veículos: Money Times, InfoMoney, Investing.com, GuruFocus, Yahoo Finance, Hellenic Shipping News</div>
+      <span class="attention high">Atenção: Média-Alta</span>
+    </div>
+    <div class="links-row">
+      <span class="lbl">Fontes:</span>
+      <a href="https://www.moneytimes.com.br/vale-vale3-morgan-stanley-rebaixa-recomendacao-com-piora-da-perspectiva-para-minerio-de-ferro/" target="_blank" rel="noopener">Money Times</a>
+      <a href="https://www.infomoney.com.br/mercados/vale-vale3-cai-mais-de-4-apos-corte-de-recomendacao-por-morgan-stanley/" target="_blank" rel="noopener">InfoMoney</a>
+      <a href="https://www.investing.com/news/stock-market-news" target="_blank" rel="noopener">Investing.com</a>
+    </div>
+  </div>
+
+  <!-- BRAZIL STORY 3 -->
+  <div class="story-card">
+    <div class="story-head">
+      <div class="story-num">3</div>
+      <div>
+        <p class="story-title"><span class="ticker-badge">VALE3</span><a href="https://www.infomoney.com.br/mercados/cvm-abre-processo-administrativo-contra-ex-presidente-do-conselho-da-vale-diz-jornal/" target="_blank" rel="noopener">CVM abre processo administrativo sobre acordo com ex-presidente do conselho da Vale</a></p>
+      </div>
+    </div>
+    <div class="story-sub">🗞️ InfoMoney / Money Times, citando reportagem do Valor Econômico · 08/07/2026</div>
+    <p class="story-summary">A CVM abriu processo administrativo, motivado por reclamação de investidor, para apurar se um contrato de não-concorrência e confidencialidade de 24 meses firmado com Daniel Stieler após sua renúncia à presidência do conselho, em 6 de julho, configura remuneração não divulgada. A Vale respondeu à CVM que a renúncia foi decisão unilateral de Stieler e que o contrato não é indenização nem fato relevante.</p>
+    <div class="box yellow">
+      <span class="box-title">📌 Por que isso é importante?</span>
+      <ul>
+        <li><strong>Impacto na governança:</strong> soma-se ao rebaixamento do Morgan Stanley no mesmo dia, ampliando a pressão sobre a governança da companhia.</li>
+        <li><strong>Contexto:</strong> integra a disputa mais ampla entre a Previ e o conselho, com assembleia extraordinária marcada para 22/07.</li>
+        <li><strong>Impacto no preço:</strong> reforça o sentimento negativo do dia sobre VALE3, embora de forma secundária ao rebaixamento de recomendação.</li>
+      </ul>
+    </div>
+    <div class="box green">
+      <span class="box-title">🌍 Análise de Cobertura Global</span>
+      <div class="coverage-regions">Regiões que cobriram: — China &nbsp;— EUA &nbsp;— Europa &nbsp;✓ Brasil (Valor Econômico, InfoMoney, Money Times)</div>
+      <div>Veículos: Valor Econômico (original), InfoMoney, Money Times</div>
+      <span class="attention low">Atenção: Baixa (restrita ao mercado doméstico)</span>
+    </div>
+    <div class="links-row">
+      <span class="lbl">Fontes:</span>
+      <a href="https://www.infomoney.com.br/mercados/cvm-abre-processo-administrativo-contra-ex-presidente-do-conselho-da-vale-diz-jornal/" target="_blank" rel="noopener">InfoMoney</a>
+      <a href="https://www.moneytimes.com.br/vale-vale3-nega-acordo-para-saida-de-daniel-stieler-entenda-jcav/" target="_blank" rel="noopener">Money Times</a>
+    </div>
+  </div>
+
+  <!-- BRAZIL STORY 4 -->
+  <div class="story-card">
+    <div class="story-head">
+      <div class="story-num">4</div>
+      <div>
+        <p class="story-title"><span class="ticker-badge">Ibovespa</span><a href="https://www.infomoney.com.br/mercados/ibovespa-hoje-bolsa-de-valores-ao-vivo-08072026/" target="_blank" rel="noopener">Ibovespa fecha em queda de 0,80%, pressionado por Vale e cautela externa</a></p>
+      </div>
+    </div>
+    <div class="story-sub">🗞️ InfoMoney / Money Times · 08/07/2026</div>
+    <p class="story-summary">O Ibovespa encerrou o pregão de quarta-feira em queda de 0,80%, a 170.653 pontos, terceira perda consecutiva, com a queda de Vale (-4,59%) superando o ganho de Petrobras (+3,15% em PETR4). O dólar se fortaleceu frente ao real em movimento de aversão a risco ligado à escalada Irã-EUA. O índice financeiro da B3 (IFNC) fechou em queda de 0,80%, com Itaú Unibanco recuando 1,27%.</p>
+    <div class="box yellow">
+      <span class="box-title">📌 Por que isso é importante?</span>
+      <ul>
+        <li><strong>Impacto no preço:</strong> movimento de mercado amplo que resume a rotação setorial do dia — saída de mineradoras, entrada em petróleo.</li>
+        <li><strong>Impacto geopolítico:</strong> reflexo direto da escalada no Oriente Médio sobre o apetite a risco doméstico.</li>
+        <li><strong>Fundamentos:</strong> contextualiza as histórias de PETR4 e VALE3 dentro do panorama macro do dia.</li>
+      </ul>
+    </div>
+    <div class="box green">
+      <span class="box-title">🌍 Análise de Cobertura Global</span>
+      <div class="coverage-regions">Regiões que cobriram: — China &nbsp;✓ EUA (Bloomberg — cobertura de mercados globais) &nbsp;— Europa &nbsp;✓ Brasil (InfoMoney, Money Times, Rio Times Online)</div>
+      <div>Veículos: InfoMoney, Money Times, Rio Times Online, Bloomberg (contexto global)</div>
+      <span class="attention medium">Atenção: Baixa internacionalmente / Alta no mercado doméstico</span>
+    </div>
+    <div class="links-row">
+      <span class="lbl">Fontes:</span>
+      <a href="https://www.infomoney.com.br/mercados/ibovespa-hoje-bolsa-de-valores-ao-vivo-08072026/" target="_blank" rel="noopener">InfoMoney</a>
+      <a href="https://www.moneytimes.com.br/ibovespa-8-7-26-lils/" target="_blank" rel="noopener">Money Times</a>
+    </div>
+  </div>
+
+  <!-- BRAZIL STORY 5 -->
+  <div class="story-card">
+    <div class="story-head">
+      <div class="story-num">5</div>
+      <div>
+        <p class="story-title"><span class="ticker-badge">BBAS3</span><a href="https://agenciabrasil.ebc.com.br/politica/noticia/2026-07/entenda-impasse-entre-bancada-do-agro-e-governo-sobre-dividas-rurais" target="_blank" rel="noopener">Impasse entre bancada do agro e governo sobre renegociação de dívidas rurais pressiona Banco do Brasil</a></p>
+      </div>
+    </div>
+    <div class="story-sub">🗞️ Agência Brasil (fonte primária); tema também coberto por Reuters/Investing.com/Yahoo Finance · 08/07/2026</div>
+    <p class="story-summary">Governo e Frente Parlamentar da Agropecuária não chegaram a acordo sobre o pacote de renegociação de dívidas rurais. O projeto aprovado pelo Senado estenderia o alívio a todos os produtores endividados (custo estimado de R$ 140 bilhões em 10 anos pelo Tesouro); o governo quer restringir a produtores atingidos por perdas climáticas, com taxas escalonadas de 4% a 9%. O Banco do Brasil é repetidamente citado como a instituição mais exposta, com R$ 155,6 bilhões em vencimentos do crédito rural previstos para 2026.</p>
+    <div class="box yellow">
+      <span class="box-title">📌 Por que isso é importante?</span>
+      <ul>
+        <li><strong>Impacto regulatório/fundamentos:</strong> o desenho final da medida afeta diretamente as necessidades de provisionamento do BB e a trajetória de inadimplência rural.</li>
+        <li><strong>Visão de analistas:</strong> soma-se a cortes recentes de preço-alvo (XP para R$ 21 em 03/07; Goldman Sachs rebaixou para "Sell" em abril) após queda de 54–60% no lucro ligada à inadimplência agro.</li>
+        <li><strong>Impacto no negócio:</strong> BB é o maior credor do setor rural no país.</li>
+      </ul>
+    </div>
+    <div class="box green">
+      <span class="box-title">🌍 Análise de Cobertura Global</span>
+      <div class="coverage-regions">Regiões que cobriram: — China &nbsp;✓ EUA (Reuters, via TradingView/Investing.com/Yahoo Finance) &nbsp;— Europa &nbsp;✓ Brasil (Agência Brasil)</div>
+      <div>Veículos: Agência Brasil, Reuters, Investing.com, Yahoo Finance</div>
+      <span class="attention medium">Atenção: Média-Alta (tema amplo); Baixa no recorte específico do BB</span>
+    </div>
+    <div class="links-row">
+      <span class="lbl">Fontes:</span>
+      <a href="https://agenciabrasil.ebc.com.br/politica/noticia/2026-07/entenda-impasse-entre-bancada-do-agro-e-governo-sobre-dividas-rurais" target="_blank" rel="noopener">Agência Brasil</a>
+      <a href="https://www.investing.com/news/stock-market-news" target="_blank" rel="noopener">Investing.com (via Reuters)</a>
+    </div>
+    <div class="thin-note">Nota: Agência Brasil não está na lista de fontes obrigatórias, mas foi incluída por ser a origem factual mais direta encontrada; o tema também circulou nas fontes obrigatórias via Reuters.</div>
+  </div>
+
+  <!-- BRAZIL STORY 6 -->
+  <div class="story-card">
+    <div class="story-head">
+      <div class="story-num">6</div>
+      <div>
+        <p class="story-title"><span class="ticker-badge">BBAS3</span>Banco do Brasil é destaque negativo em prévia setorial do Safra Invest para o 2T26</p>
+      </div>
+    </div>
+    <div class="story-sub">🗞️ Money Times / InfoMoney (contexto do dia 08/07) · 08/07/2026</div>
+    <p class="story-summary">Em prévia setorial do 2T26, a Safra Invest apontou Banco do Brasil (BBAS3) e Santander Brasil (SANB) como os dois destaques negativos entre bancos, consumo e telecom, em contraste com recomendações positivas para Raia Drogasil, TIM e Vivo. BBAS3 negociou na faixa de R$ 19,50–19,60 no pregão de quarta-feira, em dia de queda geral do índice financeiro da B3.</p>
+    <div class="box yellow">
+      <span class="box-title">📌 Por que isso é importante?</span>
+      <ul>
+        <li><strong>Visão de analistas:</strong> confirma cautela do sell-side às vésperas dos resultados do 2T26 (previstos para meados de agosto).</li>
+        <li><strong>Fundamentos:</strong> reforça o consenso negativo já formado desde o 1T26 em torno da inadimplência agro.</li>
+      </ul>
+    </div>
+    <div class="box green">
+      <span class="box-title">🌍 Análise de Cobertura Global</span>
+      <div class="coverage-regions">Regiões que cobriram: — China &nbsp;— EUA &nbsp;— Europa &nbsp;✓ Brasil (Money Times, InfoMoney)</div>
+      <div>Veículos: Money Times, InfoMoney</div>
+      <span class="attention low">Atenção: Baixa (recorte específico do BB, restrito ao Brasil)</span>
+    </div>
+    <div class="links-row">
+      <span class="lbl">Fontes:</span>
+      <a href="https://www.moneytimes.com.br/ibovespa-8-7-26-lils/" target="_blank" rel="noopener">Money Times</a>
+      <a href="https://www.infomoney.com.br/mercados/ibovespa-hoje-bolsa-de-valores-ao-vivo-08072026/" target="_blank" rel="noopener">InfoMoney</a>
+    </div>
+  </div>
+
+  <!-- BRAZIL STORY 7 -->
+  <div class="story-card">
+    <div class="story-head">
+      <div class="story-num">7</div>
+      <div>
+        <p class="story-title"><span class="ticker-badge">BBSE3</span><a href="https://br.advfn.com/jornal/2026/07/bb-seguridade-brasilprev-alcanca-r-500-bilhoes-em-ativos-sob-gestao-e-reforca-a-lideranca-em-previdencia-privada" target="_blank" rel="noopener">Brasilprev, da BB Seguridade, atinge R$ 500 bilhões em ativos sob gestão</a></p>
+      </div>
+    </div>
+    <div class="story-sub">🗞️ ADVFN Notícias, replicado por múltiplos veículos brasileiros · 08/07/2026</div>
+    <p class="story-summary">A Brasilprev, braço de previdência privada da BB Seguridade em parceria com a americana Principal Financial Group, anunciou ter atingido R$ 500 bilhões em ativos sob gestão, ante R$ 471,6 bilhões no fim de 2025, atendendo 2,5 milhões de clientes e detendo cerca de 26,5% de participação de mercado. A distribuição ocorre majoritariamente pela rede de agências do Banco do Brasil.</p>
+    <div class="box yellow">
+      <span class="box-title">📌 Por que isso é importante?</span>
+      <ul>
+        <li><strong>Fundamentos:</strong> crescimento de AUM impulsiona diretamente a receita de taxas de administração, linha de lucro relevante para a BB Seguridade.</li>
+        <li><strong>Contexto:</strong> compensa parcialmente a pressão observada no segmento de seguros (queda em prêmios rurais citada por analistas ao longo do ano).</li>
+      </ul>
+    </div>
+    <div class="box green">
+      <span class="box-title">🌍 Análise de Cobertura Global</span>
+      <div class="coverage-regions">Regiões que cobriram: — China &nbsp;— EUA &nbsp;— Europa &nbsp;✓ Brasil (ADVFN, Monitor Mercantil, Investidor10, Brasil247, SEGS)</div>
+      <div>Veículos: ADVFN Notícias, Monitor Mercantil, Investidor10, EuQueroInvestir, Brasil247, SEGS, Visno Invest</div>
+      <span class="attention low">Atenção: Baixa (marco corporativo doméstico, sem repercussão internacional)</span>
+    </div>
+    <div class="links-row">
+      <span class="lbl">Fontes:</span>
+      <a href="https://br.advfn.com/jornal/2026/07/bb-seguridade-brasilprev-alcanca-r-500-bilhoes-em-ativos-sob-gestao-e-reforca-a-lideranca-em-previdencia-privada" target="_blank" rel="noopener">ADVFN Notícias</a>
+    </div>
+    <div class="thin-note">Nota: não localizado nas fontes obrigatórias (InfoMoney/Money Times/Investing.com Brasil) apesar de busca direcionada; incluído por relevância para BBSE3 e ampla replicação doméstica.</div>
+  </div>
+
+  <!-- BRAZIL STORY 8 -->
+  <div class="story-card">
+    <div class="story-head">
+      <div class="story-num">8</div>
+      <div>
+        <p class="story-title"><span class="ticker-badge">FESA4</span><a href="https://capitalizo.com.br/noticias-20260708-ferbasa-fesa3-fesa4-capta-r-438-milhoes-para-nova-planta-de-biorredutor/" target="_blank" rel="noopener">Ferbasa capta R$ 43,8 milhões do BNDES para nova planta de biorredutor na Bahia</a></p>
+      </div>
+    </div>
+    <div class="story-sub">🗞️ Capitalizo, replicado por Jornal de Brasília, Canal Rural e Suno · 08/07/2026 (data a confirmar — ver nota)</div>
+    <p class="story-summary">A Ferbasa, via subsidiária em Maracás (BA), firmou contrato de financiamento com o BNDES de R$ 43,8 milhões (98% de um investimento total de R$ 44,4 milhões) para construir uma nova planta de biorredutor (carvão vegetal), com cerca de R$ 35 milhões vindos do Fundo Clima do BNDES. A unidade terá capacidade de 20 mil toneladas/ano, abastecerá a unidade metalúrgica de Pojuca e deve gerar cerca de 97 empregos diretos e indiretos, com conclusão prevista para dezembro de 2026.</p>
+    <div class="box yellow">
+      <span class="box-title">📌 Por que isso é importante?</span>
+      <ul>
+        <li><strong>Fundamentos:</strong> reduz a dependência de carvão vegetal comprado de terceiros, com potencial ganho de custo e perfil ESG.</li>
+        <li><strong>Impacto no negócio:</strong> investimento pontual, de porte modesto frente ao valor de mercado da companhia — sem catalisador imediato de preço esperado.</li>
+      </ul>
+    </div>
+    <div class="box green">
+      <span class="box-title">🌍 Análise de Cobertura Global</span>
+      <div class="coverage-regions">Regiões que cobriram: — China &nbsp;— EUA &nbsp;— Europa &nbsp;✓ Brasil (Capitalizo, Jornal de Brasília, Canal Rural, Suno, TradersClub)</div>
+      <div>Veículos: Capitalizo, Jornal de Brasília, Canal Rural, Investalk, CIMM, Ipesi, Suno, TradersClub</div>
+      <span class="attention low">Atenção: Baixa</span>
+    </div>
+    <div class="links-row">
+      <span class="lbl">Fontes:</span>
+      <a href="https://capitalizo.com.br/noticias-20260708-ferbasa-fesa3-fesa4-capta-r-438-milhoes-para-nova-planta-de-biorredutor/" target="_blank" rel="noopener">Capitalizo</a>
+    </div>
+    <div class="thin-note">Nota: outros veículos datam a aprovação do BNDES ao final de junho/2026 — esta publicação pode se referir à assinatura formal do contrato, e não a um evento inteiramente novo. Não localizada nas fontes obrigatórias.</div>
+  </div>
+
+  <!-- BRAZIL STORY 9 -->
+  <div class="story-card">
+    <div class="story-head">
+      <div class="story-num">9</div>
+      <div>
+        <p class="story-title"><span class="ticker-badge">AXIA3</span><a href="https://visnoinvest.com.br/news/14013/axia-energia-axia3-anuncia-conversao-e-resgate-de-pncs" target="_blank" rel="noopener">Axia Energia conclui conversão e resgate de ações preferenciais (PNCs)</a></p>
+      </div>
+    </div>
+    <div class="story-sub">🗞️ Visno Invest / Investing.com Brasil · anunciado 30/06, executado em 07/07/2026</div>
+    <p class="story-summary">A Axia Energia (ex-Eletrobras) converteu 347.865 ações preferenciais classe C (PNC/AXIA7) em ações ordinárias AXIA3 na proporção 1:1 em 1º de julho, e resgatou e cancelou mais 216.957 ações PNC em 7 de julho, com liquidação em dinheiro no mesmo dia. O movimento dá continuidade à simplificação da estrutura de capital da companhia após a privatização.</p>
+    <div class="box yellow">
+      <span class="box-title">📌 Por que isso é importante?</span>
+      <ul>
+        <li><strong>Governança:</strong> simplificação de classes de ação é vista positivamente por casas como Santander, Itaú BBA e Bradesco BBI, alinhando a empresa a padrões de Novo Mercado.</li>
+        <li><strong>Impacto no preço:</strong> não é evento de resultado/fundamentos — catalisador de preço limitado no curto prazo.</li>
+      </ul>
+    </div>
+    <div class="box green">
+      <span class="box-title">🌍 Análise de Cobertura Global</span>
+      <div class="coverage-regions">Regiões que cobriram: — China &nbsp;— EUA &nbsp;— Europa &nbsp;✓ Brasil (Visno Invest, Guia do Investidor, Investing.com Brasil)</div>
+      <div>Veículos: Visno Invest, Guia do Investidor, Investing.com Brasil</div>
+      <span class="attention low">Atenção: Baixa</span>
+    </div>
+    <div class="links-row">
+      <span class="lbl">Fontes:</span>
+      <a href="https://visnoinvest.com.br/news/14013/axia-energia-axia3-anuncia-conversao-e-resgate-de-pncs" target="_blank" rel="noopener">Visno Invest</a>
+      <a href="https://www.investing.com/" target="_blank" rel="noopener">Investing.com Brasil</a>
+    </div>
+    <div class="thin-note">Nota: execução do resgate ocorreu em 07/07 — fora da janela estrita de 24h, mas incluída por ser o evento corporativo mais recente e concreto encontrado para AXIA3.</div>
+  </div>
+
+  <div class="thin-note" style="margin-left:0;">
+    <strong>Tickers sem notícia relevante nas últimas 24h:</strong> ITSA4, BRSR6, ABCB4, BAZA3, SAPR4, CMIG4, CPFE3, TAEE4/TAEE3, ISAE4, UNIP6, KLBN4, IRBR3, MGLU3, AMER3, XPML11, HCTR11, GGRC11. Ciclo de notícias fraco para esse grupo — nenhuma história genuína e verificável foi forçada para completar a cota.
+  </div>
+
+  <h2 class="section-title">🌍 Internacional — Principais Notícias</h2>
+  <p class="section-sub">6 histórias verificadas por convergência entre múltiplas fontes independentes (meta original: 15 — ver nota de transparência acima).</p>
+
+  <!-- INTL STORY 1 -->
+  <div class="story-card">
+    <div class="story-head">
+      <div class="story-num">1</div>
+      <div>
+        <p class="story-title"><span class="ticker-badge">BABA</span><span class="ticker-badge">MCHI</span><a href="https://www.bloomberg.com/news/articles/2026-07-08/alibaba-s-shares-jump-most-in-ten-months-as-earnings-hopes-grow" target="_blank" rel="noopener">Ações da Alibaba saltam até 12,5% em Hong Kong, maior alta em dez meses</a></p>
+      </div>
+    </div>
+    <div class="story-sub">🗞️ Bloomberg / SCMP / Yahoo Finance · 08/07/2026</div>
+    <p class="story-summary">As ações da Alibaba listadas em Hong Kong subiram até 12,5% — a maior alta diária desde setembro — após um briefing pré-resultados (via veículo local Jiemian) sugerir redução de perdas na unidade de comércio instantâneo e lucratividade estável. O Citi elevou a projeção de receita de nuvem para o ano fiscal de 2027 para RMB 48,4 bilhões (+45% a/a) citando adoção de IA; o UBS destacou expansão de margem antes da divulgação do trimestre encerrado em junho. Tencent e JD.com subiram cerca de 4% em movimento de contágio positivo.</p>
+    <div class="box yellow">
+      <span class="box-title">📌 Por que isso é importante?</span>
+      <ul>
+        <li><strong>Visão de analistas:</strong> Citi e UBS elevaram expectativas de receita/margem antes dos resultados de 17/08; preço-alvo médio do mercado em US$ 190,83.</li>
+        <li><strong>Impacto no preço:</strong> maior alta diária em dez meses para as ações da Alibaba.</li>
+        <li><strong>Fundamentos:</strong> sinaliza melhora na unidade de comércio instantâneo, historicamente deficitária.</li>
+      </ul>
+    </div>
+    <div class="box green">
+      <span class="box-title">🌍 Análise de Cobertura Global</span>
+      <div class="coverage-regions">Regiões que cobriram: ✓ China (SCMP) &nbsp;✓ EUA (Bloomberg, Yahoo Finance, 24/7 Wall St, Motley Fool) &nbsp;— Europa &nbsp;— Brasil</div>
+      <div>Veículos: Bloomberg, SCMP, Yahoo Finance, 24/7 Wall St, Motley Fool</div>
+      <span class="attention high">Atenção: Alta</span>
+    </div>
+    <div class="links-row">
+      <span class="lbl">Fontes:</span>
+      <a href="https://www.bloomberg.com/news/articles/2026-07-08/alibaba-s-shares-jump-most-in-ten-months-as-earnings-hopes-grow" target="_blank" rel="noopener">Bloomberg</a>
+      <a href="https://finance.yahoo.com/markets/stocks/articles/alibaba-shares-jump-most-ten-071148190.html" target="_blank" rel="noopener">Yahoo Finance</a>
+      <a href="https://www.scmp.com/tech/big-tech/" target="_blank" rel="noopener">SCMP</a>
+    </div>
+  </div>
+
+  <!-- INTL STORY 2 -->
+  <div class="story-card">
+    <div class="story-head">
+      <div class="story-num">2</div>
+      <div>
+        <p class="story-title"><span class="ticker-badge">MCHI</span><a href="https://www.bloomberg.com/news/articles/2026-07-08/chinese-stocks-in-hk-jump-most-in-14-months-as-tech-rallies" target="_blank" rel="noopener">Bolsas chinesas em Hong Kong têm maior alta em 14 meses, puxadas por tecnologia</a></p>
+      </div>
+    </div>
+    <div class="story-sub">🗞️ Bloomberg / Business Recorder / SCMP · 08/07/2026</div>
+    <p class="story-summary">O índice Hang Seng fechou em alta de cerca de 3%, o Hang Seng Tech subiu 5%, e o Hang Seng China Enterprises avançou até 3,6% — maior alta desde maio de 2025. Alibaba (+11–12%) e Tencent (+3–4%) liderarm; a Zhipu AI saltou 13,4% mesmo com o fim de período de lock-up; SMIC e Xiaomi também subiram com o otimismo em torno de chips e IA, mesmo com queda das bolsas de tecnologia dos EUA e de outros mercados asiáticos na noite anterior.</p>
+    <div class="box yellow">
+      <span class="box-title">📌 Por que isso é importante?</span>
+      <ul>
+        <li><strong>Impacto direto no MCHI:</strong> Alibaba e Tencent são as maiores posições do ETF; o NAV do MCHI subiu cerca de 2,46% no dia.</li>
+        <li><strong>Fluxo de capital:</strong> sinaliza rotação de capital para ações chinesas em detrimento de tecnologia da Coreia do Sul e Taiwan.</li>
+      </ul>
+    </div>
+    <div class="box green">
+      <span class="box-title">🌍 Análise de Cobertura Global</span>
+      <div class="coverage-regions">Regiões que cobriram: ✓ China (SCMP, Business Recorder) &nbsp;✓ EUA (Bloomberg) &nbsp;— Europa &nbsp;— Brasil</div>
+      <div>Veículos: Bloomberg, Business Recorder, SCMP</div>
+      <span class="attention high">Atenção: Alta</span>
+    </div>
+    <div class="links-row">
+      <span class="lbl">Fontes:</span>
+      <a href="https://www.bloomberg.com/news/articles/2026-07-08/chinese-stocks-in-hk-jump-most-in-14-months-as-tech-rallies" target="_blank" rel="noopener">Bloomberg</a>
+      <a href="https://www.brecorder.com/news/40429048/china-hong-kong-stocks-gain-as-chip-ai-rally-lead-rebound" target="_blank" rel="noopener">Business Recorder</a>
+    </div>
+    <div class="thin-note">Nota: não localizada cobertura direta em Caixin, Yicai, China Daily ou Xinhua para esta rodada específica, apesar de busca direcionada nesses veículos.</div>
+  </div>
+
+  <!-- INTL STORY 3 -->
+  <div class="story-card">
+    <div class="story-head">
+      <div class="story-num">3</div>
+      <div>
+        <p class="story-title"><span class="ticker-badge">SMH</span><span class="ticker-badge">QQQ</span><a href="https://www.forbes.com/sites/petercohan/2026/07/08/intel-stock-down-21-inside-the-july-2026-semiconductor-selloff/" target="_blank" rel="noopener">Venda generalizada de semicondutores se intensifica; Intel cai até 21%</a></p>
+      </div>
+    </div>
+    <div class="story-sub">🗞️ Forbes / CNBC / Yahoo Finance · 08/07/2026</div>
+    <p class="story-summary">Ações de semicondutores perderam mais de US$ 1 trilhão em valor de mercado em meio a dúvidas de Wall Street sobre a sustentabilidade dos gastos recordes em IA. A Intel caiu entre 10% e 21% (variação entre leituras intradiárias e de fechamento), o índice Philadelphia Semiconductor recuou 10,8%, e o índice de semicondutores da VanEck caiu 13% em dez pregões. Catalisadores citados: relatos de que a SK Hynix está reduzindo a expansão de memória HBM, tom mais hawkish do Fed sob Kevin Warsh, e dúvidas sobre o retorno da infraestrutura de IA — apesar dos fortes resultados preliminares da Samsung no 2T.</p>
+    <div class="box yellow">
+      <span class="box-title">📌 Por que isso é importante?</span>
+      <ul>
+        <li><strong>Impacto direto no SMH:</strong> maior ETF de semicondutores do mercado (~US$ 69 bi em AUM), diretamente atingido pela queda do setor.</li>
+        <li><strong>Impacto no QQQ:</strong> forte peso em tecnologia/semicondutores no índice.</li>
+        <li><strong>Visão de analistas:</strong> parte do mercado trata o movimento como um "reset de meio de ciclo", mantendo preços-alvo de 12 meses para Nvidia/Micron.</li>
+      </ul>
+    </div>
+    <div class="box green">
+      <span class="box-title">🌍 Análise de Cobertura Global</span>
+      <div class="coverage-regions">Regiões que cobriram: ✓ China (reflexo em SMIC/Xiaomi/cadeia asiática) &nbsp;✓ EUA (Forbes, CNBC, Yahoo Finance) &nbsp;— Europa &nbsp;— Brasil</div>
+      <div>Veículos: Forbes, CNBC, Yahoo Finance</div>
+      <span class="attention high">Atenção: Alta</span>
+    </div>
+    <div class="links-row">
+      <span class="lbl">Fontes:</span>
+      <a href="https://www.forbes.com/sites/petercohan/2026/07/08/intel-stock-down-21-inside-the-july-2026-semiconductor-selloff/" target="_blank" rel="noopener">Forbes</a>
+      <a href="https://www.cnbc.com/" target="_blank" rel="noopener">CNBC</a>
+      <a href="https://finance.yahoo.com/" target="_blank" rel="noopener">Yahoo Finance</a>
+    </div>
+  </div>
+
+  <!-- INTL STORY 4 -->
+  <div class="story-card">
+    <div class="story-head">
+      <div class="story-num">4</div>
+      <div>
+        <p class="story-title"><span class="ticker-badge">BTC</span><span class="ticker-badge">SGOV</span><a href="https://www.cnbc.com/2026/07/07/oil-prices-iran-strait-hormuz.html" target="_blank" rel="noopener">Ataques a petroleiros no Estreito de Ormuz elevam petróleo e disparam aversão a risco global</a></p>
+      </div>
+    </div>
+    <div class="story-sub">🗞️ CNBC / Bloomberg / NBC News · 07–08/07/2026</div>
+    <p class="story-summary">Ataques ligados ao Irã atingiram três embarcações perto do Estreito de Ormuz em 24 horas; os EUA em seguida revogaram a autorização de venda de petróleo iraniano e atacaram mais de 80 alvos no Irã em retaliação. O petróleo Brent subiu até 5,6%, superando US$ 76/barril, e o WTI avançou para US$ 70–72. As bolsas dos EUA recuaram — S&amp;P 500 caiu 0,4–0,5% e o Nasdaq perdeu mais de 1% (até -1,8% em dois pregões).</p>
+    <div class="box yellow">
+      <span class="box-title">📌 Por que isso é importante?</span>
+      <ul>
+        <li><strong>Impacto geopolítico:</strong> choque de oferta de petróleo com potencial de se estender caso o conflito se intensifique.</li>
+        <li><strong>Impacto no BTC:</strong> citado como fator de pressão adicional no recuo do bitcoin no período.</li>
+        <li><strong>Impacto no SGOV:</strong> ambiente de aversão a risco reforça a atratividade de instrumentos de curtíssimo prazo como "porto seguro" de caixa.</li>
+      </ul>
+    </div>
+    <div class="box green">
+      <span class="box-title">🌍 Análise de Cobertura Global</span>
+      <div class="coverage-regions">Regiões que cobriram: — China &nbsp;✓ EUA (CNBC, Bloomberg, NBC News) &nbsp;✓ Europa (Al Jazeera) &nbsp;✓ Brasil (reflexo no Ibovespa/Petrobras — ver história #1 do Brasil)</div>
+      <div>Veículos: CNBC, Bloomberg, NBC News, Al Jazeera, energyconnects.com</div>
+      <span class="attention high">Atenção: Alta</span>
+    </div>
+    <div class="links-row">
+      <span class="lbl">Fontes:</span>
+      <a href="https://www.cnbc.com/2026/07/07/oil-prices-iran-strait-hormuz.html" target="_blank" rel="noopener">CNBC</a>
+      <a href="https://www.bloomberg.com/" target="_blank" rel="noopener">Bloomberg</a>
+    </div>
+  </div>
+
+  <!-- INTL STORY 5 -->
+  <div class="story-card">
+    <div class="story-head">
+      <div class="story-num">5</div>
+      <div>
+        <p class="story-title"><span class="ticker-badge">BTC</span><a href="https://fortune.com/article/price-of-bitcoin-07-09-2026/" target="_blank" rel="noopener">Bitcoin recua para a faixa de US$ 61–63 mil em meio à aversão a risco global</a></p>
+      </div>
+    </div>
+    <div class="story-sub">🗞️ Fortune / KuCoin News · 08–09/07/2026</div>
+    <p class="story-summary">O bitcoin negociou entre US$ 61.900 e US$ 63.000 nos dias 8 e 9 de julho, queda de cerca de 2%, em meio à renovada aversão a risco ligada aos ataques no Estreito de Ormuz e à alta de petróleo e juros. Dados de fluxo de ETFs à vista divergem entre provedores — um conjunto mostra entrada líquida de US$ 221,7 milhões em um único dia (maior em dois meses), interrompendo sequência de dez dias de saídas; outro mostra saída líquida de US$ 84,9 milhões no mesmo período. O valor de mercado do bitcoin está perto de US$ 1,33 trilhão, bem abaixo do início do ano (acima de US$ 93 mil) após mínima de 21 meses no final de junho.</p>
+    <div class="box yellow">
+      <span class="box-title">📌 Por que isso é importante?</span>
+      <ul>
+        <li><strong>Impacto no preço:</strong> sinal direto de fraqueza e de sensibilidade contínua a risco macro/geopolítico.</li>
+        <li><strong>Fluxos:</strong> dados conflitantes entre provedores de ETF sugerem incerteza entre investidores institucionais.</li>
+        <li><strong>Visão de analistas:</strong> tom hawkish do Fed sob Kevin Warsh citado como pressão adicional.</li>
+      </ul>
+    </div>
+    <div class="box green">
+      <span class="box-title">🌍 Análise de Cobertura Global</span>
+      <div class="coverage-regions">Regiões que cobriram: — China &nbsp;✓ EUA (Fortune, KuCoin News, CoinDesk, Forbes) &nbsp;— Europa &nbsp;— Brasil</div>
+      <div>Veículos: Fortune, KuCoin News, CoinDesk, Forbes</div>
+      <span class="attention medium">Atenção: Média-Alta (imprensa financeira/cripto dos EUA)</span>
+    </div>
+    <div class="links-row">
+      <span class="lbl">Fontes:</span>
+      <a href="https://fortune.com/article/price-of-bitcoin-07-09-2026/" target="_blank" rel="noopener">Fortune</a>
+      <a href="https://www.kucoin.com/news/articles/crypto-daily-market-report-july-8-2026" target="_blank" rel="noopener">KuCoin News</a>
+    </div>
+  </div>
+
+  <!-- INTL STORY 6 -->
+  <div class="story-card">
+    <div class="story-head">
+      <div class="story-num">6</div>
+      <div>
+        <p class="story-title"><span class="ticker-badge">BABA</span><span class="ticker-badge">QQQ</span><span class="ticker-badge">SMH</span><a href="https://www.bloomberg.com/news/articles/2026-07-07/chinese-ai-startup-deepseek-developing-own-ai-chip-reuters-says" target="_blank" rel="noopener">Reuters: DeepSeek desenvolve chip de IA próprio para reduzir dependência de Nvidia e Huawei</a></p>
+      </div>
+    </div>
+    <div class="story-sub">🗞️ Reuters (via Bloomberg) / Investing.com · 07/07/2026 (segue como fator de mercado em 08/07)</div>
+    <p class="story-summary">A Reuters informou, citando fontes, que a DeepSeek está projetando um chip próprio de inferência para reduzir a dependência de semicondutores da Nvidia e da Huawei, em meio à perda de participação de mercado da Nvidia na China sob controles de exportação dos EUA. O projeto está em curso há cerca de um ano, com contratação discreta de engenheiros de design de chips. As ações da Nvidia caíram cerca de 2,2% após a notícia.</p>
+    <div class="box yellow">
+      <span class="box-title">📌 Por que isso é importante?</span>
+      <ul>
+        <li><strong>Impacto nos fundamentos:</strong> ameaça estrutural à receita da Nvidia na China e ao ecossistema de fornecimento de chips.</li>
+        <li><strong>Impacto no SMH/QQQ:</strong> contribuiu para a venda generalizada de semicondutores que se estendeu em 08/07.</li>
+        <li><strong>Geopolítica:</strong> reforça a corrida chinesa por autossuficiência em chips de IA.</li>
+      </ul>
+    </div>
+    <div class="box green">
+      <span class="box-title">🌍 Análise de Cobertura Global</span>
+      <div class="coverage-regions">Regiões que cobriram: ✓ China (tema, sem confirmação direta em SCMP/Caixin nesta busca) &nbsp;✓ EUA (Bloomberg, Investing.com) &nbsp;— Europa &nbsp;— Brasil</div>
+      <div>Veículos: Reuters (via Bloomberg), Investing.com</div>
+      <span class="attention medium">Atenção: Média-Alta</span>
+    </div>
+    <div class="links-row">
+      <span class="lbl">Fontes:</span>
+      <a href="https://www.bloomberg.com/news/articles/2026-07-07/chinese-ai-startup-deepseek-developing-own-ai-chip-reuters-says" target="_blank" rel="noopener">Bloomberg (via Reuters)</a>
+      <a href="https://www.investing.com/news/stock-market-news/nvidia-stock-slips-after-report-says-deepseek-is-designing-its-own-ai-chip-4778739" target="_blank" rel="noopener">Investing.com</a>
+    </div>
+    <div class="thin-note">Nota: reportagem original de 07/07 — um dia fora da janela estrita de 24h, mas mantida por ser fator ativo na venda de semicondutores de 08/07 (história #3).</div>
+  </div>
+
+  <div class="thin-note" style="margin-left:0;">
+    <strong>Tickers sem notícia relevante nas últimas 24h:</strong> OHI, SGOV (evento próprio), VYM, VYMI. Para OHI, o único item encontrado foi a confirmação rotineira da data de resultados do 2T26 (29/07) e um registro 13F de uma nova posição pequena — nenhum dos dois qualifica como notícia de alto impacto. VYM e VYMI não tiveram cobertura jornalística no período, apenas dados estáticos de fluxo/rentabilidade.
+  </div>
+
+  <h2 class="section-title">📊 Análise Final</h2>
+  <p class="section-sub">Situação atual de cada ativo, visão de analistas e perspectiva Brasil–China–Global.</p>
+
+  <div class="analysis-card">
+    <h3>🇧🇷 VALE3 — Sob pressão dupla: minério de ferro e governança</h3>
+    <p>Vale enfrenta o pior dos dois mundos nesta janela: rebaixamento de recomendação do Morgan Stanley (Equal-Weight, alvo do ADR em US$ 16,50) por deterioração do cenário de minério de ferro — produção de aço mais fraca na China e excesso de oferta — combinado com um processo administrativo da CVM sobre o pagamento ao ex-presidente do conselho Daniel Stieler. A ação caiu 4,6% em um único pregão. Analistas cortaram o EBITDA 2026 estimado em 7–9% e o EPS em 6–13% abaixo do consenso.</p>
+    <p><strong>Previsão de impacto:</strong> pressão de curto prazo deve persistir até a assembleia extraordinária de 22/07 (disputa Previ x conselho) e até haver sinais de recuperação na demanda chinesa por aço.</p>
+  </div>
+
+  <div class="analysis-card">
+    <h3>🇧🇷 PETR4 — Beneficiária direta da escalada Irã-EUA</h3>
+    <p>Com o Brent acima de US$ 78 e o risco de disrupção no Estreito de Ormuz reativado, Petrobras foi a principal beneficiária doméstica do choque de oferta de petróleo, com alta de 3,15%. O cenário reforça a capacidade de geração de caixa e distribuição de dividendos no curto prazo, mas permanece sujeito à volatilidade do conflito — uma desescalada rápida reverteria o ganho com a mesma velocidade.</p>
+  </div>
+
+  <div class="analysis-card">
+    <h3>🇧🇷 BBAS3 — Consenso de analistas continua negativo antes do 2T26</h3>
+    <p>Banco do Brasil segue como destaque negativo entre as casas de análise (Safra Invest, XP com alvo em R$ 21, Goldman Sachs com "Sell" desde abril), pressionado pela inadimplência rural em máximas históricas e pela indefinição regulatória sobre a renegociação de dívidas do agronegócio, que pode custar até R$ 155,6 bilhões em vencimentos expostos ao banco em 2026. BB Seguridade (BBSE3), controlada indiretamente pelo BB, segue trajetória mais positiva graças ao crescimento da Brasilprev (R$ 500 bi em AUM).</p>
+  </div>
+
+  <div class="analysis-card">
+    <h3>🇨🇳🇺🇸 BABA / MCHI — Otimismo pré-resultados impulsiona rali chinês</h3>
+    <p>A Alibaba liderou a maior alta em dez meses das ações chinesas em Hong Kong, com Citi e UBS elevando expectativas de receita de nuvem e margem antes dos resultados de 17 de agosto. O MCHI, com Alibaba e Tencent como maiores posições, capturou diretamente o movimento (NAV +2,46% no dia). Fatores de apoio: redução de risco regulatório nos EUA (reprieve temporário de lobby após disputa com o Pentágono) e acordo de US$ 600 milhões com o DOJ já precificado. Risco a monitorar: qualquer piora na tensão comercial EUA-China poderia reverter rapidamente o sentimento.</p>
+  </div>
+
+  <div class="analysis-card">
+    <h3>🇺🇸 SMH / QQQ — Correção de semicondutores testa a narrativa de IA</h3>
+    <p>A perda de mais de US$ 1 trilhão em valor de mercado no setor de chips, com Intel em queda de até 21%, é agravada pelo relato da Reuters sobre o chip próprio da DeepSeek e por dúvidas sobre a sustentabilidade dos investimentos em infraestrutura de IA. Parte do mercado trata o movimento como "reset de meio de ciclo", com preços-alvo de 12 meses mantidos para Nvidia e Micron — mas o risco de uma correção mais prolongada é real caso os resultados do 2T não confirmem a demanda por IA.</p>
+  </div>
+
+  <div class="analysis-card">
+    <h3>🌐 BTC / SGOV — Aversão a risco global favorece caixa, pressiona cripto</h3>
+    <p>O bitcoin recuou para a faixa de US$ 61-63 mil, ainda distante da máxima do ano (acima de US$ 93 mil), pressionado pela escalada Irã-EUA e por expectativa de política monetária mais hawkish sob o novo presidente do Fed, Kevin Warsh. Fluxos de ETF à vista divergem entre provedores, indicando indecisão institucional. Nesse cenário, instrumentos de curtíssimo prazo como o SGOV se beneficiam como refúgio de caixa, embora sem uma notícia dedicada no período.</p>
+  </div>
+
+  <div class="analysis-card">
+    <h3>Perspectiva Brasil – China – Global</h3>
+    <div class="persp-grid">
+      <div class="card-mini">
+        <h4>🇧🇷 Brasil</h4>
+        <p>Dia dominado pela geopolítica: petróleo beneficia Petrobras, penaliza ativos de risco; Vale sofre golpe duplo de rebaixamento de recomendação e governança; bancos domésticos seguem pressionados pela inadimplência agro à espera de uma solução regulatória.</p>
+      </div>
+      <div class="card-mini">
+        <h4>🇨🇳 China</h4>
+        <p>Rali de tecnologia chinesa (Alibaba, Tencent) contrasta com a fraqueza da demanda por aço que pressiona a Vale — evidenciando que a China influencia os tickers monitorados em direções opostas simultaneamente.</p>
+      </div>
+      <div class="card-mini">
+        <h4>🌍 Global</h4>
+        <p>A escalada Irã-EUA no Estreito de Ormuz é o fio condutor do dia, com efeitos em cascata sobre petróleo (positivo para PETR4), ativos de risco (negativo para bitcoin e ações de tecnologia/semicondutores) e apetite por segurança (favorável a instrumentos de caixa como o SGOV).</p>
+      </div>
+    </div>
+  </div>
+
+  <footer class="foot">
+    Stocks Report · Gerado em 09/07/2026 · Fontes cruzadas via busca; verificação de link direto indisponível nesta sessão devido a bloqueio de rede no ambiente de execução (ver nota de transparência no topo).
+  </footer>
+
+</div>
+</body>
+</html>
