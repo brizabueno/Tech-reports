@@ -1,0 +1,620 @@
+<style>
+  :root {
+    --bg: #f2f2f0;
+    --card-bg: #ffffff;
+    --text: #1a1a1a;
+    --muted: #5f6368;
+    --yellow: #fff4cc;
+    --yellow-border: #f0c419;
+    --green: #e3f5e9;
+    --green-border: #2e9e5b;
+    --black: #0d0d0d;
+    --accent: #d61f1f;
+  }
+  * { box-sizing: border-box; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    margin: 0;
+    padding: 24px 16px 60px;
+    font-size: 15px;
+    line-height: 1.6;
+  }
+  .wrap { max-width: 900px; margin: 0 auto; }
+
+  header.hero {
+    background: var(--black);
+    color: #fff;
+    border-radius: 16px;
+    padding: 32px 28px;
+    margin-bottom: 28px;
+  }
+  header.hero h1 {
+    margin: 0 0 8px;
+    font-size: 30px;
+    letter-spacing: -0.02em;
+    font-weight: 800;
+  }
+  header.hero .meta {
+    font-size: 14px;
+    color: #cfcfcf;
+    margin-bottom: 14px;
+  }
+  header.hero .regions {
+    font-size: 15px;
+    font-weight: 600;
+    background: rgba(255,255,255,0.08);
+    display: inline-block;
+    padding: 8px 16px;
+    border-radius: 999px;
+  }
+
+  section.intro {
+    background: var(--card-bg);
+    border-radius: 14px;
+    padding: 20px 24px;
+    margin-bottom: 28px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+  }
+  section.intro h2 { margin-top: 0; font-size: 18px; }
+  section.intro p { margin: 6px 0; color: var(--muted); }
+
+  .story-card {
+    background: var(--card-bg);
+    border-radius: 16px;
+    padding: 24px 26px;
+    margin-bottom: 26px;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.07);
+  }
+  .story-head { display: flex; gap: 14px; align-items: flex-start; margin-bottom: 6px; }
+  .story-number {
+    background: var(--black);
+    color: #fff;
+    min-width: 34px;
+    height: 34px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 800;
+    font-size: 15px;
+    flex-shrink: 0;
+  }
+  .story-title a {
+    color: var(--text);
+    text-decoration: none;
+    font-size: 19px;
+    font-weight: 750;
+    line-height: 1.3;
+  }
+  .story-title a:hover { color: var(--accent); text-decoration: underline; }
+  .story-sub {
+    margin: 6px 0 12px 48px;
+    font-size: 13px;
+    color: var(--muted);
+  }
+  .story-summary {
+    margin: 0 0 16px 48px;
+    font-size: 14.5px;
+  }
+
+  .box {
+    border-radius: 12px;
+    padding: 16px 18px;
+    margin: 0 0 14px 48px;
+  }
+  .box:last-child { margin-bottom: 0; }
+  .box h4 {
+    margin: 0 0 8px;
+    font-size: 14px;
+    font-weight: 800;
+  }
+  .box p, .box ul { margin: 0 0 6px; font-size: 13.8px; }
+  .box ul { padding-left: 18px; }
+  .box p:last-child, .box ul:last-child { margin-bottom: 0; }
+
+  .box-importance {
+    background: var(--yellow);
+    border: 1px solid var(--yellow-border);
+  }
+  .box-coverage {
+    background: var(--green);
+    border: 1px solid var(--green-border);
+  }
+  .box-coverage .regions-line { font-weight: 700; margin-bottom: 8px; }
+  .box-coverage .attention {
+    display: inline-block;
+    margin-top: 8px;
+    padding: 3px 10px;
+    border-radius: 999px;
+    font-size: 12px;
+    font-weight: 700;
+    background: rgba(0,0,0,0.06);
+  }
+  .att-alto { background: #fddede; color: #9c1c1c; }
+  .att-medio { background: #fdeccb; color: #92600b; }
+  .att-baixo { background: #dbe8fb; color: #1c4e9c; }
+
+  .box-coverage a { color: #1b6b3c; }
+  .box-coverage .links a { display: block; word-break: break-all; margin: 2px 0; font-size: 12.8px; }
+
+  section.geo {
+    background: var(--black);
+    color: #f2f2f2;
+    border-radius: 16px;
+    padding: 28px 28px 32px;
+    margin-top: 34px;
+  }
+  section.geo h2 {
+    margin-top: 0;
+    font-size: 22px;
+  }
+  section.geo h3 {
+    font-size: 16px;
+    color: #ffd166;
+    margin: 22px 0 8px;
+  }
+  section.geo p, section.geo li { color: #d8d8d8; font-size: 14.3px; }
+  section.geo ul { padding-left: 20px; }
+
+  footer {
+    text-align: center;
+    color: var(--muted);
+    font-size: 12.5px;
+    margin-top: 30px;
+  }
+
+  @media (max-width: 560px) {
+    .story-sub, .story-summary, .box { margin-left: 0; }
+    .story-head { flex-direction: column; }
+  }
+</style>
+
+<div class="wrap">
+
+  <header class="hero">
+    <h1>Tech Global Report — 24h</h1>
+    <div class="meta">Publicado em 12 de julho de 2026 · Cobertura das últimas 24–48 horas · Edição diária automatizada</div>
+    <div class="regions">🇨🇳 China | 🇺🇸 EUA | 🇪🇺 Europa | 🇧🇷 Brasil</div>
+  </header>
+
+  <section class="intro">
+    <h2>Sobre esta edição</h2>
+    <p>As 15 notícias de tecnologia mais impactantes das últimas 24–48 horas, com foco especial na cobertura da mídia chinesa. Cada matéria traz pelo menos três fontes verificadas e uma análise de como diferentes regiões do mundo noticiaram o fato.</p>
+  </section>
+
+  <!-- STORY 1 -->
+  <div class="story-card">
+    <div class="story-head">
+      <div class="story-number">1</div>
+      <div class="story-title"><a href="https://www.cnbc.com/2026/07/10/apple-openai-lawsuit-trade-secrets.html" target="_blank" rel="noopener">Apple processa a OpenAI por suposto roubo de segredos comerciais de hardware</a></div>
+    </div>
+    <div class="story-sub">10 de julho de 2026 · CNBC</div>
+    <p class="story-summary">A Apple abriu processo na Justiça Federal do Distrito Norte da Califórnia acusando a OpenAI de coordenar o roubo de segredos comerciais de hardware para desenvolver seus próprios dispositivos de IA — projeto nascido da compra da io Products, de Jony Ive, por US$ 6,4 bilhões. A ação cita o chefe de hardware da OpenAI, Tang Tan (ex-VP da Apple), e o engenheiro Chang Liu, acusado de furtar um notebook da empresa e baixar arquivos confidenciais antes de sair. A OpenAI nega qualquer irregularidade.</p>
+
+    <div class="box box-importance">
+      <h4>📌 Por que isso importa?</h4>
+      <p>Marca a ruptura definitiva da parceria Apple-OpenAI firmada em 2024 e escancara a corrida por talentos e hardware de IA entre as duas gigantes. O processo chega semanas antes do possível IPO confidencial da OpenAI, avaliado entre US$ 730 bi e US$ 852 bi, e cria precedente jurídico sobre proteção de segredos industriais no setor de IA — podendo encarecer ou atrasar os planos de hardware de consumo da OpenAI.</p>
+    </div>
+
+    <div class="box box-coverage">
+      <h4>🌍 Análise de Cobertura Global</h4>
+      <div class="regions-line">🇺🇸 EUA ✓ &nbsp;|&nbsp; 🇪🇺 Europa ✓ &nbsp;|&nbsp; 🇨🇳 China (cobertura indireta) &nbsp;|&nbsp; 🇧🇷 Brasil (não identificada)</div>
+      <div class="links">
+        <a href="https://www.cnbc.com/2026/07/10/apple-openai-lawsuit-trade-secrets.html" target="_blank" rel="noopener">CNBC — Apple sues OpenAI alleging trade secret theft</a>
+        <a href="https://techcrunch.com/2026/07/10/apple-sues-openai-over-alleged-trade-secret-theft/" target="_blank" rel="noopener">TechCrunch — Apple sues OpenAI over alleged trade secret theft</a>
+        <a href="https://www.euronews.com/next/2026/07/11/apple-sues-openai-over-alleged-theft-of-trade-secrets-heres-what-to-know" target="_blank" rel="noopener">Euronews — Apple sues OpenAI over alleged theft of trade secrets</a>
+      </div>
+      <p>A mídia americana tratou o caso como uma novela corporativa entre gigantes de Vale do Silício, com foco nos nomes dos ex-funcionários da Apple. A imprensa europeia (Euronews) adotou um tom mais regulatório, ligando o episódio ao debate sobre concentração de poder na IA. A cobertura chinesa foi discreta — o caso é visto em Pequim como uma disputa interna do bloco ocidental, sem repercussão imediata nos veículos monitorados.</p>
+      <span class="attention att-alto">Atenção: Alto</span>
+    </div>
+  </div>
+
+  <!-- STORY 2 -->
+  <div class="story-card">
+    <div class="story-head">
+      <div class="story-number">2</div>
+      <div class="story-title"><a href="https://www.scmp.com/tech/policy/article/3350444/chinas-e-commerce-platforms-hit-36b-yuan-fine-food-safety-violations" target="_blank" rel="noopener">China multa plataformas em RMB 3,6 bi e escala combate à "guerra de subsídios" no varejo instantâneo</a></div>
+    </div>
+    <div class="story-sub">9–12 de julho de 2026 · South China Morning Post / Caproasia / STCN</div>
+    <p class="story-summary">A Administração Estatal de Regulação de Mercado da China (SAMR) aplicou multas e confiscos de RMB 3,6 bilhões (~US$ 529 milhões) contra sete grandes plataformas — Meituan, Pinduoduo, JD.com, Ele.me/Taobao Flash Buy, Douyin, Taobao e Tmall — por fraudes envolvendo comerciantes sem presença física. No "Sábado Louco" (12/7), a Taobao Flash Sale (Alibaba) gastou mais de RMB 1,2 bilhão em subsídios em um único dia, contra RMB 300–400 milhões da Meituan.</p>
+
+    <div class="box box-importance">
+      <h4>📌 Por que isso importa?</h4>
+      <p>Confronto direto entre duas prioritárias monitoradas — Alibaba e Meituan — no coração do e-commerce e do varejo instantâneo chinês. Sinaliza que Pequim está perdendo a paciência com guerras de subsídios predatórias ("competição involutiva"), com risco real de sanções antitruste para ambas. A Meituan já cortou empregos (até 40% em algumas equipes) após perdas bilionárias na disputa.</p>
+    </div>
+
+    <div class="box box-coverage">
+      <h4>🌍 Análise de Cobertura Global</h4>
+      <div class="regions-line">🇨🇳 China ✓ &nbsp;|&nbsp; 🇺🇸 EUA (cobertura indireta) &nbsp;|&nbsp; 🇪🇺 Europa (não identificada) &nbsp;|&nbsp; 🇧🇷 Brasil (não identificada)</div>
+      <div class="links">
+        <a href="https://www.scmp.com/tech/policy/article/3350444/chinas-e-commerce-platforms-hit-36b-yuan-fine-food-safety-violations" target="_blank" rel="noopener">South China Morning Post — China's e-commerce platforms hit with 3.6b yuan fine</a>
+        <a href="https://www.stcn.com/article/detail/3584326.html" target="_blank" rel="noopener">STCN (证券时报) — 国家调查外卖行业"内卷式"竞争</a>
+        <a href="https://www.caproasia.com/2026/07/09/china-state-administration-for-market-regulation-samr-issues-529-million-cny-3-6-billion-fines-confiscations-on-china-7-e-commerce-services-platforms-and-representatives-for-fraud-with-mercha/" target="_blank" rel="noopener">Caproasia — SAMR issues $529M in fines on 7 e-commerce platforms</a>
+      </div>
+      <p>A imprensa chinesa (SCMP, STCN) trata o caso como parte de uma campanha regulatória mais ampla contra o "neijuan" (competição excessiva/involução), com viés protetivo a trabalhadores e pequenos comerciantes. A cobertura ocidental, ainda escassa, aparece principalmente em veículos financeiros asiáticos e é lida sobretudo como sinal de risco para os balanços de Alibaba e Meituan.</p>
+      <span class="attention att-alto">Atenção: Alto</span>
+    </div>
+  </div>
+
+  <!-- STORY 3 -->
+  <div class="story-card">
+    <div class="story-head">
+      <div class="story-number">3</div>
+      <div class="story-title"><a href="https://www.scmp.com/tech/big-tech/article/3360165/shein-receives-approval-hong-kong-ipo-chinese-regulators" target="_blank" rel="noopener">Shein recebe aprovação da CSRC para avançar com IPO em Hong Kong</a></div>
+    </div>
+    <div class="story-sub">10 de julho de 2026 · South China Morning Post</div>
+    <p class="story-summary">A China Securities Regulatory Commission (CSRC) aprovou o pedido da Shein para prosseguir com uma oferta pública inicial em Hong Kong, encerrando mais de um ano de espera por sinal verde de Pequim. A empresa pretende emitir até 341,6 milhões de ações, mirando avaliação entre US$ 40 bi e US$ 50 bi — bem abaixo do pico de 2022 —, com listagem prevista para setembro ou outubro, após tentativas fracassadas em Nova York e Londres.</p>
+
+    <div class="box box-importance">
+      <h4>📌 Por que isso importa?</h4>
+      <p>Companhia prioritária (Shein); teste decisivo sobre se gigantes do fast-fashion/e-commerce de raízes chinesas conseguem acessar mercados de capitais globais em meio ao escrutínio ocidental sobre cadeias de suprimento e trabalho forçado. Um IPO bem-sucedido pode destravar outras "unicórnios" chinesas represadas por aprovação regulatória.</p>
+    </div>
+
+    <div class="box box-coverage">
+      <h4>🌍 Análise de Cobertura Global</h4>
+      <div class="regions-line">🇨🇳 China ✓ &nbsp;|&nbsp; 🇺🇸 EUA ✓ &nbsp;|&nbsp; 🇪🇺 Europa ✓ &nbsp;|&nbsp; 🇧🇷 Brasil (não identificada)</div>
+      <div class="links">
+        <a href="https://www.scmp.com/tech/big-tech/article/3360165/shein-receives-approval-hong-kong-ipo-chinese-regulators" target="_blank" rel="noopener">South China Morning Post — Shein receives approval for Hong Kong IPO</a>
+        <a href="https://www.bloomberg.com/news/articles/2026-07-10/shein-recebe-aprovacao-para-prosseguir-com-ipo-em-hong-kong" target="_blank" rel="noopener">Bloomberg — Shein recebe aprovação para prosseguir com IPO em Hong Kong</a>
+        <a href="https://www.rte.ie/news/business/2026/0710/1582754-shein-gets-approval-for-hong-kong-ipo/" target="_blank" rel="noopener">RTÉ (Irlanda) — Shein wins Chinese approval for Hong Kong IPO</a>
+      </div>
+      <p>Veículos chineses (SCMP) enfatizam o simbolismo político da aprovação, citando que o processo precisou de aval dos mais altos escalões do Partido Comunista. A imprensa financeira ocidental (Bloomberg, RTÉ) foca no desconto de avaliação e no histórico de fracassos em Nova York e Londres, associados a controvérsias trabalhistas — uma narrativa mais cética que a chinesa.</p>
+      <span class="attention att-alto">Atenção: Alto</span>
+    </div>
+  </div>
+
+  <!-- STORY 4 -->
+  <div class="story-card">
+    <div class="story-head">
+      <div class="story-number">4</div>
+      <div class="story-title"><a href="https://www.bloomberg.com/news/articles/2026-07-08/china-to-let-ai-firms-buy-nvidia-h200-chips-information-says" target="_blank" rel="noopener">China autoriza compra limitada de chips Nvidia H200 por Alibaba, ByteDance e DeepSeek</a></div>
+    </div>
+    <div class="story-sub">8–9 de julho de 2026 · Bloomberg (citando The Information) / SCMP</div>
+    <p class="story-summary">Pequim sinalizou que permitirá a compra controlada de chips Nvidia H200 por Alibaba, ByteDance e DeepSeek — mas com teto abaixo de 200 mil unidades, menos da metade do volume solicitado, restrito a treinamento de IA. Para cargas de inferência, o governo chinês quer que as empresas priorizem chips domésticos, como os da Huawei.</p>
+
+    <div class="box box-importance">
+      <h4>📌 Por que isso importa?</h4>
+      <p>Reversão geopolítica relevante após meses de bloqueio a chips americanos; expõe a escassez crítica de capacidade computacional na China e reformula as perspectivas de receita da Nvidia no mercado chinês. Três companhias prioritárias (Alibaba, ByteDance, DeepSeek) são diretamente beneficiadas, mas a limitação de volume mostra que Pequim segue "racionando, não recuando".</p>
+    </div>
+
+    <div class="box box-coverage">
+      <h4>🌍 Análise de Cobertura Global</h4>
+      <div class="regions-line">🇨🇳 China ✓ &nbsp;|&nbsp; 🇺🇸 EUA ✓ &nbsp;|&nbsp; 🇪🇺 Europa (não identificada) &nbsp;|&nbsp; 🇧🇷 Brasil (não identificada)</div>
+      <div class="links">
+        <a href="https://www.bloomberg.com/news/articles/2026-07-08/china-to-let-ai-firms-buy-nvidia-h200-chips-information-says" target="_blank" rel="noopener">Bloomberg — China to let AI firms buy Nvidia H200 chips</a>
+        <a href="https://www.scmp.com/tech/policy/article/3360027/game-changer-why-china-finally-letting-its-ai-firms-buy-nvidia-h200" target="_blank" rel="noopener">South China Morning Post — Why China is finally letting its AI firms buy Nvidia H200</a>
+        <a href="https://www.trendforce.com/news/2026/07/09/news-china-reportedly-to-allow-nvidia-h200-imports-but-approvals-may-be-capped-below-200k-chips-less-than-half-requested/" target="_blank" rel="noopener">TrendForce — China reportedly to allow Nvidia H200 imports, capped below 200K chips</a>
+      </div>
+      <p>A SCMP enquadra a notícia como alívio emergencial para a crise de capacidade computacional chinesa, destacando a limitação estratégica ao treinamento (não inferência). A imprensa americana (Bloomberg) foca no impacto para a Nvidia e no recuo tático de Washington/Pequim. Nenhuma cobertura relevante identificada em veículos europeus ou brasileiros nas últimas 24h.</p>
+      <span class="attention att-alto">Atenção: Alto</span>
+    </div>
+  </div>
+
+  <!-- STORY 5 -->
+  <div class="story-card">
+    <div class="story-head">
+      <div class="story-number">5</div>
+      <div class="story-title"><a href="https://www.scmp.com/tech/big-tech/article/3359375/alibaba-bans-staff-using-claude-code-over-anthropic-spyware-concerns" target="_blank" rel="noopener">Alibaba proíbe uso do Claude Code por funcionários após suspeita de "backdoor"</a></div>
+    </div>
+    <div class="story-sub">10 de julho de 2026 (proibição em vigor) · South China Morning Post</div>
+    <p class="story-summary">A Alibaba passou a classificar o Claude Code, da Anthropic, como software de "alto risco" e proibiu seu uso interno a partir de 10/7, depois que pesquisadores encontraram código oculto capaz de identificar usuários chineses (fuso horário, proxies, infraestrutura de laboratórios de IA). O episódio ocorre um mês após a Anthropic acusar a Alibaba, em carta ao Senado dos EUA, de conduzir o "maior ataque de destilação" já registrado contra seus modelos. Funcionários foram orientados a usar a ferramenta interna Qoder.</p>
+
+    <div class="box box-importance">
+      <h4>📌 Por que isso importa?</h4>
+      <p>Episódio emblemático da guerra tecnológica EUA-China na IA, com acusações mútuas de espionagem e roubo de propriedade intelectual. Fortalece ferramentas domésticas chinesas (Qoder) em detrimento da Anthropic e mostra como a desconfiança bilateral já invade o dia a dia corporativo das duas prioritárias envolvidas (Alibaba e, indiretamente, os laboratórios de IA americanos).</p>
+    </div>
+
+    <div class="box box-coverage">
+      <h4>🌍 Análise de Cobertura Global</h4>
+      <div class="regions-line">🇨🇳 China ✓ &nbsp;|&nbsp; 🇺🇸 EUA ✓ &nbsp;|&nbsp; 🇪🇺 Europa (não identificada) &nbsp;|&nbsp; 🇧🇷 Brasil (não identificada)</div>
+      <div class="links">
+        <a href="https://www.scmp.com/tech/big-tech/article/3359375/alibaba-bans-staff-using-claude-code-over-anthropic-spyware-concerns" target="_blank" rel="noopener">South China Morning Post — Alibaba bans staff from using Claude Code</a>
+        <a href="https://www.huxiu.com/article/4874047.html" target="_blank" rel="noopener">Huxiu (虎嗅) — cobertura em chinês do banimento do Claude Code</a>
+        <a href="https://www.cnbc.com/2026/07/06/alibaba-anthropic-ai-ban-claude-china.html" target="_blank" rel="noopener">CNBC — China's Alibaba bans Anthropic AI for employees</a>
+        <a href="https://techcrunch.com/2026/07/04/alibaba-reportedly-bans-employees-from-using-claude-code/" target="_blank" rel="noopener">TechCrunch — Alibaba reportedly bans employees from using Claude Code</a>
+      </div>
+      <p>A mídia chinesa (SCMP, Huxiu) enquadra o caso como legítima defesa de segurança nacional diante de "espionagem digital" americana. A imprensa americana (CNBC, TechCrunch) inverte o eixo da narrativa, tratando a "destilação" de modelos pela Alibaba como o problema original — um contraste direto de enquadramento sobre quem é vítima e quem é agressor no conflito.</p>
+      <span class="attention att-alto">Atenção: Alto</span>
+    </div>
+  </div>
+
+  <!-- STORY 6 -->
+  <div class="story-card">
+    <div class="story-head">
+      <div class="story-number">6</div>
+      <div class="story-title"><a href="https://technode.com/2026/07/06/bytedances-doubao-and-alibabas-qwen-to-shut-down-ai-agent-features-on-july-15/" target="_blank" rel="noopener">Doubao (ByteDance) e Qwen (Alibaba) desligam agentes de IA "humanizados" antes de nova lei chinesa</a></div>
+    </div>
+    <div class="story-sub">6 de julho de 2026 (prazos em 10 e 15/7) · TechNode</div>
+    <p class="story-summary">Às vésperas da entrada em vigor, em 15 de julho, das novas "Medidas Provisórias para Administração de Serviços de Interação com IA Antropomórfica" da China, o Doubao (ByteDance) e o Qwen (Alibaba) começaram a desativar recursos de agentes/companheiros de IA criados por usuários. Os agentes humanizados do Qwen já saíram do ar em 10/7; os do Doubao seguem o mesmo caminho até 15/7.</p>
+
+    <div class="box box-importance">
+      <h4>📌 Por que isso importa?</h4>
+      <p>Primeiro teste real de aplicação das novas regras chinesas de "antropomorfização" de IA sobre duas prioritárias (ByteDance e Alibaba), com impacto direto em como aplicativos de IA de consumo monetizam engajamento — pode se tornar modelo regulatório observado por outros países preocupados com dependência excessiva de chatbots e companheiros virtuais.</p>
+    </div>
+
+    <div class="box box-coverage">
+      <h4>🌍 Análise de Cobertura Global</h4>
+      <div class="regions-line">🇨🇳 China ✓ &nbsp;|&nbsp; 🇺🇸 EUA ✓ &nbsp;|&nbsp; 🇪🇺 Europa (não identificada) &nbsp;|&nbsp; 🇧🇷 Brasil (não identificada)</div>
+      <div class="links">
+        <a href="https://technode.com/2026/07/06/bytedances-doubao-and-alibabas-qwen-to-shut-down-ai-agent-features-on-july-15/" target="_blank" rel="noopener">TechNode — ByteDance's Doubao and Alibaba's Qwen to shut down AI agent features</a>
+        <a href="https://qz.com/bytedance-alibaba-ai-companion-chatbot-china-rules-070626" target="_blank" rel="noopener">Quartz — ByteDance, Alibaba AI companion chatbots hit by China rules</a>
+        <a href="https://www.techtimes.com/articles/319703/20260704/china-ai-companion-law-arrives-july-15-doubao-qwen-agent-data-will-deleted.htm" target="_blank" rel="noopener">Tech Times — China AI companion law arrives July 15</a>
+      </div>
+      <p>O TechNode, especializado em tecnologia chinesa, trata o caso como parte natural do amadurecimento regulatório da IA no país. Veículos americanos (Quartz, Tech Times) destacam o contraste com a ausência de regras equivalentes nos EUA, usando o episódio para questionar se Washington está "atrasado" na regulação de companheiros de IA.</p>
+      <span class="attention att-medio">Atenção: Médio</span>
+    </div>
+  </div>
+
+  <!-- STORY 7 -->
+  <div class="story-card">
+    <div class="story-head">
+      <div class="story-number">7</div>
+      <div class="story-title"><a href="https://techstartups.com/2026/07/10/tencent-leads-2b-buyback-of-manus-after-china-forces-meta-to-unwind-ai-startup-acquisition/" target="_blank" rel="noopener">Tencent lidera recompra de US$ 2 bi da Manus após Pequim forçar a Meta a desfazer aquisição</a></div>
+    </div>
+    <div class="story-sub">10 de julho de 2026 · Tech Startups / Financial Times (via agência)</div>
+    <p class="story-summary">A Tencent lidera um consórcio — com ZhenFund e HSG — para recomprar a startup de agentes de IA Manus da Meta, pelo valor original de US$ 2 bilhões, depois que reguladores chineses ordenaram, em abril, o desfazimento da aquisição por preocupações com propriedade estrangeira em tecnologia sensível. A separação operacional entre Meta e Manus começou em junho.</p>
+
+    <div class="box box-importance">
+      <h4>📌 Por que isso importa?</h4>
+      <p>Exemplo raro e concreto de Pequim revertendo uma fusão estrangeira já concluída no setor de IA por razões de segurança nacional — um precedente que pode esfriar futuras aquisições EUA-China no setor. A Tencent (prioritária) se torna a maior acionista da Manus, reforçando o controle chinês sobre ativos estratégicos de IA antes controlados por capital americano.</p>
+    </div>
+
+    <div class="box box-coverage">
+      <h4>🌍 Análise de Cobertura Global</h4>
+      <div class="regions-line">🇺🇸 EUA ✓ &nbsp;|&nbsp; 🇪🇺 Europa ✓ (FT) &nbsp;|&nbsp; 🇨🇳 China (cobertura estatal discreta) &nbsp;|&nbsp; 🇧🇷 Brasil (não identificada)</div>
+      <div class="links">
+        <a href="https://techstartups.com/2026/07/10/tencent-leads-2b-buyback-of-manus-after-china-forces-meta-to-unwind-ai-startup-acquisition/" target="_blank" rel="noopener">Tech Startups — Tencent leads $2B buyback of Manus</a>
+        <a href="https://www.tradingview.com/news/reuters.com,2026:newsml_FWN43C001:0-tencent-leads-deal-to-unwind-meta-s-2bn-manus-acquisition-ft/" target="_blank" rel="noopener">Financial Times (via Reuters/TradingView) — Tencent leads deal to unwind Meta's $2bn Manus acquisition</a>
+        <a href="https://www.marketscreener.com/news/meta-faces-manus-deal-unwind-as-tencent-moves-to-lead-reversal-ce7f5eded18bf523" target="_blank" rel="noopener">MarketScreener — Meta faces Manus deal unwind as Tencent moves to lead reversal</a>
+      </div>
+      <p>A reportagem original partiu do Financial Times (Europa), com ampla replicação em veículos financeiros americanos. Chama atenção o silêncio relativo da mídia estatal chinesa sobre o episódio — uma ordem regulatória de Pequim revertendo capital estrangeiro tende a ser noticiada de forma discreta internamente, mesmo quando amplamente coberta no exterior.</p>
+      <span class="attention att-medio">Atenção: Médio</span>
+    </div>
+  </div>
+
+  <!-- STORY 8 -->
+  <div class="story-card">
+    <div class="story-head">
+      <div class="story-number">8</div>
+      <div class="story-title"><a href="https://fortune.com/2026/07/08/china-mulls-limiting-foreign-access-advanced-ai-models/" target="_blank" rel="noopener">China avalia restringir acesso estrangeiro a seus modelos de IA mais avançados</a></div>
+    </div>
+    <div class="story-sub">7–8 de julho de 2026 · Fortune (citando Reuters)</div>
+    <p class="story-summary">O Ministério do Comércio da China conversa com Alibaba (Qwen), ByteDance (Doubao) e Zhipu/Z.ai (GLM) sobre restringir a distribuição internacional de seus modelos de IA de peso aberto mais avançados — inclusive versões ainda não lançadas —, com opções que vão da proibição de divulgação pública ao uso doméstico exclusivo. Pequim também avalia classificar o roubo de propriedade intelectual de IA como crime de segurança nacional.</p>
+
+    <div class="box box-importance">
+      <h4>📌 Por que isso importa?</h4>
+      <p>Potencial ponto de inflexão na disponibilidade global de IA aberta: os modelos chineses de peso aberto vêm remodelando preços e acesso à IA no mundo todo. Restringi-los seria o espelho chinês dos controles de exportação americanos, escalando o "tecno-nacionalismo" dos dois lados e afetando diretamente três prioritárias (Alibaba, ByteDance e, indiretamente, DeepSeek).</p>
+    </div>
+
+    <div class="box box-coverage">
+      <h4>🌍 Análise de Cobertura Global</h4>
+      <div class="regions-line">🇺🇸 EUA ✓ &nbsp;|&nbsp; 🇨🇳 China (tema chinês, fontes ocidentais) &nbsp;|&nbsp; 🇪🇺 Europa (não identificada) &nbsp;|&nbsp; 🇧🇷 Brasil (não identificada)</div>
+      <div class="links">
+        <a href="https://fortune.com/2026/07/08/china-mulls-limiting-foreign-access-advanced-ai-models/" target="_blank" rel="noopener">Fortune — China mulls limiting foreign access to advanced AI models</a>
+        <a href="https://www.benzinga.com/markets/tech/26/07/60326205/china-could-restrict-global-access-to-alibaba-and-bytedance-ai-models-as-beijing-tightens-its-grip-on-advanced-ai-report" target="_blank" rel="noopener">Benzinga — China could restrict global access to Alibaba and ByteDance AI models</a>
+        <a href="https://finance.yahoo.com/technology/ai/articles/exclusive-beijing-looking-curbing-overseas-101644780.html" target="_blank" rel="noopener">Yahoo Finance (Reuters) — Exclusive: Beijing looking at curbing overseas access to AI models</a>
+      </div>
+      <p>A notícia nasceu de um furo da Reuters e foi amplamente replicada em veículos financeiros americanos, mas não encontramos até o momento matéria equivalente publicada diretamente por veículos chineses — sinal de que Pequim ainda trata o assunto como informação sensível não confirmada oficialmente.</p>
+      <span class="attention att-alto">Atenção: Alto</span>
+    </div>
+  </div>
+
+  <!-- STORY 9 -->
+  <div class="story-card">
+    <div class="story-head">
+      <div class="story-number">9</div>
+      <div class="story-title"><a href="https://www.bloomberg.com/news/articles/2026-07-07/chinese-ai-startup-deepseek-developing-own-ai-chip-reuters-says" target="_blank" rel="noopener">DeepSeek desenvolve chip de IA próprio para reduzir dependência de Nvidia e Huawei</a></div>
+    </div>
+    <div class="story-sub">7 de julho de 2026 · Bloomberg (citando Reuters)</div>
+    <p class="story-summary">A DeepSeek estaria desenvolvendo seu próprio chip de inferência, em conversas iniciais com parceiros de design, fundição e memória, para reduzir a dependência de silício da Nvidia e da Huawei. O movimento ocorre em paralelo à rodada de captação de cerca de US$ 7 bilhões da empresa — a maior já registrada por uma IA chinesa — e ao lançamento previsto do modelo V4 ainda em julho.</p>
+
+    <div class="box box-importance">
+      <h4>📌 Por que isso importa?</h4>
+      <p>Sinaliza a busca por independência vertical de hardware pelos líderes de IA chineses diante do aperto nos controles de exportação dos EUA — ameaça de longo prazo à exposição da Nvidia na China (ver item 4) e evidência de que empresas alinhadas a Pequim levam a sério o risco de gargalos de chips. Prioritária diretamente envolvida: DeepSeek.</p>
+    </div>
+
+    <div class="box box-coverage">
+      <h4>🌍 Análise de Cobertura Global</h4>
+      <div class="regions-line">🇺🇸 EUA ✓ &nbsp;|&nbsp; 🇧🇷 Brasil ✓ (cobertura secundária) &nbsp;|&nbsp; 🇨🇳 China (tema chinês, fontes ocidentais) &nbsp;|&nbsp; 🇪🇺 Europa (não identificada)</div>
+      <div class="links">
+        <a href="https://www.bloomberg.com/news/articles/2026-07-07/chinese-ai-startup-deepseek-developing-own-ai-chip-reuters-says" target="_blank" rel="noopener">Bloomberg — Chinese AI startup DeepSeek developing own AI chip</a>
+        <a href="https://www.usnews.com/news/top-news/articles/2026-07-07/exclusive-chinas-deepseek-developing-its-own-ai-chip-sources-say" target="_blank" rel="noopener">US News — Exclusive: China's DeepSeek developing its own AI chip</a>
+        <a href="https://www.engadget.com/2209378/deepseek-reportedly-developing-ai-chips/" target="_blank" rel="noopener">Engadget — DeepSeek reportedly developing AI chips</a>
+      </div>
+      <p>A cobertura ocidental enquadra o movimento como reação defensiva aos controles de exportação dos EUA. Em blogs de tecnologia brasileiros, o tema é discutido sob a ótica do impacto para mercados emergentes que dependem de modelos abertos e baratos como o da DeepSeek — mas com corroboração ainda limitada em veículos brasileiros de primeira linha.</p>
+      <span class="attention att-medio">Atenção: Médio</span>
+    </div>
+  </div>
+
+  <!-- STORY 10 -->
+  <div class="story-card">
+    <div class="story-head">
+      <div class="story-number">10</div>
+      <div class="story-title"><a href="https://ec.europa.eu/commission/presscorner/detail/en/ip_26_1579" target="_blank" rel="noopener">UE aponta que "design viciante" do Facebook e Instagram infringe a Lei de Serviços Digitais</a></div>
+    </div>
+    <div class="story-sub">10 de julho de 2026 · Comissão Europeia</div>
+    <p class="story-summary">A Comissão Europeia concluiu, em caráter preliminar, que o design do Facebook e do Instagram — rolagem infinita, autoplay, notificações push e sistemas de recomendação hiperpersonalizados — infringe a Lei de Serviços Digitais (DSA) por não avaliar adequadamente os riscos à saúde mental, especialmente de menores. A Meta terá oportunidade de se defender antes da decisão final.</p>
+
+    <div class="box box-importance">
+      <h4>📌 Por que isso importa?</h4>
+      <p>Multa potencial de até 6% do faturamento global da Meta (cerca de US$ 12 bilhões) — uma das maiores penalidades já cogitadas sob a DSA — e cria modelo para casos futuros contra outras plataformas de forte apelo entre jovens, incluindo o TikTok (ByteDance), que enfrenta investigação semelhante na União Europeia.</p>
+    </div>
+
+    <div class="box box-coverage">
+      <h4>🌍 Análise de Cobertura Global</h4>
+      <div class="regions-line">🇪🇺 Europa ✓ &nbsp;|&nbsp; 🇺🇸 EUA ✓ &nbsp;|&nbsp; 🇨🇳 China (não identificada) &nbsp;|&nbsp; 🇧🇷 Brasil (não identificada)</div>
+      <div class="links">
+        <a href="https://ec.europa.eu/commission/presscorner/detail/en/ip_26_1579" target="_blank" rel="noopener">Comissão Europeia — Preliminary findings on Instagram and Facebook's addictive design</a>
+        <a href="https://www.cnbc.com/2026/07/10/meta-instagram-facebook-addictive-design-breach-eu-laws.html" target="_blank" rel="noopener">CNBC — Meta found to breach EU laws with "addictive" Instagram, Facebook designs</a>
+        <a href="https://www.theregister.com/personal-tech/2026/07/10/eu-puts-addictive-design-of-facebook-instagram-under-the-dsa-microscope/5269975" target="_blank" rel="noopener">The Register — EU puts "addictive" design of Facebook, Instagram under the DSA microscope</a>
+      </div>
+      <p>A cobertura europeia enfatiza a proteção a menores e o poder coercitivo da DSA, tratando o caso como vitória regulatória. A imprensa americana adota tom mais cauteloso, destacando a defesa da Meta (que já lançou "Teen Accounts") e questionando se a medida é proporcional ao problema identificado.</p>
+      <span class="attention att-alto">Atenção: Alto</span>
+    </div>
+  </div>
+
+  <!-- STORY 11 -->
+  <div class="story-card">
+    <div class="story-head">
+      <div class="story-number">11</div>
+      <div class="story-title"><a href="https://www.euronews.com/next/2026/07/10/chat-control-10-passed-the-european-parliament-through-the-back-door" target="_blank" rel="noopener">"Chat Control 1.0" é aprovado no Parlamento Europeu por uma brecha processual</a></div>
+    </div>
+    <div class="story-sub">9–10 de julho de 2026 · Euronews</div>
+    <p class="story-summary">Em 9 de julho, o Parlamento Europeu rejeitou por 314 a 276 votos a continuidade da derrogação temporária da ePrivacy que permite a plataformas escanear mensagens privadas em busca de material de abuso infantil (CSAM) — mas o resultado ficou aquém da maioria absoluta de 361 votos exigida, então a medida sobrevive e segue valendo até abril de 2028. O texto emendado volta agora ao Conselho por até três meses.</p>
+
+    <div class="box box-importance">
+      <h4>📌 Por que isso importa?</h4>
+      <p>Grande impacto regulatório para plataformas de mensagens (WhatsApp/Meta, Signal, iMessage) que operam na Europa. O episódio expõe como peculiaridades processuais da UE permitem que uma medida sem maioria de apoio explícito continue em vigor, alimentando o debate global sobre o equilíbrio entre privacidade e proteção infantil — tema que também pressiona operadoras chinesas de mensageria com usuários na Europa.</p>
+    </div>
+
+    <div class="box box-coverage">
+      <h4>🌍 Análise de Cobertura Global</h4>
+      <div class="regions-line">🇪🇺 Europa ✓ &nbsp;|&nbsp; 🇺🇸 EUA (não identificada) &nbsp;|&nbsp; 🇨🇳 China (não identificada) &nbsp;|&nbsp; 🇧🇷 Brasil (não identificada)</div>
+      <div class="links">
+        <a href="https://www.euronews.com/next/2026/07/10/chat-control-10-passed-the-european-parliament-through-the-back-door" target="_blank" rel="noopener">Euronews — "Chat Control 1.0" passed the European Parliament through the back door</a>
+        <a href="https://www.theregister.com/security/2026/07/09/meps-fail-to-prevent-chat-control-snoopfest-revival/5269379" target="_blank" rel="noopener">The Register — MEPs fail to prevent Chat Control "snoopfest" revival</a>
+        <a href="https://brusselssignal.eu/2026/07/european-parliament-approves-mini-chat-control/" target="_blank" rel="noopener">Brussels Signal — European Parliament approves "mini" Chat Control</a>
+      </div>
+      <p>Cobertura concentrada quase inteiramente em veículos europeus, com tom crítico predominante sobre a "porta dos fundos" processual usada para manter a medida viva. Sem repercussão relevante identificada fora da Europa nas últimas 24 horas — um tema ainda tratado como assunto interno do bloco.</p>
+      <span class="attention att-medio">Atenção: Médio</span>
+    </div>
+  </div>
+
+  <!-- STORY 12 -->
+  <div class="story-card">
+    <div class="story-head">
+      <div class="story-number">12</div>
+      <div class="story-title"><a href="https://www.euronews.com/my-europe/2026/07/08/apple-loses-challenge-over-eu-app-store-rules" target="_blank" rel="noopener">Apple perde recurso na Justiça da UE e segue classificada como "gatekeeper" pela DMA</a></div>
+    </div>
+    <div class="story-sub">8 de julho de 2026 · Euronews</div>
+    <p class="story-summary">O Tribunal Geral da União Europeia rejeitou o recurso da Apple contra sua designação de 2023 como "gatekeeper" (guardiã de acesso) sob a Lei de Mercados Digitais (DMA), negando o argumento de que seus ecossistemas de dispositivos e App Store deveriam ser avaliados separadamente. O tribunal também considerou inadmissível o recurso da Apple referente ao iMessage.</p>
+
+    <div class="box box-importance">
+      <h4>📌 Por que isso importa?</h4>
+      <p>Primeiro grande teste judicial do arcabouço de "gatekeepers" da DMA, vencido pela Comissão Europeia — precedente que vale para as seis gigantes designadas (Apple, Alphabet/Google, Meta, Amazon, Microsoft e ByteDance/TikTok) e deve encorajar fiscalização ainda mais dura, inclusive contra o TikTok, uma das prioritárias monitoradas.</p>
+    </div>
+
+    <div class="box box-coverage">
+      <h4>🌍 Análise de Cobertura Global</h4>
+      <div class="regions-line">🇪🇺 Europa ✓ &nbsp;|&nbsp; 🇺🇸 EUA ✓ &nbsp;|&nbsp; 🇨🇳 China (não identificada) &nbsp;|&nbsp; 🇧🇷 Brasil (não identificada)</div>
+      <div class="links">
+        <a href="https://www.euronews.com/my-europe/2026/07/08/apple-loses-challenge-over-eu-app-store-rules" target="_blank" rel="noopener">Euronews — Apple loses challenge over EU App Store rules</a>
+        <a href="https://www.jurist.org/news/2026/07/eu-general-court-upholds-apples-gatekeeper-designation-under-digital-markets-act/" target="_blank" rel="noopener">JURIST — EU General Court upholds Apple's gatekeeper designation under DMA</a>
+        <a href="https://9to5mac.com/2026/07/08/apple-loses-major-antitrust-appeal-in-europe-remains-a-gatekeeper/" target="_blank" rel="noopener">9to5Mac — Apple loses major antitrust appeal in Europe, remains a gatekeeper</a>
+      </div>
+      <p>A imprensa europeia enfatiza o valor de precedente jurídico da decisão. Veículos americanos especializados em Apple (9to5Mac) focam no impacto prático para o ecossistema iOS/App Store. Nenhuma cobertura relevante identificada em veículos chineses ou brasileiros nas últimas 24 horas, apesar de o precedente também envolver o TikTok.</p>
+      <span class="attention att-medio">Atenção: Médio</span>
+    </div>
+  </div>
+
+  <!-- STORY 13 -->
+  <div class="story-card">
+    <div class="story-head">
+      <div class="story-number">13</div>
+      <div class="story-title"><a href="https://www.justice.gov/opa/pr/alibaba-group-and-aus-merchant-services-agree-pay-600-million-resolve-allegations-they" target="_blank" rel="noopener">Alibaba paga US$ 600 milhões para encerrar processo do Departamento de Justiça dos EUA; ação sobe 11%</a></div>
+    </div>
+    <div class="story-sub">8 de julho de 2026 · Departamento de Justiça dos EUA (DOJ)</div>
+    <p class="story-summary">A Alibaba e a AUS Merchant Services concordaram em pagar US$ 600 milhões para encerrar acusações do governo americano de terem facilitado a venda e importação ilegal de medicamentos, substâncias controladas, produtos químicos regulados e equipamentos para fabricação de comprimidos. As ações da Alibaba dispararam cerca de 11% — a melhor sessão em dez meses —, impulsionadas também pelo alívio jurídico e por expectativas de resultados mais fortes em nuvem e IA.</p>
+
+    <div class="box box-importance">
+      <h4>📌 Por que isso importa?</h4>
+      <p>Remove um risco jurídico relevante que alimentava temores de deslistagem da Alibaba nos EUA, e escancara a disposição de reguladores americanos em punir pesadamente plataformas chinesas de e-commerce por facilitação de produtos ilegais — um precedente que também mira Temu, Shein e Pinduoduo, todas prioritárias monitoradas.</p>
+    </div>
+
+    <div class="box box-coverage">
+      <h4>🌍 Análise de Cobertura Global</h4>
+      <div class="regions-line">🇺🇸 EUA ✓ &nbsp;|&nbsp; 🇨🇳 China (Alibaba, cobertura indireta) &nbsp;|&nbsp; 🇪🇺 Europa (não identificada) &nbsp;|&nbsp; 🇧🇷 Brasil (não identificada)</div>
+      <div class="links">
+        <a href="https://www.justice.gov/opa/pr/alibaba-group-and-aus-merchant-services-agree-pay-600-million-resolve-allegations-they" target="_blank" rel="noopener">Departamento de Justiça dos EUA — Alibaba Group and AUS Merchant Services agree to pay $600 million</a>
+        <a href="https://www.bloomberg.com/news/articles/2026-07-08/alibaba-s-shares-jump-most-in-ten-months-as-earnings-hopes-grow" target="_blank" rel="noopener">Bloomberg — Alibaba's shares jump most in ten months as earnings hopes grow</a>
+        <a href="https://finance.yahoo.com/markets/stocks/articles/alibaba-stock-jumped-11-yet-142051303.html" target="_blank" rel="noopener">Yahoo Finance — Alibaba stock jumped 11%, yet...</a>
+      </div>
+      <p>A cobertura é dominada por veículos americanos, com foco na reação do mercado acionário e no alívio de risco regulatório. Não identificamos cobertura direta em veículos chineses monitorados sobre o acordo em si — um padrão recorrente quando o assunto envolve concessões financeiras de empresas chinesas a autoridades americanas.</p>
+      <span class="attention att-alto">Atenção: Alto</span>
+    </div>
+  </div>
+
+  <!-- STORY 14 -->
+  <div class="story-card">
+    <div class="story-head">
+      <div class="story-number">14</div>
+      <div class="story-title"><a href="https://ustr.gov/about/policy-offices/press-office/press-releases/2026/june/ustr-section-301-determination-brazils-unreasonable-acts-policies-and-practices" target="_blank" rel="noopener">Prazo da tarifa dos EUA contra o Brasil se aproxima — Pix no centro da disputa</a></div>
+    </div>
+    <div class="story-sub">Decisão final prevista até 15 de julho de 2026 · USTR / Agência Brasil</div>
+    <p class="story-summary">O Escritório do Representante Comercial dos EUA (USTR) determinou, em 1º de junho, que práticas brasileiras ligadas ao comércio digital e ao sistema de pagamentos instantâneos Pix — administrado pelo Banco Central, que atua simultaneamente como regulador e operador — são "não razoáveis" e prejudicam empresas americanas. A proposta prevê tarifa de 25% sobre produtos brasileiros, com decisão final legalmente obrigatória até 15 de julho.</p>
+
+    <div class="box box-importance">
+      <h4>📌 Por que isso importa?</h4>
+      <p>Transforma uma disputa comercial em uma queda de braço de soberania digital: o Pix, símbolo de inclusão financeira brasileira, é citado nominalmente como alvo. O desfecho pode reconfigurar como o Brasil regula meios de pagamento e moderação de conteúdo diante de pressão direta de Washington — com efeitos em cadeia para fintechs locais e para plataformas chinesas (Shein, Shopee, AliExpress) que também operam no país.</p>
+    </div>
+
+    <div class="box box-coverage">
+      <h4>🌍 Análise de Cobertura Global</h4>
+      <div class="regions-line">🇧🇷 Brasil ✓ &nbsp;|&nbsp; 🇺🇸 EUA ✓ &nbsp;|&nbsp; 🇨🇳 China (não identificada) &nbsp;|&nbsp; 🇪🇺 Europa (não identificada)</div>
+      <div class="links">
+        <a href="https://ustr.gov/about/policy-offices/press-office/press-releases/2026/june/ustr-section-301-determination-brazils-unreasonable-acts-policies-and-practices" target="_blank" rel="noopener">USTR — Section 301 Determination on Brazil's Unreasonable Acts, Policies, and Practices</a>
+        <a href="https://agenciabrasil.ebc.com.br/en/internacional/noticia/2026-06/us-government-proposes-new-25-tariff-brazilian-products" target="_blank" rel="noopener">Agência Brasil — US government proposes new 25% tariff on Brazilian products</a>
+        <a href="https://www.infomoney.com.br/mundo/ustr-diz-que-decisao-final-sobre-tarifas-impostas-ao-brasil-sera-anunciada-em-breve/" target="_blank" rel="noopener">InfoMoney — USTR diz que decisão final sobre tarifas impostas ao Brasil será anunciada em breve</a>
+        <a href="https://www.cnnbrasil.com.br/economia/macroeconomia/ustr-diz-que-decisao-final-sobre-novas-tarifas-para-o-brasil-saira-em-breve/" target="_blank" rel="noopener">CNN Brasil — USTR diz que decisão final sobre novas tarifas para o Brasil sairá em breve</a>
+      </div>
+      <p>A imprensa brasileira trata o caso como ameaça direta à soberania regulatória do país, com forte cobertura do setor de pagamentos e agronegócio. Os documentos oficiais americanos (USTR, Federal Register) usam linguagem técnica de "comércio desleal", sem mencionar o componente geopolítico que a imprensa brasileira destaca — a disputa entre modelos regulatórios de pagamento digital dos EUA e do Brasil.</p>
+      <span class="attention att-alto">Atenção: Alto</span>
+    </div>
+  </div>
+
+  <!-- STORY 15 -->
+  <div class="story-card">
+    <div class="story-head">
+      <div class="story-number">15</div>
+      <div class="story-title"><a href="https://neofeed.com.br/negocios/alibaba-inicia-operacao-no-brasil-e-ja-avalia-expansao-com-segundo-data-center/en/" target="_blank" rel="noopener">Alibaba Cloud inicia operações no Brasil e já avalia segundo data center</a></div>
+    </div>
+    <div class="story-sub">Julho de 2026 · NeoFeed</div>
+    <p class="story-summary">A Alibaba Cloud começou a operar comercialmente no Brasil sob o comando de Eric Secco (ex-AWS), com data center em São Paulo e planos de expansão com uma segunda unidade — parte de um investimento global de cerca de US$ 55 bilhões em nuvem e infraestrutura de IA. A empresa promete custos até 30% menores que os da concorrência para atrair clientes locais.</p>
+
+    <div class="box box-importance">
+      <h4>📌 Por que isso importa?</h4>
+      <p>Primeira hyperscaler chinesa com infraestrutura própria de nuvem no Brasil, desafiando diretamente AWS, Azure e Google Cloud num momento de tensão comercial entre Brasil e EUA (ver item 14) — movimento que aprofunda a presença estratégica chinesa na infraestrutura digital brasileira e ilustra a disputa EUA-China por influência tecnológica na América Latina. Prioritária diretamente envolvida: Alibaba.</p>
+    </div>
+
+    <div class="box box-coverage">
+      <h4>🌍 Análise de Cobertura Global</h4>
+      <div class="regions-line">🇧🇷 Brasil ✓ &nbsp;|&nbsp; 🇨🇳 China ✓ (empresa chinesa) &nbsp;|&nbsp; 🇺🇸 EUA (não identificada) &nbsp;|&nbsp; 🇪🇺 Europa (não identificada)</div>
+      <div class="links">
+        <a href="https://neofeed.com.br/negocios/alibaba-inicia-operacao-no-brasil-e-ja-avalia-expansao-com-segundo-data-center/en/" target="_blank" rel="noopener">NeoFeed — Alibaba inicia operação no Brasil e já avalia expansão com segundo data center</a>
+        <a href="https://imasters.com.br/noticia/alibaba-cloud-chega-ao-brasil-o-guia-que-o-dev-precisa-saber" target="_blank" rel="noopener">iMasters — Alibaba Cloud chega ao Brasil: o guia que o dev precisa saber</a>
+        <a href="https://www.datacenterdynamics.com/en/news/alibaba-cloud-to-launch-data-centers-in-eight-locations-in-coming-year/" target="_blank" rel="noopener">Data Center Dynamics — Alibaba Cloud to launch data centers in eight locations in coming year</a>
+      </div>
+      <p>A cobertura brasileira (NeoFeed, iMasters) tem tom predominantemente positivo, enfatizando concorrência e redução de custos para desenvolvedores locais. A imprensa especializada em infraestrutura (Data Center Dynamics) contextualiza o movimento dentro do plano global de expansão da Alibaba, sem o enquadramento geopolítico que aparece na imprensa brasileira, que conecta o investimento chinês à tensão comercial com os EUA.</p>
+      <span class="attention att-medio">Atenção: Médio-alto</span>
+    </div>
+  </div>
+
+  <!-- GEOPOLITICAL SECTION -->
+  <section class="geo">
+    <h2>🌐 Implicações Geopolíticas</h2>
+
+    <h3>Tensão tecnológica EUA-China</h3>
+    <p>A janela das últimas 24–48 horas confirma que a rivalidade tecnológica entre Washington e Pequim entrou em uma fase de "gerenciamento tático" mais do que de ruptura total. A liberação condicionada de chips Nvidia H200 (item 4) mostra que os EUA seguem dispostos a aliviar restrições pontualmente, enquanto a China responde com hedge estratégico — desenvolvimento de chips próprios pela DeepSeek (item 9) e possíveis restrições à exportação de seus próprios modelos de IA (item 8). O banimento do Claude Code pela Alibaba (item 5) e o processo Apple x OpenAI (item 1) mostram que a desconfiança mútua já não se limita a governos: chegou ao nível corporativo e de propriedade intelectual.</p>
+
+    <h3>Impacto regulatório previsto</h3>
+    <ul>
+      <li><strong>China:</strong> a ofensiva da SAMR contra a "guerra de subsídios" (item 2) deve se intensificar nas próximas semanas, com risco de multas adicionais a Alibaba e Meituan e possível teto regulatório para promoções no varejo instantâneo.</li>
+      <li><strong>Europa:</strong> os casos contra a Meta (item 10) e a confirmação do status de "gatekeeper" da Apple (item 12) indicam uma temporada de aplicação mais dura da DSA e da DMA — o TikTok (ByteDance) é o próximo alvo mais provável, dado o precedente aberto por ambos os casos.</li>
+      <li><strong>EUA:</strong> o acordo da Alibaba com o DOJ (item 13) cria um roteiro replicável para ações regulatórias contra Shein, Temu e Pinduoduo, todas expostas a riscos semelhantes de compliance sobre produtos ilegais.</li>
+      <li><strong>Brasil:</strong> a decisão da USTR sobre tarifas (item 14), esperada até 15 de julho, deve definir se o país adota postura de negociação ou confronto — com desdobramentos diretos para o Pix e para a regulação de plataformas estrangeiras.</li>
+    </ul>
+
+    <h3>Oportunidades e riscos geopolíticos</h3>
+    <p>A aprovação do IPO da Shein em Hong Kong (item 3) e a expansão global da Alibaba Cloud (item 15) mostram que empresas chinesas seguem buscando ativamente capital e mercados ocidentais/emergentes, mesmo em meio a fricções regulatórias. Ao mesmo tempo, o desfazimento forçado da aquisição da Manus pela Meta (item 7) sinaliza que Pequim está disposta a intervir diretamente em operações de capital estrangeiro que considere estrategicamente sensíveis — um risco crescente para investidores ocidentais interessados em startups de IA chinesas.</p>
+
+    <h3>Perspectiva Brasil-China-Global</h3>
+    <p>O Brasil se consolida como um dos principais tabuleiros secundários da disputa tecnológica global. De um lado, os EUA pressionam o país com a ameaça de tarifas de 25% ligadas ao Pix (item 14), tratando o sistema de pagamentos brasileiro como afronta à competição de empresas americanas. Do outro, a China amplia sua presença estrutural no país com a chegada da Alibaba Cloud (item 15) e o avanço de Shein, Shopee e AliExpress no varejo local — movimento que já pressiona redes brasileiras tradicionais. Para o Brasil, o desafio será equilibrar a atração de investimento chinês em infraestrutura digital com a manutenção de relações comerciais estáveis com os Estados Unidos, evitando se tornar apenas um território de disputa entre as duas potências tecnológicas.</p>
+  </section>
+
+  <footer>
+    Tech Global Report — gerado automaticamente a partir de fontes públicas verificadas. Todas as notícias contêm links diretos para a reportagem original.
+  </footer>
+
+</div>
