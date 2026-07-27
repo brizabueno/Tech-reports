@@ -1,0 +1,524 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Stocks Report — 27/07/2026</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    background: #f2f2f5;
+    color: #1c1c1e;
+    font-size: 15px;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+  a { color: #0a5cd6; text-decoration: none; }
+  a:hover { text-decoration: underline; }
+
+  header.hero {
+    background: #0a0a0c;
+    color: #fff;
+    width: 100%;
+    padding: 32px 24px;
+    border-radius: 0 0 16px 16px;
+  }
+  .hero-inner { max-width: 1000px; margin: 0 auto; }
+  .hero-top { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px; }
+  .brand { display: flex; align-items: center; gap: 10px; }
+  .brand .logo-badge {
+    width: 40px; height: 40px; border-radius: 10px;
+    background: linear-gradient(135deg,#3d3d42,#111);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 18px;
+  }
+  .brand h1 { font-size: 21px; font-weight: 650; letter-spacing: -0.3px; }
+  .brand .sub { font-size: 12.5px; color: #a1a1a6; margin-top: 1px; }
+  .hero-meta { text-align: right; font-size: 13px; color: #c7c7cc; }
+  .hero-meta strong { color: #fff; font-weight: 600; }
+  .regions {
+    margin-top: 18px; display: flex; gap: 10px; flex-wrap: wrap;
+  }
+  .region-chip {
+    background: #1c1c1e; border: 1px solid #2c2c2e; color: #e5e5e7;
+    padding: 6px 14px; border-radius: 999px; font-size: 12.5px; font-weight: 500;
+  }
+
+  main { max-width: 1000px; margin: 0 auto; padding: 24px 20px 60px; }
+
+  .notice {
+    background: #eef2ff; border: 1px solid #c7d2fe; border-radius: 14px;
+    padding: 18px 22px; margin-bottom: 28px; font-size: 13.5px; color: #33345a;
+  }
+  .notice h3 { font-size: 14px; margin-bottom: 8px; color: #2a2b52; }
+  .notice ul { margin: 8px 0 0 18px; }
+  .notice li { margin-bottom: 4px; }
+
+  .section-title {
+    font-size: 20px; font-weight: 650; letter-spacing: -0.3px;
+    margin: 40px 0 6px; color: #111;
+  }
+  .section-sub { font-size: 13px; color: #6e6e73; margin-bottom: 20px; }
+
+  .story-card {
+    background: #fff; border-radius: 16px; padding: 24px 26px;
+    margin-bottom: 22px; box-shadow: 0 1px 3px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04);
+    border: 1px solid #ececef;
+  }
+  .story-head { display: flex; gap: 14px; align-items: flex-start; margin-bottom: 6px; }
+  .story-num {
+    flex-shrink: 0; width: 30px; height: 30px; border-radius: 9px;
+    background: #111; color: #fff; font-size: 13.5px; font-weight: 700;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .story-title { font-size: 16.5px; font-weight: 650; line-height: 1.35; }
+  .story-title a { color: #111; }
+  .story-meta {
+    font-size: 12.5px; color: #6e6e73; margin: 6px 0 12px 44px;
+    display: flex; gap: 14px; flex-wrap: wrap;
+  }
+  .ticker-tag {
+    background: #f0f0f3; border-radius: 6px; padding: 2px 8px; font-weight: 600; color: #33343a;
+    font-size: 11.5px;
+  }
+  .story-summary { margin: 0 0 16px 44px; color: #2c2c2e; font-size: 14.5px; }
+
+  .box { margin: 12px 0 0 44px; padding: 14px 16px; border-radius: 12px; font-size: 13.5px; }
+  .box-yellow { background: #fff8e6; border: 1px solid #f5d98a; }
+  .box-green { background: #e9f7ee; border: 1px solid #a9dcb9; }
+  .box-title { font-weight: 700; font-size: 12.5px; margin-bottom: 6px; display: block; }
+  .box-yellow .box-title { color: #8a5a00; }
+  .box-green .box-title { color: #1c6b39; }
+  .box ul { margin: 4px 0 0 16px; }
+  .box li { margin-bottom: 3px; }
+  .attention { display: inline-block; padding: 2px 9px; border-radius: 999px; font-size: 11px; font-weight: 700; margin-left: 4px; }
+  .attention.high { background: #d7f0dd; color: #196b34; }
+  .attention.medium { background: #fdeecb; color: #8a5a00; }
+  .attention.low { background: #f0e6f6; color: #6a2f8a; }
+  .sources-list { margin-top: 6px; }
+  .sources-list a { display: inline-block; margin: 2px 8px 2px 0; font-size: 12.5px; }
+
+  .context-block {
+    background: #fff; border-radius: 14px; padding: 18px 22px; margin-bottom: 14px;
+    border: 1px solid #ececef;
+  }
+  .context-block h4 { font-size: 14.5px; margin-bottom: 6px; color: #111; }
+  .context-block .tag-date { font-size: 11.5px; color: #8a8a8f; font-weight: 600; }
+  .context-block p { font-size: 13.5px; color: #3a3a3c; }
+  .no-news { color: #8a8a8f; font-size: 13px; }
+
+  .analysis-card {
+    background: #fff; border-radius: 16px; padding: 22px 24px; margin-bottom: 16px;
+    border: 1px solid #ececef;
+  }
+  .analysis-card h4 { font-size: 15.5px; margin-bottom: 8px; color: #111; }
+  .analysis-card .tickers { font-size: 11.5px; color: #6e6e73; margin-bottom: 10px; font-weight: 600; }
+  .analysis-card p { font-size: 13.8px; color: #2c2c2e; margin-bottom: 8px; }
+  .analysis-card p:last-child { margin-bottom: 0; }
+  .analysis-card b { color: #111; }
+
+  .perspective-grid {
+    display: grid; grid-template-columns: repeat(auto-fit,minmax(260px,1fr)); gap: 16px; margin-top: 16px;
+  }
+  .perspective-grid .pg-card {
+    background: #fafafb; border-radius: 12px; padding: 16px 18px; border: 1px solid #ececef;
+  }
+  .perspective-grid h5 { font-size: 13.5px; margin-bottom: 6px; }
+  .perspective-grid p { font-size: 13px; color: #3a3a3c; }
+
+  footer { text-align: center; font-size: 12px; color: #9a9a9e; padding: 30px 20px 10px; }
+
+  @media (max-width: 640px) {
+    .story-meta, .story-summary, .box { margin-left: 0; }
+    .story-head { flex-direction: column; }
+    .hero-meta { text-align: left; }
+  }
+
+  @media (prefers-color-scheme: dark) {
+    body { background: #000; color: #e5e5e7; }
+    .story-card, .context-block, .analysis-card { background: #1c1c1e; border-color: #2c2c2e; }
+    .story-title a { color: #f2f2f2; }
+    .ticker-tag { background: #2c2c2e; color: #e5e5e7; }
+    .story-summary, .context-block p, .analysis-card p { color: #d1d1d6; }
+    .notice { background: #1b1e33; border-color: #3a3f6b; color: #cfd2f0; }
+    .notice h3 { color: #e3e5ff; }
+    .box-yellow { background: #2b2410; border-color: #6b5522; }
+    .box-green { background: #10261a; border-color: #235c3c; }
+    .perspective-grid .pg-card { background: #232326; border-color: #2c2c2e; }
+    footer { color: #6e6e73; }
+  }
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="hero-inner">
+    <div class="hero-top">
+      <div class="brand">
+        <div class="logo-badge">📊</div>
+        <div>
+          <h1>Stocks Report</h1>
+          <div class="sub">Panorama diário de mercado — ações e ETFs monitorados</div>
+        </div>
+      </div>
+      <div class="hero-meta">
+        <div><strong>Publicado em</strong> 27 de julho de 2026, 12:20 (horário de Brasília)</div>
+        <div>Janela de apuração: notícias das últimas 24–36 horas</div>
+      </div>
+    </div>
+    <div class="regions">
+      <span class="region-chip">🇨🇳 China</span>
+      <span class="region-chip">🇺🇸 EUA</span>
+      <span class="region-chip">🇪🇺 Europa</span>
+      <span class="region-chip">🇧🇷 Brasil</span>
+    </div>
+  </div>
+</header>
+
+<main>
+
+  <div class="notice">
+    <h3>⚠️ Nota metodológica — leia antes de usar este relatório</h3>
+    <p>Este relatório foi apurado por agentes de pesquisa com acesso a busca na web em tempo real. Duas limitações relevantes do ambiente de execução afetam o resultado e precisam ficar explícitas:</p>
+    <ul>
+      <li><b>Verificação direta de links bloqueada:</b> a política de rede do ambiente bloqueou 100% das tentativas de acesso direto (fetch) a qualquer site externo (testado inclusive em domínios de controle como Wikipedia). Isso significa que os links abaixo <b>não puderam ser abertos e confirmados página-a-página</b> como exigido pelos critérios originais ("sem links quebrados/404"). Cada notícia foi, em vez disso, cruzada entre múltiplas fontes independentes via busca, para reduzir o risco de erro — mas a verificação final de que cada URL carrega sem erro cabe a quem for utilizar o relatório.</li>
+      <li><b>Volume real de notícias nas últimas 24h:</b> apesar de buscas extensivas em todos os 32 tickers/temas solicitados e em todas as fontes obrigatórias, foi possível confirmar com boa confiança apenas <b>6 notícias genuinamente publicadas nas últimas 24–36 horas</b> (2 no Brasil, 4 internacionais) — não as 30 originalmente previstas. A maioria dos tickers-alvo simplesmente não teve fato relevante e verificável dentro dessa janela estrita. Para não fabricar conteúdo, notícias mais antigas (mas ainda ativas/relevantes) foram deslocadas para a seção de <b>Contexto Adicional</b> e para a <b>Análise Final</b>, sempre com a data real explícita — nunca apresentadas como "últimas 24h".</li>
+    </ul>
+  </div>
+
+  <!-- ==================== BRASIL ==================== -->
+  <div class="section-title">🇧🇷 Principais Notícias — Ações Brasil</div>
+  <div class="section-sub">2 notícias verificadas e publicadas nas últimas 24–36 horas (múltiplas fontes cruzadas)</div>
+
+  <div class="story-card">
+    <div class="story-head">
+      <div class="story-num">1</div>
+      <div class="story-title"><a href="https://www.infomoney.com.br/mercados/petroleo-abertura-fechamento-ira-eua-27072026/" target="_blank" rel="noopener">Petróleo Brent despenca com trégua entre EUA e Irã; Petrobras (PETR3/PETR4) reage no pregão</a></div>
+    </div>
+    <div class="story-meta">
+      <span class="ticker-tag">PETR4</span><span class="ticker-tag">PETR3</span>
+      <span>🕓 26–27/07/2026</span>
+      <span>📰 InfoMoney</span>
+    </div>
+    <div class="story-summary">
+      Os EUA suspenderam quase duas semanas de ataques contra o Irã, que sinalizou disposição de não retaliar e mantém negociações sobre o Estreito de Ormuz. O petróleo Brent recuou entre 5% e 9% ao longo do pregão, rompendo a casa dos US$ 90 — dias depois de ter superado US$ 100 durante o conflito. Com a queda do petróleo internacional, as ações da Petrobras (PETR3 e PETR4) abriram em queda (na casa de -2%) e os ADRs da companhia também recuaram em Nova York.
+    </div>
+    <div class="box box-yellow">
+      <span class="box-title">📌 Por que isso é importante?</span>
+      <ul>
+        <li><b>Visão de analistas:</b> discussão sobre se o fim da tensão no Oriente Médio reverte parte do rali de 2026 da Petrobras, que vinha sendo turbinado pelo prêmio de risco geopolítico.</li>
+        <li><b>Fundamentos:</b> Petrobras tem forte correlação histórica com o preço do Brent — desescalada reduz a margem de refino/exportação no curto prazo.</li>
+        <li><b>Impacto no negócio:</b> pressão sobre a geração de caixa e sobre expectativas de dividendos extraordinários ligados a preços elevados de petróleo.</li>
+        <li><b>Impacto no preço:</b> PETR3/PETR4 abriram em queda (~-2%) acompanhando o Brent; ADRs também recuaram.</li>
+      </ul>
+    </div>
+    <div class="box box-green">
+      <span class="box-title">🌍 Cobertura Global</span>
+      Regiões: ✓ Brasil &nbsp;·&nbsp; ✓ EUA (o driver macro — trégua EUA-Irã — foi coberto por Bloomberg/CNBC/Yahoo Finance) &nbsp;·&nbsp; ✓ Europa (Trading Economics, Saxo Bank) &nbsp;·&nbsp; China: não confirmada especificamente para este ângulo.
+      <div>Nível de atenção: <span class="attention high">Alta</span> (7+ veículos brasileiros)</div>
+      <div class="sources-list">
+        <a href="https://www.infomoney.com.br/mercados/petroleo-despenca-apos-pausa-dos-eua-em-ataques-ao-ira/" target="_blank" rel="noopener">InfoMoney (2)</a>
+        <a href="https://www.infomoney.com.br/mercados/petrobras-petr4-adrs-caem-4-seguindo-petroleo-apos-acordo-preliminar-eua-ira/" target="_blank" rel="noopener">InfoMoney — ADRs</a>
+        <a href="https://www.seudinheiro.com/2026/bolsa-dolar/petroleo-despenca-quase-6-com-avanco-nas-negociacoes-entre-eua-e-ira-ibovespa-sobe-e-petrobras-petr4-cai-lvgb/" target="_blank" rel="noopener">Seu Dinheiro</a>
+        <a href="https://www.moneytimes.com.br/petroleo-perde-forca-com-possivel-tregua-no-oriente-medio-o-que-muda-para-a-petrobras-petr4-lbrdvb001/" target="_blank" rel="noopener">Money Times</a>
+        <a href="https://exame.com/invest/mercados/petroleo-despenca-5-apos-eua-e-ira-suspenderem-ataques-no-estreito-de-ormuz/" target="_blank" rel="noopener">Exame</a>
+        <a href="https://www.tribunadosertao.com.br/geral/2026/07/26/947208-preco-do-petroleo-cai-5-apos-eua-e-ira-suspenderem-ataques-no-estreito-de-ormuz" target="_blank" rel="noopener">Tribuna do Sertão</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="story-card">
+    <div class="story-head">
+      <div class="story-num">2</div>
+      <div class="story-title"><a href="https://www.moneytimes.com.br/isa-energia-isae4-precifica-oferta-de-acoes-a-r-27-e-levanta-r-12-bilhao-fets/" target="_blank" rel="noopener">Ísa Energia (ISAE4) precifica follow-on de R$ 1,2 bilhão; novas ações estreiam hoje na B3</a></div>
+    </div>
+    <div class="story-meta">
+      <span class="ticker-tag">ISAE4</span><span class="ticker-tag">AXIA3</span>
+      <span>🕓 precificação 23–24/07, estreia 27/07/2026</span>
+      <span>📰 Money Times</span>
+    </div>
+    <div class="story-summary">
+      A Ísa Energia (ex-Isa Cteep) precificou sua oferta subsequente de ações (follow-on) a R$ 27 por ação preferencial, com desconto de cerca de 5,3% ante o fechamento anterior. A demanda foi forte o suficiente para dobrar o tamanho da oferta — de 22,2 milhões para 44,4 milhões de ações PN —, captando aproximadamente R$ 1,2 bilhão. As novas ações começaram a ser negociadas na B3 nesta segunda-feira (27/07), com liquidação prevista para 28/07. Parte relevante dos recursos será usada para pagar R$ 1,17 bilhão à Axia Energia, referente a uma operação de troca de ativos de transmissão concluída neste ano.
+    </div>
+    <div class="box box-yellow">
+      <span class="box-title">📌 Por que isso é importante?</span>
+      <ul>
+        <li><b>Visão de analistas:</b> oferta com desconto pressionou o papel no curto prazo, mas a forte demanda (dobra de tamanho) foi lida como sinal de apetite institucional pelo setor de transmissão.</li>
+        <li><b>Fundamentos:</b> reforça o caixa da companhia e resolve uma obrigação financeira relevante com a Axia Energia.</li>
+        <li><b>Impacto no negócio:</b> aumenta o free float e dilui acionistas atuais.</li>
+        <li><b>Impacto no preço:</b> ações chegaram a cair na precificação, refletindo o desconto oferecido.</li>
+      </ul>
+    </div>
+    <div class="box box-green">
+      <span class="box-title">🌍 Cobertura Global</span>
+      Regiões: ✓ Brasil (cobertura exclusivamente doméstica — evento de mercado de capitais local, sem repercussão internacional identificada).
+      <div>Nível de atenção: <span class="attention medium">Média-Alta</span> (6 veículos brasileiros)</div>
+      <div class="sources-list">
+        <a href="https://www.infomoney.com.br/mercados/isa-energia-isae4-acoes-caem-forte-apos-companhia-precificar-oferta-a-r-27/" target="_blank" rel="noopener">InfoMoney</a>
+        <a href="https://www.suno.com.br/noticias/isa-energia-isae4-follow-on-oferta-bilionaria-acoes-caem-go/" target="_blank" rel="noopener">Suno</a>
+        <a href="https://www.seudinheiro.com/2026/empresas/isa-energia-isae4-follow-on-dobra-de-tamanho-e-coloca-r-12-bilhao-no-caixa-para-onde-vai-o-dinheiro-miql/" target="_blank" rel="noopener">Seu Dinheiro</a>
+        <a href="https://investidor10.com.br/noticias/isa-energia-isae4-lanca-oferta-de-acoes-para-captar-ate-r-1-3-bilhao-121474/" target="_blank" rel="noopener">Investidor10</a>
+        <a href="https://euqueroinvestir.com/acoes/isa-energia-capta-r-12-bilhao-em-oferta-de-acoes-a-r-27" target="_blank" rel="noopener">EuQueroInvestir</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== INTERNACIONAL ==================== -->
+  <div class="section-title">🌐 Principais Notícias — Ações Internacionais</div>
+  <div class="section-sub">4 notícias verificadas e publicadas nas últimas 24–36 horas (múltiplas fontes cruzadas)</div>
+
+  <div class="story-card">
+    <div class="story-head">
+      <div class="story-num">1</div>
+      <div class="story-title"><a href="https://www.bloomberg.com/news/articles/2026-07-26/oil-tumbles-as-us-and-iran-pause-military-strikes-markets-wrap" target="_blank" rel="noopener">Trégua entre EUA e Irã derruba petróleo e turbina mercados globais</a></div>
+    </div>
+    <div class="story-meta">
+      <span class="ticker-tag">SGOV</span><span class="ticker-tag">QQQ</span><span class="ticker-tag">SMH</span><span class="ticker-tag">BTC</span><span class="ticker-tag">VYM</span>
+      <span>🕓 26/07/2026</span>
+      <span>📰 Bloomberg</span>
+    </div>
+    <div class="story-summary">
+      Os EUA e o Irã pausaram durante o fim de semana quase duas semanas de ataques militares. O petróleo Brent caiu entre 7% e 7,7%, para cerca de US$ 89–90 o barril, e o WTI recuou entre 5% e 6,3%. Treasuries americanos subiram com a queda do petróleo, ações e ouro avançaram juntos, e os futuros do Dow Jones saltaram acima de 52 mil pontos. Forças Houthi ainda atingiram instalações ligadas à Saudi Aramco no fim de semana, mantendo um prêmio de risco residual.
+    </div>
+    <div class="box box-yellow">
+      <span class="box-title">📌 Por que isso é importante?</span>
+      <ul>
+        <li><b>Visão de analistas:</b> é o principal driver cross-asset do momento — alivia o choque inflacionário do petróleo que vinha elevando as apostas de alta de juros do Fed.</li>
+        <li><b>Fundamentos:</b> favorece ativos de risco (QQQ, SMH, BTC) e pressiona a busca por proteção via ouro, ao mesmo tempo em que sustenta os Treasuries (SGOV).</li>
+        <li><b>Impacto no negócio:</b> reduz custos de energia para empresas e consumidores, com efeito desinflacionário.</li>
+        <li><b>Impacto no preço:</b> futuros do Dow acima de 52 mil pontos; forte alta generalizada em ações no after-hours/pré-mercado de 27/07.</li>
+      </ul>
+    </div>
+    <div class="box box-green">
+      <span class="box-title">🌍 Cobertura Global</span>
+      Regiões: ✓ EUA &nbsp;·&nbsp; ✓ Europa &nbsp;·&nbsp; ✓ Brasil (mesmo driver derrubou a Petrobras — ver notícia Brasil #1) &nbsp;·&nbsp; China: não confirmada.
+      <div>Nível de atenção: <span class="attention high">Alta</span> (5+ veículos)</div>
+      <div class="sources-list">
+        <a href="https://finance.yahoo.com/markets/live/stock-market-today-monday-july-27" target="_blank" rel="noopener">Yahoo Finance</a>
+        <a href="https://www.fxleaders.com/" target="_blank" rel="noopener">FX Leaders</a>
+        <a href="https://www.home.saxo/" target="_blank" rel="noopener">Saxo Bank — Market Quick Take</a>
+        <a href="https://tradingeconomics.com/" target="_blank" rel="noopener">Trading Economics</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="story-card">
+    <div class="story-head">
+      <div class="story-num">2</div>
+      <div class="story-title"><a href="https://www.cnbc.com/2026/07/26/here-are-the-3-big-things-were-watching-in-the-stock-market-in-the-week-ahead.html" target="_blank" rel="noopener">Fed: chance de alta de juros na reunião de 28–29/07 salta para 38%, mas trégua no petróleo reduz pressão</a></div>
+    </div>
+    <div class="story-meta">
+      <span class="ticker-tag">SGOV</span><span class="ticker-tag">QQQ</span><span class="ticker-tag">SMH</span>
+      <span>🕓 24–26/07/2026</span>
+      <span>📰 CNBC / HNGN</span>
+    </div>
+    <div class="story-summary">
+      O Fed mantém os juros em 3,50%–3,75% há quatro reuniões seguidas, sob o novo presidente Kevin Warsh. As chances de alta na reunião de 28-29 de julho saltaram para 38% (ante 12% na semana anterior), após o petróleo ter superado US$ 100 durante o conflito com o Irã e o CPI de maio ter marcado 4,2% ao ano. Com o petróleo revertendo fortemente após a trégua (ver notícia #1), a tese de alta perde força às vésperas da decisão. Comunicado do FOMC sai em 29/07 às 14h (horário de Nova York), com coletiva de Warsh às 14h30.
+    </div>
+    <div class="box box-yellow">
+      <span class="box-title">📌 Por que isso é importante?</span>
+      <ul>
+        <li><b>Visão de analistas:</b> mercado dividido sobre se o Fed vai romper uma sequência histórica de 56 anos sem elevar juros em determinadas condições — tema debatido por Forbes e Benzinga.</li>
+        <li><b>Fundamentos:</b> decisão determina diretamente a trajetória de rendimento de curtíssimo prazo (SGOV) e o tom para todo o complexo sensível a juros.</li>
+        <li><b>Impacto no negócio:</b> custo de capital para empresas de tecnologia e crescimento (QQQ, SMH) depende diretamente do resultado.</li>
+        <li><b>Impacto no preço:</b> volatilidade elevada esperada nos pregões de 28 e 29/07.</li>
+      </ul>
+    </div>
+    <div class="box box-green">
+      <span class="box-title">🌍 Cobertura Global</span>
+      Regiões: ✓ EUA. Não identificada cobertura direta em China/Europa/Brasil para este ângulo específico.
+      <div>Nível de atenção: <span class="attention high">Alta</span> (4+ veículos)</div>
+      <div class="sources-list">
+        <a href="https://hngn.com/articles/272326/20260724/fed-rate-hike-odds-surge-38-ahead-july-meeting-oil-prices-fuel-inflation-fears.htm" target="_blank" rel="noopener">HNGN</a>
+        <a href="https://www.cnbc.com/2026/07/24/stock-market-next-week-outlook-for-july-27-31-2026.html" target="_blank" rel="noopener">CNBC</a>
+        <a href="https://www.forbes.com/sites/simonmoore/" target="_blank" rel="noopener">Forbes</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="story-card">
+    <div class="story-head">
+      <div class="story-num">3</div>
+      <div class="story-title"><a href="https://news.bitcoin.com/bitcoin-enters-volatility-trap-as-fed-decision-clarity-act-and-fork-drama-converge/" target="_blank" rel="noopener">Bitcoin oscila entre US$ 64,5 mil e US$ 66,9 mil às vésperas do Fed e do CLARITY Act</a></div>
+    </div>
+    <div class="story-meta">
+      <span class="ticker-tag">BTC</span>
+      <span>🕓 23–26/07/2026</span>
+      <span>📰 Bitcoin.com News</span>
+    </div>
+    <div class="story-summary">
+      O BTC operou perto de US$ 64.466 em 26/07, após não sustentar os US$ 66.910 atingidos em 21/07. A BlackRock (IBIT) liderou entradas de mais de US$ 900 milhões em ETFs de bitcoin antes de uma saída de cerca de US$ 225 milhões em 23/07. O Senado dos EUA avalia o CLARITY Act (lei de estrutura de mercado para cripto), com prazo próximo de 7 de agosto; o secretário do Tesouro, Bessent, teria dito que o projeto está "na última jarda". A economia da mineração segue fraca, levando parte dos mineradores a migrar para infraestrutura de IA.
+    </div>
+    <div class="box box-yellow">
+      <span class="box-title">📌 Por que isso é importante?</span>
+      <ul>
+        <li><b>Visão de analistas:</b> mercado vê o CLARITY Act como catalisador regulatório capaz de reprecificar ETFs de cripto caso seja aprovado.</li>
+        <li><b>Fundamentos:</b> fluxos de ETFs (entradas e saídas bilionárias) seguem sendo o principal termômetro de demanda institucional.</li>
+        <li><b>Impacto no negócio:</b> mineradoras buscando diversificação para IA sinaliza pressão nas margens do setor.</li>
+        <li><b>Impacto no preço:</b> alta volatilidade entre US$ 64,5 mil e US$ 66,9 mil na semana.</li>
+      </ul>
+    </div>
+    <div class="box box-green">
+      <span class="box-title">🌍 Cobertura Global</span>
+      Regiões: ✓ EUA (imprensa especializada em cripto). Sem cobertura identificada em veículos mainstream de China/Europa/Brasil para este recorte específico.
+      <div>Nível de atenção: <span class="attention medium">Média</span> (3 veículos)</div>
+      <div class="sources-list">
+        <a href="https://www.fxleaders.com/" target="_blank" rel="noopener">FX Leaders</a>
+        <a href="https://coinshares.com/" target="_blank" rel="noopener">CoinShares — Market Update</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="story-card">
+    <div class="story-head">
+      <div class="story-num">4</div>
+      <div class="story-title"><a href="https://www.stocktitan.net/news/OHI/omega-announces-second-quarter-earnings-release-date-and-conference-8om3ctj8kdmi.html" target="_blank" rel="noopener">Omega Healthcare Investors (OHI) eleva dividendo trimestral e define data do resultado do 2T26</a></div>
+    </div>
+    <div class="story-meta">
+      <span class="ticker-tag">OHI</span>
+      <span>🕓 24/07/2026</span>
+      <span>📰 GuruFocus / StockTitan</span>
+    </div>
+    <div class="story-summary">
+      A Omega Healthcare Investors elevou o dividendo trimestral em 1,5%, para US$ 0,68 por ação (yield anualizado de cerca de 5,34%), a ser pago em 14/08 aos acionistas registrados até 03/08 (data-com também em 03/08). Separadamente, a companhia confirmou que o resultado do 2º trimestre de 2026 (encerrado em 30/06) será divulgado após o fechamento do mercado na quarta-feira, 29/07, com teleconferência na quinta-feira, 30/07, às 10h (horário de Nova York).
+    </div>
+    <div class="box box-yellow">
+      <span class="box-title">📌 Por que isso é importante?</span>
+      <ul>
+        <li><b>Visão de analistas:</b> aumento de dividendo reforça a tese de geração de caixa estável do REIT de saúde.</li>
+        <li><b>Fundamentos:</b> evento direto de renda para acionistas; define o próximo catalisador relevante (resultado em 29/07).</li>
+        <li><b>Impacto no negócio:</b> sinaliza confiança da administração na geração de fluxo de caixa operacional.</li>
+        <li><b>Impacto no preço:</b> normalmente neutro a levemente positivo em REITs com aumento de dividendo já esperado pelo mercado.</li>
+      </ul>
+    </div>
+    <div class="box box-green">
+      <span class="box-title">🌍 Cobertura Global</span>
+      Regiões: ✓ EUA. Ativo de menor capitalização, sem repercussão internacional esperada/identificada.
+      <div>Nível de atenção: <span class="attention medium">Média</span> (3–4 veículos)</div>
+      <div class="sources-list">
+        <a href="https://www.gurufocus.com/news/8977276" target="_blank" rel="noopener">GuruFocus</a>
+        <a href="https://www.marketbeat.com/" target="_blank" rel="noopener">MarketBeat</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== CONTEXTO ADICIONAL ==================== -->
+  <div class="section-title">🗂️ Contexto Adicional</div>
+  <div class="section-sub">Fatos relevantes e ainda ativos, porém <b>fora da janela de 24 horas</b> — datas reais indicadas explicitamente, não contam como "notícias das últimas 24h"</div>
+
+  <div class="context-block">
+    <h4>🇨🇳 China vai consultar Alibaba, ByteDance e Huawei sobre novos controles de exportação de IA e chips <span class="tag-date">— Financial Times, 21/07/2026</span></h4>
+    <p>O Ministério do Comércio chinês estaria consultando as principais empresas de IA sobre limitar a transferência de dados de treinamento e pesos de modelos para o exterior, além de avaliar regras que impediriam TSMC/Qualcomm de fabricar chips avançados baseados em propriedade intelectual chinesa. Afeta diretamente <span class="ticker-tag">BABA</span> e o tema de fundo de <span class="ticker-tag">SMH</span>/<span class="ticker-tag">MCHI</span>.</p>
+  </div>
+  <div class="context-block">
+    <h4>Participação da Nvidia no mercado de chips de IA na China cai para ~55–60% <span class="tag-date">— Tom's Hardware / ABC News, semana de 20/07/2026</span></h4>
+    <p>Dados citados via IDC/Reuters mostram Huawei e Cambricon ganhando espaço, com Pequim limitando aprovações de compra do H200. Tema material para a maior posição do <span class="ticker-tag">SMH</span> e para a narrativa de bifurcação tecnológica EUA-China que afeta <span class="ticker-tag">MCHI</span>.</p>
+  </div>
+  <div class="context-block">
+    <h4>Alibaba e unidade ligada à Ant Group pagam US$ 600 milhões para encerrar investigação do DOJ dos EUA <span class="tag-date">— South China Morning Post, acordo datado de 29/06/2026</span></h4>
+    <p>Maior acordo do tipo já firmado pela empresa, referente à venda de produtos ilegais na Alibaba.com/AliExpress entre 2016–2024. Custo de compliance relevante para <span class="ticker-tag">BABA</span>, mas mercado majoritariamente trata como passivo resolvido.</p>
+  </div>
+  <div class="context-block">
+    <h4>Alibaba antecipa modelo Qwen3.8-Max (2,4 trilhões de parâmetros); ações sobem com narrativa de IA <span class="tag-date">— Bloomberg, 19/07/2026</span></h4>
+    <p>Apresentado na WAIC (Xangai) dias após o lançamento do Kimi K3 (Moonshot AI); ações da <span class="ticker-tag">BABA</span> chegaram a subir 5,4% no dia. Reforça a tese de reprecificação da Alibaba como player de infraestrutura de IA.</p>
+  </div>
+  <div class="context-block">
+    <h4>Apple Intelligence aprovado para lançamento na China, com IA da Alibaba (Qwen) <span class="tag-date">— TechCrunch, 16/07/2026</span></h4>
+    <p>Administração do Ciberespaço da China aprovou os recursos de IA da Apple no país, integrados aos modelos Qwen da Alibaba (Baidu também envolvido). Novo vetor de receita/parceria para <span class="ticker-tag">BABA</span>.</p>
+  </div>
+  <div class="context-block">
+    <h4>EUA impõem nova rodada de tarifas (10–12,5%) sobre China e mais de 50 economias, antes de visita de Xi Jinping <span class="tag-date">— SCMP / Bloomberg, 24/07/2026</span></h4>
+    <p>Pequim sinaliza que deve relativizar a resposta a essa rodada específica, priorizando a viagem planejada de Xi aos EUA — o que reduz o risco de escalada imediata para <span class="ticker-tag">MCHI</span> e <span class="ticker-tag">BABA</span>.</p>
+  </div>
+  <div class="context-block">
+    <h4>Exportações da China sobem 27% ao ano em junho — ritmo mais forte desde 2021, puxado por produtos de IA <span class="tag-date">— Caixin / CNBC, 14/07/2026</span></h4>
+    <p>Exportações de veículos elétricos para a UE saltaram 90% ao ano, motivando investigações europeias sobre tarifas/subsídios — dado forte para a tese de crescimento de <span class="ticker-tag">MCHI</span>, mas alimenta atrito comercial com a Europa.</p>
+  </div>
+  <div class="context-block">
+    <h4>BCE mantém juros em 2,25% em meio à incerteza inflacionária ligada à energia <span class="tag-date">— CNBC / FXStreet, 15–23/07/2026</span></h4>
+    <p>Decisão tomada após alta de 25 pontos-base em junho (primeira desde 2023), em resposta ao choque de preços de energia do conflito Irã-EUA. Define o pano de fundo de juros europeu relevante para as posições internacionais/europeias do <span class="ticker-tag">VYMI</span>.</p>
+  </div>
+
+  <div class="context-block">
+    <h4>🇧🇷 Panorama de tickers brasileiros sem fato relevante nas últimas 24h</h4>
+    <p><b>BBAS3</b> — aval do TCU para reescalonar dívida híbrida de R$ 4,1 bi com o Tesouro (26/06/2026). <b>BBSE3</b> — R$ 3,85 bi em dividendos intercalares aprovados (24/06/2026); data-com em 31/07 e resultado do 2T26 em 03/08 (eventos futuros). <b>VALE3</b> — eleição de novo presidente do conselho (22/07/2026) e relatório de produção do 2T26, o melhor 2º trimestre desde 2018 (21/07/2026). <b>AMER3</b> — desdobramentos da "Operação Disclosure" da PF (25/06/2026) e resposta à CVM (data não confirmada com precisão). <b>KLBN4</b> e <b>CMIG4</b> — sem notícia nova; apenas calendário de resultados do 2T26 (Klabin em 05/08, Cemig em 13/08). <b>SAPR4</b> — proposta da Agepar sobre precatório (março/2026, bem fora da janela).</p>
+    <p class="no-news">Para os demais tickers monitorados — BRSR6, ABCB4, BAZA3, ISAE4 (fora do follow-on já coberto), TAEE3/TAEE4, CMIG4, CPFE3, UNIP6, FESA4, AXIA3 (fora do follow-on), IRBR3, ITSA4, XPML11, HCTR11 e GGRC11 — a apuração não localizou fato relevante e datável de forma confiável dentro das últimas 24 horas, apesar de buscas extensivas.</p>
+  </div>
+
+  <!-- ==================== ANÁLISE FINAL ==================== -->
+  <div class="section-title">📊 Análise Final</div>
+  <div class="section-sub">Situação atual, visão de analistas e perspectiva Brasil-China-Global para os ativos monitorados</div>
+
+  <div class="analysis-card">
+    <div class="tickers">PETR3 / PETR4</div>
+    <p>A Petrobras segue extremamente correlacionada ao petróleo internacional. A trégua EUA-Irã reverte parte do prêmio de risco geopolítico que sustentava a ação em máximas recentes. Analistas dividem opiniões: parte vê a queda como ajuste saudável e temporário; outra parte alerta para pressão sobre a geração de caixa e dividendos extraordinários caso o Brent se estabilize em patamares mais baixos por período prolongado.</p>
+    <p><b>Impacto previsto:</b> volatilidade elevada no curto prazo, com tendência de acompanhar de perto qualquer novo desenvolvimento no conflito Irã-EUA.</p>
+  </div>
+
+  <div class="analysis-card">
+    <div class="tickers">ISAE4 / AXIA3</div>
+    <p>O follow-on da Ísa Energia, embora tenha pressionado o papel no curtíssimo prazo pelo desconto oferecido, foi absorvido com forte demanda institucional (oferta dobrada de tamanho). O uso dos recursos para quitar obrigação com a Axia Energia remove uma pendência financeira relevante entre as duas companhias do setor de transmissão.</p>
+    <p><b>Impacto previsto:</b> diluição de curto prazo tende a ser compensada por um balanço mais robusto; mercado deve monitorar como a Axia aplica o recebível de R$ 1,17 bi.</p>
+  </div>
+
+  <div class="analysis-card">
+    <div class="tickers">BBAS3 / BBSE3 / ITSA4 / VALE3 / AMER3 / KLBN4 / CMIG4 e demais</div>
+    <p>Sem catalisador novo nas últimas 24h. BBSE3 tem data-com (31/07) e resultado (03/08) como próximos gatilhos de curto prazo; Vale segue no radar após produção recorde no 2T26 e troca na presidência do conselho; Americanas segue sob pressão jurídica da Operação Disclosure; demais nomes (BRSR6, ABCB4, BAZA3, SAPR4, TAEE3/4, CPFE3, UNIP6, FESA4, IRBR3, XPML11, HCTR11, GGRC11) não apresentaram fato relevante identificável no período — recomenda-se monitorar os calendários de resultados do 2T26, concentrados entre o fim de julho e agosto.</p>
+  </div>
+
+  <div class="analysis-card">
+    <div class="tickers">BABA / MCHI</div>
+    <p>Alibaba vive um momento de duas narrativas simultâneas: de um lado, o avanço em IA (Qwen3.8-Max, parceria com a Apple na China) reforça a tese de reprecificação como player de infraestrutura de IA; de outro, o acordo de US$ 600 milhões com o DOJ e a perspectiva de novos controles chineses de exportação de IA/chips introduzem incerteza regulatória em duas frentes (EUA e China). A nova rodada de tarifas dos EUA sobre a China é um risco adicional, parcialmente mitigado pela sinalização de Pequim de não escalar a resposta antes da visita de Xi Jinping aos EUA.</p>
+    <p><b>Perspectiva Brasil-China-Global:</b> o tema conecta diretamente ao Brasil pela via macro — o mesmo pano de fundo de tensão geopolítica (Oriente Médio) que move Petrobras também define o apetite a risco global que afeta MCHI e BABA. A crescente autossuficiência chinesa em IA/chips (Qwen, Huawei, Cambricon) é o fio condutor que liga China a SMH globalmente.</p>
+  </div>
+
+  <div class="analysis-card">
+    <div class="tickers">SMH</div>
+    <p>A maior posição do ETF, Nvidia, segue perdendo participação de mercado na China (de ~90-95% para ~55-60%) para Huawei e Cambricon, à medida que Pequim limita aprovações de compra de chips avançados e empurra data centers para soluções domésticas. Isso reduz o endereçável de curto prazo da Nvidia na China, mas o tema de infraestrutura de IA global segue como pilar de tese para o ETF.</p>
+  </div>
+
+  <div class="analysis-card">
+    <div class="tickers">QQQ / SGOV</div>
+    <p>Ambos ficam reféns da decisão do Fed em 28-29/07. A trégua EUA-Irã, ao derrubar o petróleo, reduz a pressão inflacionária que havia elevado as chances de alta de juros para 38% — cenário que, se confirmado, favorece QQQ (ativos de crescimento) e reduz o apelo relativo de SGOV como proteção de caixa em um ambiente de juros mais baixos à frente.</p>
+  </div>
+
+  <div class="analysis-card">
+    <div class="tickers">BTC</div>
+    <p>Segue em zona de indefinição entre US$ 64,5 mil e US$ 66,9 mil, com fluxo de ETFs voláteis e o CLARITY Act como catalisador regulatório pendente no Senado dos EUA (prazo próximo a 7 de agosto). Aprovação da lei tende a ser vista como positiva para a legitimação institucional do ativo.</p>
+  </div>
+
+  <div class="analysis-card">
+    <div class="tickers">VYM / VYMI</div>
+    <p>ETFs de dividendos seguem sensíveis à trajetória de juros dos dois lados do Atlântico: nos EUA, a decisão do Fed em 28-29/07; na Europa, o BCE já sinalizou manutenção da taxa em 2,25% em meio à incerteza inflacionária ligada à energia — tema que deve se acomodar com a queda do petróleo pós-trégua EUA-Irã.</p>
+  </div>
+
+  <div class="analysis-card">
+    <div class="tickers">OHI</div>
+    <p>Aumento de dividendo (1,5%) reforça a tese de renda estável do REIT de saúde. Resultado do 2T26 sai em 29/07 — próximo catalisador a ser monitorado de perto.</p>
+  </div>
+
+  <div class="perspective-grid">
+    <div class="pg-card">
+      <h5>🇧🇷 Perspectiva Brasil</h5>
+      <p>Mercado doméstico dominado por dois temas: reversão do prêmio de petróleo na Petrobras e movimento de capital no setor elétrico/transmissão (Ísa Energia/Axia). Calendário de resultados do 2T26 concentra os próximos catalisadores para a maioria dos demais nomes monitorados.</p>
+    </div>
+    <div class="pg-card">
+      <h5>🇨🇳 Perspectiva China</h5>
+      <p>Avanço acelerado em autossuficiência de IA e chips (Qwen, Huawei, Cambricon), paralelo a uma postura regulatória mais assertiva — tanto internamente (novos controles de exportação) quanto externamente (acordo Alibaba-DOJ, tarifas dos EUA). Pequim opta por conter a resposta a tarifas antes da visita de Xi aos EUA.</p>
+    </div>
+    <div class="pg-card">
+      <h5>🌍 Perspectiva Global</h5>
+      <p>A desescalada EUA-Irã é o driver dominante do dia, reduzindo o prêmio de risco em petróleo e destravando apetite por ativos de risco globalmente — com efeito direto e simultâneo sobre Brasil (Petrobras), EUA (Fed, QQQ, SMH) e, indiretamente, sobre a Europa (BCE, VYMI).</p>
+    </div>
+  </div>
+
+</main>
+
+<footer>
+  Stocks Report · Gerado automaticamente em 27/07/2026 · Fontes: Valor Econômico, InfoMoney, Money Times, InvestNews, Investing.com, Forbes, Estadão, Folha de S.Paulo, Bloomberg, SCMP, Caixin, Yicai, China Daily, Xinhua, Reuters, Yahoo Finance, BBC, The Economist, Financial Times, entre outras.<br>
+  Este material tem caráter informativo e não constitui recomendação de investimento.
+</footer>
+
+</body>
+</html>
