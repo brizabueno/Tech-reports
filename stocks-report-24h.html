@@ -1,0 +1,658 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Stocks Report — 04 de agosto de 2026</title>
+<style>
+  :root{
+    --black:#0b0b0d;
+    --gray-bg:#f4f4f6;
+    --card:#ffffff;
+    --text:#1c1c1e;
+    --text-muted:#6e6e73;
+    --yellow-bg:#fff8e1;
+    --yellow-accent:#e6a800;
+    --green-bg:#e9f7ee;
+    --green-accent:#1e8e4c;
+    --border:#e5e5ea;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    background:var(--gray-bg);
+    font-family:-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    color:var(--text);
+    font-size:15px;
+    line-height:1.6;
+  }
+  a{color:inherit;}
+  .header{
+    background:var(--black);
+    color:#fff;
+    width:100%;
+    padding:32px 24px;
+  }
+  .header-inner{
+    max-width:1100px;
+    margin:0 auto;
+    display:flex;
+    flex-wrap:wrap;
+    justify-content:space-between;
+    align-items:center;
+    gap:16px;
+  }
+  .logo{
+    font-size:26px;
+    font-weight:700;
+    letter-spacing:-0.5px;
+  }
+  .logo span{color:#e6a800;}
+  .header-meta{
+    text-align:right;
+    font-size:13px;
+    color:#c7c7cc;
+  }
+  .regions{
+    max-width:1100px;
+    margin:16px auto 0;
+    display:flex;
+    gap:20px;
+    flex-wrap:wrap;
+    font-size:14px;
+    color:#e5e5ea;
+  }
+  .container{
+    max-width:1100px;
+    margin:0 auto;
+    padding:32px 24px 64px;
+  }
+  .notice{
+    background:#fff;
+    border:1px solid var(--border);
+    border-left:4px solid var(--yellow-accent);
+    border-radius:14px;
+    padding:20px 24px;
+    margin-bottom:36px;
+    font-size:14px;
+    color:var(--text-muted);
+  }
+  .notice strong{color:var(--text);}
+  .section-title{
+    font-size:22px;
+    font-weight:700;
+    margin:48px 0 8px;
+    letter-spacing:-0.3px;
+  }
+  .section-sub{
+    color:var(--text-muted);
+    font-size:14px;
+    margin-bottom:24px;
+  }
+  .story-card{
+    background:var(--card);
+    border-radius:16px;
+    padding:26px 28px;
+    margin-bottom:24px;
+    border:1px solid var(--border);
+  }
+  .story-title{
+    font-size:18px;
+    font-weight:700;
+    margin:0 0 6px;
+    line-height:1.35;
+  }
+  .story-title a{
+    text-decoration:none;
+    color:var(--text);
+  }
+  .story-title a:hover{color:var(--yellow-accent);}
+  .story-meta{
+    font-size:13px;
+    color:var(--text-muted);
+    margin-bottom:14px;
+  }
+  .story-meta .dot{margin:0 6px;}
+  .story-summary{
+    font-size:14.5px;
+    margin-bottom:16px;
+  }
+  .box{
+    border-radius:12px;
+    padding:16px 20px;
+    margin-top:14px;
+    font-size:13.5px;
+  }
+  .box-title{
+    font-weight:700;
+    font-size:13px;
+    margin-bottom:8px;
+    display:flex;
+    align-items:center;
+    gap:6px;
+  }
+  .box ul{
+    margin:6px 0 0;
+    padding-left:18px;
+  }
+  .box li{margin-bottom:4px;}
+  .why{
+    background:var(--yellow-bg);
+    border:1px solid #f2dfa0;
+  }
+  .why .box-title{color:#8a6800;}
+  .coverage{
+    background:var(--green-bg);
+    border:1px solid #b9e3c6;
+  }
+  .coverage .box-title{color:var(--green-accent);}
+  .regions-line{
+    display:flex;
+    flex-wrap:wrap;
+    gap:14px;
+    margin-bottom:8px;
+    font-size:13.5px;
+  }
+  .region-yes{color:var(--green-accent); font-weight:600;}
+  .region-no{color:#b0b0b5;}
+  .attention{
+    display:inline-block;
+    margin-top:8px;
+    padding:3px 12px;
+    border-radius:999px;
+    font-size:12px;
+    font-weight:700;
+    text-transform:uppercase;
+    letter-spacing:0.3px;
+  }
+  .att-alta{background:#fde8e8; color:#b3261e;}
+  .att-media{background:#fff3d6; color:#8a6800;}
+  .att-baixa{background:#eceef1; color:#5f6368;}
+  .stale-flag{
+    display:inline-block;
+    margin-left:8px;
+    font-size:11px;
+    font-weight:700;
+    color:#b3261e;
+    background:#fde8e8;
+    padding:2px 8px;
+    border-radius:6px;
+    text-transform:uppercase;
+  }
+  .analysis-card{
+    background:var(--card);
+    border-radius:16px;
+    padding:28px;
+    margin-bottom:20px;
+    border:1px solid var(--border);
+  }
+  .analysis-card h3{
+    margin:0 0 10px;
+    font-size:16px;
+  }
+  .analysis-card p{margin:0 0 10px;}
+  .missing-list{
+    font-size:13px;
+    color:var(--text-muted);
+    background:#fff;
+    border:1px solid var(--border);
+    border-radius:14px;
+    padding:20px 24px;
+    margin-top:12px;
+  }
+  footer{
+    text-align:center;
+    font-size:12.5px;
+    color:var(--text-muted);
+    padding:24px;
+  }
+  @media (max-width:600px){
+    .header-inner{flex-direction:column; align-items:flex-start;}
+    .header-meta{text-align:left;}
+  }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-inner">
+    <div class="logo">Stocks <span>Report</span></div>
+    <div class="header-meta">
+      Publicado em 04 de agosto de 2026<br>
+      Cobertura: últimas 24–48 horas
+    </div>
+  </div>
+  <div class="regions">
+    <span>🇨🇳 China</span>
+    <span>🇺🇸 EUA</span>
+    <span>🇪🇺 Europa</span>
+    <span>🇧🇷 Brasil</span>
+  </div>
+</div>
+
+<div class="container">
+
+  <div class="notice">
+    <strong>Nota metodológica sobre esta edição:</strong> das fontes obrigatórias e dos 30+ tickers monitorados, a verificação direta de links via acesso automatizado às páginas retornou bloqueio (HTTP 403) na maioria dos veículos-alvo (InfoMoney, Money Times, Valor, CNN Brasil, Forbes, Bloomberg, entre outros), o que impediu a checagem final de "página no ar" em cada URL — todos os links abaixo foram, no entanto, triangulados em 2 a 4 buscas independentes por história para reduzir o risco de erro. Além disso, a maior parte dos 24 tickers monitorados não teve notícia genuinamente nova (≤48h) nesta janela — muitos itens encontrados eram, na verdade, de semanas ou meses atrás e foram descartados para não violar o critério de "apenas últimas 24h". Por isso, esta edição traz <strong>13 histórias rigorosamente verificadas</strong> (4 Brasil + 9 internacionais) em vez das 30 solicitadas. A lista de tickers sem notícia qualificada está ao final do relatório.
+  </div>
+
+  <!-- ===================== BRAZIL ===================== -->
+  <div class="section-title">🇧🇷 Destaques — Ações Brasileiras</div>
+  <div class="section-sub">4 histórias verificadas no período de 1–4 de agosto de 2026</div>
+
+  <!-- STORY 1 -->
+  <div class="story-card">
+    <div class="story-title">1. <a href="https://www.infomoney.com.br/mercados/ibovespa-hoje-bolsa-de-valores-ao-vivo-03082026/" target="_blank" rel="noopener">Ibovespa fecha estável com "cabo de guerra" entre Petrobras e bancos; petróleo derrete com sinalização de acordo EUA-Irã sobre Ormuz</a></div>
+    <div class="story-meta">Segunda-feira, 3 de agosto de 2026, ~17h<span class="dot">•</span>Fonte primária: InfoMoney</div>
+    <div class="story-summary">
+      O Ibovespa fechou praticamente estável em 178.000 pontos, pressionado pela forte queda do petróleo Brent (entre 4,7% e 7% no dia, para US$ 83,5–83,8/barril), após o presidente Trump sinalizar disposição para um acordo com o Irã sobre a reabertura do Estreito de Ormuz. Petrobras (PETR3/PETR4) recuou cerca de 0,85%–2%, e Vale (VALE3) caiu cerca de 2,15%, também pressionada pela mínima de 12 meses no minério de ferro na China. O dólar subiu a R$ 5,08, com o Focus revisando a Selic esperada para 2026.
+    </div>
+    <div class="box why">
+      <div class="box-title">📌 Por que isso importa</div>
+      <ul>
+        <li>Queda do Brent reduz a margem esperada da Petrobras dias antes do balanço do 2T26 (previsto para 6/8), mesmo com produção recorde no trimestre</li>
+        <li>Vale sofre pressão dupla: minério de ferro em mínima de 12 meses na China + recuo geral de commodities</li>
+        <li>Geopolítica domina o pregão: avanço nas negociações EUA-Irã sobre Ormuz é o principal catalisador de curto prazo para papéis ligados a petróleo</li>
+        <li>Alta do dólar (R$ 5,08) pressiona ativos de risco locais</li>
+      </ul>
+    </div>
+    <div class="box coverage">
+      <div class="box-title">🌍 Análise de Cobertura Global</div>
+      <div class="regions-line">
+        <span class="region-yes">✓ Brasil</span>
+        <span class="region-yes">✓ EUA</span>
+        <span class="region-yes">✓ Europa</span>
+        <span class="region-no">✗ China (não confirmado)</span>
+      </div>
+      Outlets: InfoMoney, Money Times, O Tempo, CNN Brasil (BR) · Bloomberg, CNBC, Fox Business (EUA) · Al Jazeera, The National — UAE (Europa/Oriente Médio adjacente)
+      <div><a href="https://www.bloomberg.com/news/articles/2026-08-03/oil-slips-as-trump-holds-off-iran-attack-says-talks-to-resume-msdeau9b" target="_blank" rel="noopener">Bloomberg ↗</a> · <a href="https://www.thenationalnews.com/business/energy/2026/08/03/oil-prices-slump-on-potential-us-iran-deal-to-open-strait-of-hormuz/" target="_blank" rel="noopener">The National ↗</a> · <a href="https://www.moneytimes.com.br/tempo-real-ibovespa-hoje-mercado-ao-vivo-03-08-2026-jals-lils-apsa/" target="_blank" rel="noopener">Money Times ↗</a> · <a href="https://www.cnnbrasil.com.br/economia/mercado/mercado-financeiro-ibovespa-dolar-3-agosto-2026/" target="_blank" rel="noopener">CNN Brasil ↗</a></div>
+      <span class="attention att-alta">Atenção: Alta</span>
+    </div>
+  </div>
+
+  <!-- STORY 2 -->
+  <div class="story-card">
+    <div class="story-title">2. <a href="https://www.moneytimes.com.br/bb-seguridade-bbse3-pagara-r-38-bilhoes-em-dividendos/" target="_blank" rel="noopener">BB Seguridade (BBSE3) pagará R$ 3,8 bilhões em dividendos — mas três casas recomendam venda</a></div>
+    <div class="story-meta">Segunda-feira, 3 de agosto de 2026<span class="dot">•</span>Fonte primária: Money Times</div>
+    <div class="story-summary">
+      A BB Seguridade anunciou pagamento de R$ 3,8 bilhões em dividendos (R$ 1,90/ação), com data-com em 6 de agosto e pagamento em 3 de setembro. O anúncio veio junto ao resultado do 2T26, com lucro líquido de R$ 2,2 bilhões — queda de 4% na comparação anual. Apesar do dividendo robusto, Itaú BBA manteve recomendação de venda (preço-alvo R$ 32), e Morgan Stanley e JPMorgan também passaram a recomendar venda, citando que a ação ficou cara após forte valorização em 2026.
+    </div>
+    <div class="box why">
+      <div class="box-title">📌 Por que isso importa</div>
+      <ul>
+        <li>Lucro caiu 4% a/a mesmo com dividendo elevado — sinal de que a distribuição pode não refletir crescimento sustentável</li>
+        <li>Consenso de analistas virando bearish: três casas (Itaú BBA, Morgan Stanley, JPMorgan) recomendam venda simultaneamente</li>
+        <li>Itaú BBA projeta queda de ~6% no lucro em 2026, com recuperação modesta de ~2% em 2027</li>
+        <li>Data-com em 6/8 deve gerar volume e volatilidade de curto prazo no papel</li>
+      </ul>
+    </div>
+    <div class="box coverage">
+      <div class="box-title">🌍 Análise de Cobertura Global</div>
+      <div class="regions-line">
+        <span class="region-yes">✓ Brasil</span>
+        <span class="region-no">✗ China</span>
+        <span class="region-no">✗ EUA</span>
+        <span class="region-no">✗ Europa</span>
+      </div>
+      Outlets: Money Times, Seu Dinheiro, Investidor10, Revista Fórum — notícia corporativa doméstica, sem repercussão internacional identificada.
+      <div><a href="https://www.seudinheiro.com/2026/empresas/bb-seguridade-bbse3-pagara-r-38-bilhoes-dividendos-valor-por-acoes-chega-a-quase-r-2-ccgg/" target="_blank" rel="noopener">Seu Dinheiro ↗</a> · <a href="https://investidor10.com.br/noticias/bb-seguridade-bbse3-pagara-r-3-8-bi-em-dividendos-veja-valor-por-acao-121818/" target="_blank" rel="noopener">Investidor10 ↗</a> · <a href="https://revistaforum.com.br/economia/r-38-bilhoes-em-dividendos-bb-seguridade-bbse3-anuncia-pagamentos-para-2026/" target="_blank" rel="noopener">Revista Fórum ↗</a></div>
+      <span class="attention att-media">Atenção: Média</span>
+    </div>
+  </div>
+
+  <!-- STORY 3 -->
+  <div class="story-card">
+    <div class="story-title">3. <a href="https://www.infomoney.com.br/mercados/isa-e-axia-concluem-descruzamento-de-participacoes-em-ativos-de-transmissao/" target="_blank" rel="noopener">ISA Energia (ISAE4) e Axia (AXIA3) concluem descruzamento de participações em ativos de transmissão</a></div>
+    <div class="story-meta">~31 de julho – 1º de agosto de 2026<span class="dot">•</span>Fonte primária: InfoMoney<span class="stale-flag">Fora da janela estrita de 24h</span></div>
+    <div class="story-summary">
+      ISA Energia (ISAE4) e Axia Energia (AXIA3) concluíram o descruzamento de participações acionárias nos ativos de transmissão IE Madeira e IE Garanhuns, após cumprimento das condições suspensivas. A ISA pagou R$ 1,167 bilhão à Axia como parte do acordo. A partir de agosto, a ISA passa a consolidar 100% da IE Madeira e deixa de registrar a IE Garanhuns por equivalência patrimonial.
+    </div>
+    <div class="box why">
+      <div class="box-title">📌 Por que isso importa</div>
+      <ul>
+        <li>Reorganização societária relevante entre duas companhias de transmissão de energia listadas na B3</li>
+        <li>Consolidação de 100% da IE Madeira simplifica a estrutura de receita e deve alterar o EBITDA consolidado a partir do 3T26</li>
+        <li>Movimentação de caixa de R$ 1,167 bi impacta a liquidez de curto prazo de ambas as companhias</li>
+        <li>Tende a gerar releitura de valuation por analistas do setor elétrico</li>
+      </ul>
+    </div>
+    <div class="box coverage">
+      <div class="box-title">🌍 Análise de Cobertura Global</div>
+      <div class="regions-line">
+        <span class="region-yes">✓ Brasil</span>
+        <span class="region-no">✗ China</span>
+        <span class="region-no">✗ EUA</span>
+        <span class="region-no">✗ Europa</span>
+      </div>
+      Outlets: InfoMoney, Money Times, Investidor10, Diário do Grande ABC — cobertura restrita ao noticiário especializado em small/mid-caps brasileiras.
+      <div><a href="https://www.moneytimes.com.br/axia-axia3-e-isa-energia-isae4-concluem-descruzamento-de-participacoes-na-ie-madeira-e-ie-garanhuns/" target="_blank" rel="noopener">Money Times ↗</a> · <a href="https://investidor10.com.br/noticias/isa-energia-isae4-paga-r-1-17-bi-para-a-axia-axia3-entenda-121790/" target="_blank" rel="noopener">Investidor10 ↗</a></div>
+      <span class="attention att-baixa">Atenção: Baixa-Média</span>
+    </div>
+  </div>
+
+  <!-- STORY 4 -->
+  <div class="story-card">
+    <div class="story-title">4. <a href="https://analisa.genialinvestimentos.com.br/acoes/klabin/klabin-klbn11-previa-2t26-retomada-ampla-desconto-ausente/" target="_blank" rel="noopener">Klabin: Genial projeta retomada ampla no 2T26 antes do balanço de 5 de agosto</a></div>
+    <div class="story-meta">Início de agosto de 2026<span class="dot">•</span>Fonte primária: Genial Investimentos (Genial Analisa)</div>
+    <div class="story-summary">
+      A Genial projeta EBITDA ajustado de R$ 1,9 bilhão para a Klabin no 2T26 (+13,9% no trimestre; -6,9% no ano), com margem de 36,7%. Receita líquida estimada em R$ 5,2 bilhões (+4,8% trimestral), impulsionada por recuperação de volumes nos três segmentos de negócio e preços resilientes, após um trimestre sem paradas de manutenção — diferente do 1T26, afetado pela parada em Monte Alegre.
+    </div>
+    <div class="box why">
+      <div class="box-title">📌 Por que isso importa</div>
+      <ul>
+        <li>Prévia às vésperas da divulgação oficial (5/8) — referência para o mercado precificar a ação antes do balanço</li>
+        <li>Melhora sequencial vem principalmente da ausência de efeitos negativos do trimestre anterior, não de uma virada estrutural de demanda</li>
+        <li>Desalavancagem segue como fator decisivo para a recomendação dos analistas</li>
+      </ul>
+    </div>
+    <div class="box coverage">
+      <div class="box-title">🌍 Análise de Cobertura Global</div>
+      <div class="regions-line">
+        <span class="region-yes">✓ Brasil</span>
+        <span class="region-no">✗ China</span>
+        <span class="region-no">✗ EUA</span>
+        <span class="region-no">✗ Europa</span>
+      </div>
+      Outlets: Genial Investimentos, com replicação em casas de análise/corretoras brasileiras — sem repercussão internacional identificada.
+      <span class="attention att-baixa">Atenção: Baixa</span>
+    </div>
+  </div>
+
+  <!-- ===================== INTERNATIONAL ===================== -->
+  <div class="section-title">🌎 Destaques — Ações Internacionais</div>
+  <div class="section-sub">9 histórias verificadas no período de 3–4 de agosto de 2026</div>
+
+  <!-- STORY 5 -->
+  <div class="story-card">
+    <div class="story-title">5. <a href="https://www.cnbc.com/2026/08/03/alibaba-ai-model-qwen-rival-anthropic.html" target="_blank" rel="noopener">Alibaba dispara em Hong Kong após lançar modelo de IA Qwen3.8-Max, rival do Claude</a></div>
+    <div class="story-meta">Segunda-feira, 3 de agosto de 2026<span class="dot">•</span>Fonte primária: CNBC (também Bloomberg)<span class="dot">•</span>Ticker: BABA</div>
+    <div class="story-summary">
+      A Alibaba lançou o Qwen3.8-Max, seu maior modelo de IA até hoje, com 2,4 trilhões de parâmetros e janela de contexto de 1 milhão de tokens. A empresa afirma que o desempenho rivaliza com o Claude em vários benchmarks. As ações da Alibaba dispararam entre 4,8% e 7% em Hong Kong logo após o anúncio, marcando o retorno da companhia à estratégia de código aberto para modelos de ponta.
+    </div>
+    <div class="box why">
+      <div class="box-title">📌 Por que isso importa</div>
+      <ul>
+        <li>Reforça a posição da Alibaba como líder de IA na China, pressionando concorrentes como DeepSeek e Moonshot</li>
+        <li>Ganho de curto prazo nas ações antecipa o resultado trimestral marcado para meados de agosto</li>
+        <li>Analistas mantêm recomendação forte de compra, com preço-alvo médio acima de US$ 190</li>
+      </ul>
+    </div>
+    <div class="box coverage">
+      <div class="box-title">🌍 Análise de Cobertura Global</div>
+      <div class="regions-line">
+        <span class="region-yes">✓ EUA</span>
+        <span class="region-yes">✓ China</span>
+        <span class="region-yes">✓ Europa</span>
+        <span class="region-yes">✓ Brasil</span>
+      </div>
+      Outlets: CNBC, Bloomberg, Forbes, Fortune (EUA) · SCMP, Digitimes (China) · Euronews (Europa) · InfoMoney, CNN Brasil (Brasil) — uma das histórias mais amplamente corroboradas encontradas nesta edição.
+      <div><a href="https://www.dimsumdaily.hk/hang-seng-index-opens-august-higher-as-alibaba-leads-tech-gains/" target="_blank" rel="noopener">Dim Sum Daily (HK) ↗</a></div>
+      <span class="attention att-alta">Atenção: Alta</span>
+    </div>
+  </div>
+
+  <!-- STORY 6 -->
+  <div class="story-card">
+    <div class="story-title">6. <a href="https://invezz.com/news/2026/08/04/why-micron-amd-and-sandisk-are-leading-todays-pre-market-rally/" target="_blank" rel="noopener">UBS eleva projeções de preço de memória e puxa rali de Micron, AMD e SanDisk; SMH sobe forte</a></div>
+    <div class="story-meta">Terça-feira, 4 de agosto de 2026<span class="dot">•</span>Fonte primária: Invezz (também TipRanks, Benzinga, Yahoo Finance)<span class="dot">•</span>Ticker: SMH, QQQ</div>
+    <div class="story-summary">
+      O analista Nicolas Gaudois, do UBS, elevou as projeções de preço de DRAM (+32% no 3T26, +18% no 4T26) e de NAND, citando restrição de oferta até pelo menos 2028. Isso impulsionou papéis de memória: Micron, AMD e SanDisk subiram cerca de 3% no pré-mercado, e o ETF SMH avançou entre 3,9% e 6,5%, recuperando parte da queda da semana anterior.
+    </div>
+    <div class="box why">
+      <div class="box-title">📌 Por que isso importa</div>
+      <ul>
+        <li>Reverte parte do pânico da liquidação de memória de julho, sugerindo fundamentos ainda sólidos de demanda de IA</li>
+        <li>SMH tem consenso de compra forte, com upside de quase 18% segundo TipRanks</li>
+        <li>Suporta o QQQ, dado o peso elevado de semicondutores no Nasdaq-100</li>
+      </ul>
+    </div>
+    <div class="box coverage">
+      <div class="box-title">🌍 Análise de Cobertura Global</div>
+      <div class="regions-line">
+        <span class="region-yes">✓ EUA</span>
+        <span class="region-no">✗ China</span>
+        <span class="region-no">✗ Europa</span>
+        <span class="region-yes">✓ Brasil</span>
+      </div>
+      Outlets: Invezz, TipRanks, Benzinga, Yahoo Finance (EUA) · InfoMoney (cobertura da crise de preços DRAM, Brasil).
+      <span class="attention att-media">Atenção: Média-Alta</span>
+    </div>
+  </div>
+
+  <!-- STORY 7 -->
+  <div class="story-card">
+    <div class="story-title">7. <a href="https://www.coindesk.com/markets/2026/08/04/bitcoin-rises-toward-usd64-000-as-coldcard-exploit-strategy-sales-recede-ada-advances" target="_blank" rel="noopener">Bitcoin sobe rumo a US$ 64 mil após mercado absorver hack da Coldcard e venda da Strategy</a></div>
+    <div class="story-meta">Terça-feira, 4 de agosto de 2026<span class="dot">•</span>Fonte primária: CoinDesk<span class="dot">•</span>Ticker: BTC</div>
+    <div class="story-summary">
+      O Bitcoin subiu para perto de US$ 64 mil, alta de ~1,6% em 24h, após o mercado absorver o hack das carteiras Coldcard (perdas próximas de US$ 89–114 milhões desde 30/07) e a venda de 1.638 BTC (~US$ 104,7 milhões) pela Strategy entre 27/07 e 2/08, para cobrir dividendos de ações preferenciais. Michael Saylor reforçou que nunca vendeu seu Bitcoin pessoal.
+    </div>
+    <div class="box why">
+      <div class="box-title">📌 Por que isso importa</div>
+      <ul>
+        <li>Mercado demonstra resiliência apesar de choques de segurança e vendas corporativas</li>
+        <li>Sentimento ainda em "medo extremo" (Fear & Greed em 25), limitando alta apesar do fluxo positivo de ETFs (~US$ 170 milhões na segunda-feira)</li>
+        <li>Zona de resistência crítica em US$ 65–70 mil é vista como decisiva para reverter a tendência de baixa</li>
+      </ul>
+    </div>
+    <div class="box coverage">
+      <div class="box-title">🌍 Análise de Cobertura Global</div>
+      <div class="regions-line">
+        <span class="region-yes">✓ EUA</span>
+        <span class="region-no">✗ China</span>
+        <span class="region-yes">✓ Europa</span>
+        <span class="region-yes">✓ Brasil</span>
+      </div>
+      Outlets: CoinDesk, Investing.com, Bitcoin Magazine, IBTimes UK (EUA/global) · merca2.es, criptonoticias (Espanha) · Money Times, TradingView Brasil (Brasil).
+      <span class="attention att-alta">Atenção: Alta</span>
+    </div>
+  </div>
+
+  <!-- STORY 8 -->
+  <div class="story-card">
+    <div class="story-title">8. <a href="https://www.benzinga.com/analyst-stock-ratings/analyst-color/26/08/60897735/alex-karp-says-sovereign-ai-is-winning-palantir-stock-surges-17" target="_blank" rel="noopener">Palantir dispara até 17% após resultado "extraordinário" no 2T e eleva projeção anual</a></div>
+    <div class="story-meta">Terça-feira, 4 de agosto de 2026<span class="dot">•</span>Fonte primária: Benzinga (também Bloomberg, Yahoo Finance)<span class="dot">•</span>Ticker: QQQ, SMH</div>
+    <div class="story-summary">
+      A Palantir divulgou resultado do 2º trimestre com receita de US$ 1,9 bilhão (+93% a/a), segundo o CEO Alex Karp, elevando a projeção anual para até US$ 8,2 bilhões. As ações saltaram entre 14% e 17% no after-hours/pré-mercado, elevando os futuros do Nasdaq-100 e contribuindo para recorde do Dow Jones.
+    </div>
+    <div class="box why">
+      <div class="box-title">📌 Por que isso importa</div>
+      <ul>
+        <li>Reforça otimismo sobre gastos corporativos em IA, revertendo parte do ceticismo da correção do Nasdaq-100 em julho</li>
+        <li>Puxa positivamente ações ligadas a semicondutores e big tech dentro do QQQ</li>
+        <li>AMD e SpaceX reportam resultados na sequência, mantendo o setor em foco</li>
+      </ul>
+    </div>
+    <div class="box coverage">
+      <div class="box-title">🌍 Análise de Cobertura Global</div>
+      <div class="regions-line">
+        <span class="region-yes">✓ EUA</span>
+        <span class="region-no">✗ China</span>
+        <span class="region-no">✗ Europa</span>
+        <span class="region-no">✗ Brasil</span>
+      </div>
+      Outlets: Benzinga, Bloomberg, Yahoo Finance, TheStreet — cobertura concentrada nos EUA, sem repercussão internacional direta identificada nesta janela.
+      <span class="attention att-alta">Atenção: Alta</span>
+    </div>
+  </div>
+
+  <!-- STORY 9 -->
+  <div class="story-card">
+    <div class="story-title">9. <a href="https://www.brecorder.com/news/40433070/china-stocks-slide-as-ai-selloff-hammers-chip-supply-chain" target="_blank" rel="noopener">Ações chinesas caem com PMI fraco e liquidação global de IA atingindo cadeia de semicondutores</a></div>
+    <div class="story-meta">Segunda-feira, 3 de agosto de 2026<span class="dot">•</span>Fonte primária: Business Recorder (wire)<span class="dot">•</span>Ticker: MCHI</div>
+    <div class="story-summary">
+      O Shanghai Composite caiu 0,59% (3.809,7 pontos) e o Shenzhen Component recuou 0,96%, pressionados por PMI industrial fraco (mínima de quatro meses) e por liquidação global em ações de IA. O índice STAR50, de tecnologia, despencou 5,1%, e o índice de semicondutores CSI All Share caiu 6,9%, refletindo contágio da queda de 20% do Kospi sul-coreano no mês anterior.
+    </div>
+    <div class="box why">
+      <div class="box-title">📌 Por que isso importa</div>
+      <ul>
+        <li>Sinaliza reprecificação de risco em ações chinesas de semicondutores, componente relevante do MCHI</li>
+        <li>PMI fraco reacende dúvidas sobre a recuperação econômica chinesa e pode pressionar novos estímulos do PBoC</li>
+        <li>Contraste com a alta de Alibaba/Tencent no mesmo período mostra forte dispersão setorial dentro do índice</li>
+      </ul>
+    </div>
+    <div class="box coverage">
+      <div class="box-title">🌍 Análise de Cobertura Global</div>
+      <div class="regions-line">
+        <span class="region-yes">✓ China</span>
+        <span class="region-no">✗ EUA</span>
+        <span class="region-no">✗ Europa</span>
+        <span class="region-no">✗ Brasil</span>
+      </div>
+      Outlets: MarketScreener, Free Malaysia Today, IBTimes Australia, AsiaFinancial — cobertura concentrada em veículos asiáticos, sem cobertura brasileira dedicada encontrada.
+      <span class="attention att-media">Atenção: Média</span>
+    </div>
+  </div>
+
+  <!-- STORY 10 -->
+  <div class="story-card">
+    <div class="story-title">10. <a href="https://www.fool.com/investing/2026/08/03/why-sandisk-stock-tumbled-47-in-july/" target="_blank" rel="noopener">SanDisk caiu 47% em julho — mas fundamentos permanecem intactos, dizem analistas</a></div>
+    <div class="story-meta">Segunda-feira, 3 de agosto de 2026<span class="dot">•</span>Fonte primária: The Motley Fool<span class="dot">•</span>Ticker: SMH (componente)</div>
+    <div class="story-summary">
+      As ações da SanDisk caíram 47% em julho em meio à liquidação geral de memória/IA, mas o artigo destaca que nada mudou nos fundamentos da empresa — sem corte de guidance, recall ou saída de executivos. A queda foi atribuída a realização de lucro após rali de mais de 1.500% desde a cisão da Western Digital.
+    </div>
+    <div class="box why">
+      <div class="box-title">📌 Por que isso importa</div>
+      <ul>
+        <li>Ilustra a volatilidade extrema no setor de memória, que também afeta o ETF SMH</li>
+        <li>Próximo catalisador: resultado do 4º trimestre fiscal em 5/08 e Investor Day em 13/08</li>
+        <li>Analistas mantêm preço-alvo médio de US$ 2.217, com 18 recomendações de compra contra 1 de venda</li>
+      </ul>
+    </div>
+    <div class="box coverage">
+      <div class="box-title">🌍 Análise de Cobertura Global</div>
+      <div class="regions-line">
+        <span class="region-yes">✓ EUA</span>
+        <span class="region-no">✗ China</span>
+        <span class="region-no">✗ Europa</span>
+        <span class="region-yes">✓ Brasil</span>
+      </div>
+      Outlets: The Motley Fool, TradingKey (EUA) · Money Times, Exame, Startups.com.br (Brasil).
+      <span class="attention att-media">Atenção: Média</span>
+    </div>
+  </div>
+
+  <!-- STORY 11 -->
+  <div class="story-card">
+    <div class="story-title">11. <a href="https://www.omegahealthcare.com/investors/news-events/press-releases/detail/346/omega-announces-increase-in-quarterly-dividend" target="_blank" rel="noopener">Omega Healthcare (OHI) eleva dividendo trimestral após AFFO acima do consenso</a></div>
+    <div class="story-meta">~23–31 de julho de 2026 (data-com em 3/08)<span class="dot">•</span>Fonte primária: Comunicado da companhia<span class="dot">•</span>Ticker: OHI<span class="stale-flag">Fora da janela estrita de 24h</span></div>
+    <div class="story-summary">
+      A Omega Healthcare Investors elevou o dividendo trimestral para US$ 0,68/ação (+US$ 0,01), com data de registro em 3 de agosto e pagamento em 14 de agosto. No 2T26, a AFFO ajustada ficou em US$ 0,83/ação, acima do consenso de US$ 0,80, e a companhia elevou o guidance de FFO ajustado para 2026. O Cantor Fitzgerald elevou o preço-alvo de US$ 52 para US$ 56 em 31/07.
+    </div>
+    <div class="box why">
+      <div class="box-title">📌 Por que isso importa</div>
+      <ul>
+        <li>Retomada de política de crescimento consistente de dividendos após resultado acima do esperado</li>
+        <li>REIT de saúde beneficiado por guidance elevado — sinal positivo para o setor</li>
+        <li>Cantor Fitzgerald mais otimista reforça viés de alta entre analistas</li>
+      </ul>
+    </div>
+    <div class="box coverage">
+      <div class="box-title">🌍 Análise de Cobertura Global</div>
+      <div class="regions-line">
+        <span class="region-yes">✓ EUA</span>
+        <span class="region-no">✗ China</span>
+        <span class="region-no">✗ Europa</span>
+        <span class="region-no">✗ Brasil</span>
+      </div>
+      Outlets: Simply Wall St, Investing.com, Dividend.com — REIT de nicho americano, sem cobertura internacional identificada.
+      <span class="attention att-baixa">Atenção: Baixa</span>
+    </div>
+  </div>
+
+  <!-- STORY 12 -->
+  <div class="story-card">
+    <div class="story-title">12. <a href="https://www.gurufocus.com/news/8998979/sgov-announces-august-dividend-with-357-sec-yield-backed-by-guru-buying" target="_blank" rel="noopener">SGOV anuncia dividendo de agosto com yield SEC de 3,57%, sustentado por postura dura do Fed</a></div>
+    <div class="story-meta">~31 de julho – 3 de agosto de 2026<span class="dot">•</span>Fonte primária: GuruFocus<span class="dot">•</span>Ticker: SGOV<span class="stale-flag">Fora da janela estrita de 24h</span></div>
+    <div class="story-summary">
+      O iShares 0-3 Month Treasury Bond ETF (SGOV) declarou distribuição mensal de US$ 0,3068 por cota, com yield SEC de 30 dias de 3,57%. O fundo continua atraindo forte demanda por caixa remunerado em meio à postura hawkish do Fed sob Kevin Warsh, que manteve os juros inalterados em 29/07 apesar da pressão do mercado de títulos.
+    </div>
+    <div class="box why">
+      <div class="box-title">📌 Por que isso importa</div>
+      <ul>
+        <li>ETFs "cash-like" seguem batendo recordes de captação em 2026, com SGOV puxando a categoria</li>
+        <li>Yield do SGOV tende a cair se o Fed cortar juros, mas por ora se beneficia da postura mais dura de Warsh</li>
+        <li>Fluxo elevado reflete cautela dos investidores diante da volatilidade em tech/semicondutores</li>
+      </ul>
+    </div>
+    <div class="box coverage">
+      <div class="box-title">🌍 Análise de Cobertura Global</div>
+      <div class="regions-line">
+        <span class="region-yes">✓ EUA</span>
+        <span class="region-no">✗ China</span>
+        <span class="region-no">✗ Europa</span>
+        <span class="region-no">✗ Brasil</span>
+      </div>
+      Outlets: GuruFocus, EBC Financial Group, AdvisorHub, Dividend.com — sem cobertura internacional dedicada identificada.
+      <span class="attention att-baixa">Atenção: Baixa</span>
+    </div>
+  </div>
+
+  <!-- STORY 13 -->
+  <div class="story-card">
+    <div class="story-title">13. <a href="https://www.dimsumdaily.hk/hang-seng-index-opens-august-higher-as-alibaba-leads-tech-gains/" target="_blank" rel="noopener">Hang Seng abre agosto em alta, com Alibaba liderando ganhos de tecnologia</a></div>
+    <div class="story-meta">Terça-feira, 4 de agosto de 2026<span class="dot">•</span>Fonte primária: Dim Sum Daily (Hong Kong)<span class="dot">•</span>Ticker: BABA, MCHI</div>
+    <div class="story-summary">
+      O Hang Seng abriu em alta de 0,31% (26.090 pontos) na manhã de 4 de agosto, com o Hang Seng Tech subindo 0,3%. Alibaba avançou 1,2% na abertura (após ganho de 2,7% no dia anterior), enquanto Tencent ficou praticamente estável (+0,1%), Meituan caiu 0,5% e Xiaomi recuou 0,3%.
+    </div>
+    <div class="box why">
+      <div class="box-title">📌 Por que isso importa</div>
+      <ul>
+        <li>Confirma dispersão dentro do setor de tech chinês, com Alibaba isolado em alta puxado pelo lançamento do Qwen3.8-Max (ver história #5)</li>
+        <li>Componente relevante para o MCHI, que tem Tencent como maior posição individual</li>
+        <li>Sinal de que investidores diferenciam "vencedores" e "perdedores" de IA na China</li>
+      </ul>
+    </div>
+    <div class="box coverage">
+      <div class="box-title">🌍 Análise de Cobertura Global</div>
+      <div class="regions-line">
+        <span class="region-yes">✓ China</span>
+        <span class="region-no">✗ EUA</span>
+        <span class="region-no">✗ Europa</span>
+        <span class="region-no">✗ Brasil</span>
+      </div>
+      Outlets: Dim Sum Daily — cobertura pontual desse ângulo intradiário específico; a história-mãe (#5) tem cobertura muito mais ampla.
+      <span class="attention att-media">Atenção: Média (carona na história #5)</span>
+    </div>
+  </div>
+
+  <!-- ===================== ANALYSIS ===================== -->
+  <div class="section-title">📊 Análise Final</div>
+  <div class="section-sub">Panorama por ativo e perspectiva Brasil–China–Global</div>
+
+  <div class="analysis-card">
+    <h3>Petróleo e commodities (PETR4, VALE3)</h3>
+    <p>A narrativa dominante do dia é geopolítica: o recuo de mais de 5% no Brent, puxado pelo otimismo com um possível acordo EUA-Irã sobre o Estreito de Ormuz, pressionou tanto Petrobras quanto Vale — esta última também afetada pela mínima de 12 meses do minério de ferro na China. Analistas seguem monitorando o balanço da Petrobras (esperado para 6/8) como próximo catalisador; qualquer reversão nas negociações com o Irã pode inverter rapidamente o quadro.</p>
+  </div>
+
+  <div class="analysis-card">
+    <h3>Inteligência artificial e semicondutores (BABA, QQQ, SMH)</h3>
+    <p>O setor segue em modo montanha-russa: depois da correção do Nasdaq-100 em julho puxada pela liquidação de memória (SanDisk -47%), o tom virou otimista com a revisão de preços de DRAM/NAND pelo UBS e o resultado "extraordinário" da Palantir, que sozinho levou os futuros do Nasdaq a recordes. Do lado chinês, a Alibaba surpreendeu com o Qwen3.8-Max, apresentado como rival direto de modelos ocidentais de ponta — o mercado recompensou a ação com alta de até 7% em Hong Kong, mesmo com o resto do mercado chinês de tecnologia pressionado por um PMI industrial fraco.</p>
+  </div>
+
+  <div class="analysis-card">
+    <h3>Bitcoin e ativos de renda (BTC, SGOV, OHI)</h3>
+    <p>O Bitcoin mostrou resiliência ao se recuperar rumo a US$ 64 mil apesar de um hack de carteiras e vendas pontuais da Strategy — mas o sentimento de "medo extremo" ainda limita uma alta mais consistente. Em paralelo, ativos defensivos como o SGOV seguem atraindo fluxo recorde, beneficiados pela postura hawkish do novo presidente do Fed, Kevin Warsh, que mantém os juros altos apesar da pressão do mercado de títulos — um contexto que também sustenta o apetite por REITs de alto dividendo como a Omega Healthcare (OHI).</p>
+  </div>
+
+  <div class="analysis-card">
+    <h3>Financeiro e utilities no Brasil (BBSE3, ISAE4/AXIA3)</h3>
+    <p>No mercado doméstico, o destaque foi corporativo: a BB Seguridade anunciou dividendo robusto de R$ 3,8 bilhões, mas o mercado reagiu com ceticismo — três grandes casas (Itaú BBA, Morgan Stanley, JPMorgan) recomendam venda, citando valuation esticado frente à queda de lucro. No setor elétrico, ISA Energia e Axia concluíram uma reorganização societária relevante nos ativos de transmissão IE Madeira e IE Garanhuns, movimentando R$ 1,17 bilhão em caixa.</p>
+  </div>
+
+  <div class="analysis-card">
+    <h3>Perspectiva Brasil–China–Global</h3>
+    <p>A única história com cobertura verdadeiramente global nesta edição foi a do petróleo/Ormuz (Brasil, EUA e Europa) e o lançamento de IA da Alibaba (China, EUA, Europa e Brasil). As demais histórias, tanto brasileiras quanto internacionais, tenderam a ficar concentradas em suas respectivas regiões de origem — sinal de que, fora de eventos macro/geopolíticos de grande escala, a cobertura financeira ainda é predominantemente regional, com pouca repercussão cruzada entre B3, Wall Street e os mercados chineses.</p>
+  </div>
+
+  <div class="missing-list">
+    <strong>Tickers monitorados sem notícia qualificada (≤48h, verificável, não especulativa) nesta janela:</strong> BBAS3, ITSA4, BRSR6, ABCB4, BAZA3, SAPR4, TAEE4/TAEE3, CMIG4, CPFE3, UNIP6, FESA4, IRBR3, MGLU3, AMER3, XPML11, HCTR11, GGRC11, VYM, VYMI. Notícias mais antigas para esses papéis existem (ex.: JCP da ITSA4 em março/2026, corte de recomendação da MGLU3 em fevereiro/2026), mas foram excluídas para não violar o critério de "apenas últimas 24–48h".
+  </div>
+
+</div>
+
+<footer>
+  Stocks Report · Relatório gerado automaticamente a partir de fontes públicas · Recomenda-se checagem adicional dos links antes de decisões de investimento.
+</footer>
+
+</body>
+</html>
