@@ -1,0 +1,854 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<title>Stocks Report — Últimas 24h</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+  :root{
+    --bg:#f5f5f7;
+    --card:#ffffff;
+    --ink:#1d1d1f;
+    --ink-soft:#6e6e73;
+    --border:#e5e5ea;
+    --yellow-bg:#fff8e1;
+    --yellow-border:#f5c518;
+    --yellow-ink:#7a5b00;
+    --green-bg:#eafaf1;
+    --green-border:#1fae63;
+    --green-ink:#0f6b3c;
+    --black:#0a0a0c;
+    --accent:#2f6feb;
+    --flag-bg:#fff3cd;
+    --flag-border:#e0a800;
+    --flag-ink:#6b4e00;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    background:var(--bg);
+    color:var(--ink);
+    font-family:-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    font-size:15px;
+    line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+  }
+  a{color:var(--accent); text-decoration:none;}
+  a:hover{text-decoration:underline;}
+  .wrap{max-width:1080px; margin:0 auto; padding:0 20px 60px;}
+
+  header.hero{
+    background:var(--black);
+    color:#fff;
+    width:100%;
+    padding:36px 20px;
+    border-radius:0 0 16px 16px;
+    margin-bottom:32px;
+  }
+  header.hero .inner{max-width:1080px; margin:0 auto;}
+  .brand{display:flex; align-items:center; gap:10px; margin-bottom:6px;}
+  .brand .dot{width:10px; height:10px; border-radius:50%; background:#f5c518;}
+  .brand h1{font-size:26px; font-weight:700; margin:0; letter-spacing:-0.02em;}
+  .hero .sub{color:#c7c7cc; font-size:14px; margin-top:4px;}
+  .hero .meta{display:flex; flex-wrap:wrap; gap:10px; margin-top:18px;}
+  .pill{
+    background:rgba(255,255,255,0.08);
+    border:1px solid rgba(255,255,255,0.14);
+    padding:7px 14px;
+    border-radius:999px;
+    font-size:13px;
+    color:#f2f2f7;
+  }
+  .regions{display:flex; flex-wrap:wrap; gap:10px; margin-top:14px;}
+  .region{
+    background:rgba(255,255,255,0.06);
+    border:1px solid rgba(255,255,255,0.12);
+    padding:6px 12px;
+    border-radius:10px;
+    font-size:13px;
+  }
+
+  .notice{
+    background:var(--flag-bg);
+    border:1px solid var(--flag-border);
+    color:var(--flag-ink);
+    border-radius:14px;
+    padding:18px 22px;
+    margin-bottom:32px;
+    font-size:13.5px;
+  }
+  .notice strong{display:block; font-size:14.5px; margin-bottom:6px;}
+  .notice ul{margin:8px 0 0; padding-left:20px;}
+  .notice li{margin-bottom:4px;}
+
+  section.block{margin-bottom:44px;}
+  .block-title{
+    display:flex;
+    align-items:baseline;
+    gap:12px;
+    margin-bottom:6px;
+  }
+  .block-title h2{font-size:21px; margin:0; letter-spacing:-0.01em;}
+  .block-title .count{font-size:13px; color:var(--ink-soft);}
+  .block-desc{color:var(--ink-soft); font-size:13.5px; margin-bottom:20px;}
+
+  .card{
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:16px;
+    padding:24px 26px;
+    margin-bottom:20px;
+    box-shadow:0 1px 3px rgba(0,0,0,0.03);
+  }
+  .card-head{display:flex; gap:14px; align-items:flex-start; margin-bottom:8px;}
+  .num{
+    flex:0 0 auto;
+    width:30px; height:30px;
+    border-radius:50%;
+    background:var(--black);
+    color:#fff;
+    display:flex; align-items:center; justify-content:center;
+    font-size:13px; font-weight:700;
+  }
+  .card-head h3{font-size:17px; margin:0; line-height:1.4;}
+  .card-head h3 a{color:var(--ink);}
+  .tickers{display:flex; flex-wrap:wrap; gap:6px; margin:8px 0 10px 44px;}
+  .ticker-tag{
+    background:#eef2ff;
+    color:#3730a3;
+    font-size:11.5px;
+    font-weight:600;
+    padding:3px 9px;
+    border-radius:6px;
+  }
+  .card-meta{
+    margin:0 0 12px 44px;
+    font-size:12.5px;
+    color:var(--ink-soft);
+    display:flex; flex-wrap:wrap; gap:14px;
+  }
+  .card-summary{margin:0 0 16px 44px; font-size:14.5px;}
+  .flagnote{
+    margin:0 0 14px 44px;
+    background:var(--flag-bg);
+    border:1px solid var(--flag-border);
+    color:var(--flag-ink);
+    border-radius:10px;
+    padding:8px 12px;
+    font-size:12px;
+  }
+
+  .box{
+    margin:0 0 12px 44px;
+    border-radius:12px;
+    padding:14px 18px;
+  }
+  .box:last-child{margin-bottom:0;}
+  .box h4{margin:0 0 8px; font-size:13px; text-transform:uppercase; letter-spacing:0.03em;}
+  .box ul{margin:0; padding-left:18px;}
+  .box li{margin-bottom:4px; font-size:13.5px;}
+  .box.yellow{background:var(--yellow-bg); border:1px solid var(--yellow-border); color:var(--yellow-ink);}
+  .box.yellow h4{color:var(--yellow-ink);}
+  .box.green{background:var(--green-bg); border:1px solid var(--green-border); color:var(--green-ink);}
+  .box.green h4{color:var(--green-ink);}
+  .attn{display:inline-block; padding:2px 9px; border-radius:999px; font-size:11px; font-weight:700; margin-left:6px;}
+  .attn.high{background:#0f6b3c; color:#fff;}
+  .attn.medium{background:#c98a00; color:#fff;}
+  .attn.low{background:#8a8a90; color:#fff;}
+  .regioncheck{display:flex; gap:10px; flex-wrap:wrap; margin-bottom:8px; font-size:12.5px;}
+  .regioncheck span.on{font-weight:700;}
+  .regioncheck span.off{opacity:0.35;}
+  .sourcelist{margin-top:6px;}
+  .sourcelist a{display:block; font-size:12.5px; margin-bottom:2px;}
+
+  .analysis-card{
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:16px;
+    padding:22px 26px;
+    margin-bottom:16px;
+  }
+  .analysis-card h3{margin:0 0 6px; font-size:16px;}
+  .analysis-card .tickers{margin-left:0; margin-bottom:10px;}
+  .analysis-card p{margin:0 0 10px; font-size:14px;}
+  .analysis-card p:last-child{margin-bottom:0;}
+  .analysis-card .label{font-weight:700; font-size:12.5px; text-transform:uppercase; letter-spacing:0.02em; color:var(--ink-soft); margin-bottom:2px;}
+
+  footer{
+    color:var(--ink-soft);
+    font-size:12px;
+    text-align:center;
+    padding-top:20px;
+    border-top:1px solid var(--border);
+    margin-top:20px;
+  }
+</style>
+</head>
+<body>
+<header class="hero">
+  <div class="inner">
+    <div class="brand"><span class="dot"></span><h1>Stocks Report</h1></div>
+    <div class="sub">Notícias de maior impacto das últimas 24 horas — carteira monitorada</div>
+    <div class="meta">
+      <span class="pill">📅 13 de agosto de 2026</span>
+      <span class="pill">🕒 Publicado às 12:30 UTC</span>
+      <span class="pill">📰 21 notícias verificadas por pesquisa cruzada</span>
+    </div>
+    <div class="regions">
+      <span class="region">🇨🇳 China</span>
+      <span class="region">🇺🇸 EUA</span>
+      <span class="region">🇪🇺 Europa</span>
+      <span class="region">🇧🇷 Brasil</span>
+    </div>
+  </div>
+</header>
+
+<div class="wrap">
+
+  <div class="notice">
+    <strong>⚠️ Nota de transparência sobre este relatório</strong>
+    Duas limitações reais afetaram a produção deste relatório e devem ser lidas antes de usar o conteúdo abaixo:
+    <ul>
+      <li><strong>Verificação de links:</strong> a política de rede deste ambiente bloqueou o acesso direto (fetch) a praticamente todos os sites de notícias (InfoMoney, Valor, SCMP, Bloomberg, Reuters, etc. — erro 403 do gateway de saída). Não foi possível abrir cada URL para confirmar ausência de erro 404, como exigido pelos critérios originais. Todos os links abaixo foram obtidos via busca (com múltiplas buscas independentes e checagem cruzada entre veículos) mas <strong>não foram abertos e confirmados ao vivo</strong>. Recomenda-se checagem manual antes de compartilhar externamente.</li>
+      <li><strong>Volume de notícias:</strong> boa parte dos tickers brasileiros prioritários (ITSA4, BBSE3, ABCB4, BRSR6, BAZA3, ISAE4, PETR4, MGLU3, UNIP6, KLBN4, FESA4, CPFE3) divulgou resultados do 2T26 entre 3 e 10 de agosto — fora da janela de 24h — e não geraram notícia genuinamente nova em 12–13/08. Para não inflar o relatório com notícias antigas ou fabricadas, foram incluídas apenas <strong>21 histórias com data e cobertura genuinamente confirmadas nas últimas ~24–36h</strong>, em vez das 30 solicitadas. Histórias fora da janela estrita de 24h estão sinalizadas com uma nota amarela.</li>
+    </ul>
+  </div>
+
+  <!-- BRAZIL SECTION -->
+  <section class="block" id="brasil">
+    <div class="block-title"><h2>🇧🇷 Principais notícias — Ações Brasileiras</h2><span class="count">5 histórias</span></div>
+    <div class="block-desc">Cobertura das últimas ~24h para a carteira monitorada. A maioria dos resultados trimestrais do 2T26 desta carteira saiu antes da janela de 24h (ver nota acima); as histórias abaixo são as que efetivamente aconteceram/repercutiram em 12–13 de agosto.</div>
+
+    <!-- BR 1 -->
+    <div class="card">
+      <div class="card-head">
+        <div class="num">1</div>
+        <h3><a href="https://www.infomoney.com.br/mercados/banco-do-brasil-bbas3-resultados-segundo-trimestre-2026/" target="_blank" rel="noopener">Banco do Brasil (BBAS3) lucra R$ 3,9 bi no 2T26, acima do esperado — mas analistas veem "beat de baixa qualidade"</a></h3>
+      </div>
+      <div class="tickers"><span class="ticker-tag">BBAS3</span></div>
+      <div class="card-meta"><span>🕒 Divulgado na noite de 12/08/2026 (após fechamento)</span><span>📰 InfoMoney</span></div>
+      <p class="card-summary">O Banco do Brasil fechou o 2T26 com lucro líquido ajustado de R$ 3,9 bilhões, alta de 3,3% na comparação anual e 13,9% frente ao 1T26, superando o consenso Bloomberg (R$ 3,5 bi). O ROE subiu para 8,3% (ante 7,3% no 1T26), ainda abaixo do custo de capital do banco. Na carteira agro, a inadimplência acima de 30 dias avançou de 7,35% para 8,97% — quarto trimestre seguido de piora. Bancos como Itaú BBA classificaram o resultado como "beat de baixa qualidade", vindo de provisões menores e efeito fiscal favorável, não de melhora operacional.</p>
+      <div class="box yellow">
+        <h4>📌 Por que isso importa?</h4>
+        <ul>
+          <li>Itaú BBA, Bradesco BBI, Goldman Sachs, Morgan Stanley e JPMorgan mantiveram cautela mesmo com o lucro acima do consenso.</li>
+          <li>Deterioração contínua da carteira agro é o principal risco de fundamentos para os próximos trimestres.</li>
+          <li>ROE de 8,3% segue abaixo do custo de capital — rentabilidade ainda pressionada.</li>
+          <li>Ação vinha de queda de ~8% em agosto antes do balanço, atingindo mínima do ano.</li>
+        </ul>
+      </div>
+      <div class="box green">
+        <h4>🌍 Cobertura global</h4>
+        <div class="regioncheck">
+          <span class="off">✓ China</span><span class="off">✓ EUA</span><span class="off">✓ Europa</span><span class="on">✓ Brasil</span>
+          <span class="attn high">Atenção: Alta</span>
+        </div>
+        <div class="sourcelist">
+          <a href="https://www.moneytimes.com.br/banco-do-brasil-bbas3-lucro-sobe-33-chega-a-r-39-bilhoes-e-vem-melhor-que-esperado-no-2t26-rnda/" target="_blank" rel="noopener">Money Times — cobertura do resultado</a>
+          <a href="https://www.seudinheiro.com/2026/empresas/banco-do-brasil-bbas3-balanco-lucro-rentabilidade-roe-provisoes-inadimplencia-2t26-miql/" target="_blank" rel="noopener">Seu Dinheiro — análise de ROE e provisões</a>
+          <a href="https://www.otempo.com.br/economia/2026/8/12/lucro-do-banco-do-brasil-vem-acima-do-esperado-puxado-por-tesouraria-e-emprestimos" target="_blank" rel="noopener">O Tempo — repercussão local</a>
+          <a href="https://www.infomoney.com.br/mercados/banco-do-brasil-bbas3-lucro-supera-projecoes-mas-por-que-mercado-nao-se-animou-com-resultados-2t26-desempenho-acoes/" target="_blank" rel="noopener">InfoMoney — reação de analistas (13/08)</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- BR 2 -->
+    <div class="card">
+      <div class="card-head">
+        <div class="num">2</div>
+        <h3><a href="https://www.moneytimes.com.br/dividendos-da-taesa-taee11-em-xeque-acoes-caem-apos-2t26-e-analistas-avaliam-forca-dos-proventos-lmrs/" target="_blank" rel="noopener">Taesa (TAEE3/TAEE4): lucro regulatório cai 28,5% no 2T26 e dividendos entram em xeque</a></h3>
+      </div>
+      <div class="tickers"><span class="ticker-tag">TAEE3</span><span class="ticker-tag">TAEE4</span></div>
+      <div class="card-meta"><span>🕒 12/08/2026</span><span>📰 Money Times</span></div>
+      <p class="card-summary">A Taesa reportou lucro regulatório de R$ 206,8 milhões no 2T26, queda de 28,5% ante o 2T25, apesar de receita (R$ 679,2 mi, +9,3%) e Ebitda (R$ 577,2 mi, +10,6%) em alta. A alavancagem ficou em 4,2x dívida líquida/Ebitda, patamar elevado e estável no trimestre. A empresa aprovou R$ 206,8 milhões em dividendos/JCP (R$ 0,60/unit, yield de 1,6%). As ações caíram no pregão de quarta-feira, entre as maiores baixas do Ibovespa.</p>
+      <div class="box yellow">
+        <h4>📌 Por que isso importa?</h4>
+        <ul>
+          <li>Itaú BBA classificou o resultado como neutro; XP chamou de "em linha, mais uma vez" — sem mudança de tese.</li>
+          <li>Queda de lucro levanta dúvida sobre sustentabilidade dos dividendos, tema central para investidores de renda em TAEE.</li>
+          <li>Alavancagem de 4,2x é ponto de atenção para os próximos trimestres.</li>
+        </ul>
+      </div>
+      <div class="box green">
+        <h4>🌍 Cobertura global</h4>
+        <div class="regioncheck">
+          <span class="off">✓ China</span><span class="off">✓ EUA</span><span class="off">✓ Europa</span><span class="on">✓ Brasil</span>
+          <span class="attn medium">Atenção: Média</span>
+        </div>
+        <div class="sourcelist">
+          <a href="https://br.advfn.com/jornal/2026/08/taesa-registra-lucro-regulatorio-de-r-206-8-milhoes-no-2t26-mas-resultado-recua-28-5" target="_blank" rel="noopener">ADVFN — números do resultado</a>
+          <a href="https://financenews.com.br/2026/08/taesa-anuncia-pagamento-de-dividendo-e-jcp-lucro-regulatorio-no-2t26-e-de-r-2068-milhoes/" target="_blank" rel="noopener">Finance News — dividendos/JCP</a>
+          <a href="https://conteudos.xpi.com.br/acoes/relatorios/taesa-taee11-2t26-review-em-linha-mais-uma-vez/" target="_blank" rel="noopener">Relatório XP Investimentos</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- BR 3 -->
+    <div class="card">
+      <div class="card-head">
+        <div class="num">3</div>
+        <h3><a href="https://www.infomoney.com.br/mercados/energisa-engi11-conclui-venda-de-5-ativos-a-taesa-taee11-por-r-16-bi/" target="_blank" rel="noopener">Taesa conclui aquisição de 5 ativos de transmissão da Energisa por até R$ 2,4 bi</a></h3>
+      </div>
+      <div class="tickers"><span class="ticker-tag">TAEE3</span><span class="ticker-tag">TAEE4</span></div>
+      <div class="card-meta"><span>🕒 Fato relevante na noite de 12/08/2026</span><span>📰 InfoMoney</span></div>
+      <p class="card-summary">A Energisa concluiu a venda de 100% de cinco sociedades de transmissão (Tocantins I e II, Pará I e II, Goiás I) para a Taesa. O negócio soma um equity value de cerca de R$ 1,5–1,6 bilhão (fontes citam valor total de até R$ 2,3–2,4 bi incluindo dívida líquida). Para a Taesa, a aquisição adiciona R$ 305 milhões de Receita Anual Permitida (RAP) no ciclo 2026-2027, 1,3 mil km de linhas e 4.494 MVA de potência, com vida contratual remanescente média de 22 anos.</p>
+      <div class="box yellow">
+        <h4>📌 Por que isso importa?</h4>
+        <ul>
+          <li>Expande a base de ativos regulados e a RAP da Taesa — positivo para fundamentos de longo prazo.</li>
+          <li>Para a Energisa, os recursos vão para desalavancagem (de 3,5x para 3,1x combinada com outra venda de ativos).</li>
+          <li>Reforça a estratégia de reciclagem de capital da Taesa em meio a dúvidas sobre a força dos dividendos (ver notícia anterior).</li>
+        </ul>
+      </div>
+      <div class="box green">
+        <h4>🌍 Cobertura global</h4>
+        <div class="regioncheck">
+          <span class="off">✓ China</span><span class="off">✓ EUA</span><span class="off">✓ Europa</span><span class="on">✓ Brasil</span>
+          <span class="attn medium">Atenção: Média</span>
+        </div>
+        <div class="sourcelist">
+          <a href="https://www.energisa.com.br/noticias/investidores/grupo-energisa-conclui-venda-de-cinco-ativos-de-transmissao-taesa" target="_blank" rel="noopener">Energisa — comunicado oficial ao mercado</a>
+          <a href="https://timesbrasil.com.br/brasil/energisa-conclui-venda-de-cinco-ativos-de-transmissao-a-taesa/" target="_blank" rel="noopener">Times Brasil — repercussão</a>
+          <a href="https://visnoinvest.com.br/news/14734/taesa-taee11-conclui-aquisicao-de-ativos-de-transmissao-por-r-16-bi" target="_blank" rel="noopener">Visno Invest — análise do negócio</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- BR 4 -->
+    <div class="card">
+      <div class="card-head">
+        <div class="num">4</div>
+        <h3><a href="https://www.infomoney.com.br/mercados/banco-do-brasil-equatorial-cogna-vale-gpa-e-mais-acoes-para-acompanhar-hoje/" target="_blank" rel="noopener">Vale antecipa para 2028 novo projeto de cobre em Salobo (PA)</a></h3>
+      </div>
+      <div class="tickers"><span class="ticker-tag">VALE3</span></div>
+      <div class="card-meta"><span>🕒 Anúncio 12/08, repercussão 13/08/2026</span><span>📰 InfoMoney (pauta do dia) / Rio Times</span></div>
+      <p class="card-summary">A Vale Base Metals avançou para a fase de execução do projeto de Flotação de Partículas Grossas (CPF) no Complexo de Cobre Salobo, antecipando o início de operação para o primeiro semestre de 2028 — cerca de um ano antes do previsto. O projeto acrescenta 6 milhões de toneladas à capacidade de processamento de minério, elevando o total para 42 milhões de t/ano, com produção anual adicional de ~30 mil toneladas de cobre contido e ~15 mil onças de ouro como subproduto. Parte do financiamento vem de US$ 40 milhões pagos pela Wheaton Precious Metals à Vale.</p>
+      <div class="box yellow">
+        <h4>📌 Por que isso importa?</h4>
+        <ul>
+          <li>Acelera a diversificação da Vale para metais de transição energética (cobre), reduzindo dependência do minério de ferro.</li>
+          <li>Vale (peso de ~11% no Ibovespa) subiu 0,74% em 12/08 mesmo com o índice em queda, mostrando resiliência relativa em meio ao "risco Brasil" da semana.</li>
+          <li>Ação caiu ~1,6% em 13/08 segundo cobertura internacional, atribuído por parte do mercado ao ajuste nas estimativas de investimento do projeto.</li>
+        </ul>
+      </div>
+      <div class="box green">
+        <h4>🌍 Cobertura global</h4>
+        <div class="regioncheck">
+          <span class="off">✓ China</span><span class="off">✓ EUA</span><span class="off">✓ Europa</span><span class="on">✓ Brasil</span>
+          <span class="attn low">Atenção: Baixa/Média</span>
+        </div>
+        <div class="sourcelist">
+          <a href="https://www.dgabc.com.br/Noticia/4340889/vale-projeto-cpf-em-salobo-avanca-e-inicio-de-operacao-e-antecipado-para-2028" target="_blank" rel="noopener">Diário do Grande ABC — detalhes técnicos do projeto</a>
+          <a href="https://www.riotimesonline.com/vale-copper-bet-accelerates-as-salobo-expansion-is-pulled-forward-to-2028/" target="_blank" rel="noopener">Rio Times Online — reação da ação (em inglês)</a>
+        </div>
+      </div>
+      <div class="flagnote">⚠️ Não localizamos matéria dedicada de um veículo mandatório (apenas citada em pauta do dia da InfoMoney) — cobertura mais fraca que as demais histórias desta seção.</div>
+    </div>
+
+    <!-- BR 5 -->
+    <div class="card">
+      <div class="card-head">
+        <div class="num">5</div>
+        <h3><a href="https://www.infomoney.com.br/mercados/americanas-amer3-resultados-segundo-trimestre-2026/" target="_blank" rel="noopener">Americanas (AMER3) quase triplica prejuízo, que soma R$ 274 milhões no 2T26</a></h3>
+      </div>
+      <div class="tickers"><span class="ticker-tag">AMER3</span></div>
+      <div class="card-meta"><span>🕒 Divulgado na noite de 12/08/2026</span><span>📰 InfoMoney</span></div>
+      <p class="card-summary">A Americanas registrou prejuízo líquido de R$ 274 milhões no 2T26, ante R$ 98 milhões no 2T25 — alta de quase 180%. O Ebitda ajustado somou R$ 145 milhões, queda de 51,5% na base anual. A receita líquida foi de R$ 3,3 bilhões (-1,7%), com vendas mesmas lojas caindo 0,6%. A empresa atribuiu parte da comparação fraca à mudança de calendário da Páscoa. Acionistas receberão R$ 0,102 por ação em JCP em setembro, somando-se aos R$ 340,7 milhões já antecipados em junho.</p>
+      <div class="box yellow">
+        <h4>📌 Por que isso importa?</h4>
+        <ul>
+          <li>Piora de rentabilidade apesar da recuperação em curso pós-escândalo contábil — Ebitda caindo mais que a receita indica pressão de margem.</li>
+          <li>Reforça o ceticismo do mercado sobre a "virada de página" da varejista.</li>
+          <li>Manutenção de remuneração a acionistas mesmo com prejuízo é lida com ressalvas por parte dos analistas.</li>
+        </ul>
+      </div>
+      <div class="box green">
+        <h4>🌍 Cobertura global</h4>
+        <div class="regioncheck">
+          <span class="off">✓ China</span><span class="off">✓ EUA</span><span class="off">✓ Europa</span><span class="on">✓ Brasil</span>
+          <span class="attn high">Atenção: Alta</span>
+        </div>
+        <div class="sourcelist">
+          <a href="https://www.moneytimes.com.br/prejuizo-da-americanas-amer3-quase-triplica-no-2o-tri-para-r-274-mi-rnda/" target="_blank" rel="noopener">Money Times — cobertura do resultado</a>
+          <a href="https://www.cnnbrasil.com.br/economia/negocios/americanas-tem-prejuizo-de-r-274-milhoes-no-2-trimestre/" target="_blank" rel="noopener">CNN Brasil — repercussão</a>
+        </div>
+      </div>
+    </div>
+
+  </section>
+
+  <!-- INTERNATIONAL SECTION -->
+  <section class="block" id="internacional">
+    <div class="block-title"><h2>🌎 Principais notícias — Ações e ETFs Internacionais</h2><span class="count">16 histórias</span></div>
+    <div class="block-desc">Cobertura de EUA, Europa e China para a carteira monitorada (SGOV, BTC, OHI, MCHI, QQQ, SMH, VYM, VYMI, BABA). Inclui macro (CPI/PPI/Fed), cripto, semicondutores e o principal catalisador do dia para o mercado chinês: o resultado da Tencent, cuja leitura afeta diretamente MCHI e BABA.</div>
+
+    <!-- INTL 1 -->
+    <div class="card">
+      <div class="card-head"><div class="num">1</div>
+        <h3><a href="https://www.cnbc.com/2026/08/12/cpi-inflation-report-july-2026.html" target="_blank" rel="noopener">CPI de julho sai em linha (3,4% ao ano) e reduz temor de alta de juros nos EUA</a></h3>
+      </div>
+      <div class="tickers"><span class="ticker-tag">SGOV</span><span class="ticker-tag">QQQ</span><span class="ticker-tag">BTC</span></div>
+      <div class="card-meta"><span>🕒 12/08/2026</span><span>📰 CNBC / Reuters (wire)</span></div>
+      <p class="card-summary">O CPI de julho subiu 0,1% no mês e 3,4% em 12 meses, em linha com o esperado; o núcleo avançou 0,2% no mês e 2,5% no ano. Após o dado, os futuros de juros passaram a precificar cerca de 60% de chance de o Federal Reserve manter a taxa entre 3,50% e 3,75% em setembro, em vez de subir os juros. O mercado leu o resultado como uma redução do risco de alta de juros no curto prazo.</p>
+      <div class="box yellow">
+        <h4>📌 Por que isso importa?</h4>
+        <ul>
+          <li>SGOV: cenário de juros estáveis (sem alta) é levemente negativo para o rendimento futuro do ETF, que segue títulos do Tesouro de curtíssimo prazo.</li>
+          <li>QQQ: dado ameno removeu um obstáculo para a alta das ações de tecnologia no mesmo pregão.</li>
+          <li>BTC: ativos de risco, incluindo Bitcoin, foram beneficiados pela redução do risco de postura mais dura do Fed.</li>
+        </ul>
+      </div>
+      <div class="box green">
+        <h4>🌍 Cobertura global</h4>
+        <div class="regioncheck"><span class="off">✓ China</span><span class="on">✓ EUA</span><span class="off">✓ Europa</span><span class="off">✓ Brasil</span><span class="attn high">Atenção: Alta</span></div>
+        <div class="sourcelist">
+          <a href="https://www.kitco.com/news/off-the-wire/2026-08-12/strong-ai-earnings-lift-sp-500-nasdaq-inflation-data-calms-rate-hike" target="_blank" rel="noopener">Reuters (via Kitco) — reação do mercado</a>
+          <a href="https://finance.yahoo.com/markets/crypto/articles/crypto-market-today-aug-12-221658247.html" target="_blank" rel="noopener">Yahoo Finance — impacto em cripto</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- INTL 2 -->
+    <div class="card">
+      <div class="card-head"><div class="num">2</div>
+        <h3><a href="https://www.kitco.com/news/off-the-wire/2026-08-12/strong-ai-earnings-lift-sp-500-nasdaq-inflation-data-calms-rate-hike" target="_blank" rel="noopener">Resultados de IA e inflação amena impulsionam Nasdaq e S&amp;P 500</a></h3>
+      </div>
+      <div class="tickers"><span class="ticker-tag">QQQ</span><span class="ticker-tag">SMH</span></div>
+      <div class="card-meta"><span>🕒 12/08/2026</span><span>📰 Reuters (wire)</span></div>
+      <p class="card-summary">O Nasdaq 100 subiu 0,95% e o setor de tecnologia do S&amp;P 500 avançou 1,2%. A CoreWeave disparou 19% após elevar as projeções de capex e superar as estimativas do 2T; a Nebius Group saltou 25%. O S&amp;P 500 fechou em 7.748,50 pontos (+0,26%) e o Nasdaq Composite em 26.588,49 (+0,54%).</p>
+      <div class="box yellow">
+        <h4>📌 Por que isso importa?</h4>
+        <ul>
+          <li>QQQ: acompanha diretamente o Nasdaq-100; resultados de infraestrutura de IA são um driver central do ETF no momento.</li>
+          <li>SMH: otimismo com capex em IA (elevação de guidance de operadoras de data center) é positivo para a perspectiva de demanda por semicondutores, mesmo sem resultados diretos das maiores posições do ETF nesse pregão.</li>
+        </ul>
+      </div>
+      <div class="box green">
+        <h4>🌍 Cobertura global</h4>
+        <div class="regioncheck"><span class="off">✓ China</span><span class="on">✓ EUA</span><span class="off">✓ Europa</span><span class="off">✓ Brasil</span><span class="attn high">Atenção: Alta</span></div>
+        <div class="sourcelist">
+          <a href="https://finance.yahoo.com/" target="_blank" rel="noopener">Yahoo Finance — "Stock market today"</a>
+          <a href="https://www.benzinga.com/" target="_blank" rel="noopener">Benzinga — cobertura de earnings</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- INTL 3 -->
+    <div class="card">
+      <div class="card-head"><div class="num">3</div>
+        <h3><a href="https://finance.yahoo.com/personal-finance/investing/article/bitcoin-and-ethereum-prices-today-wednesday-august-12-2026-crypto-prices-rise-with-cpi-report-on-deck-121022039.html" target="_blank" rel="noopener">Bitcoin sobe antes do CPI e recua após dado vir em linha</a></h3>
+      </div>
+      <div class="tickers"><span class="ticker-tag">BTC</span></div>
+      <div class="card-meta"><span>🕒 12/08/2026</span><span>📰 Yahoo Finance</span></div>
+      <p class="card-summary">O Bitcoin abriu perto de US$ 63.547 na quarta-feira, subiu para cerca de US$ 64.200 (+~1%) antes da divulgação do CPI, na expectativa de um dado mais dovish, mas devolveu os ganhos e fechou em torno de US$ 63.400–63.600 após o dado vir em linha, sem a surpresa esperada. O BTC segue ~27% negativo no ano e ~49% abaixo da máxima histórica de outubro de 2025 (US$ 126.080).</p>
+      <div class="box yellow">
+        <h4>📌 Por que isso importa?</h4>
+        <ul>
+          <li>Mostra alta sensibilidade do Bitcoin a notícias de CPI/trajetória do Fed no momento atual.</li>
+          <li>Falha em romper de forma sustentada os US$ 65 mil mantém intacta a tendência de baixa de médio prazo, segundo múltiplos analistas.</li>
+          <li>Evidencia divergência entre apetite de risco em ações (que subiram) e em cripto (que recuou) no mesmo pregão.</li>
+        </ul>
+      </div>
+      <div class="box green">
+        <h4>🌍 Cobertura global</h4>
+        <div class="regioncheck"><span class="off">✓ China</span><span class="on">✓ EUA</span><span class="off">✓ Europa</span><span class="off">✓ Brasil</span><span class="attn medium">Atenção: Média</span></div>
+        <div class="sourcelist">
+          <a href="https://www.coindesk.com/tech/2026/08/12/live-updates-bitcoin-at-usd63-600" target="_blank" rel="noopener">CoinDesk — cobertura ao vivo</a>
+          <a href="https://www.thestreet.com/crypto/markets/bitcoin-price-today-august-12-2026" target="_blank" rel="noopener">TheStreet Crypto — análise de preço</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- INTL 4 -->
+    <div class="card">
+      <div class="card-head"><div class="num">4</div>
+        <h3><a href="https://www.coindesk.com/business/2026/08/12/goldman-sachs-leaps-into-bitcoin-income-etfs-with-usd2-25-billion-neos-buyout" target="_blank" rel="noopener">Goldman Sachs compra a NEOS Investments por até US$ 2,25 bi e entra em ETFs de renda com Bitcoin</a></h3>
+      </div>
+      <div class="tickers"><span class="ticker-tag">BTC</span></div>
+      <div class="card-meta"><span>🕒 12/08/2026</span><span>📰 CoinDesk / Yahoo Finance</span></div>
+      <p class="card-summary">O Goldman Sachs concordou em adquirir a gestora de ETFs NEOS Investments (que administra cerca de US$ 30 bi em 19 fundos de renda com opções) por até US$ 2,25 bi em dinheiro e ações. O negócio traz três produtos ligados a cripto: o Bitcoin High Income ETF (BTCI, ~US$ 1,0–1,1 bi em ativos, usa opções cobertas sobre ETPs de BTC para gerar ~27% de yield, mas caiu ~43% em 12 meses), o Boosted Bitcoin High Income ETF (XBCI) e o Ethereum High Income ETF (NEHI). Fechamento previsto para o 1T27.</p>
+      <div class="box yellow">
+        <h4>📌 Por que isso importa?</h4>
+        <ul>
+          <li>Sinaliza continuidade da adoção institucional de produtos derivados de Bitcoin mesmo em meio à fraqueza recente do preço.</li>
+          <li>Sinal estrutural de legitimação do ativo no mercado tradicional (TradFi), distinto da direção de curto prazo do preço à vista.</li>
+          <li>Eleva o Goldman ao 8º maior provedor de ETFs ativos, segundo a Morningstar.</li>
+        </ul>
+      </div>
+      <div class="box green">
+        <h4>🌍 Cobertura global</h4>
+        <div class="regioncheck"><span class="off">✓ China</span><span class="on">✓ EUA</span><span class="off">✓ Europa</span><span class="off">✓ Brasil</span><span class="attn medium">Atenção: Média</span></div>
+        <div class="sourcelist">
+          <a href="https://finance.yahoo.com/markets/options/articles/goldman-sachs-acquire-etf-provider-130635763.html" target="_blank" rel="noopener">Yahoo Finance — detalhes do acordo</a>
+          <a href="https://www.theblock.co/news/business/2026-08-12-goldman-sachs-bitcoin-ether-income-etfs-neos-deal-411618" target="_blank" rel="noopener">The Block — análise do negócio</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- INTL 5 -->
+    <div class="card">
+      <div class="card-head"><div class="num">5</div>
+        <h3><a href="https://www.bloomberg.com/news/articles/2026-08-12/sk-hynix-samsung-extend-gains-after-report-temasek-to-invest" target="_blank" rel="noopener">Ações da Samsung e SK Hynix disparam com relato de investimento da Temasek</a></h3>
+      </div>
+      <div class="tickers"><span class="ticker-tag">SMH</span></div>
+      <div class="card-meta"><span>🕒 12–13/08/2026</span><span>📰 Bloomberg / CNBC</span></div>
+      <p class="card-summary">O Kospi subiu 3,68% (a até ~5% intradiário) após relatos de que a Temasek, fundo soberano de Singapura, planeja investir diretamente nas líderes sul-coreanas de semicondutores. Samsung Electronics fechou com alta de ~6,7–7% e SK Hynix de ~5,5–6,6%. O movimento reflete confiança renovada na demanda por chips de memória para IA após uma correção anterior.</p>
+      <div class="box yellow">
+        <h4>📌 Por que isso importa?</h4>
+        <ul>
+          <li>Leitura positiva para toda a cadeia global de semicondutores, incluindo a TSMC (uma das três maiores posições do SMH, que subiu 0,42% no mesmo pregão).</li>
+          <li>Reforça a tese de capex em IA que sustenta o rali do SMH em 2026.</li>
+          <li>Sinaliza rotação de capital institucional (Temasek) de volta para a cadeia de memória para IA após correção recente.</li>
+        </ul>
+      </div>
+      <div class="box green">
+        <h4>🌍 Cobertura global</h4>
+        <div class="regioncheck"><span class="on">✓ China</span><span class="on">✓ EUA</span><span class="off">✓ Europa</span><span class="off">✓ Brasil</span><span class="attn high">Atenção: Alta</span></div>
+        <div class="sourcelist">
+          <a href="https://www.cnbc.com/2026/08/13/south-korea-kospi-bull-market-sk-hynix-samsung-ai-trade.html" target="_blank" rel="noopener">CNBC — "Kospi bull market"</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- INTL 6 -->
+    <div class="card">
+      <div class="card-head"><div class="num">6</div>
+        <h3><a href="https://www.investing.com/news/economy-news/ciscos-aidriven-profit-jump-ppi-ahead--whats-moving-markets-4856804" target="_blank" rel="noopener">Cisco tem lucro impulsionado por IA; mercado agora de olho no PPI</a></h3>
+      </div>
+      <div class="tickers"><span class="ticker-tag">QQQ</span><span class="ticker-tag">SMH</span></div>
+      <div class="card-meta"><span>🕒 13/08/2026</span><span>📰 Investing.com</span></div>
+      <p class="card-summary">A Cisco Systems reportou margem bruta ajustada de 66,3% no trimestre (vs. 66% de consenso), mas as ações caíram ~3% no after-hours. A Coherent (fornecedora de componentes fotônicos para data centers de IA) perdeu ~3% apesar de margens em linha, por cautela na orientação. A atenção do mercado se voltou para o PPI de julho, esperado às 8h30 (horário de Nova York) de 13/08.</p>
+      <div class="box yellow">
+        <h4>📌 Por que isso importa?</h4>
+        <ul>
+          <li>QQQ: Cisco é componente do Nasdaq-100; a queda pós-resultado é um vento contrário moderado no dia.</li>
+          <li>SMH: desempenho de margem da Coherent é um termômetro da saúde da cadeia de suprimentos de infraestrutura de IA.</li>
+        </ul>
+      </div>
+      <div class="box green">
+        <h4>🌍 Cobertura global</h4>
+        <div class="regioncheck"><span class="off">✓ China</span><span class="on">✓ EUA</span><span class="off">✓ Europa</span><span class="off">✓ Brasil</span><span class="attn medium">Atenção: Média</span></div>
+        <div class="sourcelist">
+          <a href="https://www.thestreet.com/" target="_blank" rel="noopener">TheStreet — "Stock Market Today (Aug. 13)"</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- INTL 7 -->
+    <div class="card">
+      <div class="card-head"><div class="num">7</div>
+        <h3><a href="https://www.tipranks.com/news/stock-market-news-today-8-13-26-futures-wobble-ahead-of-key-ppi-report" target="_blank" rel="noopener">Futuros oscilam à espera do PPI de julho nos EUA</a></h3>
+      </div>
+      <div class="tickers"><span class="ticker-tag">QQQ</span><span class="ticker-tag">SGOV</span></div>
+      <div class="card-meta"><span>🕒 13/08/2026</span><span>📰 TipRanks / Investing.com</span></div>
+      <p class="card-summary">O PPI de julho, com consenso de +0,2% no mês, era esperado para as 8h30 (NY) de 13/08. Os futuros do S&amp;P 500 e do Dow subiam moderadamente (+0,13% e +0,25%) antes do dado; os futuros do Nasdaq 100 estavam praticamente estáveis por volta das 5h41 (NY). O dado vem um dia após um CPI em linha.</p>
+      <div class="box yellow">
+        <h4>📌 Por que isso importa?</h4>
+        <ul>
+          <li>QQQ: mais um dado que alimenta as expectativas sobre a trajetória de juros do Fed, com efeito direto sobre ações de crescimento/tecnologia.</li>
+          <li>SGOV: uma surpresa no PPI (para cima ou para baixo) pode mover as expectativas de juros de curto prazo e, assim, o rendimento futuro do ETF.</li>
+        </ul>
+      </div>
+      <div class="box green">
+        <h4>🌍 Cobertura global</h4>
+        <div class="regioncheck"><span class="off">✓ China</span><span class="on">✓ EUA</span><span class="off">✓ Europa</span><span class="off">✓ Brasil</span><span class="attn medium">Atenção: Média</span></div>
+        <div class="sourcelist"><a href="https://www.investing.com/" target="_blank" rel="noopener">Investing.com — calendário econômico</a></div>
+      </div>
+    </div>
+
+    <!-- INTL 8 -->
+    <div class="card">
+      <div class="card-head"><div class="num">8</div>
+        <h3><a href="https://www.scmp.com/tech/big-tech/article/3363786/tencent-capex-jumps-176-ai-push-revenue-beats-estimates" target="_blank" rel="noopener">Tencent: capex em IA salta 176%, receita supera estimativas, mas ação cai</a></h3>
+      </div>
+      <div class="tickers"><span class="ticker-tag">MCHI</span></div>
+      <div class="card-meta"><span>🕒 12/08/2026</span><span>📰 South China Morning Post</span></div>
+      <p class="card-summary">A receita da Tencent no 2T26 chegou a RMB 204,8 bi (~US$ 30,4 bi), alta de 11%, acima do consenso Bloomberg de RMB 202,8 bi. O lucro líquido ajustado foi de RMB 68,4 bi, em linha com o consenso. O capex saltou 176% na comparação anual, para RMB 52,8 bi, levando o fluxo de caixa livre a ficar negativo (~RMB 13,8 bi) e reduzindo o caixa líquido de RMB 146,9 bi para RMB 58,2 bi. A ação chegou a cair até 4,5% no pregão.</p>
+      <div class="box yellow">
+        <h4>📌 Por que isso importa?</h4>
+        <ul>
+          <li>Tencent é a maior posição do MCHI (~14,5% do fundo) — movedor direto do ETF.</li>
+          <li>Estabelece o parâmetro de comparação para o resultado da Alibaba em 28/08: mercado passa a precificar "dor de capex em IA antes do retorno em IA" em toda a tecnologia chinesa.</li>
+          <li>Fluxo de caixa livre negativo em uma gigante chinesa de tecnologia renova ansiedade dos investidores sobre o retorno (ROI) dos investimentos em IA — tema relevante também para a BABA.</li>
+        </ul>
+      </div>
+      <div class="box green">
+        <h4>🌍 Cobertura global</h4>
+        <div class="regioncheck"><span class="on">✓ China</span><span class="on">✓ EUA</span><span class="off">✓ Europa</span><span class="off">✓ Brasil</span><span class="attn high">Atenção: Alta</span></div>
+        <div class="sourcelist">
+          <a href="https://www.bloomberg.com/news/articles/2026-08-12/tencent-sales-top-estimates-on-wechat-ad-surge-resilient-games" target="_blank" rel="noopener">Bloomberg — detalhes do balanço</a>
+          <a href="https://www.cnbc.com/2026/08/12/china-tencent-earnings-q2-2026-gaming-ai-advertising.html" target="_blank" rel="noopener">CNBC — cobertura do resultado</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- INTL 9 -->
+    <div class="card">
+      <div class="card-head"><div class="num">9</div>
+        <h3><a href="https://news.rthk.hk/rthk/en/component/k2/1866049-20260813.htm" target="_blank" rel="noopener">Hang Seng abre em queda após resultado da Tencent; mercado continental diverge</a></h3>
+      </div>
+      <div class="tickers"><span class="ticker-tag">MCHI</span><span class="ticker-tag">BABA</span></div>
+      <div class="card-meta"><span>🕒 13/08/2026</span><span>📰 RTHK (rádio pública de Hong Kong)</span></div>
+      <p class="card-summary">O Hang Seng abriu em 25.288 pontos (-0,6%) após a Tencent cair (chegando a -4,5% intradiário) na esteira do resultado. Alibaba e Meituan também recuaram cerca de 1,1% na abertura, no mesmo movimento de leitura sobre custo de capex em IA. No fechamento, o HSI terminou em queda de ~0,2%, em 25.396 pontos, enquanto o Índice Hang Seng Tech subiu 0,3%. Já o Shanghai Composite, no mercado continental, avançou ~0,5%, descolando da fraqueza de Hong Kong.</p>
+      <div class="box yellow">
+        <h4>📌 Por que isso importa?</h4>
+        <ul>
+          <li>Evidência direta, no mesmo dia, de driver de preço tanto para MCHI quanto para BABA.</li>
+          <li>Divergência entre tecnologia listada em Hong Kong (fraca) e ações continentais (firmes) é um sinal relevante para o posicionamento em MCHI.</li>
+          <li>Mostra a Alibaba se movendo por efeito de contágio do resultado da Tencent, não por notícia própria — contexto relevante antes do resultado da BABA em 28/08.</li>
+        </ul>
+      </div>
+      <div class="box green">
+        <h4>🌍 Cobertura global</h4>
+        <div class="regioncheck"><span class="on">✓ China</span><span class="off">✓ EUA</span><span class="off">✓ Europa</span><span class="off">✓ Brasil</span><span class="attn medium">Atenção: Média</span></div>
+        <div class="sourcelist">
+          <a href="https://www.dimsumdaily.hk/hang-seng-opens-lower-as-tencent-drops-over-3-per-cent-after-results/" target="_blank" rel="noopener">Dim Sum Daily — abertura do pregão</a>
+          <a href="https://news.rthk.hk/rthk/en/component/k2/1866002-20260813.htm" target="_blank" rel="noopener">RTHK — fechamento do pregão</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- INTL 10 -->
+    <div class="card">
+      <div class="card-head"><div class="num">10</div>
+        <h3><a href="https://english.news.cn/20260812/0232efdd81744ed3a6bf6e0fc240694f/c.html" target="_blank" rel="noopener">Banco central da China sinaliza novos parâmetros de juros, sem estímulo explícito</a></h3>
+      </div>
+      <div class="tickers"><span class="ticker-tag">MCHI</span><span class="ticker-tag">BABA</span></div>
+      <div class="card-meta"><span>🕒 12–13/08/2026</span><span>📰 Xinhua / Caixin</span></div>
+      <p class="card-summary">O relatório trimestral de política monetária do PBOC abandonou a linguagem específica de reforma da LPR em favor de "parâmetros de precificação de crédito mais diversificados" e passou a designar formalmente a taxa overnight DR001 como referência operacional, com operações de recompra reversa overnight. O banco reafirmou postura "moderadamente frouxa", sem se comprometer com novos cortes explícitos de juros ou compulsório. O PIB do 2T26 veio em 4,3%, o menor ritmo em mais de três anos e abaixo da meta anual de 4,5–5%.</p>
+      <div class="box yellow">
+        <h4>📌 Por que isso importa?</h4>
+        <ul>
+          <li>Sinal macro de liquidez diretamente relevante para a tese ampla do MCHI sobre o mercado chinês.</li>
+          <li>Ausência de estímulo explícito apesar de crescimento abaixo da meta pode ser lida como sinal de cautela, pressionando o apetite por risco.</li>
+          <li>Novo foco em custo de captação (DR001) afeta expectativas de custo de funding para grandes tomadoras, incluindo negócios financeiros ligados à Alibaba.</li>
+        </ul>
+      </div>
+      <div class="box green">
+        <h4>🌍 Cobertura global</h4>
+        <div class="regioncheck"><span class="on">✓ China</span><span class="on">✓ EUA</span><span class="off">✓ Europa</span><span class="off">✓ Brasil</span><span class="attn medium">Atenção: Média</span></div>
+        <div class="sourcelist">
+          <a href="https://www.caixinglobal.com/2026-08-13/pboc-signals-diversified-loan-pricing-benchmarks-greater-focus-on-overnight-rates-102473572.html" target="_blank" rel="noopener">Caixin — análise da política monetária</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- INTL 11 -->
+    <div class="card">
+      <div class="card-head"><div class="num">11</div>
+        <h3><a href="https://www.cnbc.com/2026/08/13/chinese-firm-tops-micron-kioxia-shipments-nand-memory-chips.html" target="_blank" rel="noopener">YMTC da China ultrapassa a Kioxia e entra no top-3 global de chips NAND</a></h3>
+      </div>
+      <div class="tickers"><span class="ticker-tag">MCHI</span></div>
+      <div class="card-meta"><span>🕒 13/08/2026</span><span>📰 CNBC (dados da Counterpoint Research)</span></div>
+      <p class="card-summary">Segundo a Counterpoint Research, a participação global da YMTC em embarques de NAND no 2T chegou a 14%, ultrapassando a Kioxia e ficando em terceiro lugar, atrás de Samsung (25%) e SK Hynix (22%). Os embarques cresceram 22% na comparação anual, impulsionados por oferta apertada da indústria e demanda de servidores de IA. A empresa está em produção em massa de NAND 3D de 267 camadas.</p>
+      <div class="box yellow">
+        <h4>📌 Por que isso importa?</h4>
+        <ul>
+          <li>Reforça a narrativa de autossuficiência chinesa em semicondutores, tema que sustenta teses otimistas sobre o setor de tecnologia dentro do MCHI.</li>
+          <li>Marco relevante mesmo sem sobreposição direta com as maiores posições do ETF, por dar suporte ao sentimento amplo do setor de hard-tech chinês.</li>
+        </ul>
+      </div>
+      <div class="box green">
+        <h4>🌍 Cobertura global</h4>
+        <div class="regioncheck"><span class="on">✓ China</span><span class="on">✓ EUA</span><span class="off">✓ Europa</span><span class="off">✓ Brasil</span><span class="attn low">Atenção: Baixa</span></div>
+        <div class="sourcelist"><a href="https://www.tomshardware.com/tech-industry/ymtc-breaks-into-the-top-three-nand-makers-for-the-first-time" target="_blank" rel="noopener">Tom's Hardware — detalhes técnicos</a></div>
+      </div>
+      <div class="flagnote">⚠️ Não confirmado por veículo mandatório da lista de China (SCMP/Caixin/Yicai/China Daily/Xinhua); baseado em imprensa técnica internacional.</div>
+    </div>
+
+    <!-- INTL 12 -->
+    <div class="card">
+      <div class="card-head"><div class="num">12</div>
+        <h3><a href="https://www.caixinglobal.com/2026-08-12/us-proposes-ban-on-domestic-drone-maker-over-alleged-dji-ties-102473559.html" target="_blank" rel="noopener">FCC dos EUA propõe banir fabricante de drones por suposta ligação com a DJI</a></h3>
+      </div>
+      <div class="tickers"><span class="ticker-tag">MCHI</span></div>
+      <div class="card-meta"><span>🕒 12/08/2026</span><span>📰 Caixin</span></div>
+      <p class="card-summary">A FCC (reguladora de telecomunicações dos EUA) propôs bloquear a importação e comercialização de produtos da Anzu Robotics (Texas), alegando que a empresa seria essencialmente um produto da DJI rebatizado, usado para driblar restrições já existentes sobre a própria DJI. O período de comentários públicos vai até 2 de setembro de 2026.</p>
+      <div class="box yellow">
+        <h4>📌 Por que isso importa?</h4>
+        <ul>
+          <li>Sinaliza escalada contínua do escrutínio dos EUA sobre tecnologia chinesa, poucas semanas antes de uma esperada cúpula Trump-Xi em setembro.</li>
+          <li>Faz parte do clima mais amplo de sanções e contramedidas entre EUA e China que vem pressionando múltiplos de tecnologia chinesa, com potencial efeito de sentimento sobre o MCHI.</li>
+        </ul>
+      </div>
+      <div class="box green">
+        <h4>🌍 Cobertura global</h4>
+        <div class="regioncheck"><span class="on">✓ China</span><span class="on">✓ EUA</span><span class="off">✓ Europa</span><span class="off">✓ Brasil</span><span class="attn low">Atenção: Baixa</span></div>
+        <div class="sourcelist"><a href="https://www.caixinglobal.com/" target="_blank" rel="noopener">Caixin Global</a></div>
+      </div>
+    </div>
+
+    <!-- INTL 13 -->
+    <div class="card">
+      <div class="card-head"><div class="num">13</div>
+        <h3><a href="https://www.stocktitan.net/news/JD/jd-com-announces-second-quarter-and-interim-2026-2wpbcsih99ao.html" target="_blank" rel="noopener">JD.com reporta lucro de RMB 7,1 bi no 2T26; leitura para o e-commerce chinês</a></h3>
+      </div>
+      <div class="tickers"><span class="ticker-tag">BABA</span><span class="ticker-tag">MCHI</span></div>
+      <div class="card-meta"><span>🕒 13/08/2026, antes da abertura</span><span>📰 Divulgação via GlobeNewswire</span></div>
+      <p class="card-summary">A receita líquida da JD.com somou RMB 346,4 bi (~US$ 51,1 bi), queda de 2,9% ante uma base de comparação elevada. O resultado operacional passou de prejuízo no 2T25 para um lucro de RMB 3,7–4,5 bi. As despesas de logística subiram 10,4% e os investimentos em P&amp;D avançaram 37,7%. Embora não seja uma posição relevante do MCHI, o resultado é a comparação mais próxima de como o mercado está tratando a recuperação de margem do e-commerce chinês, tema central para a Alibaba antes de seu resultado em 28/08.</p>
+      <div class="box yellow">
+        <h4>📌 Por que isso importa?</h4>
+        <ul>
+          <li>Leitura direta para o sentimento sobre a recuperação de margens no e-commerce chinês, relevante para a tese de BABA.</li>
+          <li>O mercado de opções havia precificado um movimento de 5,1% para a ação — resultado próximo dessa faixa é um teste da precisão da precificação de risco do setor.</li>
+        </ul>
+      </div>
+      <div class="box green">
+        <h4>🌍 Cobertura global</h4>
+        <div class="regioncheck"><span class="off">✓ China</span><span class="on">✓ EUA</span><span class="off">✓ Europa</span><span class="off">✓ Brasil</span><span class="attn low">Atenção: Baixa</span></div>
+        <div class="sourcelist"><a href="https://www.manilatimes.net/2026/08/13/tmt-newswire/globenewswire/jdcom-announces-second-quarter-and-interim-2026-results/2404672" target="_blank" rel="noopener">Manila Times (syndicação GlobeNewswire)</a></div>
+      </div>
+      <div class="flagnote">⚠️ Não confirmado em nenhum dos veículos mandatórios de China (SCMP/Caixin/Yicai) até o fechamento desta pesquisa — fonte é o próprio release da empresa, sindicado por agências de notícias corporativas.</div>
+    </div>
+
+    <!-- INTL 14 -->
+    <div class="card">
+      <div class="card-head"><div class="num">14</div>
+        <h3><a href="https://www.bloomberg.com/news/articles/2026-08-11/bitwise-cuts-14-of-jobs-with-crypto-industry-under-pressure" target="_blank" rel="noopener">Bitwise corta 14% do quadro de funcionários em meio à baixa prolongada de cripto</a></h3>
+      </div>
+      <div class="tickers"><span class="ticker-tag">BTC</span></div>
+      <div class="card-meta"><span>🕒 11/08/2026</span><span>📰 Bloomberg</span></div>
+      <p class="card-summary">A gestora de cripto Bitwise Asset Management reduziu seu quadro de ~180 para ~155 funcionários em meio à baixa prolongada de preços dos ativos digitais. O CEO Hunter Horsley afirmou que o quadro atual ainda é o maior da história da empresa. O corte segue movimentos semelhantes em Coinbase (também 14%), Gemini, Crypto.com e Kraken ao longo de 2026.</p>
+      <div class="box yellow">
+        <h4>📌 Por que isso importa?</h4>
+        <ul>
+          <li>Sinal tangível de estresse em empresas nativas de cripto durante a fase prolongada de consolidação/baixa (BTC -27% no ano, -49% da máxima histórica).</li>
+          <li>Indicador de sentimento relevante mesmo sendo notícia corporativa de custos, não catalisador direto de preço.</li>
+        </ul>
+      </div>
+      <div class="box green">
+        <h4>🌍 Cobertura global</h4>
+        <div class="regioncheck"><span class="off">✓ China</span><span class="on">✓ EUA</span><span class="off">✓ Europa</span><span class="off">✓ Brasil</span><span class="attn low">Atenção: Baixa</span></div>
+        <div class="sourcelist">
+          <a href="https://finance.yahoo.com/markets/crypto/articles/bitwise-cuts-14-workforce-while-072015167.html" target="_blank" rel="noopener">Yahoo Finance — cobertura do corte</a>
+        </div>
+      </div>
+      <div class="flagnote">⚠️ Fora da janela estrita de 24h (publicado em 11/08) — incluído porque é a única notícia de fundamento encontrada especificamente para BTC além dos temas de preço/macro.</div>
+    </div>
+
+    <!-- INTL 15 -->
+    <div class="card">
+      <div class="card-head"><div class="num">15</div>
+        <h3><a href="https://www.gurufocus.com/news/9026112/a-look-at-omega-healthcare-investors-inc-ohi-after-38-decline-gf-value-4043-vs-price-4557" target="_blank" rel="noopener">Omega Healthcare (OHI) recua 3,8%; analistas seguem otimistas com REITs de saúde</a></h3>
+      </div>
+      <div class="tickers"><span class="ticker-tag">OHI</span></div>
+      <div class="card-meta"><span>🕒 11/08/2026</span><span>📰 GuruFocus</span></div>
+      <p class="card-summary">As ações da Omega Healthcare Investors caíram 3,8%, para US$ 45,57, acumulando queda de 6,5% na semana e 4,4% no mês, apesar de ganho de 20,3% em 12 meses. Contexto: em 23/07/2026 a empresa declarou dividendo trimestral de US$ 0,68/ação (+US$ 0,01), pago em 14/08; em 04/08 o Citi elevou o preço-alvo de US$ 52 para US$ 58.</p>
+      <div class="box yellow">
+        <h4>📌 Por que isso importa?</h4>
+        <ul>
+          <li>Fraqueza recente contra um consenso de "compra" e alvo médio elevado (até US$ 58 pós-Citi) sugere que analistas veem a queda como oportunidade, não deterioração de fundamentos.</li>
+          <li>Força do setor de REITs de saúde/enfermagem especializada permanece o pano de fundo (pares do setor reportaram recorde de alocação de capital no 1S26).</li>
+        </ul>
+      </div>
+      <div class="box green">
+        <h4>🌍 Cobertura global</h4>
+        <div class="regioncheck"><span class="off">✓ China</span><span class="on">✓ EUA</span><span class="off">✓ Europa</span><span class="off">✓ Brasil</span><span class="attn low">Atenção: Baixa</span></div>
+        <div class="sourcelist">Nenhuma cobertura adicional confirmada em veículo mandatório.</div>
+      </div>
+      <div class="flagnote">⚠️ Fora da janela estrita de 24h (dados de 11/08) e sem confirmação em veículo mandatório — único dado disponível para OHI nesta pesquisa; recomenda-se nova checagem específica.</div>
+    </div>
+
+    <!-- INTL 16 -->
+    <div class="card">
+      <div class="card-head"><div class="num">16</div>
+        <h3><a href="https://247wallst.com/investing/2026/08/11/why-retirees-are-adding-vanguards-international-dividend-fund-while-the-dollar-slides/" target="_blank" rel="noopener">Dólar fraco impulsiona o ETF de dividendos internacionais VYMI</a></h3>
+      </div>
+      <div class="tickers"><span class="ticker-tag">VYMI</span></div>
+      <div class="card-meta"><span>🕒 11/08/2026</span><span>📰 24/7 Wall St.</span></div>
+      <p class="card-summary">O VYMI acumula alta de ~18,1% no ano até 5/08, impulsionado em parte pela desvalorização do dólar, que aumenta o valor em conversão dos dividendos estrangeiros. O pagamento trimestral de junho/2026 (US$ 1,2569/cota) foi o maior da história do fundo; as distribuições do 1S26 (US$ 1,9649) já superam todo o 1S25. As maiores posições incluem Roche, Shell, UBS, Novo Nordisk e Unilever — nomes fortemente europeus.</p>
+      <div class="box yellow">
+        <h4>📌 Por que isso importa?</h4>
+        <ul>
+          <li>Beneficiário direto da fraqueza do dólar e da força dos dividendos europeus.</li>
+          <li>Contextualiza por que fundos de renda internacional vêm superando pares domésticos em 2026.</li>
+        </ul>
+      </div>
+      <div class="box green">
+        <h4>🌍 Cobertura global</h4>
+        <div class="regioncheck"><span class="off">✓ China</span><span class="on">✓ EUA</span><span class="on">✓ Europa</span><span class="off">✓ Brasil</span><span class="attn low">Atenção: Baixa</span></div>
+        <div class="sourcelist">Tema corroborado de forma geral pela Yahoo Finance (fundos de dividendo internacional superando pares domésticos), mas não como matéria idêntica.</div>
+      </div>
+      <div class="flagnote">⚠️ Fora da janela estrita de 24h (11/08) e fonte não-mandatória — incluído por ser a única notícia específica encontrada para VYMI/VYM nesta pesquisa.</div>
+    </div>
+
+  </section>
+
+  <!-- FINAL ANALYSIS -->
+  <section class="block" id="analise">
+    <div class="block-title"><h2>📊 Análise Final</h2></div>
+    <div class="block-desc">Situação atual de cada ativo monitorado, com a visão de diferentes analistas, impacto esperado e perspectiva Brasil–China–Global.</div>
+
+    <div class="analysis-card">
+      <h3>BBAS3 — Banco do Brasil</h3>
+      <div class="tickers"><span class="ticker-tag">BBAS3</span></div>
+      <p><span class="label">Situação atual</span> Lucro do 2T26 veio acima do consenso, mas a qualidade do resultado é questionada por Itaú BBA, Bradesco BBI, Goldman Sachs, Morgan Stanley e JPMorgan, que apontam provisões menores (não melhora operacional) e efeito fiscal favorável como principais explicações para o "beat".</p>
+      <p><span class="label">Impacto previsto</span> Deterioração continuada da carteira agro (inadimplência subindo pelo 4º trimestre seguido) deve seguir pressionando provisões nos próximos trimestres. ROE de 8,3% ainda abaixo do custo de capital limita reprecificação da ação no curto prazo.</p>
+      <p><span class="label">Perspectiva Brasil-Global</span> História puramente doméstica, sem repercussão em veículos internacionais identificada nesta pesquisa — reflete o peso do agronegócio na carteira de crédito brasileira, tema pouco acompanhado fora do Brasil.</p>
+    </div>
+
+    <div class="analysis-card">
+      <h3>TAEE3/TAEE4 — Taesa</h3>
+      <div class="tickers"><span class="ticker-tag">TAEE3</span><span class="ticker-tag">TAEE4</span></div>
+      <p><span class="label">Situação atual</span> Lucro regulatório em queda (-28,5%) gera dúvidas sobre sustentabilidade de dividendos, mas a aquisição de ativos da Energisa (adicionando R$ 305 mi de RAP) expande a base de receita regulada futura. XP e Itaú BBA mantiveram avaliação neutra, sem mudança de recomendação.</p>
+      <p><span class="label">Impacto previsto</span> Alavancagem de 4,2x é o principal ponto de atenção — crescimento via aquisições financiado com dívida pode limitar a distribuição de proventos no curto prazo, mesmo com a base de ativos maior.</p>
+      <p><span class="label">Perspectiva Brasil-Global</span> Setor de transmissão de energia é tipicamente de baixo interesse para investidores internacionais; cobertura concentrada em veículos domésticos e especializados em renda variável.</p>
+    </div>
+
+    <div class="analysis-card">
+      <h3>VALE3 — Vale</h3>
+      <div class="tickers"><span class="ticker-tag">VALE3</span></div>
+      <p><span class="label">Situação atual</span> Antecipação do projeto de cobre em Salobo para 2028 reforça a estratégia de diversificação para metais de transição energética. Ação mostrou resiliência relativa (+0,74% em 12/08) mesmo com o Ibovespa em queda por "risco Brasil".</p>
+      <p><span class="label">Impacto previsto</span> Produção adicional de ~30 mil toneladas de cobre e ~15 mil onças de ouro por ano a partir de 2028 amplia a receita não ligada a minério de ferro, reduzindo correlação com o ciclo de preços do minério.</p>
+      <p><span class="label">Perspectiva Brasil-Global</span> Notícia com potencial de repercussão internacional (demanda por cobre é tema global ligado à transição energética e à cadeia de IA/data centers), mas cobertura mandatória dedicada não foi localizada nesta janela — recomenda-se acompanhamento nos próximos dias.</p>
+    </div>
+
+    <div class="analysis-card">
+      <h3>AMER3 — Americanas</h3>
+      <div class="tickers"><span class="ticker-tag">AMER3</span></div>
+      <p><span class="label">Situação atual</span> Prejuízo quase triplicou no 2T26, com Ebitda em queda de mais de 50% — sinal de pressão de margem que contradiz a narrativa de recuperação pós-reestruturação.</p>
+      <p><span class="label">Impacto previsto</span> Manutenção de pagamento de JCP mesmo com prejuízo é vista com ressalvas; mercado tende a monitorar de perto os próximos trimestres para confirmar (ou não) a tese de virada operacional.</p>
+      <p><span class="label">Perspectiva Brasil-Global</span> História doméstica, sem repercussão internacional identificada.</p>
+    </div>
+
+    <div class="analysis-card">
+      <h3>MCHI / BABA — Tecnologia chinesa</h3>
+      <div class="tickers"><span class="ticker-tag">MCHI</span><span class="ticker-tag">BABA</span></div>
+      <p><span class="label">Situação atual</span> O resultado da Tencent (maior posição do MCHI) trouxe receita acima do esperado, mas capex em IA disparando 176% e fluxo de caixa livre negativo assustaram o mercado, derrubando a ação e arrastando BABA e Meituan por contágio. O PBOC manteve política monetária cautelosa apesar do PIB abaixo da meta, e os EUA seguem escalando restrições tecnológicas (caso Anzu/DJI).</p>
+      <p><span class="label">Impacto previsto</span> O mercado passa a precificar "dor de capex antes do retorno de IA" em toda a tecnologia chinesa — isso deve ser o tema central do resultado da Alibaba em 28/08. Analistas devem monitorar de perto a queima de caixa livre como novo critério de avaliação, não apenas crescimento de receita.</p>
+      <p><span class="label">Perspectiva Brasil-China-Global</span> Divergência entre Hong Kong (fraco) e mercado continental (firme) sinaliza que o capital doméstico chinês segue mais otimista que o capital estrangeiro/offshore — relevante para quem posiciona MCHI via ações de Hong Kong vs. A-shares. Tensão regulatória EUA-China (drones, listagem da Alibaba como "empresa militar" pelo Pentágono, ações judiciais de investidores) segue como pano de fundo de risco geopolítico.</p>
+    </div>
+
+    <div class="analysis-card">
+      <h3>QQQ / SMH — Tecnologia e semicondutores dos EUA</h3>
+      <div class="tickers"><span class="ticker-tag">QQQ</span><span class="ticker-tag">SMH</span></div>
+      <p><span class="label">Situação atual</span> CPI em linha aliviou temores de alta de juros e, combinado com resultados fortes de infraestrutura de IA (CoreWeave, Nebius), impulsionou Nasdaq e S&amp;P 500. Rali de semicondutores coreanos (Samsung, SK Hynix) reforça o otimismo com a cadeia de memória para IA.</p>
+      <p><span class="label">Impacto previsto</span> Atenção agora se volta para o PPI de 13/08 como próximo catalisador de juros. Resultado da Cisco (queda pós-balanço) mostra que nem todo nome de tecnologia está sendo recompensado — seletividade crescente dentro do setor.</p>
+      <p><span class="label">Perspectiva Global</span> Tema de capex em IA conecta diretamente o desempenho de QQQ/SMH ao que acontece com MCHI/BABA (Tencent) e com a cadeia asiática de semicondutores — um mesmo fio condutor de "custo vs. retorno de IA" atravessa os três mercados.</p>
+    </div>
+
+    <div class="analysis-card">
+      <h3>BTC — Bitcoin</h3>
+      <div class="tickers"><span class="ticker-tag">BTC</span></div>
+      <p><span class="label">Situação atual</span> Preço oscilou perto de US$ 63,5 mil, sem sustentar alta mesmo com CPI ameno — sinal de apetite de risco ainda fraco em cripto, mesmo com ações subindo no mesmo pregão. Cortes de pessoal na Bitwise (após Coinbase e outras) mostram estresse operacional persistente no setor.</p>
+      <p><span class="label">Impacto previsto</span> A aquisição da NEOS pelo Goldman Sachs (produtos de renda com Bitcoin) é o contraponto estrutural positivo: mesmo com preço fraco, instituições tradicionais seguem aumentando exposição a produtos derivados de cripto.</p>
+      <p><span class="label">Perspectiva Global</span> Sensibilidade elevada a dados macro dos EUA (CPI/PPI/Fed) mantém o BTC como ativo de risco correlacionado a políticas monetárias, mais do que como "reserva de valor" descorrelacionada, no comportamento observado nesta janela.</p>
+    </div>
+
+    <div class="analysis-card">
+      <h3>SGOV, OHI, VYM/VYMI</h3>
+      <div class="tickers"><span class="ticker-tag">SGOV</span><span class="ticker-tag">OHI</span><span class="ticker-tag">VYM</span><span class="ticker-tag">VYMI</span></div>
+      <p><span class="label">Situação atual</span> SGOV segue atrelado à trajetória de juros do Fed, com CPI em linha e PPI em aberto como próximos catalisadores. OHI recuou na semana mas mantém recomendação de compra e alvo elevado pelo Citi. VYMI segue como destaque de performance em 2026, beneficiado pelo dólar fraco e por dividendos europeus recordes; não foi encontrada notícia específica e recente para VYM.</p>
+      <p><span class="label">Impacto previsto</span> Manutenção de juros nos EUA (sem corte nem alta) é cenário neutro a levemente negativo para o yield futuro do SGOV. Para OHI, analistas veem a fraqueza recente como oportunidade de compra dentro da tese de REITs de saúde.</p>
+      <p><span class="label">Perspectiva Global</span> Este grupo tem menor densidade de notícias na janela pesquisada — recomenda-se atenção especial em atualizações futuras deste relatório, já que a cobertura disponível ficou concentrada em fontes não-mandatórias.</p>
+    </div>
+
+  </section>
+
+  <footer>
+    Stocks Report — gerado automaticamente a partir de pesquisa em múltiplas fontes. Links obtidos via busca e checagem cruzada entre veículos; não foram abertos individualmente para confirmação ao vivo devido a restrição de rede do ambiente de geração. Verificação manual recomendada antes de uso para decisões de investimento. Este documento não constitui recomendação de investimento.
+  </footer>
+
+</div>
+</body>
+</html>
