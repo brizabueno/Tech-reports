@@ -1,0 +1,781 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tech Global Report - 24h</title>
+<style>
+  :root {
+    --bg: #f1f2f4;
+    --card-bg: #ffffff;
+    --text: #1a1a1a;
+    --text-muted: #5a5f66;
+    --header-bg: #0b0b0d;
+    --header-text: #ffffff;
+    --yellow-bg: #fff6d8;
+    --yellow-border: #f0c419;
+    --yellow-text: #6b5300;
+    --green-bg: #e6f6ec;
+    --green-border: #2fa860;
+    --green-text: #14532d;
+    --card-border: #e3e5e8;
+    --link: #0b5fff;
+    --tag-china: #de2910;
+    --tag-usa: #3c3b6e;
+    --tag-europe: #003399;
+    --tag-brazil: #009c3b;
+    --shadow: 0 1px 3px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.08);
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    font-size: 15px;
+    line-height: 1.6;
+    margin: 0;
+    padding: 0 16px 60px;
+  }
+
+  .wrap {
+    max-width: 900px;
+    margin: 0 auto;
+  }
+
+  header.hero {
+    background: var(--header-bg);
+    color: var(--header-text);
+    border-radius: 16px;
+    padding: 36px 32px;
+    margin: 24px 0 30px;
+    box-shadow: var(--shadow);
+  }
+
+  header.hero .eyebrow {
+    font-size: 12.5px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: #b8bcc4;
+    font-weight: 600;
+    margin-bottom: 10px;
+  }
+
+  header.hero h1 {
+    font-size: 30px;
+    margin: 0 0 10px;
+    font-weight: 800;
+    letter-spacing: -0.01em;
+  }
+
+  header.hero .meta {
+    font-size: 14px;
+    color: #d6d8dc;
+    margin-bottom: 16px;
+  }
+
+  header.hero .regions {
+    font-size: 14.5px;
+    font-weight: 600;
+    color: #f4f4f5;
+    background: rgba(255,255,255,0.08);
+    display: inline-block;
+    padding: 8px 14px;
+    border-radius: 10px;
+    letter-spacing: 0.01em;
+  }
+
+  section.intro {
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    border-radius: 14px;
+    padding: 20px 24px;
+    margin-bottom: 30px;
+    box-shadow: var(--shadow);
+    font-size: 14.5px;
+    color: var(--text-muted);
+  }
+
+  section.intro strong { color: var(--text); }
+
+  h2.section-title {
+    font-size: 13px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--text-muted);
+    font-weight: 700;
+    margin: 36px 0 16px;
+    padding-left: 4px;
+  }
+
+  .card {
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    border-radius: 16px;
+    padding: 24px 26px;
+    margin-bottom: 26px;
+    box-shadow: var(--shadow);
+  }
+
+  .card-head {
+    display: flex;
+    gap: 14px;
+    align-items: flex-start;
+    margin-bottom: 10px;
+  }
+
+  .card-num {
+    flex: 0 0 auto;
+    width: 34px;
+    height: 34px;
+    border-radius: 10px;
+    background: var(--header-bg);
+    color: #fff;
+    font-weight: 800;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .card-title a {
+    color: var(--text);
+    text-decoration: none;
+    font-size: 18px;
+    font-weight: 700;
+    line-height: 1.35;
+  }
+
+  .card-title a:hover { color: var(--link); text-decoration: underline; }
+
+  .card-meta {
+    font-size: 12.5px;
+    color: var(--text-muted);
+    margin: 6px 0 14px 48px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px 10px;
+  }
+
+  .card-meta .dot { color: #c3c6cb; }
+
+  .card-summary {
+    margin: 0 0 16px 48px;
+    font-size: 14.5px;
+    color: #2b2d31;
+  }
+
+  .box {
+    border-radius: 12px;
+    padding: 16px 18px;
+    margin: 14px 0 0 48px;
+    font-size: 14px;
+  }
+
+  .box-title {
+    font-weight: 700;
+    font-size: 13.5px;
+    margin-bottom: 8px;
+    display: block;
+  }
+
+  .box.yellow {
+    background: var(--yellow-bg);
+    border: 1px solid var(--yellow-border);
+    color: var(--yellow-text);
+  }
+
+  .box.green {
+    background: var(--green-bg);
+    border: 1px solid var(--green-border);
+    color: var(--green-text);
+  }
+
+  .box p { margin: 0 0 8px; }
+  .box p:last-child { margin-bottom: 0; }
+
+  .region-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-bottom: 10px;
+  }
+
+  .region-tag {
+    font-size: 12px;
+    font-weight: 700;
+    padding: 3px 9px;
+    border-radius: 999px;
+    background: rgba(255,255,255,0.7);
+    border: 1px solid rgba(0,0,0,0.08);
+  }
+
+  .region-tag.off {
+    opacity: 0.45;
+    text-decoration: line-through;
+  }
+
+  .sources-list {
+    margin: 8px 0 0;
+    padding-left: 18px;
+  }
+
+  .sources-list li { margin-bottom: 4px; }
+  .sources-list a { color: #14532d; word-break: break-word; }
+
+  .attention {
+    display: inline-block;
+    margin-top: 10px;
+    font-size: 12px;
+    font-weight: 700;
+    padding: 3px 10px;
+    border-radius: 999px;
+  }
+
+  .attention.alto { background: #fde2e1; color: #9b1c1c; }
+  .attention.medio { background: #fdedd3; color: #92590a; }
+  .attention.baixo { background: #e2ede2; color: #2f5732; }
+
+  footer.geo {
+    background: var(--header-bg);
+    color: #eceef1;
+    border-radius: 16px;
+    padding: 32px;
+    margin-top: 40px;
+  }
+
+  footer.geo h2 {
+    font-size: 22px;
+    margin: 0 0 6px;
+    font-weight: 800;
+  }
+
+  footer.geo .sub {
+    color: #a9adb5;
+    font-size: 13.5px;
+    margin-bottom: 22px;
+  }
+
+  footer.geo h3 {
+    font-size: 14.5px;
+    color: #f4c542;
+    margin: 22px 0 8px;
+    font-weight: 700;
+  }
+
+  footer.geo p, footer.geo li {
+    font-size: 14px;
+    color: #d6d8dc;
+    line-height: 1.7;
+  }
+
+  footer.geo ul { margin: 6px 0; padding-left: 20px; }
+
+  .disclaimer {
+    max-width: 900px;
+    margin: 30px auto 0;
+    font-size: 12px;
+    color: #8b8f96;
+    text-align: center;
+    line-height: 1.6;
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="hero">
+    <div class="eyebrow">Relatório Diário &middot; Inteligência em Tecnologia Global</div>
+    <h1>Tech Global Report — 24h</h1>
+    <div class="meta">Publicado em 20 de agosto de 2026 &middot; Cobertura das últimas 24–48 horas</div>
+    <div class="regions">🇨🇳 China &nbsp;|&nbsp; 🇺🇸 EUA &nbsp;|&nbsp; 🇪🇺 Europa &nbsp;|&nbsp; 🇧🇷 Brasil</div>
+  </header>
+
+  <section class="intro">
+    As 15 notícias de tecnologia mais impactantes das últimas 24–48 horas, com <strong>foco especial na cobertura da mídia chinesa</strong>. Cada matéria traz pelo menos três fontes verificadas de diferentes regiões, análise de por que o assunto importa comercial e geopoliticamente, e como a cobertura variou entre China, EUA, Europa e Brasil. Nesta edição, <strong>7 das 15 histórias</strong> têm cobertura primária de veículos chineses (SCMP, Caixin Global, Global Times, CGTN, TechNode Global e ChinaTechNews).
+  </section>
+
+  <h2 class="section-title">Top 15 — Últimas 24h</h2>
+
+  <!-- STORY 1 -->
+  <div class="card">
+    <div class="card-head">
+      <div class="card-num">1</div>
+      <div class="card-title"><a href="https://www.alibabagroup.com/en-US/document-2022412636729114624" target="_blank" rel="noopener">Alibaba divulga resultados do 1º trimestre fiscal de 2027: nuvem e IA aceleram, mas margens seguem sob pressão</a></div>
+    </div>
+    <div class="card-meta">
+      <span>20 de agosto de 2026, pré-abertura do mercado dos EUA</span><span class="dot">•</span><span>Fonte primária: Alibaba Group (Investor Relations) / Bloomberg</span>
+    </div>
+    <p class="card-summary">A Alibaba reportou aceleração da receita do Alibaba Cloud Intelligence Group, com forte demanda por serviços de IA e crescimento de três dígitos em produtos de IA pelo décimo a décimo segundo trimestre consecutivo (números variam entre fontes). As ações da empresa já haviam subido cerca de 34% em Hong Kong neste trimestre, liderando o índice Hang Seng Tech, à espera do resultado.</p>
+    <div class="box yellow">
+      <span class="box-title">📌 Por que isso importa?</span>
+      <p>É o principal termômetro de que os pesados investimentos chineses em IA/nuvem estão (ou não) virando receita, em meio à guerra de chips EUA-China. Alibaba é prioridade máxima entre as "big techs" chinesas monitoradas — resultado influencia diretamente Taobao, AliExpress e toda a aposta em "comércio agêntico" (ver notícia #6).</p>
+    </div>
+    <div class="box green">
+      <span class="box-title">🌍 Análise de Cobertura Global</span>
+      <div class="region-tags">
+        <span class="region-tag">✓ China</span><span class="region-tag">✓ EUA</span><span class="region-tag off">Europa</span><span class="region-tag">✓ Brasil</span>
+      </div>
+      <p><strong>China:</strong> divulgação oficial via Alibaba Group IR; cobertura de acompanhamento pela South China Morning Post. <strong>EUA:</strong> Bloomberg destacou a Alibaba como líder das techs chinesas no trimestre. <strong>Brasil:</strong> Investing.com Brasil e Empiricus noteciaram a disparada das ações após o resultado, associando-a à demanda por IA.</p>
+      <ul class="sources-list">
+        <li><a href="https://www.bloomberg.com/news/articles/2026-08-19/alibaba-tops-chinese-tech-stocks-this-quarter-on-ai-resurgence" target="_blank" rel="noopener">Bloomberg — "Alibaba Tops Chinese Tech Stocks This Quarter on AI Resurgence"</a></li>
+        <li><a href="https://br.investing.com/news/stock-market-news/acoes-da-alibaba-disparam-apos-resultados-trimestrais-impulsionados-por-ia-1938605" target="_blank" rel="noopener">Investing.com Brasil — "Ações da Alibaba disparam após resultados trimestrais impulsionados por IA"</a></li>
+        <li><a href="https://www.empiricus.com.br/artigos/investimentos/alibaba-baba34-amplia-investimentos-em-ia-e-ve-acoes-dispararem-apos-resultado-trimestral-veja-os-numeros-capf/" target="_blank" rel="noopener">Empiricus — "Alibaba (BABA34) amplia investimentos em IA e vê ações dispararem"</a></li>
+      </ul>
+      <p><strong>Diferenças de narrativa:</strong> a imprensa financeira dos EUA/Brasil enquadra o resultado como vitória do "AI resurgence" chinês; veículos chineses tendem a enfatizar a transição de "incubação para comercialização em larga escala" da IA de pilha completa, citada pelo CEO Eddie Wu.</p>
+      <span class="attention alto">Nível de atenção: alto</span>
+    </div>
+  </div>
+
+  <!-- STORY 2 -->
+  <div class="card">
+    <div class="card-head">
+      <div class="card-num">2</div>
+      <div class="card-title"><a href="https://www.caixinglobal.com/2026-08-19/chinese-robot-maker-unitree-soars-629-in-shanghai-debut-102475578.html" target="_blank" rel="noopener">Unitree Robotics dispara até 629% na estreia na bolsa de Xangai, primeira fabricante de robôs humanoides a listar na China continental</a></div>
+    </div>
+    <div class="card-meta">
+      <span>19 de agosto de 2026</span><span class="dot">•</span><span>Fonte primária: Caixin Global</span>
+    </div>
+    <p class="card-summary">A fabricante chinesa de robôs humanoides Unitree captou cerca de US$ 900 milhões em sua oferta pública inicial no STAR Market de Xangai. As ações abriram com alta de 629% (fechando em torno de +460%), valorizando a empresa entre US$ 50 bilhões e US$ 66 bilhões, dependendo da fonte. A oferta de varejo foi cerca de 8.000 vezes maior que a demanda disponível.</p>
+    <div class="box yellow">
+      <span class="box-title">📌 Por que isso importa?</span>
+      <p>Marco simbólico da corrida chinesa por robótica humanoide e "hard tech" — a Unitree é vista como concorrente direta de Tesla Optimus e Boston Dynamics. A DeepSeek (empresa prioritária monitorada) figura entre os investidores da Unitree, reforçando os laços entre os principais nomes de IA chinesa. O apetite recorde de investidores por listagens tech chinesas contrasta com barreiras regulatórias nos EUA (a FCC proibiu recentemente a importação de novos modelos de robôs humanoides/quadrúpedes fabricados no exterior).</p>
+    </div>
+    <div class="box green">
+      <span class="box-title">🌍 Análise de Cobertura Global</span>
+      <div class="region-tags">
+        <span class="region-tag">✓ China</span><span class="region-tag">✓ EUA</span><span class="region-tag off">Europa</span><span class="region-tag">✓ Brasil</span>
+      </div>
+      <p><strong>China:</strong> Caixin Global e Global Times/Xinhua (via Brasil 247) destacaram o feito como vitória da robótica nacional. <strong>EUA:</strong> CNBC e Forbes focaram no valuation e no perfil do fundador Wang Xingxing. <strong>Brasil:</strong> Brasil 247 (replicando Global Times) e NeoFeed noticiaram a disparada e mencionaram que robôs da Unitree já são vendidos no país por um representante oficial.</p>
+      <ul class="sources-list">
+        <li><a href="https://www.cnbc.com/2026/08/19/china-backflipping-robot-maker-unitree-jumps-shanghai-ipo.html" target="_blank" rel="noopener">CNBC — "China's backflipping robot maker Unitree jumps in Shanghai IPO"</a></li>
+        <li><a href="https://www.brasil247.com/global-times/empresa-de-robos-humanoides-unitree-dispara-629-em-sua-estreia-na-bolsa-e-alcanca-valor-de-mercado-de-us-66-bilhoes/" target="_blank" rel="noopener">Brasil 247 (via Global Times) — "Unitree dispara 629% em sua estreia na bolsa"</a></li>
+        <li><a href="https://neofeed.com.br/inovacao/empresa-de-robos-que-dancam-e-lutam-estreia-com-alta-de-460-na-bolsa-de-xangai-e-ja-vale-us-50-bi/" target="_blank" rel="noopener">NeoFeed — "Empresa de robôs que dançam e lutam estreia com alta de 460%"</a></li>
+        <li><a href="https://www.forbes.com/sites/johnkoetsier/2026/08/19/unitree-ipos-massive-629-pop-makes-agility-robotics-look-super-cheap/" target="_blank" rel="noopener">Forbes — "Unitree's IPO massive 629% pop"</a></li>
+      </ul>
+      <p><strong>Diferenças de narrativa:</strong> mídia estatal chinesa (Global Times/Xinhua) trata o caso como prova do avanço tecnológico nacional; imprensa dos EUA insere o contexto da restrição da FCC à importação de robôs chineses, um ângulo de tensão geopolítica pouco explorado nas fontes chinesas.</p>
+      <span class="attention alto">Nível de atenção: alto</span>
+    </div>
+  </div>
+
+  <!-- STORY 3 -->
+  <div class="card">
+    <div class="card-head">
+      <div class="card-num">3</div>
+      <div class="card-title"><a href="https://www.tomshardware.com/pc-components/gpus/first-nvidia-h200-shipments-reach-bytedance-and-tencent-as-beijing-loosens-its-import-block" target="_blank" rel="noopener">Chips Nvidia H200 voltam a fluir para a China: ByteDance e Tencent recebem cerca de 10 mil unidades cada</a></div>
+    </div>
+    <div class="card-meta">
+      <span>18–19 de agosto de 2026</span><span class="dot">•</span><span>Fonte primária: Financial Times (citado por Tom's Hardware, Engadget)</span>
+    </div>
+    <p class="card-summary">Após cerca de sete meses de bloqueio, pequenos lotes de chips de IA H200 da Nvidia voltaram a chegar à China continental. ByteDance e Tencent teriam recebido cerca de 10 mil unidades cada — perto de 13% do volume total que estariam autorizadas a comprar sob a nova estrutura de licenciamento dos EUA (até 75 mil unidades por empresa aprovada).</p>
+    <div class="box yellow">
+      <span class="box-title">📌 Por que isso importa?</span>
+      <p>Termômetro direto do "détente" nos controles de exportação de chips EUA-China. Curiosamente, é Pequim — não Washington — que está represando o volume, para proteger fabricantes domésticos como SMIC e Huawei, preferindo manter os chips fora do continente (em Hong Kong). Afeta diretamente duas empresas prioritárias monitoradas (ByteDance e Tencent) e a capacidade de ambas de competir na corrida global por IA.</p>
+    </div>
+    <div class="box green">
+      <span class="box-title">🌍 Análise de Cobertura Global</span>
+      <div class="region-tags">
+        <span class="region-tag">✓ China</span><span class="region-tag">✓ EUA</span><span class="region-tag">✓ Europa</span><span class="region-tag off">Brasil</span>
+      </div>
+      <p><strong>Europa:</strong> a reportagem original é do Financial Times (Londres), amplamente citada. <strong>China:</strong> South China Morning Post detalhou por que Pequim decidiu liberar as compras de forma controlada. <strong>EUA:</strong> Engadget, Tom's Hardware e Seeking Alpha replicaram o furo do FT com análise técnica.</p>
+      <ul class="sources-list">
+        <li><a href="https://www.tomshardware.com/pc-components/gpus/first-nvidia-h200-shipments-reach-bytedance-and-tencent-as-beijing-loosens-its-import-block" target="_blank" rel="noopener">Tom's Hardware — "First Nvidia H200 shipments reach ByteDance and Tencent"</a></li>
+        <li><a href="https://www.engadget.com/2239738/china-reportedly-allows-bytedance-tencent-import-10000-h200-chips/" target="_blank" rel="noopener">Engadget — "China reportedly allows ByteDance, Tencent to import 10,000 H200 chips"</a></li>
+        <li><a href="https://www.scmp.com/tech/policy/article/3360027/game-changer-why-china-finally-letting-its-ai-firms-buy-nvidia-h200" target="_blank" rel="noopener">South China Morning Post — "Why China is finally letting its AI firms buy Nvidia H200"</a></li>
+      </ul>
+      <p><strong>Diferenças de narrativa:</strong> a imprensa ocidental enquadra o episódio como afrouxamento das restrições dos EUA; a SCMP inverte o eixo, mostrando que o verdadeiro freio agora vem do próprio governo chinês, preocupado com autossuficiência em chips — uma nuance pouco presente na cobertura americana.</p>
+      <span class="attention alto">Nível de atenção: alto</span>
+    </div>
+  </div>
+
+  <!-- STORY 4 -->
+  <div class="card">
+    <div class="card-head">
+      <div class="card-num">4</div>
+      <div class="card-title"><a href="https://www.scmp.com/business/banking-finance/article/3363623/shein-set-take-orders-hong-kong-ipo-next-week-eyeing-us35b-valuation-sources" target="_blank" rel="noopener">Shein reduz meta de avaliação do IPO em Hong Kong para cerca de US$ 25 bilhões</a></div>
+    </div>
+    <div class="card-meta">
+      <span>17–20 de agosto de 2026</span><span class="dot">•</span><span>Fonte primária: Bloomberg / South China Morning Post</span>
+    </div>
+    <p class="card-summary">A varejista de moda rápida Shein cortou a meta de avaliação de seu IPO em Hong Kong para cerca de US$ 25 bilhões — ante US$ 30–40 bilhões cogitados semanas antes e muito abaixo do pico de US$ 98,2 bilhões de 2022. O livro de ofertas deve abrir por volta de 20 de agosto, com estreia prevista para 28 de agosto, buscando captar cerca de US$ 2 bilhões.</p>
+    <div class="box yellow">
+      <span class="box-title">📌 Por que isso importa?</span>
+      <p>Teste decisivo do apetite dos investidores por e-commerce transfronteiriço ligado à China, em meio a tarifas dos EUA e multas na União Europeia. A Shein é empresa prioritária monitorada; o corte de mais de 60% no valuation reflete pressão regulatória crescente (tarifas de minimis nos EUA, multas por DSA na UE) que também atinge concorrentes diretos como Temu e AliExpress.</p>
+    </div>
+    <div class="box green">
+      <span class="box-title">🌍 Análise de Cobertura Global</span>
+      <div class="region-tags">
+        <span class="region-tag">✓ China</span><span class="region-tag">✓ EUA</span><span class="region-tag">✓ Europa</span><span class="region-tag off">Brasil</span>
+      </div>
+      <p><strong>China/Hong Kong:</strong> SCMP acompanha a saga do IPO desde o pedido de listagem. <strong>EUA:</strong> Bloomberg e Qz noticiaram o corte específico para US$ 25 bilhões. <strong>Europa:</strong> Just-Style (Reino Unido), veículo especializado em moda, cobriu o impacto para o setor têxtil europeu.</p>
+      <ul class="sources-list">
+        <li><a href="https://www.bloomberg.com/news/articles/2026-08-17/shein-is-said-to-target-up-to-27-billion-valuation-in-hk-ipo" target="_blank" rel="noopener">Bloomberg — "Shein Targets Up to $27 Billion Valuation in Hong Kong IPO"</a></li>
+        <li><a href="https://qz.com/shein-hong-kong-ipo-valuation-25-billion-081726" target="_blank" rel="noopener">Qz — "Shein cuts Hong Kong IPO valuation target to $25 billion"</a></li>
+        <li><a href="https://www.just-style.com/news/shein-ipo-valuation-hong-kon/" target="_blank" rel="noopener">Just-Style — "Shein slashes IPO valuation target to about $25bn"</a></li>
+      </ul>
+      <p><strong>Diferenças de narrativa:</strong> a imprensa financeira ocidental enfatiza o "desconto" e o histórico turbulento de tentativas fracassadas em Nova York e Londres; a SCMP contextualiza mais a disputa regulatória de Hong Kong como praça alternativa para listagens chinesas.</p>
+      <span class="attention alto">Nível de atenção: alto</span>
+    </div>
+  </div>
+
+  <!-- STORY 5 -->
+  <div class="card">
+    <div class="card-head">
+      <div class="card-num">5</div>
+      <div class="card-title"><a href="https://www.bloomberg.com/news/articles/2026-08-18/bytedance-draws-over-30-billion-in-orders-for-jumbo-bank-loan" target="_blank" rel="noopener">ByteDance capta mais de US$ 30 bi em ordens para seu maior empréstimo offshore da história (US$ 20 bi)</a></div>
+    </div>
+    <div class="card-meta">
+      <span>18 de agosto de 2026</span><span class="dot">•</span><span>Fonte primária: Bloomberg</span>
+    </div>
+    <p class="card-summary">O empréstimo sindicalizado de US$ 20 bilhões da ByteDance, arranjado por Citigroup e JPMorgan, recebeu ordens 1,5 vez superiores à oferta — tornando-se o maior financiamento offshore já feito pela empresa. Os recursos devem financiar infraestrutura de IA, à medida que a ByteDance planeja elevar o capex de 2026 para até US$ 70 bilhões.</p>
+    <div class="box yellow">
+      <span class="box-title">📌 Por que isso importa?</span>
+      <p>Mostra que a ByteDance (dona do TikTok, empresa prioritária monitorada) está financiando sua expansão em IA via dívida internacional, e não via IPO — a empresa segue fechada de capital. A escala do capex rivaliza com os gigantes americanos de nuvem (Microsoft, Google, Amazon), reforçando a corrida bilionária por infraestrutura de IA entre EUA e China.</p>
+    </div>
+    <div class="box green">
+      <span class="box-title">🌍 Análise de Cobertura Global</span>
+      <div class="region-tags">
+        <span class="region-tag off">China</span><span class="region-tag">✓ EUA</span><span class="region-tag off">Europa</span><span class="region-tag off">Brasil</span>
+      </div>
+      <p><strong>EUA:</strong> Bloomberg (furo original), Investing.com e TipRanks noticiaram a demanda recorde por credores internacionais. A cobertura direta por veículos chineses específicos não foi localizada nesta janela — sinal de que a imprensa doméstica chinesa trata operações de crédito offshore com mais discrição que a imprensa financeira ocidental.</p>
+      <ul class="sources-list">
+        <li><a href="https://www.bloomberg.com/news/articles/2026-08-18/bytedance-draws-over-30-billion-in-orders-for-jumbo-bank-loan" target="_blank" rel="noopener">Bloomberg — "ByteDance Draws Over $30 Billion in Orders for Jumbo Bank Loan"</a></li>
+        <li><a href="https://www.investing.com/news/stock-market-news/bytedance-seeks-20-billion-in-its-largestever-offshore-loan-bloomberg-news-reports-4757359" target="_blank" rel="noopener">Investing.com — "ByteDance seeks $20 billion in its largest-ever offshore loan"</a></li>
+        <li><a href="https://www.tipranks.com/news/bytedance-skips-china-to-chase-record-20-billion-foreign-loan-as-ai-spending-booms" target="_blank" rel="noopener">TipRanks — "ByteDance Skips China to Chase Record $20 Billion Foreign Loan"</a></li>
+      </ul>
+      <p><strong>Diferenças de narrativa:</strong> o enquadramento internacional destaca a confiança de bancos globais na ByteDance apesar das tensões geopolíticas sobre a propriedade do TikTok nos EUA — um contraste que a própria empresa evita comentar publicamente.</p>
+      <span class="attention medio">Nível de atenção: médio</span>
+    </div>
+  </div>
+
+  <!-- STORY 6 -->
+  <div class="card">
+    <div class="card-head">
+      <div class="card-num">6</div>
+      <div class="card-title"><a href="https://technode.global/2026/08/18/alipay-launches-agentic-commerce-platform-in-china-to-bring-ai-tools-to-merchants/" target="_blank" rel="noopener">Alipay lança primeira plataforma de "comércio agêntico" full-stack da China; ações da Alibaba sobem 5%</a></div>
+    </div>
+    <div class="card-meta">
+      <span>18 de agosto de 2026</span><span class="dot">•</span><span>Fonte primária: TechNode Global / Bloomberg</span>
+    </div>
+    <p class="card-summary">O Alipay lançou uma plataforma que permite a lojistas implantar agentes de IA para automatizar operações, construída em torno do agente de consumo "Ah Bao" e de um protocolo de interoperabilidade chamado AHA. KFC, Mixue e Luckin Coffee estão entre os primeiros integradores. A notícia impulsionou as ações da Alibaba em cerca de 5% na véspera do balanço trimestral (ver notícia #1).</p>
+    <div class="box yellow">
+      <span class="box-title">📌 Por que isso importa?</span>
+      <p>Aposta direta de monetização em "comércio agêntico" — agentes de IA que compram e vendem em nome de consumidores e lojistas — um novo campo de batalha do e-commerce que também interessa a Amazon e à OpenAI. Reforça a estratégia da Alibaba (empresa prioritária) de amarrar IA, pagamentos e varejo em um único ecossistema, com implicações diretas para Taobao e AliExpress.</p>
+    </div>
+    <div class="box green">
+      <span class="box-title">🌍 Análise de Cobertura Global</span>
+      <div class="region-tags">
+        <span class="region-tag">✓ China</span><span class="region-tag">✓ EUA</span><span class="region-tag">✓ Europa</span><span class="region-tag off">Brasil</span>
+      </div>
+      <p><strong>China:</strong> TechNode Global detalhou a arquitetura técnica do protocolo AHA e os parceiros comerciais. <strong>EUA:</strong> Bloomberg e TipRanks conectaram o lançamento à reação do mercado acionário. <strong>Europa:</strong> Finextra (Reino Unido), veículo de referência em fintech, cobriu o ângulo de pagamentos e infraestrutura financeira.</p>
+      <ul class="sources-list">
+        <li><a href="https://www.bloomberg.com/news/articles/2026-08-18/alibaba-shares-jump-5-as-alipay-launches-new-merchant-platform" target="_blank" rel="noopener">Bloomberg — "Alibaba Shares Jump 5% as Alipay Launches New Merchant Platform"</a></li>
+        <li><a href="https://www.finextra.com/pressarticle/110650/alipay-launches-full-stack-agentic-commerce-platform-in-china" target="_blank" rel="noopener">Finextra — "Alipay launches full-stack agentic commerce platform in China"</a></li>
+        <li><a href="https://www.tipranks.com/news/alibaba-stock-baba-jumps-2-8-as-new-alipay-ai-platform-boosts-mood-ahead-of-tomorrows-earnings" target="_blank" rel="noopener">TipRanks — "Alibaba stock jumps as new Alipay AI platform boosts mood"</a></li>
+      </ul>
+      <p><strong>Diferenças de narrativa:</strong> a cobertura chinesa foca no produto e nos parceiros comerciais locais; a cobertura ocidental (Bloomberg/TipRanks) trata a notícia principalmente como catalisador de curto prazo para o preço da ação, minimizando o aspecto tecnológico.</p>
+      <span class="attention medio">Nível de atenção: médio</span>
+    </div>
+  </div>
+
+  <!-- STORY 7 -->
+  <div class="card">
+    <div class="card-head">
+      <div class="card-num">7</div>
+      <div class="card-title"><a href="https://www.apple.com/newsroom/2026/08/apple-announces-changes-for-apps-in-the-european-union/" target="_blank" rel="noopener">Apple reformula taxas da App Store na União Europeia para encerrar disputa com reguladores</a></div>
+    </div>
+    <div class="card-meta">
+      <span>18 de agosto de 2026, vigência a partir de 1º de outubro</span><span class="dot">•</span><span>Fonte primária: Apple Newsroom</span>
+    </div>
+    <p class="card-summary">A Apple anunciou novos termos para desenvolvedores na UE: uma Comissão de Tecnologia Central fixa de 5% sobre compras digitais feitas fora da App Store, redução da comissão de compras dentro do app de 30% para 26% (15% para pequenas empresas) e permissão para apps oferecerem, lado a lado, o pagamento da Apple e opções alternativas — algo antes proibido. A mudança resolve a disputa da empresa com a UE sob a Lei de Mercados Digitais (DMA).</p>
+    <div class="box yellow">
+      <span class="box-title">📌 Por que isso importa?</span>
+      <p>Maior concessão já feita pela Apple a reguladores europeus, com a própria empresa admitindo que o modelo é um "prévia" de mudanças que devem chegar aos EUA. Rebaixa a barreira de entrada para lojas de apps alternativas e novos modelos de pagamento, com implicações diretas para plataformas de e-commerce e super-apps chineses (Alibaba, ByteDance, Shopee) que buscam expandir na Europa.</p>
+    </div>
+    <div class="box green">
+      <span class="box-title">🌍 Análise de Cobertura Global</span>
+      <div class="region-tags">
+        <span class="region-tag off">China</span><span class="region-tag">✓ EUA</span><span class="region-tag">✓ Europa</span><span class="region-tag">✓ Brasil</span>
+      </div>
+      <p><strong>Europa:</strong> comunicado oficial da Apple e cobertura do site português Pplware sobre os novos valores. <strong>EUA:</strong> Bloomberg e CNBC noticiaram o acordo como resolução da queda de braço regulatória. <strong>Brasil:</strong> Times Brasil (licenciada CNBC), Gazeta Brasil e Tecnoblog destacaram que a Apple já sinaliza replicar parte das mudanças no mercado brasileiro a partir de setembro.</p>
+      <ul class="sources-list">
+        <li><a href="https://www.cnbc.com/2026/08/18/apple-eu-app-store-fees-iphone.html" target="_blank" rel="noopener">CNBC — "Apple lowers App Store fees in Europe to settle dispute with EU"</a></li>
+        <li><a href="https://timesbrasil.com.br/empresas-e-negocios/tecnologia-e-inovacao/apple-reformula-taxas-da-app-store-na-europa/" target="_blank" rel="noopener">Times Brasil (CNBC) — "Apple reformula taxas da App Store na Europa"</a></li>
+        <li><a href="https://tecnoblog.net/noticias/apple-ainda-podera-cobrar-taxas-no-brasil-veja-aliquotas/" target="_blank" rel="noopener">Tecnoblog — "Apple ainda poderá cobrar taxas no Brasil; veja alíquotas"</a></li>
+        <li><a href="https://pplware.sapo.pt/apple/apple-muda-taxas-da-app-store-na-europa-estes-sao-os-novos-valores/" target="_blank" rel="noopener">Pplware (Portugal) — "Apple muda taxas da App Store na Europa"</a></li>
+      </ul>
+      <p><strong>Diferenças de narrativa:</strong> a imprensa europeia enfatiza a vitória regulatória da UE sobre a Apple; a imprensa brasileira já antecipa o que a mudança pode significar localmente, mesmo sem obrigação legal equivalente à DMA no Brasil.</p>
+      <span class="attention alto">Nível de atenção: alto</span>
+    </div>
+  </div>
+
+  <!-- STORY 8 -->
+  <div class="card">
+    <div class="card-head">
+      <div class="card-num">8</div>
+      <div class="card-title"><a href="https://www.scmp.com/tech/big-tech/article/3364077/zhipu-launches-flagship-model-glm-53-china-seeks-mythos-level-edge-cyber-defence" target="_blank" rel="noopener">IA chinesa Zhipu (GLM-5.3) encontra 2.436 vulnerabilidades em código real e atrasa lançamento por segurança</a></div>
+    </div>
+    <div class="card-meta">
+      <span>14–17 de agosto de 2026 (desdobramentos seguem ativos)</span><span class="dot">•</span><span>Fonte primária: South China Morning Post</span>
+    </div>
+    <p class="card-summary">O modelo GLM-5.3 da chinesa Zhipu (Z.ai) superou o Mythos 5 da Anthropic no benchmark de cibersegurança CyberGym (84,5% x 83,8%), mas ficou atrás em capacidade de exploração avançada (ExploitBench). Ao testar o modelo contra bases de código reais, a Zhipu identificou 2.436 vulnerabilidades (1.097 de severidade média a alta) — o que motivou o primeiro atraso de segurança já registrado em um lançamento open-weight da linha GLM.</p>
+    <div class="box yellow">
+      <span class="box-title">📌 Por que isso importa?</span>
+      <p>Evidência concreta de que a IA de fronteira chinesa já rivaliza com modelos ocidentais em capacidade ofensiva de cibersegurança — tema de uso duplo com implicações de segurança nacional, justamente quando os EUA debatem restringir a exportação de modelos abertos. Acesso a capacidades ofensivas do GLM-5.3 agora é restrito a um programa de "acesso confiável" em cibersegurança.</p>
+    </div>
+    <div class="box green">
+      <span class="box-title">🌍 Análise de Cobertura Global</span>
+      <div class="region-tags">
+        <span class="region-tag">✓ China</span><span class="region-tag">✓ EUA</span><span class="region-tag off">Europa</span><span class="region-tag off">Brasil</span>
+      </div>
+      <p><strong>China:</strong> South China Morning Post (dois artigos) e ChinaTechNews.com cobriram o lançamento e o recuo de segurança em profundidade. <strong>EUA:</strong> VentureBeat e Tech Times detalharam os aspectos técnicos e o histórico de cadeias de exploração descobertas pelo modelo.</p>
+      <ul class="sources-list">
+        <li><a href="https://www.chinatechnews.com/2026/08/17/127491-chinese-ai-giant-zhipu-unveils-glm-5-3-edging-past-western-rivals-in-cybersecurity-benchmarks" target="_blank" rel="noopener">ChinaTechNews.com — "Chinese AI Giant Zhipu Unveils GLM-5.3, Edging Past Western Rivals"</a></li>
+        <li><a href="https://venturebeat.com/technology/glm-5-3-is-here-with-advanced-cyber-capabilities-and-reportedly-already-found-a-serious-vulnerability-in-cursor" target="_blank" rel="noopener">VentureBeat — "GLM-5.3 is here with advanced cyber capabilities"</a></li>
+        <li><a href="https://www.techtimes.com/articles/324426/20260814/glm-53-post-training-produced-exploit-chains-zai-never-planned-finds-1097-critical-bugs.htm" target="_blank" rel="noopener">Tech Times — "GLM-5.3: Post-Training Produced Exploit Chains Z.ai Never Planned"</a></li>
+      </ul>
+      <p><strong>Diferenças de narrativa:</strong> a SCMP enquadra o feito como orgulho nacional em "edge" de defesa cibernética; a imprensa ocidental foca no risco de uso duplo (a mesma capacidade que acha vulnerabilidades pode ser usada para explorá-las).</p>
+      <span class="attention medio">Nível de atenção: médio</span>
+    </div>
+  </div>
+
+  <!-- STORY 9 -->
+  <div class="card">
+    <div class="card-head">
+      <div class="card-num">9</div>
+      <div class="card-title"><a href="https://www.axios.com/2026/08/18/openai-pause-astra-preparedness-framework" target="_blank" rel="noopener">OpenAI pausa treinamento do modelo "Astra" após risco crítico de capacidade cibernética autônoma</a></div>
+    </div>
+    <div class="card-meta">
+      <span>18 de agosto de 2026</span><span class="dot">•</span><span>Fonte primária: Axios / OpenAI</span>
+    </div>
+    <p class="card-summary">A OpenAI concluiu que seu próximo modelo, codinome "Astra", pode ter cruzado o limiar "crítico" de capacidade cibernética autodefinido (encontrar e explorar falhas de dia zero de forma autônoma). A empresa pausou cerca de duas semanas de treinamento por reforço voltado à implantação, interrompeu sua maior rodada de RL de fronteira planejada e está reescrevendo seu Preparedness Framework, praticamente inalterado desde dezembro de 2023.</p>
+    <div class="box yellow">
+      <span class="box-title">📌 Por que isso importa?</span>
+      <p>Primeiro caso amplamente documentado de um laboratório de fronteira se autorrestringir publicamente por risco de ataque cibernético autônomo — ocorre poucos dias depois de a mesma preocupação aparecer do lado chinês com o GLM-5.3 (notícia #8), mostrando que EUA e China correm paralelamente rumo ao mesmo ponto de inflexão em segurança de IA ofensiva.</p>
+    </div>
+    <div class="box green">
+      <span class="box-title">🌍 Análise de Cobertura Global</span>
+      <div class="region-tags">
+        <span class="region-tag off">China</span><span class="region-tag">✓ EUA</span><span class="region-tag off">Europa</span><span class="region-tag off">Brasil</span>
+      </div>
+      <p><strong>EUA:</strong> Axios revelou a pausa; CNBC havia noticiado dias antes o risco identificado; a própria OpenAI publicou dois posts detalhando a resposta e a nova política de "pacing" de desenvolvimento de modelos frente a capacidades cibernéticas.</p>
+      <ul class="sources-list">
+        <li><a href="https://openai.com/index/responding-next-frontier-critical-cyber-capabilities/" target="_blank" rel="noopener">OpenAI — "Responding to next-frontier critical cyber capabilities"</a></li>
+        <li><a href="https://www.cnbc.com/2026/08/10/openai-astra-cybersecurity-risks.html" target="_blank" rel="noopener">CNBC — "OpenAI Astra cybersecurity risks"</a></li>
+        <li><a href="https://openai.com/index/pacing-model-development-cyber-capabilities/" target="_blank" rel="noopener">OpenAI — "Pacing model development on cyber capabilities"</a></li>
+      </ul>
+      <p><strong>Diferenças de narrativa:</strong> a cobertura é quase exclusivamente americana até o momento — ainda não localizamos reportagens equivalentes na imprensa chinesa, europeia ou brasileira, um contraste notável com a rapidez da cobertura chinesa sobre o caso análogo da Zhipu.</p>
+      <span class="attention alto">Nível de atenção: alto</span>
+    </div>
+  </div>
+
+  <!-- STORY 10 -->
+  <div class="card">
+    <div class="card-head">
+      <div class="card-num">10</div>
+      <div class="card-title"><a href="https://www.cnbc.com/2026/08/19/marvell-google-ai-chips.html" target="_blank" rel="noopener">Marvell dá à Google opção de comprar até US$ 12,2 bi em ações em acordo ampliado de chips de IA</a></div>
+    </div>
+    <div class="card-meta">
+      <span>19 de agosto de 2026</span><span class="dot">•</span><span>Fonte primária: CNBC / Bloomberg</span>
+    </div>
+    <p class="card-summary">A Marvell Technology concedeu ao Google (Alphabet) o direito de comprar até US$ 12,2 bilhões em ações da Marvell (cerca de 59 milhões de ações a US$ 206,58 cada), condicionado a compras de chips em incrementos de US$ 500 milhões, dentro de uma parceria ampliada de silício customizado para o ecossistema de TPUs do Google. As ações da Marvell saltaram até 14%, enquanto as da Broadcom (fornecedora anterior) caíram mais de 5%.</p>
+    <div class="box yellow">
+      <span class="box-title">📌 Por que isso importa?</span>
+      <p>Reorganização relevante na cadeia de suprimentos de silício customizado para IA, com o Google diversificando fornecedores além da Broadcom. Reforça a escala bilionária dos investimentos em infraestrutura de IA nos EUA — pano de fundo direto para entender por que a China corre para garantir chips (Nvidia H200, notícia #3) e desenvolver alternativas domésticas.</p>
+    </div>
+    <div class="box green">
+      <span class="box-title">🌍 Análise de Cobertura Global</span>
+      <div class="region-tags">
+        <span class="region-tag off">China</span><span class="region-tag">✓ EUA</span><span class="region-tag off">Europa</span><span class="region-tag off">Brasil</span>
+      </div>
+      <p><strong>EUA:</strong> CNBC, Bloomberg e The Next Web cobriram os detalhes técnicos do acordo e a reação do mercado, com foco na disputa entre Marvell e Broadcom pelo contrato do Google.</p>
+      <ul class="sources-list">
+        <li><a href="https://www.cnbc.com/2026/08/19/marvell-google-ai-chips.html" target="_blank" rel="noopener">CNBC — "Marvell gives Google option to buy $12.2 billion in shares"</a></li>
+        <li><a href="https://finance.yahoo.com/technology/articles/marvell-grants-google-12-2-123812695.html" target="_blank" rel="noopener">Yahoo Finance — "Marvell grants Google $12.2B option in custom AI chip deal"</a></li>
+        <li><a href="https://thenextweb.com/news/marvell-google-12-2bn-warrant-custom-chip-deal" target="_blank" rel="noopener">The Next Web — "Marvell hands Google a $12.2bn share option"</a></li>
+      </ul>
+      <p><strong>Diferenças de narrativa:</strong> cobertura concentrada na imprensa financeira americana; não há, até o momento, reportagem equivalente na China, o que é esperado dado que o acordo não envolve diretamente empresas chinesas — mas reforça o contraste de escala entre o acesso a chips avançados nos EUA e as restrições enfrentadas por empresas chinesas.</p>
+      <span class="attention medio">Nível de atenção: médio</span>
+    </div>
+  </div>
+
+  <!-- STORY 11 -->
+  <div class="card">
+    <div class="card-head">
+      <div class="card-num">11</div>
+      <div class="card-title"><a href="https://news.cgtn.com/news/2026-08-19/Land-recovery-of-Chinese-reusable-rocket-first-stage-completed-1PJ9H1Mxgoo/share_amp.html" target="_blank" rel="noopener">LandSpace pousa o primeiro estágio reutilizável do foguete Zhuque-3, feito inédito para empresa privada chinesa</a></div>
+    </div>
+    <div class="card-meta">
+      <span>19 de agosto de 2026</span><span class="dot">•</span><span>Fonte primária: CGTN (mídia estatal chinesa)</span>
+    </div>
+    <p class="card-summary">O foguete Zhuque-3 (ZQ-3) da LandSpace, lançado da zona de inovação comercial de Dongfeng, colocou o satélite Honghu-03 em órbita e, em seguida, pousou seu primeiro estágio com sucesso na província de Gansu — tornando a LandSpace apenas a terceira ou quarta empresa do mundo (após SpaceX e Blue Origin) a recuperar um propulsor de classe orbital.</p>
+    <div class="box yellow">
+      <span class="box-title">📌 Por que isso importa?</span>
+      <p>Símbolo do avanço chinês em tecnologia de lançamento reutilizável, reduzindo o custo por lançamento e turbinando as ambições chinesas de megaconstelações de satélites. A LandSpace também busca um IPO na STAR Market avaliado em cerca de US$ 1,11 bilhão — reforçando a onda de listagens de "hard tech" chinesa que também impulsionou a Unitree (notícia #2).</p>
+    </div>
+    <div class="box green">
+      <span class="box-title">🌍 Análise de Cobertura Global</span>
+      <div class="region-tags">
+        <span class="region-tag">✓ China</span><span class="region-tag">✓ EUA</span><span class="region-tag off">Europa</span><span class="region-tag off">Brasil</span>
+      </div>
+      <p><strong>China:</strong> CGTN, mídia estatal, cobriu o pouso em tempo real com ênfase no orgulho tecnológico nacional. <strong>EUA:</strong> Space.com e Spaceflight Now detalharam os aspectos técnicos da missão e a comparação com a SpaceX.</p>
+      <ul class="sources-list">
+        <li><a href="https://www.space.com/space-exploration/launches-spacecraft/touchdown-private-chinese-rocket-aces-landing-on-2nd-ever-flight" target="_blank" rel="noopener">Space.com — "Touchdown! Private Chinese rocket aces landing on 2nd ever flight"</a></li>
+        <li><a href="https://spaceflightnow.com/2026/08/19/landspace-becomes-first-commercial-chinese-company-to-land-an-orbital-class-booster/" target="_blank" rel="noopener">Spaceflight Now — "LandSpace becomes first commercial Chinese company to land an orbital-class booster"</a></li>
+        <li><a href="https://techstartups.com/2026/08/19/chinas-landspace-lands-reusable-rocket-booster-closing-the-gap-with-spacex/" target="_blank" rel="noopener">TechStartups — "China's LandSpace lands reusable rocket booster, closing the gap with SpaceX"</a></li>
+      </ul>
+      <p><strong>Diferenças de narrativa:</strong> a mídia estatal chinesa celebra o feito como conquista nacional; a imprensa americana enquadra o mesmo evento em termos de "corrida espacial" e implicações estratégico-militares do avanço chinês.</p>
+      <span class="attention medio">Nível de atenção: médio</span>
+    </div>
+  </div>
+
+  <!-- STORY 12 -->
+  <div class="card">
+    <div class="card-head">
+      <div class="card-num">12</div>
+      <div class="card-title"><a href="https://kfgo.com/2026/08/19/samsung-hikes-chipmaking-prices-by-up-to-15-on-demand-spike-sources-say/" target="_blank" rel="noopener">Samsung eleva em até 15% os preços de fabricação de chips avançados, com clientes chineses entre os mais afetados</a></div>
+    </div>
+    <div class="card-meta">
+      <span>19 de agosto de 2026</span><span class="dot">•</span><span>Fonte primária: Reuters (via KFGO)</span>
+    </div>
+    <p class="card-summary">A Samsung elevou entre 10% e 15% os preços de seus processos de fundição de 4nm (SF4) e 5nm (SF5) para novos pedidos de clientes dos EUA e da China, além de aumentar quase 10% no nó mais antigo de 8nm — à medida que sua fábrica de Pyeongtaek opera em capacidade máxima por causa da demanda de IA. Segundo fontes, empresas chinesas — que dependem de fundições no exterior devido a restrições de exportação — estão absorvendo os maiores aumentos.</p>
+    <div class="box yellow">
+      <span class="box-title">📌 Por que isso importa?</span>
+      <p>Sinal direto de aperto na oferta global de chips avançados e de custos crescentes de infraestrutura de IA. Empresas chinesas pagando os maiores reajustes reforça como os controles de exportação dos EUA elevam indiretamente o custo de acesso a capacidade de fundição para gigantes como Alibaba e ByteDance, que dependem de parceiros fora da China continental.</p>
+    </div>
+    <div class="box green">
+      <span class="box-title">🌍 Análise de Cobertura Global</span>
+      <div class="region-tags">
+        <span class="region-tag off">China</span><span class="region-tag">✓ EUA</span><span class="region-tag off">Europa</span><span class="region-tag off">Brasil</span>
+      </div>
+      <p><strong>EUA/Ásia:</strong> Reuters (via KFGO), Free Malaysia Today e Benzinga replicaram a reportagem original com detalhes sobre os diferentes nós de fabricação afetados.</p>
+      <ul class="sources-list">
+        <li><a href="https://www.benzinga.com/markets/prediction-markets/26/08/61317561/samsung-chip-prices-ai-demand" target="_blank" rel="noopener">Benzinga — "Samsung Chip Prices AI Demand"</a></li>
+        <li><a href="https://www.freemalaysiatoday.com/category/business/2026/08/19/samsung-hikes-chipmaking-prices-by-up-to-15-on-demand-spike" target="_blank" rel="noopener">Free Malaysia Today — "Samsung hikes chipmaking prices by up to 15% on demand spike"</a></li>
+        <li><a href="https://kfgo.com/2026/08/19/samsung-hikes-chipmaking-prices-by-up-to-15-on-demand-spike-sources-say/" target="_blank" rel="noopener">KFGO (Reuters) — "Samsung hikes chipmaking prices by up to 15% on demand spike, sources say"</a></li>
+      </ul>
+      <p><strong>Diferenças de narrativa:</strong> cobertura concentrada em veículos financeiros/wire; não localizamos reportagem específica de veículo chinês sobre o impacto do aumento em compradores domésticos — lacuna que vale monitorar nos próximos dias.</p>
+      <span class="attention medio">Nível de atenção: médio</span>
+    </div>
+  </div>
+
+  <!-- STORY 13 -->
+  <div class="card">
+    <div class="card-head">
+      <div class="card-num">13</div>
+      <div class="card-title"><a href="https://www.cnbc.com/2026/08/17/meta-attorneys-general-california-federal-trial-astronomical-consequences.html" target="_blank" rel="noopener">Julgamento histórico sobre segurança infantil da Meta começa em corte federal na Califórnia</a></div>
+    </div>
+    <div class="card-meta">
+      <span>18 de agosto de 2026 (alegações iniciais)</span><span class="dot">•</span><span>Fonte primária: CNBC</span>
+    </div>
+    <p class="card-summary">Procuradores-gerais da Califórnia, Colorado, Kentucky e Nova Jersey abriram julgamento contra a Meta, alegando que Instagram e Facebook foram deliberadamente projetados para viciar menores (rolagem infinita, botão de "curtir", filtros) e que a empresa violou a lei federal de proteção à privacidade infantil (COPPA) ao coletar dados de usuários com menos de 13 anos sem consentimento. As penalidades poderiam, em tese, somar até US$ 1,4 trilhão; outros 25 estados têm ações semelhantes pendentes.</p>
+    <div class="box yellow">
+      <span class="box-title">📌 Por que isso importa?</span>
+      <p>Maior teste jurídico já aberto sobre os danos das redes sociais a menores, com potencial para forçar mudanças estruturais no design do Instagram e do Facebook — precedente que pode influenciar reguladores em outras partes do mundo, inclusive na análise de apps de vídeo curto e comércio social chineses (TikTok, Shopee) quanto a proteção infantil.</p>
+    </div>
+    <div class="box green">
+      <span class="box-title">🌍 Análise de Cobertura Global</span>
+      <div class="region-tags">
+        <span class="region-tag off">China</span><span class="region-tag">✓ EUA</span><span class="region-tag off">Europa</span><span class="region-tag off">Brasil</span>
+      </div>
+      <p><strong>EUA:</strong> CNBC, NPR e US News acompanharam a abertura do julgamento com detalhes sobre os argumentos de ambos os lados e o histórico de litígios estaduais contra a Meta.</p>
+      <ul class="sources-list">
+        <li><a href="https://www.cnbc.com/2026/08/17/meta-attorneys-general-california-federal-trial-astronomical-consequences.html" target="_blank" rel="noopener">CNBC — "Meta federal trial: attorneys general warn of 'astronomical' consequences"</a></li>
+        <li><a href="https://www.npr.org/2026/08/18/nx-s1-5935458/meta-child-safety-social-media-addiction-trial-opening" target="_blank" rel="noopener">NPR — "Meta child safety, social media addiction trial opening"</a></li>
+        <li><a href="https://www.usnews.com/news/us/articles/2026-08-18/opening-arguments-set-to-begin-in-metas-federal-trial-over-child-harms" target="_blank" rel="noopener">US News — "Opening arguments set to begin in Meta's federal trial over child harms"</a></li>
+      </ul>
+      <p><strong>Diferenças de narrativa:</strong> cobertura ainda concentrada nos EUA; o caso pode se tornar referência internacional em debates regulatórios sobre design viciante de apps, tema que já ecoa em discussões europeias sobre o Digital Services Act.</p>
+      <span class="attention alto">Nível de atenção: alto</span>
+    </div>
+  </div>
+
+  <!-- STORY 14 -->
+  <div class="card">
+    <div class="card-head">
+      <div class="card-num">14</div>
+      <div class="card-title"><a href="https://www.poder360.com.br/poder-justica/relator-vota-para-derrubar-exclusividade-da-99food-contra-a-keeta/" target="_blank" rel="noopener">Justiça e Cade avançam contra cláusulas de exclusividade da 99Food (DiDi) na disputa com Keeta (Meituan) no Brasil</a></div>
+    </div>
+    <div class="card-meta">
+      <span>11–19 de agosto de 2026</span><span class="dot">•</span><span>Fonte primária: TJSP / Cade (via Poder360, NeoFeed)</span>
+    </div>
+    <p class="card-summary">O TJSP começou a julgar a legalidade de cláusulas de exclusividade que a 99Food (controlada pela chinesa DiDi) impôs a restaurantes parceiros para bloquear o avanço da Keeta, braço internacional da chinesa Meituan no Brasil desde 2025. O relator votou a favor da Keeta, considerando as cláusulas ilegais; o Cade (autarquia antitruste brasileira) também analisa processo movido pela Keeta contra a 99Food por concorrência desleal.</p>
+    <div class="box yellow">
+      <span class="box-title">📌 Por que isso importa?</span>
+      <p>Primeiro grande teste de concorrência direta entre duas gigantes chinesas de tecnologia (Meituan e DiDi) em solo brasileiro, com decisão que pode redefinir as regras do delivery no país. Envolve diretamente a Meituan (empresa prioritária monitorada), que planeja investir mais de R$ 5,6 bilhões no Brasil — um caso concreto de como a rivalidade tecnológica chinesa se manifesta em mercados emergentes fora da China.</p>
+    </div>
+    <div class="box green">
+      <span class="box-title">🌍 Análise de Cobertura Global</span>
+      <div class="region-tags">
+        <span class="region-tag off">China</span><span class="region-tag">✓ EUA</span><span class="region-tag off">Europa</span><span class="region-tag">✓ Brasil</span>
+      </div>
+      <p><strong>Brasil:</strong> cobertura extensa e detalhada por Poder360, NeoFeed e Diário do Grande ABC, acompanhando as sessões de julgamento no TJSP e no Cade. <strong>EUA:</strong> Yahoo Finance replicou a disputa sob o ângulo de "empresas chinesas rivais brigando na Justiça brasileira".</p>
+      <ul class="sources-list">
+        <li><a href="https://www.dgabc.com.br/Noticia/4340655/tjsp-comeca-a-julgar-sobre-clausulas-contratuais-da-99food-que-banem-a-keeta" target="_blank" rel="noopener">Diário do Grande ABC — "TJSP começa a julgar sobre cláusulas contratuais da 99Food que banem a Keeta"</a></li>
+        <li><a href="https://neofeed.com.br/poder/com-parecer-de-ex-stf-julgamento-no-cade-sobre-keeta-e-99food-pode-redefinir-o-setor-de-delivery/" target="_blank" rel="noopener">NeoFeed — "Julgamento no Cade sobre Keeta e 99Food pode redefinir o setor de delivery"</a></li>
+        <li><a href="https://finance.yahoo.com/news/didis-99-sues-chinese-rival-213819871.html" target="_blank" rel="noopener">Yahoo Finance — "Chinese firms in legal battle over Brazil food delivery"</a></li>
+      </ul>
+      <p><strong>Diferenças de narrativa:</strong> a imprensa brasileira trata o caso com riqueza de detalhes jurídicos e como termômetro da concorrência local; a cobertura internacional (ainda escassa) o resume como curiosidade geopolítica — "rivais chineses brigando fora de casa" — sem aprofundar o mérito regulatório.</p>
+      <span class="attention medio">Nível de atenção: médio</span>
+    </div>
+  </div>
+
+  <!-- STORY 15 -->
+  <div class="card">
+    <div class="card-head">
+      <div class="card-num">15</div>
+      <div class="card-title"><a href="https://www.hollywoodreporter.com/business/digital/mpa-inks-ai-video-ip-protection-bytedance-1236675016/" target="_blank" rel="noopener">Motion Picture Association e ByteDance assinam acordo de proteção de direitos autorais para IA generativa</a></div>
+    </div>
+    <div class="card-meta">
+      <span>17 de agosto de 2026</span><span class="dot">•</span><span>Fonte primária: The Hollywood Reporter</span>
+    </div>
+    <p class="card-summary">A Motion Picture Association (MPA) e a ByteDance firmaram um memorando de entendimento estabelecendo salvaguardas contra o uso indevido de propriedade intelectual de estúdios nos modelos generativos Seedance (vídeo) e Seedream (imagem) da empresa, além de no TikTok, CapCut e Dreamina. O acordo vem após uma notificação extrajudicial da MPA em fevereiro, motivada por deepfakes virais (como um vídeo falso de luta entre Tom Cruise e Brad Pitt).</p>
+    <div class="box yellow">
+      <span class="box-title">📌 Por que isso importa?</span>
+      <p>Raro acordo direto entre a indústria cultural americana e uma big tech chinesa sobre uso de IA generativa — pode servir de modelo para futuras negociações de propriedade intelectual entre Hollywood e outros laboratórios chineses de vídeo por IA (Alibaba, Kuaishou, Tencent). Relevante para a ByteDance (empresa prioritária), que segue expandindo Seedance/Seedream globalmente em meio às disputas sobre a propriedade do TikTok nos EUA.</p>
+    </div>
+    <div class="box green">
+      <span class="box-title">🌍 Análise de Cobertura Global</span>
+      <div class="region-tags">
+        <span class="region-tag off">China</span><span class="region-tag">✓ EUA</span><span class="region-tag off">Europa</span><span class="region-tag off">Brasil</span>
+      </div>
+      <p><strong>EUA:</strong> The Hollywood Reporter, Variety e Social Media Today cobriram o acordo com foco no histórico de disputa por deepfakes de celebridades e no que muda na prática para criadores que usam as ferramentas da ByteDance.</p>
+      <ul class="sources-list">
+        <li><a href="https://variety.com/2026/biz/news/motion-picture-association-deal-bytedance-ip-ai-seedance-1236836240/" target="_blank" rel="noopener">Variety — "Motion Picture Association Deal With ByteDance on IP/AI (Seedance)"</a></li>
+        <li><a href="https://www.socialmediatoday.com/news/tiktok-owner-bytedance-signs-motion-picture-association-deal/828088/" target="_blank" rel="noopener">Social Media Today — "TikTok owner ByteDance signs Motion Picture Association deal"</a></li>
+        <li><a href="https://www.hollywoodreporter.com/business/digital/mpa-inks-ai-video-ip-protection-bytedance-1236675016/" target="_blank" rel="noopener">The Hollywood Reporter — "MPA Inks AI Video IP Protection Deal With ByteDance"</a></li>
+      </ul>
+      <p><strong>Diferenças de narrativa:</strong> a cobertura é dominada pela imprensa especializada em entretenimento dos EUA; não localizamos, até o fechamento desta edição, reportagem equivalente por veículos chineses — um contraste que sugere baixa prioridade editorial doméstica para o tema na China, apesar do impacto direto sobre a ByteDance.</p>
+      <span class="attention baixo">Nível de atenção: baixo/médio</span>
+    </div>
+  </div>
+
+  <footer class="geo">
+    <h2>🌐 Implicações Geopolíticas</h2>
+    <div class="sub">Leitura consolidada das 15 histórias de hoje sob a ótica da disputa tecnológica global</div>
+
+    <h3>Tensões tecnológicas EUA-China</h3>
+    <p>O dia é marcado por um paradoxo: enquanto chips Nvidia H200 voltam a fluir para ByteDance e Tencent (#3) sob uma estrutura de licenciamento americana mais flexível, é o próprio governo chinês que está represando o volume para proteger a autossuficiência em semicondutores — SMIC, Huawei e agora a fundição doméstica seguem como prioridade estratégica de Pequim. Paralelamente, a Samsung eleva preços de fundição justamente para clientes chineses (#12), evidenciando como os controles de exportação elevam o custo indireto de acesso a chips avançados para empresas da China. No campo da IA de fronteira, o "espelhamento" entre a pausa da OpenAI no modelo Astra (#9) e o atraso de segurança da Zhipu no GLM-5.3 (#8) mostra que ambos os países se aproximam, quase simultaneamente, do mesmo limiar de risco em capacidades cibernéticas ofensivas de IA — um paralelismo raramente discutido em conjunto pela imprensa de qualquer um dos dois países.</p>
+
+    <h3>Impacto regulatório esperado</h3>
+    <ul>
+      <li>A concessão da Apple à União Europeia (#7) deve pressionar outras plataformas — incluindo super-apps chineses que operam na Europa — a adotar modelos de comissão mais baixos e lojas alternativas, com efeito cascata provável sobre o Brasil, ainda sem legislação equivalente à DMA.</li>
+      <li>O corte de mais de 60% no valuation do IPO da Shein (#4) e a queda livre no processo Cade/TJSP entre Meituan e DiDi no Brasil (#14) sinalizam que 2026 é o ano em que reguladores de múltiplas jurisdições — UE, Hong Kong, Brasil — passam a tratar o e-commerce transfronteiriço chinês com escrutínio equivalente ao dado a big techs americanas.</li>
+      <li>O julgamento da Meta sobre segurança infantil nos EUA (#13) deve inspirar ações semelhantes em outras geografias, pressionando também plataformas de vídeo curto e comércio social de origem chinesa quanto à proteção de menores.</li>
+    </ul>
+
+    <h3>Oportunidades e riscos geopolíticos</h3>
+    <p>A disparada do IPO da Unitree (#2) e o pouso bem-sucedido do foguete da LandSpace (#11) reforçam a narrativa de que a China consolidou uma vantagem em "hard tech" — robótica humanoide e lançadores reutilizáveis — que extrapola o debate sobre chips de IA. Ao mesmo tempo, o financiamento bilionário via dívida da ByteDance (#5) e o salto de capex da Alibaba (#1) mostram que as big techs chinesas seguem competindo em escala com as gigantes americanas mesmo sob restrições, enquanto acordos como o da Marvell com o Google (#10) evidenciam que os EUA seguem na dianteira da infraestrutura física de IA. O risco central para 2027 é uma nova rodada de escalada: se Washington perceber que a folga concedida em chips H200 está acelerando demais a IA chinesa, pode reverter o afrouxamento — assim como Pequim pode acelerar restrições próprias à saída de tecnologia (modelos, dados) caso veja o open-weight chinês (Zhipu, DeepSeek) como vulnerabilidade estratégica.</p>
+
+    <h3>Perspectiva Brasil-China-Global</h3>
+    <p>O Brasil aparece hoje não apenas como mercado consumidor de tecnologia chinesa, mas como arena de disputa direta entre gigantes chinesas: o litígio entre Keeta (Meituan) e 99Food (DiDi) (#14) é um raro caso em que a rivalidade tecnológica chinesa se resolve nos tribunais brasileiros, com o Cade e o TJSP funcionando como árbitros de um conflito com raízes em Pequim. Some-se a isso o apetite de investidores brasileiros pelo resultado da Alibaba (#1) e pela IPO da Unitree (#2) — cujos robôs já são revendidos no país — e fica claro que o Brasil está cada vez mais integrado ao ciclo de notícias tecnológicas chinesas, ainda que a cobertura local siga concentrada em ângulos financeiros e jurídicos, com menos profundidade analítica sobre as implicações geopolíticas mais amplas do que a observada na imprensa americana ou chinesa.</p>
+  </footer>
+
+</div>
+
+<div class="disclaimer">
+  Relatório gerado automaticamente a partir de pesquisa em fontes abertas (busca web). Datas e valores foram checados contra múltiplas fontes independentes sempre que possível; pequenas divergências numéricas entre veículos (ex.: percentuais de crescimento) foram sinalizadas no texto quando identificadas. Este documento não constitui recomendação de investimento.
+</div>
+
+</body>
+</html>
