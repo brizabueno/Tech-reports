@@ -1,0 +1,997 @@
+<title>Stocks Report — 24h</title>
+<style>
+  :root{
+    --bg: #eef0f3;
+    --bg-warm: #e7e9ee;
+    --surface: #ffffff;
+    --surface-2: #f7f8fa;
+    --border: #dfe2e8;
+    --text: #1a1c20;
+    --text-dim: #565c66;
+    --text-faint: #878d97;
+    --accent: #14508f;
+    --accent-dim: #e8eef6;
+    --link: #0d5fae;
+
+    --yellow-bg: #fff6d8;
+    --yellow-border: #f0d979;
+    --yellow-text: #6b5306;
+    --yellow-icon: #b8860b;
+
+    --green-bg: #e3f5e8;
+    --green-border: #a9dfb9;
+    --green-text: #1c6b3a;
+    --green-icon: #2f9e5b;
+
+    --header-bg: #0a0b0d;
+    --header-text: #f5f6f7;
+    --header-text-dim: #a7acb5;
+
+    --chip-bg: #f1f2f5;
+    --chip-text: #4a4f58;
+
+    --shadow: 0 1px 2px rgba(20,22,26,0.04), 0 8px 24px rgba(20,22,26,0.06);
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --bg: #17181b;
+      --bg-warm: #1b1c20;
+      --surface: #202226;
+      --surface-2: #26282d;
+      --border: #34363c;
+      --text: #eef0f2;
+      --text-dim: #a9adb5;
+      --text-faint: #7c828c;
+      --accent: #6ba6e8;
+      --accent-dim: #22344a;
+      --link: #7db4ee;
+
+      --yellow-bg: #362c0d;
+      --yellow-border: #5c4a12;
+      --yellow-text: #f0d27a;
+      --yellow-icon: #f0c94a;
+
+      --green-bg: #0f2c1b;
+      --green-border: #1e5334;
+      --green-text: #8fe0ac;
+      --green-icon: #4fc57f;
+
+      --header-bg: #000000;
+      --header-text: #f5f6f7;
+      --header-text-dim: #9096a0;
+
+      --chip-bg: #2a2c31;
+      --chip-text: #c3c7ce;
+
+      --shadow: 0 1px 2px rgba(0,0,0,0.3), 0 8px 24px rgba(0,0,0,0.35);
+    }
+  }
+  :root[data-theme="dark"]{
+    --bg: #17181b;
+    --bg-warm: #1b1c20;
+    --surface: #202226;
+    --surface-2: #26282d;
+    --border: #34363c;
+    --text: #eef0f2;
+    --text-dim: #a9adb5;
+    --text-faint: #7c828c;
+    --accent: #6ba6e8;
+    --accent-dim: #22344a;
+    --link: #7db4ee;
+
+    --yellow-bg: #362c0d;
+    --yellow-border: #5c4a12;
+    --yellow-text: #f0d27a;
+    --yellow-icon: #f0c94a;
+
+    --green-bg: #0f2c1b;
+    --green-border: #1e5334;
+    --green-text: #8fe0ac;
+    --green-icon: #4fc57f;
+
+    --header-bg: #000000;
+    --header-text: #f5f6f7;
+    --header-text-dim: #9096a0;
+
+    --chip-bg: #2a2c31;
+    --chip-text: #c3c7ce;
+
+    --shadow: 0 1px 2px rgba(0,0,0,0.3), 0 8px 24px rgba(0,0,0,0.35);
+  }
+
+  *{ box-sizing:border-box; }
+  body{
+    margin:0;
+    background:var(--bg);
+    color:var(--text);
+    font-family:-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    font-size:15px;
+    line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+  }
+  a{ color:var(--link); text-decoration:none; }
+  a:hover{ text-decoration:underline; }
+  a:focus-visible, button:focus-visible{ outline:2px solid var(--accent); outline-offset:2px; border-radius:4px; }
+
+  .wrap{ max-width:920px; margin:0 auto; padding:0 20px 64px; }
+
+  header.masthead{
+    width:100%;
+    background:var(--header-bg);
+    color:var(--header-text);
+    padding:28px 0 26px;
+    margin-bottom:28px;
+  }
+  header.masthead .inner{ max-width:920px; margin:0 auto; padding:0 20px; }
+  .brand{ display:flex; align-items:baseline; gap:10px; flex-wrap:wrap; }
+  .brand .mark{
+    width:30px; height:30px; border-radius:8px;
+    background:linear-gradient(135deg, var(--yellow-icon), var(--green-icon));
+    display:inline-flex; align-items:center; justify-content:center;
+    font-weight:800; font-size:15px; color:#0a0b0d; flex:none;
+  }
+  .brand h1{ font-size:22px; margin:0; font-weight:750; letter-spacing:-0.01em; }
+  .brand .tag{ font-size:12.5px; color:var(--header-text-dim); text-transform:uppercase; letter-spacing:.08em; font-weight:600; }
+  .meta-row{ display:flex; justify-content:space-between; align-items:flex-end; gap:16px; margin-top:16px; flex-wrap:wrap; }
+  .pubtime{ font-size:13.5px; color:var(--header-text-dim); }
+  .pubtime strong{ color:var(--header-text); font-weight:600; }
+  .regions{ display:flex; gap:8px; flex-wrap:wrap; }
+  .region-chip{
+    background:rgba(255,255,255,0.08);
+    border:1px solid rgba(255,255,255,0.14);
+    color:var(--header-text);
+    padding:5px 11px;
+    border-radius:999px;
+    font-size:12.5px;
+    font-weight:600;
+    display:flex; align-items:center; gap:6px;
+  }
+
+  .notice{
+    background:var(--surface-2);
+    border:1px solid var(--border);
+    border-radius:14px;
+    padding:16px 20px;
+    font-size:13px;
+    color:var(--text-dim);
+    margin-bottom:32px;
+    line-height:1.65;
+  }
+  .notice strong{ color:var(--text); }
+
+  section.block{ margin-bottom:44px; }
+  .block-head{ display:flex; align-items:baseline; justify-content:space-between; gap:12px; margin-bottom:18px; flex-wrap:wrap; }
+  .block-head h2{ font-size:19px; margin:0; font-weight:750; letter-spacing:-0.01em; }
+  .block-head .count{ font-size:12.5px; color:var(--text-faint); font-weight:600; }
+
+  .card{
+    background:var(--surface);
+    border:1px solid var(--border);
+    border-radius:16px;
+    padding:22px 24px;
+    margin-bottom:16px;
+    box-shadow:var(--shadow);
+  }
+  .card-head{ display:flex; gap:14px; align-items:flex-start; }
+  .num{
+    flex:none;
+    width:30px; height:30px;
+    border-radius:9px;
+    background:var(--accent-dim);
+    color:var(--accent);
+    font-weight:750; font-size:13.5px;
+    display:flex; align-items:center; justify-content:center;
+    font-variant-numeric: tabular-nums;
+  }
+  .card-title{ font-size:16.5px; font-weight:700; line-height:1.4; letter-spacing:-0.005em; text-wrap:balance; }
+  .card-sub{ margin-top:6px; display:flex; gap:10px; flex-wrap:wrap; font-size:12.5px; color:var(--text-faint); }
+  .ticker-pill{
+    background:var(--chip-bg); color:var(--chip-text);
+    padding:2px 9px; border-radius:6px; font-weight:700; font-size:11.5px;
+    letter-spacing:.02em; font-variant-numeric: tabular-nums;
+  }
+  .summary{ margin:14px 0 0; color:var(--text-dim); font-size:14.5px; }
+
+  .box{
+    border-radius:12px;
+    padding:14px 16px;
+    margin-top:14px;
+    font-size:13.5px;
+    line-height:1.6;
+    border:1px solid;
+  }
+  .box .box-title{
+    display:flex; align-items:center; gap:7px;
+    font-weight:750; font-size:12.5px;
+    text-transform:uppercase; letter-spacing:.04em;
+    margin-bottom:8px;
+  }
+  .box.yellow{ background:var(--yellow-bg); border-color:var(--yellow-border); color:var(--yellow-text); }
+  .box.yellow .box-title{ color:var(--yellow-icon); }
+  .box.green{ background:var(--green-bg); border-color:var(--green-border); color:var(--green-text); }
+  .box.green .box-title{ color:var(--green-icon); }
+  .box ul{ margin:0; padding-left:18px; }
+  .box li{ margin-bottom:3px; }
+  .box li:last-child{ margin-bottom:0; }
+
+  .coverage-regions{ display:flex; gap:6px; flex-wrap:wrap; margin-bottom:8px; }
+  .cflag{ background:rgba(0,0,0,0.05); border-radius:6px; padding:2px 8px; font-size:12px; font-weight:600; }
+  :root[data-theme="dark"] .cflag,
+  @media (prefers-color-scheme: dark){ .cflag{ background:rgba(255,255,255,0.06); } }
+  .cflag.off{ opacity:.38; text-decoration:line-through; }
+  .attn{ display:inline-flex; align-items:center; gap:6px; font-weight:700; margin-top:4px; }
+  .dot{ width:8px; height:8px; border-radius:50%; display:inline-block; }
+  .dot.high{ background:#e0563a; }
+  .dot.medium{ background:#e0a53a; }
+  .dot.low{ background:#7fae6a; }
+  .sources-list{ margin-top:8px; }
+  .sources-list a{ display:inline; }
+  .sources-list li{ margin-bottom:4px; }
+  .date-conf{ font-style:italic; color:inherit; opacity:.85; }
+
+  .analysis-card{
+    background:var(--surface);
+    border:1px solid var(--border);
+    border-radius:16px;
+    padding:20px 22px;
+    margin-bottom:14px;
+  }
+  .analysis-card h3{ margin:0 0 8px; font-size:15.5px; display:flex; align-items:center; gap:9px; }
+  .analysis-card h3 .ticker-pill{ font-size:12px; }
+  .analysis-card p{ margin:0 0 8px; color:var(--text-dim); font-size:14px; }
+  .analysis-card p:last-child{ margin-bottom:0; }
+  .analysis-card .label{ font-weight:700; color:var(--text); }
+
+  .persp{
+    background:linear-gradient(135deg, var(--accent-dim), var(--surface-2));
+    border:1px solid var(--border);
+    border-radius:16px;
+    padding:22px 24px;
+    margin-top:6px;
+  }
+  .persp h3{ margin:0 0 10px; font-size:15.5px; }
+  .persp p{ margin:0 0 10px; color:var(--text-dim); font-size:14px; }
+  .persp p:last-child{ margin-bottom:0; }
+
+  footer{
+    margin-top:40px;
+    padding-top:20px;
+    border-top:1px solid var(--border);
+    color:var(--text-faint);
+    font-size:12px;
+    line-height:1.7;
+  }
+
+  @media (max-width:600px){
+    .card{ padding:18px; }
+    header.masthead{ padding:22px 0 20px; }
+    .meta-row{ flex-direction:column; align-items:flex-start; }
+  }
+</style>
+
+<header class="masthead">
+  <div class="inner">
+    <div class="brand">
+      <span class="mark">S</span>
+      <h1>Stocks Report</h1>
+      <span class="tag">Top Stocks News</span>
+    </div>
+    <div class="meta-row">
+      <div class="pubtime">Publicado em <strong>24 de agosto de 2026</strong> · pregão de segunda-feira</div>
+      <div class="regions">
+        <span class="region-chip">🇨🇳 China</span>
+        <span class="region-chip">🇺🇸 EUA</span>
+        <span class="region-chip">🇪🇺 Europa</span>
+        <span class="region-chip">🇧🇷 Brasil</span>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="wrap">
+
+  <div class="notice">
+    <strong>Nota de metodologia e transparência:</strong> este relatório foi apurado por busca automatizada nas fontes obrigatórias (Valor Econômico, InfoMoney, Money Times, InvestNews, Investing.com, Forbes, Estadão, Folha, Bloomberg Línea, SCMP, Caixin, Yicai, China Daily, Xinhua, Reuters, Bloomberg, Yahoo Finance, BBC, The Economist, Financial Times, entre outras). O ambiente de execução bloqueou o acesso direto (fetch) às páginas de notícias para checagem manual de status HTTP; por isso, a verificação de autenticidade e de data foi feita por <strong>checagem cruzada entre múltiplas buscas independentes e múltiplos veículos noticiando o mesmo fato</strong>, e cada link abaixo veio diretamente de resultados de busca reais — nenhuma URL foi inventada. Do universo de tickers monitorados, apenas os que tiveram cobertura noticiosa genuína nas últimas 24–48h foram incluídos; tickers sem notícia nova no período (a maioria dos small/mid caps brasileiros da lista) foram deliberadamente <strong>excluídos em vez de preenchidos artificialmente</strong>. Por isso o relatório traz 16 histórias verificadas — 4 do Brasil e 12 internacionais — em vez do total de 30 originalmente pretendido. Isso deve ser lido como parte do sinal: a ausência de notícia sobre um ticker também é informação.
+  </div>
+
+  <!-- ================= BRAZIL SECTION ================= -->
+  <section class="block" id="brasil">
+    <div class="block-head">
+      <h2>🇧🇷 Principais notícias — Ações Brasileiras</h2>
+      <span class="count">4 histórias verificadas</span>
+    </div>
+
+    <!-- STORY 1 -->
+    <article class="card">
+      <div class="card-head">
+        <span class="num">1</span>
+        <div>
+          <div class="card-title"><a href="https://investnews.com.br/negocios/braskem-pede-protecao-judicial-contra-credores-em-medida-que-antecede-recuperacao-extrajudicial/" target="_blank" rel="noopener">Braskem pede recuperação extrajudicial com dívida de R$ 54 bilhões</a></div>
+          <div class="card-sub">
+            <span class="ticker-pill">PETR4</span>
+            <span>24/08/2026</span>
+            <span>· InvestNews</span>
+          </div>
+        </div>
+      </div>
+      <p class="summary">A Braskem protocolou nesta segunda-feira (24) um pedido de recuperação extrajudicial na Justiça de São Paulo, depois de não fechar acordo com credores antes do vencimento de uma tutela de urgência obtida em junho. A dívida da petroquímica soma R$ 54 bilhões (mais de US$ 10 bilhões), e a empresa terá 90 dias de proteção (stay period) para negociar um plano de reestruturação. Entre os maiores credores estão detentores de bonds e os bancos Banco do Brasil, BNDES, Itaú, Bradesco e Santander. A Petrobras, co-controladora da Braskem ao lado do IG4 Capital, resiste a aportar capital para não ampliar sua fatia e ter de consolidar a dívida em seu próprio balanço.</p>
+      <div class="box yellow">
+        <div class="box-title">📌 Por que isso importa</div>
+        <ul>
+          <li>Maior evento corporativo do dia envolvendo uma controlada relevante da Petrobras, com risco de exposição financeira e contábil para a estatal.</li>
+          <li>Credores (incluindo fundos como Elliott e Contrarian Capital) seguem pressionando a Petrobras por um aporte — o desfecho e o valor final ainda são incertos.</li>
+          <li>Analistas monitoram possível impacto sobre a política de dividendos da Petrobras caso a estatal seja forçada a capitalizar a petroquímica.</li>
+        </ul>
+      </div>
+      <div class="box green">
+        <div class="box-title">🌍 Análise de cobertura global</div>
+        <div class="coverage-regions">
+          <span class="cflag">✓ Brasil</span>
+          <span class="cflag off">China</span>
+          <span class="cflag off">EUA</span>
+          <span class="cflag off">Europa</span>
+        </div>
+        <div>Veículos: InvestNews, Bloomberg Línea, Money Times, InfoMoney, Investing.com Brasil</div>
+        <ul class="sources-list">
+          <li><a href="https://www.bloomberglinea.com.br" target="_blank" rel="noopener">Bloomberg Línea</a> — "Credores da Braskem cobram aporte da Petrobras…"</li>
+          <li><a href="https://www.moneytimes.com.br" target="_blank" rel="noopener">Money Times</a> — "Petrobras avalia dar prazo maior para Braskem…"</li>
+          <li><a href="https://br.investing.com" target="_blank" rel="noopener">Investing.com Brasil</a> — "BRKM5: credores pressionam Petrobras antes de 24/08"</li>
+        </ul>
+        <div class="attn"><span class="dot high"></span>Atenção: Alta (cobertura concentrada no Brasil, mas em todos os grandes veículos financeiros)</div>
+      </div>
+    </article>
+
+    <!-- STORY 2 -->
+    <article class="card">
+      <div class="card-head">
+        <span class="num">2</span>
+        <div>
+          <div class="card-title"><a href="https://www.infomoney.com.br/mercados/petrobras-petr4-proventos-segundo-trimestre-2026/" target="_blank" rel="noopener">Petrobras (PETR4) inicia negociação "ex-direitos" após aprovar R$ 17,4 bi em proventos</a></div>
+          <div class="card-sub">
+            <span class="ticker-pill">PETR4</span>
+            <span>24/08/2026</span>
+            <span>· InfoMoney</span>
+          </div>
+        </div>
+      </div>
+      <p class="summary">As ações da Petrobras passaram a ser negociadas "ex-direitos" nesta segunda-feira, 24 de agosto. Têm direito ao provento os acionistas que detinham papéis até 21 de agosto. O conselho aprovou o pagamento de R$ 17,4 bilhões em dividendos e juros sobre capital próprio (R$ 1,35 por ação ON e PN), a serem pagos em duas parcelas: R$ 0,67 em 23 de novembro (JCP) e R$ 0,67 em 21 de dezembro. O evento coincide, no mesmo dia, com o anúncio da crise da Braskem — reforçando o contraste entre a robustez de caixa da controladora e o problema em sua controlada petroquímica.</p>
+      <div class="box yellow">
+        <div class="box-title">📌 Por que isso importa</div>
+        <ul>
+          <li>Data ex-dividendo é evento mecânico de mercado que tende a ajustar a abertura de PETR4 hoje.</li>
+          <li>Reforça a tese de Petrobras como pagadora de dividendos robusta, mesmo em meio ao caso Braskem.</li>
+          <li>Relevante para investidores de renda que compraram o papel antes do corte para captar o provento.</li>
+        </ul>
+      </div>
+      <div class="box green">
+        <div class="box-title">🌍 Análise de cobertura global</div>
+        <div class="coverage-regions">
+          <span class="cflag">✓ Brasil</span>
+          <span class="cflag off">China</span>
+          <span class="cflag off">EUA</span>
+          <span class="cflag off">Europa</span>
+        </div>
+        <div>Veículos: InfoMoney, Money Times</div>
+        <ul class="sources-list">
+          <li><a href="https://www.moneytimes.com.br" target="_blank" rel="noopener">Money Times</a> — "Petrobras aprova R$ 17,4 bi em dividendos e JCP; veja condições"</li>
+          <li><a href="https://www.moneytimes.com.br" target="_blank" rel="noopener">Money Times</a> — "ADRs da estatal avançam em Nova York com lucro acima do esperado"</li>
+        </ul>
+        <div class="attn"><span class="dot medium"></span>Atenção: Média-Alta (cobertura consistente na imprensa brasileira; sem corroboração internacional identificada)</div>
+      </div>
+    </article>
+
+    <!-- STORY 3 -->
+    <article class="card">
+      <div class="card-head">
+        <span class="num">3</span>
+        <div>
+          <div class="card-title"><a href="https://www.infomoney.com.br/mercados/morgan-stanley-rebaixa-bb-seguridade-bbse3-a-venda-e-acoes-caem-banco-reitera-porto-pssa3-como-top-pick-do-setor/" target="_blank" rel="noopener">Morgan Stanley e JPMorgan rebaixam BB Seguridade (BBSE3) para venda</a></div>
+          <div class="card-sub">
+            <span class="ticker-pill">BBSE3</span>
+            <span>Semana de 24/08 <span class="date-conf">(data exata não confirmável — ver nota)</span></span>
+            <span>· InfoMoney</span>
+          </div>
+        </div>
+      </div>
+      <p class="summary">O Morgan Stanley rebaixou a BB Seguridade de "equalweight" para "underweight", com preço-alvo de R$ 31, citando forte valorização acumulada no ano que deixou a ação com avaliação menos atrativa. O JPMorgan seguiu o mesmo movimento, reduzindo o preço-alvo de R$ 40 para R$ 34 e citando crescimento de prêmios em ritmo mais lento e pressão sobre a receita financeira com a queda da Selic. As ações da BB Seguridade e da Caixa Seguridade recuaram na sequência dos rebaixamentos, chegando a cair cerca de 7% em determinado pregão.</p>
+      <div class="box yellow">
+        <div class="box-title">📌 Por que isso importa</div>
+        <ul>
+          <li>Dois grandes bancos de investimento migrando de compra/neutro para venda ao mesmo tempo é sinal forte para o setor de seguros ligado a bancos estatais.</li>
+          <li>Tese central: alta de +21,5% no ano deixou pouco espaço para valorização adicional, e a queda da Selic reduz a rentabilidade financeira da seguradora.</li>
+          <li>Risco contratual citado pelo JPMorgan: renovação do contrato de exclusividade com o Banco do Brasil é fator estrutural a monitorar.</li>
+        </ul>
+      </div>
+      <div class="box green">
+        <div class="box-title">🌍 Análise de cobertura global</div>
+        <div class="coverage-regions">
+          <span class="cflag">✓ Brasil</span>
+          <span class="cflag off">China</span>
+          <span class="cflag off">EUA</span>
+          <span class="cflag off">Europa</span>
+        </div>
+        <div>Veículos: InfoMoney, Money Times</div>
+        <ul class="sources-list">
+          <li><a href="https://www.moneytimes.com.br" target="_blank" rel="noopener">Money Times</a> — "BBSE3: por que o JPMorgan rebaixou a ação para venda"</li>
+          <li><a href="https://www.infomoney.com.br" target="_blank" rel="noopener">InfoMoney</a> — "BBSE3, CXSE3 e mais: por que seguradoras estão sendo rebaixadas?"</li>
+        </ul>
+        <div class="attn"><span class="dot medium"></span>Atenção: Média (relevante para o setor, mas confiança de data reduzida — pode ser ligeiramente anterior às últimas 24h)</div>
+      </div>
+    </article>
+
+    <!-- STORY 4 -->
+    <article class="card">
+      <div class="card-head">
+        <span class="num">4</span>
+        <div>
+          <div class="card-title"><a href="https://br.investing.com/news/stock-market-news/mglu3-por-que-as-acoes-do-magazine-luiza-estao-em-queda-hoje-2045752" target="_blank" rel="noopener">Por que as ações do Magazine Luiza (MGLU3) seguem em queda</a></div>
+          <div class="card-sub">
+            <span class="ticker-pill">MGLU3</span>
+            <span>Semana de 24/08 <span class="date-conf">(data exata não confirmável — ver nota)</span></span>
+            <span>· Investing.com Brasil</span>
+          </div>
+        </div>
+      </div>
+      <p class="summary">As ações do Magazine Luiza acumulam sete pregões consecutivos de queda após o balanço do 2T26, com médias móveis de curto e longo prazo alinhadas em configuração técnica de venda. A companhia reduziu deliberadamente vendas em categorias de menor margem, perdendo participação no digital, o que pressionou o papel apesar do discurso otimista da gestão para o segundo semestre (incluindo parceria de marketplace com a Amazon). A Selic elevada segue inflando as despesas financeiras, fator que contribuiu para o prejuízo líquido do trimestre. O papel opera perto de mínimas de 52 semanas.</p>
+      <div class="box yellow">
+        <div class="box-title">📌 Por que isso importa</div>
+        <ul>
+          <li>Sinaliza pressão técnica e fundamentalista contínua sobre MGLU3, com alavancagem em alta (5,7x dívida líquida/Ebitda).</li>
+          <li>Contexto competitivo relevante: a crise da rival Casas Bahia (recuperação judicial pedida em meados de agosto) tem efeito misto — ganho de share físico, mas Magalu também enfrenta vencimentos de dívida de R$ 2,2 bi em 2026/27.</li>
+          <li>Termômetro do varejo brasileiro sob pressão de juros altos.</li>
+        </ul>
+      </div>
+      <div class="box green">
+        <div class="box-title">🌍 Análise de cobertura global</div>
+        <div class="coverage-regions">
+          <span class="cflag">✓ Brasil</span>
+          <span class="cflag off">China</span>
+          <span class="cflag off">EUA</span>
+          <span class="cflag off">Europa</span>
+        </div>
+        <div>Veículos: Investing.com Brasil, InfoMoney</div>
+        <ul class="sources-list">
+          <li><a href="https://www.infomoney.com.br" target="_blank" rel="noopener">InfoMoney</a> — "Magazine Luiza (MGLU3) ou Casas Bahia (BHIA3): qual ação está mais pressionada?"</li>
+        </ul>
+        <div class="attn"><span class="dot medium"></span>Atenção: Média (cobertura recorrente no noticiário de varejo brasileiro)</div>
+      </div>
+    </article>
+  </section>
+
+  <!-- ================= INTERNATIONAL SECTION ================= -->
+  <section class="block" id="internacional">
+    <div class="block-head">
+      <h2>🌐 Principais notícias — Ações Internacionais</h2>
+      <span class="count">12 histórias verificadas</span>
+    </div>
+
+    <!-- STORY 1 -->
+    <article class="card">
+      <div class="card-head">
+        <span class="num">1</span>
+        <div>
+          <div class="card-title"><a href="https://www.investing.com/news/stock-market-news/alibaba-proposes-hong-kong-share-placement-worth-10-billion-4872416" target="_blank" rel="noopener">Alibaba anuncia oferta de ações de US$ 10,2 bilhões em Hong Kong para financiar investimentos em IA</a></div>
+          <div class="card-sub">
+            <span class="ticker-pill">BABA</span>
+            <span>23/08/2026</span>
+            <span>· Reuters (via Investing.com)</span>
+          </div>
+        </div>
+      </div>
+      <p class="summary">A Alibaba precificou uma colocação de HK$ 80 bilhões (~US$ 10,2 bi) em 710 milhões de novas ações, a HK$ 112,70 cada — desconto de 8,4% sobre o fechamento de sexta-feira em Hong Kong. Morgan Stanley, HSBC, UBS e CICC coordenam a operação, que se encerra em 26/08. A empresa afirma que usará 100% dos recursos para capacidades de IA "full-stack": chips, infraestrutura e desenvolvimento de modelos.</p>
+      <div class="box yellow">
+        <div class="box-title">📌 Por que isso importa</div>
+        <ul>
+          <li>Maior oferta primária de follow-on já feita por uma empresa listada em Hong Kong, e a terceira maior do mundo em 2026 (atrás de Alphabet e Intel).</li>
+          <li>Sinaliza disposição da Alibaba de levantar capital fresco em vez de financiar o capex de IA só com caixa operacional — gera preocupação de diluição no curto prazo mesmo reforçando o compromisso agressivo com IA.</li>
+        </ul>
+      </div>
+      <div class="box green">
+        <div class="box-title">🌍 Análise de cobertura global</div>
+        <div class="coverage-regions">
+          <span class="cflag">✓ China</span>
+          <span class="cflag">✓ EUA</span>
+          <span class="cflag off">Europa</span>
+          <span class="cflag off">Brasil</span>
+        </div>
+        <div>Veículos: Reuters/Investing.com, Bloomberg, SCMP, TechNode, Yahoo Finance, US News</div>
+        <ul class="sources-list">
+          <li><a href="https://www.bloomberg.com/news/articles/2026-08-23/alibaba-to-raise-10-billion-by-selling-shares-for-ai-expansion" target="_blank" rel="noopener">Bloomberg</a> — "Alibaba to Raise $10 Billion by Selling Shares for AI Expansion"</li>
+          <li><a href="https://www.scmp.com/tech/big-tech/article/3364957/alibaba-issue-hk80-billion-new-shares-global-ai-push" target="_blank" rel="noopener">SCMP</a> — "Alibaba to issue HK$80 billion new shares for global AI push"</li>
+          <li><a href="https://finance.yahoo.com/technology/ai/articles/alibaba-launches-10-billion-hong-044723823.html" target="_blank" rel="noopener">Yahoo Finance</a> — "Alibaba launches $10 billion Hong Kong share sale"</li>
+        </ul>
+        <div class="attn"><span class="dot high"></span>Atenção: Alta (cobertura simultânea China + EUA, múltiplos veículos)</div>
+      </div>
+    </article>
+
+    <!-- STORY 2 -->
+    <article class="card">
+      <div class="card-head">
+        <span class="num">2</span>
+        <div>
+          <div class="card-title"><a href="https://www.scmp.com/tech/big-tech/article/3365003/alibaba-sets-price-us102-billion-new-share-offer-fuel-ai-expansion" target="_blank" rel="noopener">Ações da Alibaba despencam até 10% em Hong Kong após precificação da oferta</a></div>
+          <div class="card-sub">
+            <span class="ticker-pill">BABA</span>
+            <span>24/08/2026</span>
+            <span>· South China Morning Post</span>
+          </div>
+        </div>
+      </div>
+      <p class="summary">As ações da Alibaba abriram em queda de 8% a 10% em Hong Kong nesta segunda-feira, reagindo ao risco de diluição da nova oferta, ao elevado capex de IA e a uma queda de 75% no lucro líquido do trimestre encerrado em junho (para 10,4 bilhões de yuans, apesar de receita 9% maior). Foi a maior queda diária da ação desde o início de 2025.</p>
+      <div class="box yellow">
+        <div class="box-title">📌 Por que isso importa</div>
+        <ul>
+          <li>Movimenta diretamente BABA e pesa sobre o peso da China/Hong Kong dentro de fundos como MCHI.</li>
+          <li>Ilustra ceticismo do mercado quanto ao trade-off entre rentabilidade de curto prazo e a corrida de capex de IA das big techs chinesas — tema-chave para quem tem exposição a BABA ou a fundos de tecnologia chinesa.</li>
+        </ul>
+      </div>
+      <div class="box green">
+        <div class="box-title">🌍 Análise de cobertura global</div>
+        <div class="coverage-regions">
+          <span class="cflag">✓ China</span>
+          <span class="cflag">✓ EUA</span>
+          <span class="cflag off">Europa</span>
+          <span class="cflag off">Brasil</span>
+        </div>
+        <div>Veículos: SCMP, The Standard (HK), Investing.com/Reuters, CNBC</div>
+        <ul class="sources-list">
+          <li><a href="https://www.cnbc.com/2026/08/24/alibaba-share-placement-drop-ai-hong-kong.html" target="_blank" rel="noopener">CNBC</a> — cobertura da queda pós-oferta</li>
+          <li><a href="https://www.thestandard.com.hk/finance/article/340740/Hang-Seng-Index-slumps-nearly-550-points-in-early-trading-on-Monday-Alibaba-loses-10pc" target="_blank" rel="noopener">The Standard (HK)</a> — "Alibaba loses 10pc"</li>
+        </ul>
+        <div class="attn"><span class="dot high"></span>Atenção: Alta</div>
+      </div>
+    </article>
+
+    <!-- STORY 3 -->
+    <article class="card">
+      <div class="card-head">
+        <span class="num">3</span>
+        <div>
+          <div class="card-title"><a href="https://www.bloomberg.com/news/articles/2026-08-24/alibaba-executives-buy-15-million-in-shares-after-new-offering" target="_blank" rel="noopener">Executivos da Alibaba compram US$ 15 milhões em ações após a queda</a></div>
+          <div class="card-sub">
+            <span class="ticker-pill">BABA</span>
+            <span>24/08/2026</span>
+            <span>· Bloomberg</span>
+          </div>
+        </div>
+      </div>
+      <p class="summary">Após o tombo de segunda-feira, o presidente do conselho, Joseph Tsai, comprou cerca de HK$ 81 milhões (~US$ 10,4 mi) em ações da Alibaba, e o CEO Eddie Wu comprou cerca de HK$ 39 milhões (~US$ 5 mi) — juntos, cerca de US$ 15,3 milhões. Os dois executivos detêm, combinados, menos de 2% da companhia.</p>
+      <div class="box yellow">
+        <div class="box-title">📌 Por que isso importa</div>
+        <ul>
+          <li>Compra de insiders logo após queda acentuada por receio de diluição costuma ser lida pelo mercado como sinal de confiança da gestão na estratégia de investimento em IA.</li>
+          <li>É um dado que traders acompanham como possível indicativo de piso para as ações no curto prazo.</li>
+        </ul>
+      </div>
+      <div class="box green">
+        <div class="box-title">🌍 Análise de cobertura global</div>
+        <div class="coverage-regions">
+          <span class="cflag off">China</span>
+          <span class="cflag">✓ EUA</span>
+          <span class="cflag off">Europa</span>
+          <span class="cflag off">Brasil</span>
+        </div>
+        <div>Veículo: Bloomberg (fonte única identificada nesta apuração)</div>
+        <div class="attn"><span class="dot low"></span>Atenção: Baixa-Média (fonte única no momento da apuração)</div>
+      </div>
+    </article>
+
+    <!-- STORY 4 -->
+    <article class="card">
+      <div class="card-head">
+        <span class="num">4</span>
+        <div>
+          <div class="card-title"><a href="https://www.investing.com/news/stock-market-news/asian-stocks-sink-as-samsung-alibaba-lead-tech-rout-nvidia-fed-in-focus-4872614" target="_blank" rel="noopener">Bolsas asiáticas derretem: Samsung e Alibaba lideram tombo de tecnologia</a></div>
+          <div class="card-sub">
+            <span class="ticker-pill">MCHI</span>
+            <span>24/08/2026</span>
+            <span>· Reuters (via Investing.com)</span>
+          </div>
+        </div>
+      </div>
+      <p class="summary">O índice Hang Seng caiu cerca de 2,1% (~533 pontos) para perto de 25.473 pontos, com o Hang Seng Tech em queda de 3,8% e um subíndice de IA recuando mais de 5%. Baidu e Xiaomi perderam mais de 4% cada, e a Tencent caiu 3%. O movimento foi puxado por realização de lucros em valuations elevados de IA, pela oferta diluidora da Alibaba, pelo plano de retorno decepcionante da Samsung e pela escalada da tensão comercial entre EUA e Canadá. Investidores também se posicionam para o balanço da Nvidia na quarta-feira (26/08) e o discurso do presidente do Fed, Kevin Warsh, em Jackson Hole na sexta (28/08).</p>
+      <div class="box yellow">
+        <div class="box-title">📌 Por que isso importa</div>
+        <ul>
+          <li>É a notícia mais ampla e mais corroborada do dia com impacto direto sobre MCHI — venda generalizada em múltiplos setores de tecnologia chinesa/HK.</li>
+          <li>Reflete nervosismo crescente com valuations de capex em IA às vésperas do balanço da Nvidia, o que também é relevante para QQQ e SMH.</li>
+        </ul>
+      </div>
+      <div class="box green">
+        <div class="box-title">🌍 Análise de cobertura global</div>
+        <div class="coverage-regions">
+          <span class="cflag">✓ China</span>
+          <span class="cflag">✓ EUA</span>
+          <span class="cflag off">Europa</span>
+          <span class="cflag off">Brasil</span>
+        </div>
+        <div>Veículos: Investing.com/Reuters, Yahoo Finance, The Standard (HK), Nasdaq.com</div>
+        <ul class="sources-list">
+          <li><a href="https://finance.yahoo.com/markets/stocks/articles/tech-leads-losses-asian-stocks-024127256.html" target="_blank" rel="noopener">Yahoo Finance</a> — "Tech leads losses in Asian stocks"</li>
+          <li><a href="https://www.thestandard.com.hk/finance/article/340746/Hang-Seng-Index-slumps-over-540-points-at-noon-on-Monday-Alibaba-loses-9pc" target="_blank" rel="noopener">The Standard (HK)</a></li>
+        </ul>
+        <div class="attn"><span class="dot high"></span>Atenção: Alta</div>
+      </div>
+    </article>
+
+    <!-- STORY 5 -->
+    <article class="card">
+      <div class="card-head">
+        <span class="num">5</span>
+        <div>
+          <div class="card-title"><a href="https://kfgo.com/2026/08/23/samsung-electronics-shares-fall-after-shareholder-return-announcement/" target="_blank" rel="noopener">Samsung cai mais de 8% após plano de retorno de US$ 79 bi decepcionar o mercado</a></div>
+          <div class="card-sub">
+            <span class="ticker-pill">SMH</span>
+            <span>23–24/08/2026</span>
+            <span>· Reuters (via KFGO)</span>
+          </div>
+        </div>
+      </div>
+      <p class="summary">O conselho da Samsung aprovou retorno de 90–110 trilhões de wons (~US$ 65–79 bi) aos acionistas em 2026, com cerca de 30 trilhões de wons em dividendos em caixa no 3T, mas deu poucos detalhes sobre recompras ou cancelamento de ações em tesouraria. A ação caiu 8,7%, a maior queda do ciclo atual, porque o mercado precificava um pacote maior (~130–140 trilhões de wons) financiado pelos ganhos de caixa ligados à IA.</p>
+      <div class="box yellow">
+        <div class="box-title">📌 Por que isso importa</div>
+        <ul>
+          <li>Samsung é uma das maiores produtoras globais de chips/memória e termômetro da cadeia de hardware de IA que o SMH acompanha.</li>
+          <li>Queda motivada por decepção na alocação de capital (e não por fundamentos) sinaliza impaciência dos investidores com o uso do caixa das fabricantes de chips mesmo em meio a forte demanda de IA — contexto relevante às vésperas do balanço da Nvidia.</li>
+        </ul>
+      </div>
+      <div class="box green">
+        <div class="box-title">🌍 Análise de cobertura global</div>
+        <div class="coverage-regions">
+          <span class="cflag">✓ China</span>
+          <span class="cflag">✓ EUA</span>
+          <span class="cflag">✓ Europa</span>
+          <span class="cflag off">Brasil</span>
+        </div>
+        <div>Veículos: Reuters/KFGO, Yahoo Finance, Seeking Alpha, Invezz (Europa)</div>
+        <ul class="sources-list">
+          <li><a href="https://invezz.com/news/2026/08/24/why-is-samsung-stock-crashing-8-despite-record-80b-shareholder-return/" target="_blank" rel="noopener">Invezz</a> — "Why is Samsung stock crashing 8%…"</li>
+          <li><a href="https://finance.yahoo.com/markets/stocks/articles/samsung-falls-8-7-record-082323490.html" target="_blank" rel="noopener">Yahoo Finance</a></li>
+        </ul>
+        <div class="attn"><span class="dot high"></span>Atenção: Alta</div>
+      </div>
+    </article>
+
+    <!-- STORY 6 -->
+    <article class="card">
+      <div class="card-head">
+        <span class="num">6</span>
+        <div>
+          <div class="card-title"><a href="https://www.coindesk.com/markets/2026/08/24/crypto-holds-big-weekly-rally-as-warsh-s-jackson-hole-debut-comes-into-focus" target="_blank" rel="noopener">Bitcoin se consolida perto de US$ 77 mil após a melhor semana em 3 anos</a></div>
+          <div class="card-sub">
+            <span class="ticker-pill">BTC</span>
+            <span>24/08/2026</span>
+            <span>· CoinDesk</span>
+          </div>
+        </div>
+      </div>
+      <p class="summary">O bitcoin negociava entre US$ 77 mil e US$ 78 mil, sustentando ganho semanal de cerca de 22–23% — o maior salto semanal desde março de 2023 — enquanto altcoins como XRP (+48% na semana) e Zcash (+70%) recuavam após rallies mais fortes. Cerca de US$ 1,9 bilhão entraram em ETFs de bitcoin à vista nos EUA ao longo da semana. Investidores agora observam o primeiro discurso do novo presidente do Fed, Kevin Warsh, em Jackson Hole na sexta-feira (28/08), em busca de sinais sobre o caminho dos juros.</p>
+      <div class="box yellow">
+        <div class="box-title">📌 Por que isso importa</div>
+        <ul>
+          <li>Confirma consolidação do bitcoin em máximas de vários meses após um short squeeze histórico e um rali impulsionado por fatores regulatórios.</li>
+          <li>Próximo catalisador (primeiro discurso do presidente do Fed em Jackson Hole) já está explicitamente no radar do mercado — relevante tanto para BTC quanto para ativos sensíveis a juros como SGOV e QQQ.</li>
+        </ul>
+      </div>
+      <div class="box green">
+        <div class="box-title">🌍 Análise de cobertura global</div>
+        <div class="coverage-regions">
+          <span class="cflag off">China</span>
+          <span class="cflag">✓ EUA</span>
+          <span class="cflag off">Europa</span>
+          <span class="cflag off">Brasil</span>
+        </div>
+        <div>Veículo: CoinDesk (cobertura extensa e recorrente no mesmo veículo)</div>
+        <ul class="sources-list">
+          <li><a href="https://www.coindesk.com/markets/2026/08/24/bitcoin-steadies-near-usd78-000-as-gold-rallies-altcoins-consolidate-after-best-week-in-3-years" target="_blank" rel="noopener">CoinDesk</a> — "Bitcoin steadies near $78,000 as gold rallies"</li>
+        </ul>
+        <div class="attn"><span class="dot medium"></span>Atenção: Média (forte profundidade em um único veículo especializado)</div>
+      </div>
+    </article>
+
+    <!-- STORY 7 -->
+    <article class="card">
+      <div class="card-head">
+        <span class="num">7</span>
+        <div>
+          <div class="card-title"><a href="https://www.cnbc.com/2026/08/20/cryptocurrencies-trump-bitcoin-ethereum.html" target="_blank" rel="noopener">Trump pressiona Congresso pelo "Clarity Act" e impulsiona rali das criptomoedas</a></div>
+          <div class="card-sub">
+            <span class="ticker-pill">BTC</span>
+            <span>20/08/2026 <span class="date-conf">(catalisador ainda vigente)</span></span>
+            <span>· CNBC</span>
+          </div>
+        </div>
+      </div>
+      <p class="summary">O presidente Trump recebeu executivos de cripto e reguladores (incluindo o presidente da SEC, Paul Atkins) na Casa Branca e pressionou o Congresso a aprovar o Digital Asset Market Clarity Act, chamando-o de legislação "poderosa e estruturada" para manter os EUA "à frente da China". O bitcoin subiu mais de 5% para cerca de US$ 72.384 (alta de 12% em dois dias); o ether subiu mais de 9%. O projeto, que definiria a divisão de competências entre SEC e CFTC sobre ativos digitais, tem votação procedural no Senado prevista para cerca de 15 de setembro, exigindo 60 votos.</p>
+      <div class="box yellow">
+        <div class="box-title">📌 Por que isso importa</div>
+        <ul>
+          <li>É o catalisador de política que está diretamente por trás do rali do bitcoin nesta semana e que ainda influencia o movimento em 23–24/08.</li>
+          <li>Uma votação fracassada ou adiada em 15 de setembro no Senado é um risco concreto e mensurável para a frente do BTC.</li>
+        </ul>
+      </div>
+      <div class="box green">
+        <div class="box-title">🌍 Análise de cobertura global</div>
+        <div class="coverage-regions">
+          <span class="cflag off">China</span>
+          <span class="cflag">✓ EUA</span>
+          <span class="cflag off">Europa</span>
+          <span class="cflag off">Brasil</span>
+        </div>
+        <div>Veículos: CNBC, Yahoo Finance, Fox Business</div>
+        <ul class="sources-list">
+          <li><a href="https://www.foxbusiness.com/technology/trump-crypto-meeting-signals-us-not-going-slow-down-bid-digital-asset-dominance-expert-says" target="_blank" rel="noopener">Fox Business</a></li>
+          <li><a href="https://finance.yahoo.com/video/trump-urged-congress-pass-clarity-163000717.html" target="_blank" rel="noopener">Yahoo Finance</a></li>
+        </ul>
+        <div class="attn"><span class="dot high"></span>Atenção: Alta</div>
+      </div>
+    </article>
+
+    <!-- STORY 8 -->
+    <article class="card">
+      <div class="card-head">
+        <span class="num">8</span>
+        <div>
+          <div class="card-title"><a href="https://finance.yahoo.com/markets/article/us-canada-trade-talks-collapse-as-new-50-tariffs-go-into-effect-160526827.html" target="_blank" rel="noopener">Negociações comerciais entre EUA e Canadá fracassam; tarifas de 50% entram em vigor</a></div>
+          <div class="card-sub">
+            <span class="ticker-pill">QQQ · SMH · MCHI</span>
+            <span>22–23/08/2026</span>
+            <span>· Associated Press (via Yahoo Finance)</span>
+          </div>
+        </div>
+      </div>
+      <p class="summary">Mais de duas semanas de negociações comerciais entre EUA e Canadá fracassaram na sexta-feira (21/08); o governo Trump impôs tarifas de 50% sobre cerca de US$ 28 bilhões em produtos canadenses (vinho, tacos de hóquei, cimento, aço, alumínio, madeira), em vigor à meia-noite. O primeiro-ministro canadense, Mark Carney, prometeu retaliação "dólar por dólar" e setorial (aço, laticínios, eletrodomésticos, equipamentos agrícolas, celulose e papel, eletrônicos) a partir de 8 de setembro. Os dois lados se acusaram mutuamente por mudanças de última hora.</p>
+      <div class="box yellow">
+        <div class="box-title">📌 Por que isso importa</div>
+        <ul>
+          <li>Novo conflito comercial norte-americano, em escalada, soma-se ao tom de "risk-off" citado explicitamente na cobertura do tombo de tecnologia asiática de segunda-feira.</li>
+          <li>Pano de fundo macro relevante pressionando QQQ, SMH e ativos de risco em geral, junto com o nervosismo de valuation de IA e os catalisadores do Fed/Nvidia ainda por vir.</li>
+        </ul>
+      </div>
+      <div class="box green">
+        <div class="box-title">🌍 Análise de cobertura global</div>
+        <div class="coverage-regions">
+          <span class="cflag off">China</span>
+          <span class="cflag">✓ EUA</span>
+          <span class="cflag off">Europa</span>
+          <span class="cflag off">Brasil</span>
+        </div>
+        <div>Veículos: AP/Yahoo Finance, NPR, PBS News, NBC News</div>
+        <ul class="sources-list">
+          <li><a href="https://www.npr.org/2026/08/22/nx-s1-5941584/us-canada-tariffs" target="_blank" rel="noopener">NPR</a></li>
+          <li><a href="https://www.pbs.org/newshour/economy/what-to-know-about-trumps-50-tariffs-on-canadian-goods-that-just-went-into-effect" target="_blank" rel="noopener">PBS News</a></li>
+        </ul>
+        <div class="attn"><span class="dot high"></span>Atenção: Alta</div>
+      </div>
+    </article>
+
+    <!-- STORY 9 -->
+    <article class="card">
+      <div class="card-head">
+        <span class="num">9</span>
+        <div>
+          <div class="card-title"><a href="https://www.techtimes.com/articles/325228/20260821/jackson-hole-2026-what-watch-when-warsh-steps-podium-friday.htm" target="_blank" rel="noopener">Jackson Hole 2026: primeiro discurso do presidente do Fed, Kevin Warsh, ocorre sexta-feira</a></div>
+          <div class="card-sub">
+            <span class="ticker-pill">SGOV · QQQ</span>
+            <span>Evento em 28/08 · citado em 24/08</span>
+            <span>· Tech Times</span>
+          </div>
+        </div>
+      </div>
+      <p class="summary">O simpósio econômico de Jackson Hole de 2026 começa em 27 de agosto, com o novo presidente do Fed, Kevin Warsh — que sucedeu Jerome Powell ainda em 2026 —, discursando pela primeira vez como presidente na sexta-feira (28/08). O mercado trata o evento como um "duplo teste": sinalização sobre o caminho dos juros e a visão de política mais ampla de Warsh, dado seu histórico de retórica mais hawkish, focada em inflação ("não existe meta flexível... existe uma meta, e ela é 2%").</p>
+      <div class="box yellow">
+        <div class="box-title">📌 Por que isso importa</div>
+        <ul>
+          <li>O yield do SGOV acompanha diretamente a taxa de juros do Fed, e o QQQ (mega caps de tecnologia sensíveis a juros) está altamente exposto a qualquer surpresa dovish/hawkish.</li>
+          <li>O discurso de Warsh é citado explicitamente na cobertura de segunda-feira sobre os mercados asiáticos como um dos principais catalisadores da semana, ao lado do balanço da Nvidia.</li>
+        </ul>
+      </div>
+      <div class="box green">
+        <div class="box-title">🌍 Análise de cobertura global</div>
+        <div class="coverage-regions">
+          <span class="cflag off">China</span>
+          <span class="cflag">✓ EUA</span>
+          <span class="cflag off">Europa</span>
+          <span class="cflag off">Brasil</span>
+        </div>
+        <div>Veículos: Tech Times, Investing.com/Reuters, CoinDesk</div>
+        <ul class="sources-list">
+          <li><a href="https://www.coindesk.com/markets/2026/08/24/jackson-hole-symposium-u-s-pce-prices-iren-earnings-crypto-week-ahead" target="_blank" rel="noopener">CoinDesk</a> — "Week Ahead: Jackson Hole Symposium, US PCE Prices"</li>
+        </ul>
+        <div class="attn"><span class="dot medium"></span>Atenção: Média (evento futuro amplamente antecipado, ainda não ocorrido)</div>
+      </div>
+    </article>
+
+    <!-- STORY 10 -->
+    <article class="card">
+      <div class="card-head">
+        <span class="num">10</span>
+        <div>
+          <div class="card-title"><a href="https://www.investing.com/news/stock-market-news/asian-stocks-sink-as-samsung-alibaba-lead-tech-rout-nvidia-fed-in-focus-4872614" target="_blank" rel="noopener">Nvidia divulga balanço do 2T fiscal na quarta-feira — teste decisivo para valuations de IA</a></div>
+          <div class="card-sub">
+            <span class="ticker-pill">QQQ · SMH</span>
+            <span>Balanço em 26/08 · citado em 24/08</span>
+            <span>· Reuters (via Investing.com)</span>
+          </div>
+        </div>
+      </div>
+      <p class="summary">A Nvidia divulga resultados do segundo trimestre fiscal de 2027 (período de maio a julho de 2026) após o fechamento do mercado na quarta-feira, 26 de agosto. O consenso de Wall Street projeta receita próxima de US$ 93–95 bilhões (~96% de crescimento anual), impulsionada pela demanda por aceleradores de IA da plataforma Blackwell, com preços-alvo de analistas concentrados entre US$ 275 e US$ 325 (ante ações negociadas perto de US$ 215–220 antes do resultado). Investidores tratam o balanço como o teste decisivo sobre se o boom de capex em IA justifica os valuations atuais, especialmente após o tombo liderado por Alibaba e Samsung na segunda-feira.</p>
+      <div class="box yellow">
+        <div class="box-title">📌 Por que isso importa</div>
+        <ul>
+          <li>A Nvidia é o maior constituinte individual do QQQ e uma posição central do SMH; o resultado é o maior catalisador de curto prazo para os dois ETFs nesta semana.</li>
+          <li>O nervosismo pré-balanço já é visível na queda do setor de tecnologia observada nesta segunda-feira.</li>
+        </ul>
+      </div>
+      <div class="box green">
+        <div class="box-title">🌍 Análise de cobertura global</div>
+        <div class="coverage-regions">
+          <span class="cflag off">China</span>
+          <span class="cflag">✓ EUA</span>
+          <span class="cflag off">Europa</span>
+          <span class="cflag off">Brasil</span>
+        </div>
+        <div>Veículos: Investing.com/Reuters, Nasdaq.com, Yahoo Finance</div>
+        <ul class="sources-list">
+          <li><a href="https://www.nasdaq.com/articles/asian-shares-retreat-nvidia-earnings-key-us-data" target="_blank" rel="noopener">Nasdaq.com</a> — "Asian shares retreat; Nvidia earnings, key US data awaited"</li>
+        </ul>
+        <div class="attn"><span class="dot high"></span>Atenção: Alta</div>
+      </div>
+    </article>
+
+    <!-- STORY 11 -->
+    <article class="card">
+      <div class="card-head">
+        <span class="num">11</span>
+        <div>
+          <div class="card-title"><a href="https://247wallst.com/investing/etf/2026/08/20/vym-is-beating-the-sp-500-with-a-17-year-to-date-return-by-owning-what-wall-street-wont/" target="_blank" rel="noopener">VYM supera o S&amp;P 500 com retorno de 17% no ano ao evitar as gigantes de IA</a></div>
+          <div class="card-sub">
+            <span class="ticker-pill">VYM · VYMI</span>
+            <span>20/08/2026</span>
+            <span>· 24/7 Wall St.</span>
+          </div>
+        </div>
+      </div>
+      <p class="summary">Até 19 de agosto, o VYM (Vanguard High Dividend Yield ETF) acumulava retorno de ~17% no ano, contra ~13% do S&amp;P 500. O ETF negocia a um múltiplo de ~16x lucros projetados, contra ~23x do índice amplo, principalmente porque sua triagem baseada em dividendo exclui a maior parte das mega caps de IA. Outros ETFs de dividendos também superaram o índice no ano: SCHD (+27,06%), HDV (+22,04%) e DVY (+18,22%).</p>
+      <div class="box yellow">
+        <div class="box-title">📌 Por que isso importa</div>
+        <ul>
+          <li>Evidencia uma rotação para valor/dividendos em 2026 que sustenta diretamente a tese de investimento do VYM.</li>
+          <li>Contexto relevante para quem detém VYM/VYMI em meio ao nervosismo de valuation de IA visto no tombo de tecnologia desta semana (Alibaba, Samsung, expectativa pela Nvidia).</li>
+        </ul>
+      </div>
+      <div class="box green">
+        <div class="box-title">🌍 Análise de cobertura global</div>
+        <div class="coverage-regions">
+          <span class="cflag off">China</span>
+          <span class="cflag">✓ EUA</span>
+          <span class="cflag off">Europa</span>
+          <span class="cflag off">Brasil</span>
+        </div>
+        <div>Veículo: 24/7 Wall St. (fonte única identificada nesta apuração)</div>
+        <div class="attn"><span class="dot low"></span>Atenção: Baixa-Média (fonte única, mas tema consistente com comentário mais amplo de mercado)</div>
+      </div>
+    </article>
+
+    <!-- STORY 12 -->
+    <article class="card">
+      <div class="card-head">
+        <span class="num">12</span>
+        <div>
+          <div class="card-title"><a href="https://www.stocktitan.net/news/OHI/omega-announces-increase-in-quarterly-pg8km6zol3fj.html" target="_blank" rel="noopener">Omega Healthcare (OHI) eleva dividendo trimestral após resultado acima do esperado</a></div>
+          <div class="card-sub">
+            <span class="ticker-pill">OHI</span>
+            <span>Declarado em julho · pago em 14/08 <span class="date-conf">(fora da janela estrita de 24h)</span></span>
+            <span>· StockTitan / release oficial</span>
+          </div>
+        </div>
+      </div>
+      <p class="summary">O conselho da Omega elevou o dividendo trimestral em US$ 0,01, para US$ 0,68 por ação, pago em 14 de agosto aos acionistas de registro em 3 de agosto. O CEO Taylor Pickett citou "crescimento expressivo do FAD por ação" e expectativa de novo avanço operacional. O AFFO do 2T26 veio em US$ 0,83 por ação diluída (ante consenso de ~US$ 0,48), com FAD/ação em alta de 6,3% na comparação anual, para US$ 0,78; a cobertura de EBITDAR dos operadores nos últimos 12 meses melhorou para 1,65x, com alavancagem em 3,3x — nível historicamente baixo.</p>
+      <div class="box yellow">
+        <div class="box-title">📌 Por que isso importa</div>
+        <ul>
+          <li>Aumento de dividendo somado a resultado acima do esperado e melhora nos indicadores de cobertura/alavancagem é sinal fundamentalmente positivo para o REIT de saúde.</li>
+          <li>Reforça a demanda de investidores de renda por OHI, embora não tenha sido localizada notícia específica sobre o papel dentro da janela estrita das últimas 24h — incluída por sua relevância contínua para o "current situation" do ticker.</li>
+        </ul>
+      </div>
+      <div class="box green">
+        <div class="box-title">🌍 Análise de cobertura global</div>
+        <div class="coverage-regions">
+          <span class="cflag off">China</span>
+          <span class="cflag">✓ EUA</span>
+          <span class="cflag off">Europa</span>
+          <span class="cflag off">Brasil</span>
+        </div>
+        <div>Veículos: StockTitan (release), Investing.com, Omega Healthcare IR</div>
+        <ul class="sources-list">
+          <li><a href="https://www.investing.com/news/company-news/omega-healthcare-raises-quarterly-dividend-to-068-per-share-93CH-4809963" target="_blank" rel="noopener">Investing.com</a></li>
+          <li><a href="https://www.omegahealthcare.com/investors/news-events/press-releases/detail/346/omega-announces-increase-in-quarterly-dividend" target="_blank" rel="noopener">Omega Healthcare IR</a> — release oficial</li>
+        </ul>
+        <div class="attn"><span class="dot medium"></span>Atenção: Média</div>
+      </div>
+    </article>
+  </section>
+
+  <!-- ================= ANALYSIS SECTION ================= -->
+  <section class="block" id="analise">
+    <div class="block-head">
+      <h2>📊 Análise final — Panorama por ativo</h2>
+    </div>
+
+    <div class="analysis-card">
+      <h3><span class="ticker-pill">PETR4 / Braskem</span></h3>
+      <p><span class="label">Situação atual:</span> A Petrobras entra na semana em dois movimentos opostos: de um lado, a robustez de caixa reforçada pelo início da negociação ex-dividendos (R$ 17,4 bi em proventos); de outro, a crise de sua controlada Braskem, que pediu recuperação extrajudicial com R$ 54 bi em dívida.</p>
+      <p><span class="label">Visão dos analistas:</span> O mercado local acompanha de perto se a estatal cederá à pressão de credores (como Elliott e Contrarian Capital) para aportar capital na Braskem — um aporte relevante poderia pressionar o balanço e a política de dividendos da Petrobras, tema sensível para investidores de renda.</p>
+      <p><span class="label">Impacto previsto:</span> Nos próximos 90 dias (período de proteção da recuperação extrajudicial), o desfecho da negociação entre Braskem, credores e Petrobras deve ser o principal catalisador para PETR4 no curto prazo, mais do que os fundamentos operacionais de exploração e produção da própria Petrobras.</p>
+    </div>
+
+    <div class="analysis-card">
+      <h3><span class="ticker-pill">BBSE3</span></h3>
+      <p><span class="label">Situação atual:</span> Papel sob revisão negativa após forte valorização acumulada em 2026, com dois rebaixamentos simultâneos de grandes bancos (Morgan Stanley e JPMorgan) para recomendação de venda.</p>
+      <p><span class="label">Visão dos analistas:</span> Consenso mais cauteloso: valuation esticado após alta de +21,5% no ano, crescimento de prêmios mais lento e pressão sobre a receita financeira à medida que a Selic recua.</p>
+      <p><span class="label">Impacto previsto:</span> Tendência de consolidação ou correção no curto prazo, com atenção especial à renovação do contrato de exclusividade com o Banco do Brasil como gatilho estrutural de médio prazo.</p>
+    </div>
+
+    <div class="analysis-card">
+      <h3><span class="ticker-pill">MGLU3</span></h3>
+      <p><span class="label">Situação atual:</span> Sétimo pregão consecutivo de queda, papel perto de mínimas de 52 semanas, pressionado por juros altos e reposicionamento de mix de vendas.</p>
+      <p><span class="label">Visão dos analistas:</span> Dividida entre quem vê oportunidade de ganho de participação de mercado com a crise da concorrente Casas Bahia, e quem destaca o risco de alavancagem (5,7x dívida líquida/Ebitda) e os vencimentos de dívida de R$ 2,2 bi em 2026/27.</p>
+      <p><span class="label">Impacto previsto:</span> Volatilidade deve continuar até sinais mais claros de estabilização de margem e de trajetória da Selic.</p>
+    </div>
+
+    <div class="analysis-card">
+      <h3><span class="ticker-pill">BABA / MCHI</span></h3>
+      <p><span class="label">Situação atual:</span> Semana decisiva para a Alibaba: oferta recorde de US$ 10,2 bi para financiar IA precificada com desconto, seguida de queda de até 10% nas ações por receio de diluição — parcialmente compensada por compras de insiders (Tsai e Wu).</p>
+      <p><span class="label">Visão dos analistas:</span> Divisão entre quem vê a captação como investimento necessário para não ficar para trás na corrida de IA frente a rivais americanas, e quem teme diluição e queda de margem (lucro do trimestre caiu 75% na comparação anual).</p>
+      <p><span class="label">Impacto previsto:</span> BABA deve seguir volátil até a conclusão da oferta (26/08); o movimento arrastou o Hang Seng e o Hang Seng Tech, pesando sobre a exposição de MCHI à tecnologia chinesa nesta semana.</p>
+    </div>
+
+    <div class="analysis-card">
+      <h3><span class="ticker-pill">SMH</span></h3>
+      <p><span class="label">Situação atual:</span> Samsung caiu 8,7% após decepcionar com plano de retorno de capital, mesmo anunciando o maior programa de sua história (US$ 65–79 bi).</p>
+      <p><span class="label">Visão dos analistas:</span> Mercado já precificava pacote ainda maior; reação negativa reflete expectativas elevadas mais do que deterioração de fundamentos.</p>
+      <p><span class="label">Impacto previsto:</span> Atenção volta-se para o balanço da Nvidia (26/08) como catalisador decisivo para todo o setor de semicondutores nesta semana.</p>
+    </div>
+
+    <div class="analysis-card">
+      <h3><span class="ticker-pill">BTC</span></h3>
+      <p><span class="label">Situação atual:</span> Consolidação perto de US$ 77–78 mil após a melhor semana em três anos (+22–23%), impulsionada pela pressão da Casa Branca pelo Clarity Act.</p>
+      <p><span class="label">Visão dos analistas:</span> Fluxo forte para ETFs à vista (~US$ 1,9 bi na semana) sugere apetite institucional sustentado; risco concreto é a votação procedural do Clarity Act no Senado, prevista para ~15/09.</p>
+      <p><span class="label">Impacto previsto:</span> Discurso do presidente do Fed em Jackson Hole (28/08) deve ser o próximo grande catalisador de curto prazo para o preço.</p>
+    </div>
+
+    <div class="analysis-card">
+      <h3><span class="ticker-pill">SGOV / QQQ</span></h3>
+      <p><span class="label">Situação atual:</span> Mercado em modo de espera antes de dois eventos-chave da semana: balanço da Nvidia (26/08) e primeiro discurso do presidente do Fed, Kevin Warsh, em Jackson Hole (28/08).</p>
+      <p><span class="label">Visão dos analistas:</span> Warsh tem histórico de retórica mais hawkish e focada em inflação, o que mantém expectativas divididas sobre o ritmo de cortes de juros — fator direto para o yield do SGOV e para o apetite por tecnologia no QQQ.</p>
+      <p><span class="label">Impacto previsto:</span> Volatilidade deve se concentrar entre quarta e sexta-feira desta semana, com QQQ mais sensível ao resultado da Nvidia e SGOV mais sensível ao tom do discurso de Warsh.</p>
+    </div>
+
+    <div class="analysis-card">
+      <h3><span class="ticker-pill">VYM / VYMI</span></h3>
+      <p><span class="label">Situação atual:</span> ETFs de dividendos superam o S&amp;P 500 em 2026 justamente por terem pouca exposição às mega caps de IA que lideraram a correção desta semana.</p>
+      <p><span class="label">Visão dos analistas:</span> Tese de "value/income" ganha força como alternativa de menor volatilidade em meio ao nervosismo com valuations de tecnologia.</p>
+      <p><span class="label">Impacto previsto:</span> Tendência de rotação para dividendos pode se manter ou se intensificar caso o balanço da Nvidia decepcione o mercado.</p>
+    </div>
+
+    <div class="analysis-card">
+      <h3><span class="ticker-pill">OHI</span></h3>
+      <p><span class="label">Situação atual:</span> Fundamentos sólidos — aumento de dividendo, AFFO acima do consenso e alavancagem historicamente baixa (3,3x).</p>
+      <p><span class="label">Visão dos analistas:</span> Perfil defensivo e gerador de renda, pouco correlacionado ao ciclo de IA que domina o noticiário desta semana.</p>
+      <p><span class="label">Impacto previsto:</span> Deve seguir como posição de estabilidade em carteiras de renda, com atenção a novos dados de ocupação e cobertura de aluguel dos operadores de saúde.</p>
+    </div>
+
+    <div class="persp">
+      <h3>🌎 Perspectiva Brasil – China – Global</h3>
+      <p><strong>Brasil:</strong> O noticiário doméstico da semana é dominado por eventos corporativos pontuais — a crise de dívida da Braskem (com potencial impacto indireto sobre a Petrobras) e revisões de recomendação em BB Seguridade e Magazine Luiza — mais do que por um tema macro único. A Selic elevada segue como pano de fundo comum, pressionando tanto seguradoras (menor receita financeira) quanto varejistas endividados como o Magalu.</p>
+      <p><strong>China:</strong> A semana é marcada pela maior oferta de ações primária já feita por uma empresa de Hong Kong (Alibaba), seguida de forte correção por receio de diluição, e por um tombo mais amplo de tecnologia asiática que também envolveu a coreana Samsung. O fio condutor é o mesmo em toda a região: ceticismo crescente do mercado sobre se o capex bilionário em IA das big techs asiáticas vai se traduzir em lucro no curto prazo.</p>
+      <p><strong>Global:</strong> Nos EUA, o mercado está em compasso de espera antes de dois catalisadores decisivos — o balanço da Nvidia (26/08) e o primeiro discurso do presidente do Fed, Kevin Warsh, em Jackson Hole (28/08) — enquanto a escalada da disputa comercial entre EUA e Canadá acrescenta um tom adicional de aversão a risco. O bitcoin segue como o ativo de maior força relativa da semana, sustentado por fluxo institucional e pela pressão política pela aprovação do Clarity Act no Senado.</p>
+      <p><strong>Conexão entre os três blocos:</strong> O tema comum que atravessa Brasil, China e o resto do mundo nesta semana é a tensão entre <em>valuation elevado</em> (seguradoras brasileiras, big techs chinesas, semicondutores) e <em>custo de capital</em> (Selic no Brasil, juros do Fed nos EUA) — um pano de fundo que deve seguir pautando o apetite por risco até os balanços e discursos-chave previstos para o restante da semana.</p>
+    </div>
+  </section>
+
+  <footer>
+    Relatório gerado automaticamente a partir de fontes públicas listadas nas Fontes Obrigatórias. As datas marcadas como "data exata não confirmável" ou "fora da janela estrita de 24h" foram sinalizadas explicitamente para transparência, pois o ambiente de apuração não permitiu confirmação direta de status HTTP e timestamp de cada página. Este documento tem caráter informativo e não constitui recomendação de investimento. Verifique sempre as fontes originais antes de qualquer decisão financeira.
+  </footer>
+
+</div>
