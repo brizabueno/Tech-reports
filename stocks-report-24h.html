@@ -1,0 +1,1155 @@
+<title>Stocks Report</title>
+<style>
+  :root {
+    --bg: #eef0f3;
+    --surface: #ffffff;
+    --surface-2: #f7f8fa;
+    --ink: #14161a;
+    --ink-muted: #5b6270;
+    --ink-faint: #8b909b;
+    --header-bg: #0a0b0d;
+    --header-text: #f5f5f5;
+    --header-muted: #9aa0ab;
+    --accent: #2050d6;
+    --accent-ink: #1638a3;
+    --border: #e3e5ea;
+    --yellow-bg: #fff8e1;
+    --yellow-border: #e8ac1f;
+    --yellow-ink: #7a4e00;
+    --green-bg: #eaf7ee;
+    --green-border: #2f9e57;
+    --green-ink: #1c6b3b;
+    --pill-high-bg: #fde8e6;
+    --pill-high-ink: #b3261e;
+    --pill-medium-bg: #fdf0dc;
+    --pill-medium-ink: #9a6300;
+    --pill-low-bg: #eceef2;
+    --pill-low-ink: #565c68;
+    --notice-bg: #eef2fd;
+    --notice-border: #b9c8f5;
+    --notice-ink: #1d3a8f;
+    --radius-lg: 16px;
+    --radius-md: 12px;
+    --shadow: 0 1px 2px rgba(20,22,26,0.04), 0 8px 24px -12px rgba(20,22,26,0.12);
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #101216;
+      --surface: #1a1c22;
+      --surface-2: #202329;
+      --ink: #eef0f3;
+      --ink-muted: #a3a9b4;
+      --ink-faint: #767c88;
+      --header-bg: #000000;
+      --header-text: #f5f5f5;
+      --header-muted: #8a919d;
+      --accent: #7d9bff;
+      --accent-ink: #a8bcff;
+      --border: #2b2e36;
+      --yellow-bg: #2a2210;
+      --yellow-border: #c99a2e;
+      --yellow-ink: #f0cd83;
+      --green-bg: #12251a;
+      --green-border: #3c9d5f;
+      --green-ink: #83e0a6;
+      --pill-high-bg: #3a1a19;
+      --pill-high-ink: #f3a9a3;
+      --pill-medium-bg: #362b12;
+      --pill-medium-ink: #f0c675;
+      --pill-low-bg: #262932;
+      --pill-low-ink: #b7bcc6;
+      --notice-bg: #171d2e;
+      --notice-border: #33477c;
+      --notice-ink: #adc0ff;
+      --shadow: 0 1px 2px rgba(0,0,0,0.3), 0 8px 24px -12px rgba(0,0,0,0.5);
+    }
+  }
+
+  :root[data-theme="dark"] {
+    --bg: #101216;
+    --surface: #1a1c22;
+    --surface-2: #202329;
+    --ink: #eef0f3;
+    --ink-muted: #a3a9b4;
+    --ink-faint: #767c88;
+    --header-bg: #000000;
+    --header-text: #f5f5f5;
+    --header-muted: #8a919d;
+    --accent: #7d9bff;
+    --accent-ink: #a8bcff;
+    --border: #2b2e36;
+    --yellow-bg: #2a2210;
+    --yellow-border: #c99a2e;
+    --yellow-ink: #f0cd83;
+    --green-bg: #12251a;
+    --green-border: #3c9d5f;
+    --green-ink: #83e0a6;
+    --pill-high-bg: #3a1a19;
+    --pill-high-ink: #f3a9a3;
+    --pill-medium-bg: #362b12;
+    --pill-medium-ink: #f0c675;
+    --pill-low-bg: #262932;
+    --pill-low-ink: #b7bcc6;
+    --notice-bg: #171d2e;
+    --notice-border: #33477c;
+    --notice-ink: #adc0ff;
+    --shadow: 0 1px 2px rgba(0,0,0,0.3), 0 8px 24px -12px rgba(0,0,0,0.5);
+  }
+
+  * { box-sizing: border-box; }
+  html, body {
+    margin: 0;
+    padding: 0;
+    background: var(--bg);
+    color: var(--ink);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    font-size: 15px;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+  body { overflow-x: hidden; }
+  a { color: var(--accent); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+  a:focus-visible, button:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 4px; }
+  img { max-width: 100%; }
+  h1, h2, h3, h4 { text-wrap: balance; margin: 0; font-weight: 700; }
+  p { margin: 0; }
+  ul { margin: 0; padding: 0; list-style: none; }
+  .tabular { font-variant-numeric: tabular-nums; }
+
+  /* ---------- Header ---------- */
+  header.masthead {
+    background: var(--header-bg);
+    color: var(--header-text);
+    width: 100%;
+    padding: 28px 24px;
+    border-radius: 0 0 var(--radius-lg) var(--radius-lg);
+  }
+  .masthead-inner {
+    max-width: 1080px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    flex-wrap: wrap;
+  }
+  .brand { display: flex; align-items: baseline; gap: 10px; }
+  .brand-mark {
+    width: 34px; height: 34px;
+    border-radius: 9px;
+    background: linear-gradient(155deg, #2050d6, #1638a3);
+    display: inline-flex; align-items: center; justify-content: center;
+    font-size: 16px;
+  }
+  .brand-name { font-size: 22px; letter-spacing: -0.01em; }
+  .brand-sub { color: var(--header-muted); font-size: 12.5px; letter-spacing: 0.03em; text-transform: uppercase; margin-top: 2px; }
+  .masthead-meta { text-align: right; }
+  .masthead-date { font-size: 14px; color: #f0f1f3; }
+  .masthead-time { color: var(--header-muted); font-size: 12.5px; margin-top: 2px; }
+  .regions {
+    max-width: 1080px;
+    margin: 18px auto 0;
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+  .region-chip {
+    background: rgba(255,255,255,0.08);
+    border: 1px solid rgba(255,255,255,0.14);
+    color: #eceef2;
+    font-size: 12.5px;
+    padding: 6px 12px;
+    border-radius: 999px;
+    display: inline-flex; align-items: center; gap: 6px;
+  }
+
+  /* ---------- Layout shell ---------- */
+  main { max-width: 1080px; margin: 0 auto; padding: 0 24px 64px; }
+
+  .notice {
+    margin-top: 24px;
+    background: var(--notice-bg);
+    border: 1px solid var(--notice-border);
+    color: var(--notice-ink);
+    border-radius: var(--radius-md);
+    padding: 16px 18px;
+    font-size: 13.5px;
+    line-height: 1.65;
+  }
+  .notice strong { color: inherit; }
+  .notice-title { font-size: 13px; text-transform: uppercase; letter-spacing: 0.04em; font-weight: 700; margin-bottom: 6px; display: block; }
+
+  section.block { margin-top: 44px; }
+  .block-head { margin-bottom: 20px; }
+  .block-eyebrow {
+    font-size: 12px; text-transform: uppercase; letter-spacing: 0.08em;
+    color: var(--ink-faint); font-weight: 600; margin-bottom: 6px; display: block;
+  }
+  .block-title { font-size: 22px; letter-spacing: -0.01em; }
+  .block-desc { color: var(--ink-muted); font-size: 14px; margin-top: 6px; max-width: 68ch; }
+
+  /* ---------- Story cards ---------- */
+  .stories { display: flex; flex-direction: column; gap: 18px; }
+  .story-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: 22px 24px;
+    box-shadow: var(--shadow);
+  }
+  .story-top { display: flex; gap: 14px; align-items: flex-start; }
+  .story-num {
+    flex: none;
+    width: 30px; height: 30px;
+    border-radius: 9px;
+    background: var(--surface-2);
+    border: 1px solid var(--border);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 13px; font-weight: 700; color: var(--ink-muted);
+    font-variant-numeric: tabular-nums;
+  }
+  .story-headline { font-size: 17px; line-height: 1.4; letter-spacing: -0.005em; }
+  .story-headline a { color: var(--ink); }
+  .story-headline a:hover { color: var(--accent); }
+  .story-meta {
+    margin-top: 8px; margin-left: 44px;
+    display: flex; flex-wrap: wrap; gap: 8px 14px;
+    font-size: 12.5px; color: var(--ink-faint);
+  }
+  .story-meta .ticker-tag {
+    background: var(--surface-2); border: 1px solid var(--border);
+    color: var(--ink-muted); padding: 2px 8px; border-radius: 6px;
+    font-weight: 700; letter-spacing: 0.01em;
+  }
+  .story-summary { margin-top: 12px; margin-left: 44px; color: var(--ink-muted); font-size: 14.5px; max-width: 70ch; }
+
+  .boxes { margin-top: 16px; margin-left: 44px; display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  @media (max-width: 640px) { .boxes { grid-template-columns: 1fr; } .story-meta, .story-summary, .boxes { margin-left: 0; } }
+
+  .box { border-radius: var(--radius-md); padding: 14px 16px; border: 1px solid; }
+  .box-title { font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.04em; margin-bottom: 8px; display: flex; align-items: center; gap: 6px; }
+  .box ul { display: flex; flex-direction: column; gap: 5px; }
+  .box li { font-size: 13.5px; line-height: 1.5; padding-left: 14px; position: relative; }
+  .box li::before { content: "•"; position: absolute; left: 0; opacity: 0.6; }
+
+  .box-yellow { background: var(--yellow-bg); border-color: var(--yellow-border); color: var(--yellow-ink); }
+  .box-green { background: var(--green-bg); border-color: var(--green-border); color: var(--green-ink); }
+
+  .coverage-row { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px; }
+  .region-flag {
+    font-size: 12px; padding: 3px 8px; border-radius: 999px;
+    background: rgba(255,255,255,0.35); border: 1px solid currentColor; opacity: 0.55;
+  }
+  .region-flag.confirmed { opacity: 1; font-weight: 600; }
+
+  .attention-row { margin-top: 10px; display: flex; align-items: center; gap: 8px; font-size: 12.5px; }
+  .pill { padding: 3px 10px; border-radius: 999px; font-weight: 700; font-size: 11.5px; text-transform: uppercase; letter-spacing: 0.03em; }
+  .pill-high { background: var(--pill-high-bg); color: var(--pill-high-ink); }
+  .pill-medium { background: var(--pill-medium-bg); color: var(--pill-medium-ink); }
+  .pill-low { background: var(--pill-low-bg); color: var(--pill-low-ink); }
+
+  /* ---------- Secondary radar list ---------- */
+  .radar-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 12px; }
+  .radar-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 14px 16px; }
+  .radar-ticker { font-weight: 700; font-size: 13.5px; }
+  .radar-date { font-size: 11.5px; color: var(--ink-faint); margin-top: 2px; }
+  .radar-text { font-size: 13px; color: var(--ink-muted); margin-top: 6px; }
+  .radar-empty { font-size: 12.5px; color: var(--ink-faint); font-style: italic; margin-top: 6px; }
+
+  /* ---------- Final analysis ---------- */
+  .analysis-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 24px; box-shadow: var(--shadow); }
+  .analysis-card + .analysis-card { margin-top: 16px; }
+  .analysis-h { font-size: 16px; margin-bottom: 10px; display: flex; align-items: center; gap: 8px; }
+  .analysis-card p { color: var(--ink-muted); font-size: 14px; margin-top: 8px; }
+  .analysis-card p + p { margin-top: 10px; }
+  .ticker-table { width: 100%; border-collapse: collapse; font-size: 13.5px; margin-top: 8px; }
+  .ticker-table th, .ticker-table td { text-align: left; padding: 9px 10px; border-bottom: 1px solid var(--border); vertical-align: top; }
+  .ticker-table th { font-size: 11.5px; text-transform: uppercase; letter-spacing: 0.04em; color: var(--ink-faint); font-weight: 700; }
+  .ticker-table td.tkr { font-weight: 700; white-space: nowrap; }
+  .table-scroll { overflow-x: auto; margin-top: 8px; }
+
+  footer.report-footer {
+    max-width: 1080px; margin: 40px auto 0; padding: 20px 24px 0;
+    border-top: 1px solid var(--border);
+    color: var(--ink-faint); font-size: 12.5px; line-height: 1.7;
+  }
+</style>
+
+<header class="masthead">
+  <div class="masthead-inner">
+    <div class="brand">
+      <span class="brand-mark">📈</span>
+      <div>
+        <div class="brand-name">Stocks Report</div>
+        <div class="brand-sub">Radar diário de mercado</div>
+      </div>
+    </div>
+    <div class="masthead-meta">
+      <div class="masthead-date tabular">25 de agosto de 2026</div>
+      <div class="masthead-time tabular">Publicado às 12:40 (América/São Paulo)</div>
+    </div>
+  </div>
+  <div class="regions">
+    <span class="region-chip">🇧🇷 Brasil</span>
+    <span class="region-chip">🇺🇸 EUA</span>
+    <span class="region-chip">🇨🇳 China</span>
+    <span class="region-chip">🇪🇺 Europa</span>
+  </div>
+</header>
+
+<main>
+
+  <div class="notice">
+    <span class="notice-title">⚠️ Nota de transparência sobre esta edição</span>
+    <p>Nesta execução automatizada, o acesso direto (WebFetch) a todas as fontes mandatórias — Infomoney, Valor, Money Times, InvestNews, Investing.com, Estadão, Folha, Bloomberg, Reuters, Forbes, Yahoo Finance, SCMP, Caixin, Yicai, China Daily, Xinhua, BBC, Financial Times e The Economist — foi <strong>bloqueado pela política de rede do ambiente de execução</strong>. Não foi possível abrir cada link individualmente para confirmar ausência de erro 404, como exige o protocolo do relatório.</p>
+    <p style="margin-top:8px">Como alternativa, as notícias abaixo foram apuradas por buscas na web em tempo real e <strong>cruzadas manualmente entre múltiplas fontes independentes</strong> até que datas, valores e citações batessem entre si — um padrão de confiança mais alto que uma fonte única, mas não equivalente à verificação de link ativo. <strong>As fontes europeias (BBC, FT, The Economist) ficaram totalmente inacessíveis nesta execução</strong>, então a seção internacional não traz itens dessas três fontes especificamente — a cobertura europeia está marcada como "não apurada" nos boxes verdes abaixo, em vez de presumida. Da mesma forma, apenas 5 notícias brasileiras dentro da janela de 24h passaram no crivo de confirmação cruzada (a maioria dos 23 tickers-alvo brasileiros não teve fato novo relevante nas últimas 24–48h) — a seção 2 traz essas 5 em profundidade, complementadas por um radar de resultados do 2T26 para os demais ativos. Recomenda-se conferência manual dos links antes de redistribuição ampla deste relatório.</p>
+  </div>
+
+  <!-- ================= SEÇÃO 2 — BRASIL ================= -->
+  <section class="block" id="brasil">
+    <div class="block-head">
+      <span class="block-eyebrow">Seção 2 · 🇧🇷 Mercado Brasileiro</span>
+      <h2 class="block-title">Principais notícias de ações brasileiras (últimas 24–48h)</h2>
+      <p class="block-desc">5 histórias confirmadas por múltiplas fontes dentro da janela de 24–48h, envolvendo diretamente os tickers monitorados. Veja também o radar complementar de resultados do 2T26 abaixo.</p>
+    </div>
+
+    <div class="stories">
+
+      <!-- BR 1 -->
+      <article class="story-card">
+        <div class="story-top">
+          <span class="story-num tabular">01</span>
+          <h3 class="story-headline"><a href="https://www.moneytimes.com.br/petrobras-petr3petr4-brava-brav3-e-petroleiras-lideram-baixas-do-ibovespa-hoje-24-apsa/" target="_blank" rel="noopener">Petrobras lidera perdas do Ibovespa com queda do petróleo após novas sanções dos EUA ao Irã</a></h3>
+        </div>
+        <div class="story-meta">
+          <span class="ticker-tag">PETR4</span>
+          <span>24 ago 2026</span>
+          <span>Fonte primária: Money Times</span>
+        </div>
+        <p class="story-summary">PETR3 e PETR4 caíram entre 2% e 3% na sessão de 24/08, na contramão de um Ibovespa em alta, após o secretário do Tesouro dos EUA, Scott Bessent, sinalizar restrições de acesso ao sistema financeiro em dólar para cerca de 60 entidades ligadas aos programas nuclear, de mísseis e petrolífero do Irã. Brent e WTI recuaram cerca de 2,3%, encerrando uma sequência de seis pregões de alta do petróleo. Petrobras foi a principal ação a fechar no vermelho entre as blue chips do índice.</p>
+        <div class="boxes">
+          <div class="box box-yellow">
+            <div class="box-title">📌 Por que isso importa?</div>
+            <ul>
+              <li>Impacto direto nos fundamentos: petróleo é o principal driver de receita da Petrobras.</li>
+              <li>Impacto no preço: PETR4 foi a única blue chip a fechar no negativo na sessão.</li>
+              <li>Risco geopolítico pode se estender por semanas, pressionando o dividend yield esperado.</li>
+            </ul>
+          </div>
+          <div class="box box-green">
+            <div class="box-title">🌍 Cobertura Global</div>
+            <div class="coverage-row">
+              <span class="region-flag confirmed">✓ Brasil</span>
+              <span class="region-flag">China — não apurado</span>
+              <span class="region-flag">EUA — não apurado</span>
+              <span class="region-flag">Europa — não apurado</span>
+            </div>
+            <p style="font-size:12.5px; margin-top:8px; opacity:0.9">Confirmado também por: InfoMoney, Times Brasil/CNBC, SpaceMoney, Jetss BR.</p>
+            <div class="attention-row"><span class="pill pill-high">Alta atenção</span></div>
+          </div>
+        </div>
+      </article>
+
+      <!-- BR 2 -->
+      <article class="story-card">
+        <div class="story-top">
+          <span class="story-num tabular">02</span>
+          <h3 class="story-headline"><a href="https://www.infomoney.com.br/mercados/minerio-de-ferro-sobe-com-novos-sinais-de-estimulos-da-china/" target="_blank" rel="noopener">Vale dispara com minério de ferro em alta após novos sinais de estímulo da China</a></h3>
+        </div>
+        <div class="story-meta">
+          <span class="ticker-tag">VALE3</span>
+          <span>24 ago 2026</span>
+          <span>Fonte primária: InfoMoney</span>
+        </div>
+        <p class="story-summary">VALE3 subiu cerca de 2,8% a 3% em 24/08, entre as maiores contribuições positivas do Ibovespa, depois que o vice-ministro das Finanças da China, Liao Min, afirmou que Pequim lançará um novo pacote de medidas para expandir a demanda doméstica. O minério de ferro subiu 1,27% na bolsa de Dalian (US$ 106,52/t) e 1,72% em Singapura (US$ 97,35/t), alimentando expectativas de demanda mais forte de aço antes da temporada de pico de construção em setembro. CSN Mineração, CSN, Gerdau e Usiminas também subiram.</p>
+        <div class="boxes">
+          <div class="box box-yellow">
+            <div class="box-title">📌 Por que isso importa?</div>
+            <ul>
+              <li>Demanda chinesa é o maior fator de sensibilidade para o resultado da Vale.</li>
+              <li>Estímulo econômico chinês reforça visão construtiva de analistas para commodities metálicas no 2S26.</li>
+              <li>Rali ajudou a compensar a queda da Petrobras e sustentar o 4º pregão seguido de alta do Ibovespa.</li>
+            </ul>
+          </div>
+          <div class="box box-green">
+            <div class="box-title">🌍 Cobertura Global</div>
+            <div class="coverage-row">
+              <span class="region-flag confirmed">✓ Brasil</span>
+              <span class="region-flag confirmed">✓ China</span>
+              <span class="region-flag">EUA — não apurado</span>
+              <span class="region-flag">Europa — não apurado</span>
+            </div>
+            <p style="font-size:12.5px; margin-top:8px; opacity:0.9">Confirmado também por: Money Times, Investing.com Brasil (via Reuters). Tema de estímulo chinês também presente na apuração da seção internacional (item 13–15).</p>
+            <div class="attention-row"><span class="pill pill-high">Alta atenção</span></div>
+          </div>
+        </div>
+      </article>
+
+      <!-- BR 3 -->
+      <article class="story-card">
+        <div class="story-top">
+          <span class="story-num tabular">03</span>
+          <h3 class="story-headline"><a href="https://www.infomoney.com.br/mercados/ibovespa-hoje-bolsa-de-valores-ao-vivo-24082026/" target="_blank" rel="noopener">Bancos puxam Ibovespa para o quarto pregão seguido de alta</a></h3>
+        </div>
+        <div class="story-meta">
+          <span class="ticker-tag">BBAS3</span>
+          <span class="ticker-tag">ITSA4</span>
+          <span>24 ago 2026</span>
+          <span>Fonte primária: InfoMoney</span>
+        </div>
+        <p class="story-summary">O Ibovespa fechou a segunda-feira (24/08) em alta de 0,51% a 0,86%, aos ~171.907 pontos — quarto pregão consecutivo de ganhos, sequência inédita desde março/abril. Banco do Brasil (BBAS3) subiu cerca de 1,57%, Bradesco +1,05%, Itaú Unibanco +0,57% e Santander Brasil +0,54%. Vale, Itaú, Bradesco, B3, Itaúsa e BTG Pactual — que juntos respondem por cerca de um terço do índice — fecharam todos no positivo, compensando a queda da Petrobras.</p>
+        <div class="boxes">
+          <div class="box box-yellow">
+            <div class="box-title">📌 Por que isso importa?</div>
+            <ul>
+              <li>Força ampla do setor financeiro sinaliza apetite a risco renovado e fluxo estrangeiro para bancos brasileiros.</li>
+              <li>Movimento é positivo por extensão para BBSE3, BRSR6 e ABCB4 como pares setoriais.</li>
+              <li>Sustenta leitura construtiva de fundamentos para o setor bancário no 3T26.</li>
+            </ul>
+          </div>
+          <div class="box box-green">
+            <div class="box-title">🌍 Cobertura Global</div>
+            <div class="coverage-row">
+              <span class="region-flag confirmed">✓ Brasil</span>
+              <span class="region-flag">China — não apurado</span>
+              <span class="region-flag">EUA — não apurado</span>
+              <span class="region-flag">Europa — não apurado</span>
+            </div>
+            <p style="font-size:12.5px; margin-top:8px; opacity:0.9">Confirmado também por: Jetss BR, Diário do Grande ABC.</p>
+            <div class="attention-row"><span class="pill pill-medium">Média atenção</span></div>
+          </div>
+        </div>
+      </article>
+
+      <!-- BR 4 -->
+      <article class="story-card">
+        <div class="story-top">
+          <span class="story-num tabular">04</span>
+          <h3 class="story-headline"><a href="https://www.infomoney.com.br/mercados/ibovespa-hoje-bolsa-de-valores-ao-vivo-24082026/" target="_blank" rel="noopener">Itaúsa entre as maiores altas do dia; pagamento de R$ 2,8 bi em JCP se aproxima</a></h3>
+        </div>
+        <div class="story-meta">
+          <span class="ticker-tag">ITSA4</span>
+          <span>24 ago 2026</span>
+          <span>Fonte primária: InfoMoney / Jetss BR</span>
+        </div>
+        <p class="story-summary">Itaúsa (ITSA4) foi citada entre as maiores altas do dia ao lado de Vale, Itaú, Bradesco, B3 e BTG Pactual em 24/08. Em paralelo, o mercado segue de olho no pagamento de R$ 2,8 bilhões em juros sobre capital próprio (JCP) ligado ao resultado do 2T26 (divulgado em 10/08: lucro líquido de R$ 4,3 bilhões, alta de 7% na comparação anual), com data marcada para 28/08.</p>
+        <div class="boxes">
+          <div class="box box-yellow">
+            <div class="box-title">📌 Por que isso importa?</div>
+            <ul>
+              <li>Disciplina de distribuição de capital reforça a tese de dividendos da holding.</li>
+              <li>Resultado do 2T26 já havia mostrado crescimento de lucro puxado pelo Itaú Unibanco.</li>
+              <li>Papel negocia perto da faixa de preço-alvo média dos analistas que cobrem o ativo.</li>
+            </ul>
+          </div>
+          <div class="box box-green">
+            <div class="box-title">🌍 Cobertura Global</div>
+            <div class="coverage-row">
+              <span class="region-flag confirmed">✓ Brasil</span>
+              <span class="region-flag">China — não apurado</span>
+              <span class="region-flag">EUA — não apurado</span>
+              <span class="region-flag">Europa — não apurado</span>
+            </div>
+            <p style="font-size:12.5px; margin-top:8px; opacity:0.9">Confirmado também por: Money Times (contexto do resultado 2T26, 10/08), Investidor10.</p>
+            <div class="attention-row"><span class="pill pill-medium">Média atenção</span></div>
+          </div>
+        </div>
+      </article>
+
+      <!-- BR 5 -->
+      <article class="story-card">
+        <div class="story-top">
+          <span class="story-num tabular">05</span>
+          <h3 class="story-headline"><a href="https://www.infomoney.com.br/mercados/ibovespa-hoje-bolsa-de-valores-ao-vivo-25082026/" target="_blank" rel="noopener">Mercado relativiza sanções ao Irã e volta atenção para resultado da Nvidia e PCE dos EUA</a></h3>
+        </div>
+        <div class="story-meta">
+          <span class="ticker-tag">PETR4</span>
+          <span>25 ago 2026</span>
+          <span>Fonte primária: InfoMoney</span>
+        </div>
+        <p class="story-summary">Na terça-feira (25/08), os mercados globais reduziram a preocupação com o anúncio de sanções ao Irã do dia anterior, já que o Tesouro dos EUA não impôs punições concretas adicionais. O foco dos investidores migrou para o resultado da Nvidia (quarta-feira, 26/08) e para o índice de inflação PCE nos EUA. O petróleo seguiu em queda na sessão, mantendo pressão sobre a Petrobras, enquanto ações de semicondutores mostravam recuperação antes do resultado da Nvidia.</p>
+        <div class="boxes">
+          <div class="box box-yellow">
+            <div class="box-title">📌 Por que isso importa?</div>
+            <ul>
+              <li>Define a trajetória de curto prazo da Petrobras na sessão de hoje.</li>
+              <li>Mostra como fatores macro globais (Fed, Nvidia) seguem pautando o humor do Ibovespa.</li>
+              <li>Sinaliza possível estabilização do petróleo caso sanções não se concretizem.</li>
+            </ul>
+          </div>
+          <div class="box box-green">
+            <div class="box-title">🌍 Cobertura Global</div>
+            <div class="coverage-row">
+              <span class="region-flag confirmed">✓ Brasil</span>
+              <span class="region-flag">China — não apurado</span>
+              <span class="region-flag confirmed">✓ EUA (tema Nvidia/PCE, ver seção 3)</span>
+              <span class="region-flag">Europa — não apurado</span>
+            </div>
+            <p style="font-size:12.5px; margin-top:8px; opacity:0.9">Confirmado também por: Bloomberg Línea Brasil.</p>
+            <div class="attention-row"><span class="pill pill-high">Alta atenção</span></div>
+          </div>
+        </div>
+      </article>
+
+    </div>
+
+    <!-- Radar complementar -->
+    <div style="margin-top:28px">
+      <h3 style="font-size:15px; margin-bottom:4px;">Radar complementar — 2T26 (fora da janela de 24h, para contexto)</h3>
+      <p style="font-size:13px; color:var(--ink-muted); margin-bottom:12px;">Os tickers abaixo não tiveram fato relevante identificado nas últimas 24–48h nesta apuração. Mostramos aqui o último dado material disponível, com data explícita, e os demais ficam sinalizados como sem notícia identificada — nenhum dado foi presumido ou inventado.</p>
+      <div class="radar-grid">
+        <div class="radar-card">
+          <div class="radar-ticker">BRSR6 · Banrisul</div>
+          <div class="radar-date">Resultado 2T26 — 13 ago 2026</div>
+          <div class="radar-text">Lucro de R$ 325,4 milhões, queda de 13,8% na comparação anual; banco revisou guidance para baixo.</div>
+        </div>
+        <div class="radar-card">
+          <div class="radar-ticker">SAPR4 · Sanepar</div>
+          <div class="radar-date">Resultado 2T26 — 13 ago 2026</div>
+          <div class="radar-text">Prejuízo de R$ 505,2 milhões no trimestre, segundo balanço divulgado à CVM.</div>
+        </div>
+        <div class="radar-card">
+          <div class="radar-ticker">ABCB4 · Banco ABC Brasil</div>
+          <div class="radar-date">Resultado 2T26 — 06 ago 2026</div>
+          <div class="radar-text">Lucro líquido de R$ 257,3 milhões no trimestre.</div>
+        </div>
+        <div class="radar-card">
+          <div class="radar-ticker">KLBN4 · Klabin</div>
+          <div class="radar-date">Resultado 2T26 — 05 ago 2026</div>
+          <div class="radar-text">Lucro de R$ 387 milhões, queda de 34% ante o mesmo período de 2025.</div>
+        </div>
+        <div class="radar-card">
+          <div class="radar-ticker">MGLU3 · Magazine Luiza</div>
+          <div class="radar-date">Início de agosto/2026</div>
+          <div class="radar-text">Goldman Sachs cortou preço-alvo após resultado do 2T26; sem fato novo nas últimas 24–48h.</div>
+        </div>
+        <div class="radar-card">
+          <div class="radar-ticker">BBSE3 · BB Seguridade</div>
+          <div class="radar-date">—</div>
+          <div class="radar-text radar-empty">Nenhuma notícia relevante identificada nesta apuração automatizada.</div>
+        </div>
+        <div class="radar-card">
+          <div class="radar-ticker">BAZA3 · Banco da Amazônia</div>
+          <div class="radar-date">—</div>
+          <div class="radar-text radar-empty">Nenhuma notícia relevante identificada nesta apuração automatizada.</div>
+        </div>
+        <div class="radar-card">
+          <div class="radar-ticker">ISAE4 / TAEE3 / TAEE4 · ISA Energia / Taesa</div>
+          <div class="radar-date">—</div>
+          <div class="radar-text radar-empty">Nenhuma notícia relevante identificada nesta apuração automatizada.</div>
+        </div>
+        <div class="radar-card">
+          <div class="radar-ticker">CMIG4 · Cemig</div>
+          <div class="radar-date">—</div>
+          <div class="radar-text radar-empty">Nenhuma notícia relevante identificada nesta apuração automatizada.</div>
+        </div>
+        <div class="radar-card">
+          <div class="radar-ticker">CPFE3 · CPFL Energia</div>
+          <div class="radar-date">—</div>
+          <div class="radar-text radar-empty">Nenhuma notícia relevante identificada nesta apuração automatizada.</div>
+        </div>
+        <div class="radar-card">
+          <div class="radar-ticker">UNIP6 · Unipar</div>
+          <div class="radar-date">—</div>
+          <div class="radar-text radar-empty">Nenhuma notícia relevante identificada nesta apuração automatizada.</div>
+        </div>
+        <div class="radar-card">
+          <div class="radar-ticker">FESA4 · Ferbasa</div>
+          <div class="radar-date">—</div>
+          <div class="radar-text radar-empty">Nenhuma notícia relevante identificada nesta apuração automatizada.</div>
+        </div>
+        <div class="radar-card">
+          <div class="radar-ticker">BVMF:AXIA3 · Axia Energia</div>
+          <div class="radar-date">—</div>
+          <div class="radar-text radar-empty">Nenhuma notícia relevante identificada nesta apuração automatizada.</div>
+        </div>
+        <div class="radar-card">
+          <div class="radar-ticker">IRBR3 · IRB Brasil RE</div>
+          <div class="radar-date">—</div>
+          <div class="radar-text radar-empty">Nenhuma notícia relevante identificada nesta apuração automatizada.</div>
+        </div>
+        <div class="radar-card">
+          <div class="radar-ticker">AMER3 · Americanas</div>
+          <div class="radar-date">—</div>
+          <div class="radar-text radar-empty">Nenhuma notícia relevante identificada nesta apuração automatizada.</div>
+        </div>
+        <div class="radar-card">
+          <div class="radar-ticker">XPML11 / HCTR11 / BVMF:GGRC11 · FIIs</div>
+          <div class="radar-date">—</div>
+          <div class="radar-text radar-empty">Nenhuma notícia relevante identificada nesta apuração automatizada.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= SEÇÃO 3 — INTERNACIONAL ================= -->
+  <section class="block" id="internacional">
+    <div class="block-head">
+      <span class="block-eyebrow">Seção 3 · 🇺🇸 EUA · 🇨🇳 China</span>
+      <h2 class="block-title">Principais notícias internacionais (últimas 24–48h)</h2>
+      <p class="block-desc">15 histórias envolvendo os ativos internacionais monitorados (SGOV, BTC, OHI, MCHI, QQQ, SMH, VYMI, VYM, BABA), apuradas em fontes dos EUA e da China. Fontes europeias mandatórias (BBC, FT, The Economist) ficaram inacessíveis nesta execução — ver nota de transparência acima.</p>
+    </div>
+
+    <div class="stories">
+
+      <!-- INT 1 -->
+      <article class="story-card">
+        <div class="story-top">
+          <span class="story-num tabular">01</span>
+          <h3 class="story-headline"><a href="https://www.bloomberg.com/news/articles/2026-08-25/bitcoin-reaches-three-month-high-of-80-000-as-momentum-returns" target="_blank" rel="noopener">Bitcoin atinge máxima de 3 meses perto de US$ 80 mil em forte short squeeze</a></h3>
+        </div>
+        <div class="story-meta">
+          <span class="ticker-tag">BTC</span>
+          <span>25 ago 2026</span>
+          <span>Fonte primária: Bloomberg</span>
+        </div>
+        <p class="story-summary">O Bitcoin chegou a subir 2,9%, para US$ 81.257, antes de recuar para cerca de US$ 79.300 — o maior nível desde meados de maio, com alta de 28% em agosto. O movimento foi puxado por uma "operação de desvalorização" (debasement trade), com o programa de recompra de títulos do Tesouro dos EUA aliviando os yields, além de uma onda de liquidação forçada de posições vendidas de US$ 1,14 bilhão. Segundo a CoinDesk, US$ 282 milhões em posições vendidas foram zeradas em 24h, e ETFs de Bitcoin nos EUA captaram cerca de US$ 1,9 bilhão líquido na semana — a maior entrada semanal desde outubro de 2025.</p>
+        <div class="boxes">
+          <div class="box box-yellow">
+            <div class="box-title">📌 Por que isso importa?</div>
+            <ul>
+              <li>Maior alta mensal do BTC desde novembro de 2024; movimento tem lastro em fluxo institucional via ETFs, não só alavancagem.</li>
+              <li>Analistas da CoinDesk alertam que ainda é cedo para declarar novo mercado altista, dada a inflação persistente.</li>
+              <li>Impacto direto de preço para qualquer exposição a Bitcoin.</li>
+            </ul>
+          </div>
+          <div class="box box-green">
+            <div class="box-title">🌍 Cobertura Global</div>
+            <div class="coverage-row">
+              <span class="region-flag confirmed">✓ EUA</span>
+              <span class="region-flag">China — não apurado</span>
+              <span class="region-flag">Brasil — não apurado</span>
+              <span class="region-flag">Europa — não apurado</span>
+            </div>
+            <p style="font-size:12.5px; margin-top:8px; opacity:0.9">Confirmado também por: CoinDesk, Forbes, The Block, crypto.news.</p>
+            <div class="attention-row"><span class="pill pill-high">Alta atenção</span></div>
+          </div>
+        </div>
+      </article>
+
+      <!-- INT 2 -->
+      <article class="story-card">
+        <div class="story-top">
+          <span class="story-num tabular">02</span>
+          <h3 class="story-headline"><a href="https://www.theblock.co/news/markets/2026-08-25-bitcoin-holds-above-80000-412674" target="_blank" rel="noopener">Trump retoma pressão pelo CLARITY Act enquanto rali do Bitcoin avança</a></h3>
+        </div>
+        <div class="story-meta">
+          <span class="ticker-tag">BTC</span>
+          <span>25 ago 2026</span>
+          <span>Fonte primária: The Block</span>
+        </div>
+        <p class="story-summary">Paralelamente à alta de preço, o presidente Trump promoveu uma cúpula sobre criptoativos na Casa Branca e retomou a pressão pelo CLARITY Act, projeto que cria um marco regulatório para ativos digitais nos EUA, com votação processual no Senado marcada para 15 de setembro. O Bitcoin acumula alta de cerca de 16% desde a retomada do impulso legislativo, somando um catalisador regulatório ao movimento técnico de short squeeze.</p>
+        <div class="boxes">
+          <div class="box box-yellow">
+            <div class="box-title">📌 Por que isso importa?</div>
+            <ul>
+              <li>Catalisador regulatório estrutural, distinto do movimento técnico de curto prazo.</li>
+              <li>Clareza regulatória pode sustentar adoção institucional caso o projeto avance.</li>
+            </ul>
+          </div>
+          <div class="box box-green">
+            <div class="box-title">🌍 Cobertura Global</div>
+            <div class="coverage-row">
+              <span class="region-flag confirmed">✓ EUA</span>
+              <span class="region-flag">China — não apurado</span>
+              <span class="region-flag">Brasil — não apurado</span>
+              <span class="region-flag">Europa — não apurado</span>
+            </div>
+            <p style="font-size:12.5px; margin-top:8px; opacity:0.9">Confirmado também por: cryptonews.net, Forbes.</p>
+            <div class="attention-row"><span class="pill pill-medium">Média atenção</span></div>
+          </div>
+        </div>
+      </article>
+
+      <!-- INT 3 -->
+      <article class="story-card">
+        <div class="story-top">
+          <span class="story-num tabular">03</span>
+          <h3 class="story-headline"><a href="https://www.scmp.com/tech/big-tech/article/3364957/alibaba-issue-hk80-billion-new-shares-global-ai-push" target="_blank" rel="noopener">Alibaba capta HK$ 80 bilhões em follow-on para investir em IA; ação cai até 10% em Hong Kong</a></h3>
+        </div>
+        <div class="story-meta">
+          <span class="ticker-tag">BABA</span>
+          <span>23–24 ago 2026</span>
+          <span>Fonte primária: South China Morning Post</span>
+        </div>
+        <p class="story-summary">A Alibaba precificou a emissão de 710 milhões de novas ações a HK$ 112,70 cada (desconto de 8,4% ante o fechamento anterior), captando cerca de HK$ 80 bilhões (US$ 10,2 bilhões) junto a investidores não americanos para financiar sua infraestrutura de IA. É o maior follow-on primário já feito por uma empresa listada em Hong Kong, e o terceiro maior do mundo em 2026, atrás apenas de Alphabet e Intel. Fundos soberanos e de longo prazo ficaram com mais de 40% da oferta. Após o anúncio, as ações chegaram a cair 10% em Hong Kong, arrastando o Hang Seng Index (-2,1%) e o Hang Seng TECH (-3,86%); outras techs chinesas como Baidu, Xiaomi, Tencent e SMIC (-7,9%) também recuaram.</p>
+        <div class="boxes">
+          <div class="box box-yellow">
+            <div class="box-title">📌 Por que isso importa?</div>
+            <ul>
+              <li>Sinaliza comprometimento agressivo com capex de IA, mas gera diluição acionária de curto prazo (Nomura estima ~3,7%).</li>
+              <li>Reação negativa do mercado reflete receio sobre pressão de margens do capex de IA.</li>
+              <li>Efeito de contágio para todo o setor de tecnologia chinesa, relevante para MCHI.</li>
+            </ul>
+          </div>
+          <div class="box box-green">
+            <div class="box-title">🌍 Cobertura Global</div>
+            <div class="coverage-row">
+              <span class="region-flag confirmed">✓ China</span>
+              <span class="region-flag confirmed">✓ EUA</span>
+              <span class="region-flag">Brasil — não apurado</span>
+              <span class="region-flag">Europa — não apurado</span>
+            </div>
+            <p style="font-size:12.5px; margin-top:8px; opacity:0.9">Confirmado também por: Reuters/Business Recorder, StreetInsider, Yahoo Finance, TechNode, GuruFocus.</p>
+            <div class="attention-row"><span class="pill pill-high">Alta atenção</span></div>
+          </div>
+        </div>
+      </article>
+
+      <!-- INT 4 -->
+      <article class="story-card">
+        <div class="story-top">
+          <span class="story-num tabular">04</span>
+          <h3 class="story-headline"><a href="https://www.benzinga.com/markets/equities/26/08/61377261/baba-stock-falls-nearly-4-amid-10-billion-hk-placement-analyst-nicholas-mugalli-says-market-reaction-is-pure-relief-for-shortsellers" target="_blank" rel="noopener">Analistas se dividem sobre diluição da Alibaba: Nomura vê "administrável", céticos falam em "bandeira branca"</a></h3>
+        </div>
+        <div class="story-meta">
+          <span class="ticker-tag">BABA</span>
+          <span>24 ago 2026</span>
+          <span>Fonte primária: Benzinga</span>
+        </div>
+        <p class="story-summary">A reação dos analistas ao follow-on de US$ 10,2 bilhões da Alibaba se dividiu com clareza. O Nomura estimou diluição real de ~3,7% para acionistas, classificando a captação como administrável e como resolução de uma incerteza de financiamento. O Bank of America manteve recomendação de compra e preço-alvo de US$ 172, tratando os recursos como fortalecimento de balanço para investimento em IA. Já vozes mais céticas, como a da World Trade Securities, chamaram a captação de "bandeira branca definitiva", evidência de que o capex de IA e a guerra de preços no e-commerce pressionaram o caixa da companhia.</p>
+        <div class="boxes">
+          <div class="box box-yellow">
+            <div class="box-title">📌 Por que isso importa?</div>
+            <ul>
+              <li>Visão de analistas sobre resultado futuro: divergência entre bancos otimistas (BofA, Nomura) e vozes mais céticas sobre a sustentabilidade do capex.</li>
+              <li>Debate central que deve moldar o preço-alvo de BABA nas próximas semanas.</li>
+            </ul>
+          </div>
+          <div class="box box-green">
+            <div class="box-title">🌍 Cobertura Global</div>
+            <div class="coverage-row">
+              <span class="region-flag confirmed">✓ China</span>
+              <span class="region-flag confirmed">✓ EUA</span>
+              <span class="region-flag">Brasil — não apurado</span>
+              <span class="region-flag">Europa — não apurado</span>
+            </div>
+            <p style="font-size:12.5px; margin-top:8px; opacity:0.9">Confirmado também por: TradingKey.</p>
+            <div class="attention-row"><span class="pill pill-high">Alta atenção</span></div>
+          </div>
+        </div>
+      </article>
+
+      <!-- INT 5 -->
+      <article class="story-card">
+        <div class="story-top">
+          <span class="story-num tabular">05</span>
+          <h3 class="story-headline"><a href="https://www.bloomberg.com/news/articles/2026-08-20/alibaba-s-revenue-climbs-9-in-testament-to-china-s-ai-boom" target="_blank" rel="noopener">Alibaba: receita sobe 9% e nuvem acelera para 45%, mas lucro despenca 76% com capex recorde de IA</a></h3>
+        </div>
+        <div class="story-meta">
+          <span class="ticker-tag">BABA</span>
+          <span>20 ago 2026 (base para as notícias da semana)</span>
+          <span>Fonte primária: Bloomberg</span>
+        </div>
+        <p class="story-summary">No trimestre encerrado em 30 de junho de 2026 (1T do ano fiscal 2027), a receita da Alibaba cresceu 9% na comparação anual, para RMB 268,95 bilhões (US$ 39,64 bilhões). A receita externa da Alibaba Cloud acelerou para 45% — máxima em 22 trimestres — com receita de produtos de IA em crescimento de três dígitos pelo 12º trimestre seguido. Ainda assim, o lucro líquido caiu mais de 75%, para RMB 10,54 bilhões, com o capex trimestral saltando 75%, para quase US$ 10 bilhões. O CEO Eddie Wu chamou o resultado de "trimestre forte, impulsionado pela comercialização crescente de nossas capacidades full-stack de IA".</p>
+        <div class="boxes">
+          <div class="box box-yellow">
+            <div class="box-title">📌 Por que isso importa?</div>
+            <ul>
+              <li>Impacto direto nos fundamentos: crescimento robusto de nuvem/IA contrasta com forte queda de lucro.</li>
+              <li>Resultado é o pano de fundo que motivou o follow-on de HK$ 80 bi anunciado dias depois.</li>
+              <li>Define o debate central sobre BABA: crescimento estrutural de IA versus pressão de margem no curto prazo.</li>
+            </ul>
+          </div>
+          <div class="box box-green">
+            <div class="box-title">🌍 Cobertura Global</div>
+            <div class="coverage-row">
+              <span class="region-flag confirmed">✓ China</span>
+              <span class="region-flag confirmed">✓ EUA</span>
+              <span class="region-flag">Brasil — não apurado</span>
+              <span class="region-flag">Europa — não apurado</span>
+            </div>
+            <p style="font-size:12.5px; margin-top:8px; opacity:0.9">Confirmado também por: Yahoo Finance/The Motley Fool, Decrypt, TechNode.</p>
+            <div class="attention-row"><span class="pill pill-high">Alta atenção</span></div>
+          </div>
+        </div>
+      </article>
+
+      <!-- INT 6 -->
+      <article class="story-card">
+        <div class="story-top">
+          <span class="story-num tabular">06</span>
+          <h3 class="story-headline"><a href="https://www.tradingkey.com/news/market-movers/262127879-market-movers-mu-20260824" target="_blank" rel="noopener">Ações de semicondutores recuam com disputa de patente da Micron às vésperas do resultado da Nvidia</a></h3>
+        </div>
+        <div class="story-meta">
+          <span class="ticker-tag">SMH</span>
+          <span class="ticker-tag">QQQ</span>
+          <span>24 ago 2026</span>
+          <span>Fonte primária: TradingKey</span>
+        </div>
+        <p class="story-summary">A Micron caiu entre 5,8% e 8% depois que a Netlist entrou com novas ações na ITC e na Justiça federal dos EUA por patentes de memória DDR5 RDIMM/MRDIMM, buscando ordens de exclusão de importação e venda. AMD recuou mais de 3% e Broadcom mais de 2%; o ETF de semicondutores SOXX caiu 2,7%. O Nasdaq Composite fechou em queda de 0,76%, a 25.980,19 pontos, e o S&P 500 caiu 0,28%, com a fraqueza em chips ofuscando a queda dos yields do Tesouro antes do resultado da Nvidia.</p>
+        <div class="boxes">
+          <div class="box box-yellow">
+            <div class="box-title">📌 Por que isso importa?</div>
+            <ul>
+              <li>Impacto direto de preço no SMH: Micron (~5,6%) e Broadcom (~6%) são posições relevantes do ETF.</li>
+              <li>QQQ, fortemente exposto a big techs, também sentiu a rotação para fora de semicondutores.</li>
+              <li>Movimento ocorre horas antes de um dos catalisadores mais aguardados do trimestre (Nvidia).</li>
+            </ul>
+          </div>
+          <div class="box box-green">
+            <div class="box-title">🌍 Cobertura Global</div>
+            <div class="coverage-row">
+              <span class="region-flag confirmed">✓ EUA</span>
+              <span class="region-flag">China — não apurado</span>
+              <span class="region-flag">Brasil — não apurado</span>
+              <span class="region-flag">Europa — não apurado</span>
+            </div>
+            <p style="font-size:12.5px; margin-top:8px; opacity:0.9">Confirmado também por: CNBC, TheStreet, Barchart.</p>
+            <div class="attention-row"><span class="pill pill-high">Alta atenção</span></div>
+          </div>
+        </div>
+      </article>
+
+      <!-- INT 7 -->
+      <article class="story-card">
+        <div class="story-top">
+          <span class="story-num tabular">07</span>
+          <h3 class="story-headline"><a href="https://finance.yahoo.com/markets/stocks/articles/nvidias-next-earnings-report-aug-165358714.html" target="_blank" rel="noopener">Resultado da Nvidia em 26/08 pode ser o grande catalisador da semana para o setor de chips</a></h3>
+        </div>
+        <div class="story-meta">
+          <span class="ticker-tag">SMH</span>
+          <span>24–25 ago 2026</span>
+          <span>Fonte primária: Yahoo Finance</span>
+        </div>
+        <p class="story-summary">A Nvidia divulga resultado do 2º trimestre fiscal após o fechamento de quarta-feira (26/08), com teleconferência às 17h (horário de Nova York). Analistas projetam receita entre US$ 93 e 95 bilhões, impulsionada pela demanda de infraestrutura de IA e adoção da plataforma Blackwell; o mercado vai focar no guidance do 3º trimestre e no cronograma de lançamento da plataforma Vera Rubin. A Nvidia representa cerca de 22% da carteira do SMH, tornando o resultado o principal catalisador de curto prazo para o ETF.</p>
+        <div class="boxes">
+          <div class="box box-yellow">
+            <div class="box-title">📌 Por que isso importa?</div>
+            <ul>
+              <li>Visão de analistas sobre resultado futuro: consenso de receita entre US$ 93–95 bi, com atenção ao guidance.</li>
+              <li>Maior posição individual do SMH — resultado deve mover o ETF como um todo.</li>
+            </ul>
+          </div>
+          <div class="box box-green">
+            <div class="box-title">🌍 Cobertura Global</div>
+            <div class="coverage-row">
+              <span class="region-flag confirmed">✓ EUA</span>
+              <span class="region-flag confirmed">✓ China (leitura de mercado, item 14)</span>
+              <span class="region-flag">Brasil — não apurado</span>
+              <span class="region-flag">Europa — não apurado</span>
+            </div>
+            <p style="font-size:12.5px; margin-top:8px; opacity:0.9">Confirmado também por: Investing.com, Intellectia.ai, StockCharts.</p>
+            <div class="attention-row"><span class="pill pill-high">Alta atenção</span></div>
+          </div>
+        </div>
+      </article>
+
+      <!-- INT 8 -->
+      <article class="story-card">
+        <div class="story-top">
+          <span class="story-num tabular">08</span>
+          <h3 class="story-headline"><a href="https://www.investing.com/news/stock-market-news/tsmc-outlook-how-nvidias-500b-ai-financing-deal-reshapes-semiconductor-demand-93CH-4852275" target="_blank" rel="noopener">Acordo de financiamento de IA de US$ 500 bi da Nvidia reformula perspectiva para a TSMC</a></h3>
+        </div>
+        <div class="story-meta">
+          <span class="ticker-tag">SMH</span>
+          <span>24–25 ago 2026</span>
+          <span>Fonte primária: Investing.com</span>
+        </div>
+        <p class="story-summary">A Nvidia mobilizou mais de US$ 500 bilhões em capital de terceiros junto a grandes gestoras alternativas de Wall Street (anunciado em 10/08) para financiar a construção de data centers de IA, visto como garantia estrutural de demanda de longo prazo por chips de IA. Como única fabricante capaz de produzir os GPUs mais avançados da Nvidia em escala, a TSMC deve se beneficiar diretamente — a receita da companhia já subiu 37% nos primeiros sete meses de 2026, com relatos de possível reajuste de preços de até 10% no fundição para 2027.</p>
+        <div class="boxes">
+          <div class="box box-yellow">
+            <div class="box-title">📌 Por que isso importa?</div>
+            <ul>
+              <li>Impacto nos fundamentos: reforça tese de demanda estrutural para a segunda maior posição do SMH (TSMC, ~9,6% da carteira).</li>
+              <li>Contexto relevante véspera do resultado da Nvidia.</li>
+            </ul>
+          </div>
+          <div class="box box-green">
+            <div class="box-title">🌍 Cobertura Global</div>
+            <div class="coverage-row">
+              <span class="region-flag confirmed">✓ EUA</span>
+              <span class="region-flag">China — não apurado</span>
+              <span class="region-flag">Brasil — não apurado</span>
+              <span class="region-flag">Europa — não apurado</span>
+            </div>
+            <p style="font-size:12.5px; margin-top:8px; opacity:0.9">Confirmado também por: Yahoo Finance/The Motley Fool, GuruFocus.</p>
+            <div class="attention-row"><span class="pill pill-medium">Média atenção</span></div>
+          </div>
+        </div>
+      </article>
+
+      <!-- INT 9 -->
+      <article class="story-card">
+        <div class="story-top">
+          <span class="story-num tabular">09</span>
+          <h3 class="story-headline"><a href="https://www.bloomberg.com/news/articles/2026-08-22/kevin-warsh-to-make-first-jackson-hole-speech-as-fed-chair" target="_blank" rel="noopener">Mercado de títulos aumenta as apostas para a estreia de Kevin Warsh em Jackson Hole</a></h3>
+        </div>
+        <div class="story-meta">
+          <span class="ticker-tag">SGOV</span>
+          <span>22–24 ago 2026</span>
+          <span>Fonte primária: Bloomberg</span>
+        </div>
+        <p class="story-summary">O novo presidente do Fed, Kevin Warsh (sucessor de Jerome Powell desde maio de 2026), discursa nesta sexta-feira (28/08) no simpósio de Jackson Hole do Fed de Kansas City, cujo tema este ano é "Inovação Financeira: Implicações para Pagamentos e Política". O mercado busca sinais sobre sua postura frente à inflação persistente e sua independência do governo Trump, depois que comentários vagos em julho, lidos como dovish, levaram os yields de longo prazo a máximas de duas décadas. A expectativa atual é de Fed em compasso de espera até o fim de 2026, com cortes empurrados para o início de 2027.</p>
+        <div class="boxes">
+          <div class="box box-yellow">
+            <div class="box-title">📌 Por que isso importa?</div>
+            <ul>
+              <li>Impacto direto de política monetária sobre os yields de curto prazo que compõem a carteira do SGOV.</li>
+              <li>Também afeta o custo de capital que pressiona as avaliações de QQQ e SMH.</li>
+            </ul>
+          </div>
+          <div class="box box-green">
+            <div class="box-title">🌍 Cobertura Global</div>
+            <div class="coverage-row">
+              <span class="region-flag confirmed">✓ EUA</span>
+              <span class="region-flag">China — não apurado</span>
+              <span class="region-flag">Brasil — não apurado</span>
+              <span class="region-flag">Europa — não apurado</span>
+            </div>
+            <p style="font-size:12.5px; margin-top:8px; opacity:0.9">Confirmado também por: The Globe and Mail, CNBC, SRN News.</p>
+            <div class="attention-row"><span class="pill pill-high">Alta atenção</span></div>
+          </div>
+        </div>
+      </article>
+
+      <!-- INT 10 -->
+      <article class="story-card">
+        <div class="story-top">
+          <span class="story-num tabular">10</span>
+          <h3 class="story-headline"><a href="https://finance.yahoo.com/markets/options/articles/sgov-nears-100-billion-first-212621724.html" target="_blank" rel="noopener">SGOV se aproxima de US$ 100 bilhões em patrimônio, marca inédita entre ETFs de título ultracurto</a></h3>
+        </div>
+        <div class="story-meta">
+          <span class="ticker-tag">SGOV</span>
+          <span>19–21 ago 2026</span>
+          <span>Fonte primária: Yahoo Finance</span>
+        </div>
+        <p class="story-summary">O patrimônio do SGOV atingiu US$ 98,42 bilhões, próximo da marca histórica de US$ 100 bilhões para ETFs de títulos do Tesouro de curtíssimo prazo. O yield SEC de 30 dias estava em 3,61% em 21/08 (12 meses: 3,74%), abaixo das máximas do ano anterior, com a taxa básica dos EUA caindo de 4,5% para 3,75% após três cortes em 2025. As distribuições mensais por cota recuaram de um pico de US$ 0,458 em 2024 para US$ 0,307 em agosto de 2026.</p>
+        <div class="boxes">
+          <div class="box box-yellow">
+            <div class="box-title">📌 Por que isso importa?</div>
+            <ul>
+              <li>Impacto nos fundamentos: yield em queda reduz a renda distribuída mesmo com captação recorde.</li>
+              <li>Reflete demanda persistente por segurança "cash-like" em meio à volatilidade de mercado.</li>
+            </ul>
+          </div>
+          <div class="box box-green">
+            <div class="box-title">🌍 Cobertura Global</div>
+            <div class="coverage-row">
+              <span class="region-flag confirmed">✓ EUA</span>
+              <span class="region-flag">China — não apurado</span>
+              <span class="region-flag">Brasil — não apurado</span>
+              <span class="region-flag">Europa — não apurado</span>
+            </div>
+            <p style="font-size:12.5px; margin-top:8px; opacity:0.9">Confirmado também por: 24/7 Wall St., GuruFocus, ETF Database.</p>
+            <div class="attention-row"><span class="pill pill-medium">Média atenção</span></div>
+          </div>
+        </div>
+      </article>
+
+      <!-- INT 11 -->
+      <article class="story-card">
+        <div class="story-top">
+          <span class="story-num tabular">11</span>
+          <h3 class="story-headline"><a href="https://www.omegahealthcare.com/investors/news-events/press-releases/detail/347/omega-reports-second-quarter-2026-results-and-recent" target="_blank" rel="noopener">Omega Healthcare (OHI) supera projeções no 2T26, eleva guidance e aumenta dividendo</a></h3>
+        </div>
+        <div class="story-meta">
+          <span class="ticker-tag">OHI</span>
+          <span>06–07 ago 2026 (reforçado por nota do UBS em 21/08)</span>
+          <span>Fonte primária: Omega Healthcare Investors (release oficial)</span>
+        </div>
+        <p class="story-summary">A Omega reportou AFFO de US$ 0,83 por ação diluída no 2T26, ante consenso de US$ 0,48, com FAD por ação crescendo 6,3% na comparação anual, para US$ 0,78, e elevou o guidance para o ano cheio. A empresa também elevou o dividendo trimestral para US$ 0,68 por ação (de US$ 0,67), pago em 14/08. Em 21/08, o UBS reiterou recomendação de compra com preço-alvo de US$ 54.</p>
+        <div class="boxes">
+          <div class="box box-yellow">
+            <div class="box-title">📌 Por que isso importa?</div>
+            <ul>
+              <li>Resultado acima do esperado e aumento de dividendo reforçam a tese de renda do papel.</li>
+              <li>Visão de analistas: UBS reitera compra, sustentando o apelo de OHI dentro de carteiras de dividendos como VYM.</li>
+            </ul>
+          </div>
+          <div class="box box-green">
+            <div class="box-title">🌍 Cobertura Global</div>
+            <div class="coverage-row">
+              <span class="region-flag confirmed">✓ EUA</span>
+              <span class="region-flag">China — não apurado</span>
+              <span class="region-flag">Brasil — não apurado</span>
+              <span class="region-flag">Europa — não apurado</span>
+            </div>
+            <p style="font-size:12.5px; margin-top:8px; opacity:0.9">Confirmado também por: The Motley Fool, StockTitan, Simply Wall St, Investing.com.</p>
+            <div class="attention-row"><span class="pill pill-medium">Média atenção</span></div>
+          </div>
+        </div>
+      </article>
+
+      <!-- INT 12 -->
+      <article class="story-card">
+        <div class="story-top">
+          <span class="story-num tabular">12</span>
+          <h3 class="story-headline"><a href="https://www.business-standard.com/markets/capital-market-news/chinese-stocks-mixed-as-tech-shares-weigh-126082500919_1.html" target="_blank" rel="noopener">Bolsas chinesas ficam mistas com tecnologia pressionando antes do resultado da Nvidia</a></h3>
+        </div>
+        <div class="story-meta">
+          <span class="ticker-tag">MCHI</span>
+          <span>25 ago 2026</span>
+          <span>Fonte primária: Business Standard (fio internacional)</span>
+        </div>
+        <p class="story-summary">O Shanghai Composite subiu 0,19%, para 3.889,4 pontos, enquanto o Shenzhen Component caiu 0,35%, para mínima de quase um mês (13.745,9), na terça-feira (25/08), com fraqueza no setor de tecnologia. Investidores seguiram reduzindo exposição a IA/tecnologia antes do resultado da Nvidia, visto como teste-chave para a confiança no "AI trade"; nomes de chips e ópticos como Eoptolink, Hua Hong Semiconductor e Zhongji Innolight recuaram mesmo após resultados individuais sólidos, enquanto varejo (Yonghui Superstore) e componentes (Luxshare Precision) subiram.</p>
+        <div class="boxes">
+          <div class="box box-yellow">
+            <div class="box-title">📌 Por que isso importa?</div>
+            <ul>
+              <li>Mostra rotação para fora de tech/semis no mercado doméstico chinês, distinta do tombo do BABA em Hong Kong.</li>
+              <li>Leitura direta para a ponderação em tecnologia do MCHI e sua sensibilidade ao resultado da Nvidia.</li>
+            </ul>
+          </div>
+          <div class="box box-green">
+            <div class="box-title">🌍 Cobertura Global</div>
+            <div class="coverage-row">
+              <span class="region-flag confirmed">✓ China</span>
+              <span class="region-flag">EUA — não apurado</span>
+              <span class="region-flag">Brasil — não apurado</span>
+              <span class="region-flag">Europa — não apurado</span>
+            </div>
+            <p style="font-size:12.5px; margin-top:8px; opacity:0.9">Confirmado também por: 24/7 Wall St., BBN Times, Trading Economics.</p>
+            <div class="attention-row"><span class="pill pill-medium">Média atenção</span></div>
+          </div>
+        </div>
+      </article>
+
+      <!-- INT 13 -->
+      <article class="story-card">
+        <div class="story-top">
+          <span class="story-num tabular">13</span>
+          <h3 class="story-headline"><a href="https://www.tradingpedia.com/2026/08/24/pboc-nudges-yuan-fix-higher-sets-usd-cny-rate/" target="_blank" rel="noopener">PBOC injeta 340 bilhões de iuanes e tolera iuane mais fraco em meio à sessão do legislativo chinês</a></h3>
+        </div>
+        <div class="story-meta">
+          <span class="ticker-tag">MCHI</span>
+          <span>24 ago 2026</span>
+          <span>Fonte primária: Tradingpedia</span>
+        </div>
+        <p class="story-summary">O Banco Popular da China (PBOC) fixou a taxa de referência USD/CNY em 6,7841, cerca de 593 pips acima da taxa de mercado estimada pela Reuters (6,7248) — um gap incomum, lido por operadores como tolerância a um iuane mais fraco. Simultaneamente, o banco central injetou 340 bilhões de iuanes em liquidez via operações compromissadas reversas de 7 dias, mantendo a taxa básica em 1,4%. O mercado também observa possíveis sinais de estímulo do Comitê Permanente da Assembleia Popular Nacional, em sessão de 25 a 28/08.</p>
+        <div class="boxes">
+          <div class="box box-yellow">
+            <div class="box-title">📌 Por que isso importa?</div>
+            <ul>
+              <li>Política cambial e de liquidez afeta diretamente as avaliações de ações chinesas subjacentes ao MCHI.</li>
+              <li>Sinaliza afrouxamento medido, não agressivo, no curto prazo.</li>
+            </ul>
+          </div>
+          <div class="box box-green">
+            <div class="box-title">🌍 Cobertura Global</div>
+            <div class="coverage-row">
+              <span class="region-flag confirmed">✓ China</span>
+              <span class="region-flag">EUA — não apurado</span>
+              <span class="region-flag">Brasil — não apurado</span>
+              <span class="region-flag">Europa — não apurado</span>
+            </div>
+            <p style="font-size:12.5px; margin-top:8px; opacity:0.9">Confirmado por apuração cruzada de dados de câmbio e liquidez em fio de mercado.</p>
+            <div class="attention-row"><span class="pill pill-low">Baixa atenção</span></div>
+          </div>
+        </div>
+      </article>
+
+      <!-- INT 14 -->
+      <article class="story-card">
+        <div class="story-top">
+          <span class="story-num tabular">14</span>
+          <h3 class="story-headline"><a href="https://www.bloomberg.com/news/articles/2026-08-24/us-eyes-china-overcapacity-tariffs-of-7-5-before-xi-trump-talks" target="_blank" rel="noopener">EUA avaliam tarifa de 7,5% sobre "excesso de capacidade" chinesa antes da cúpula Xi-Trump</a></h3>
+        </div>
+        <div class="story-meta">
+          <span class="ticker-tag">MCHI</span>
+          <span>24 ago 2026</span>
+          <span>Fonte primária: Bloomberg</span>
+        </div>
+        <p class="story-summary">Os EUA preparam uma nova tarifa de 7,5% sobre produtos chineses ligados a alegado excesso de capacidade industrial (aço, alumínio, veículos elétricos), o que levaria as tarifas totais da era Trump sobre a China a cerca de 20% — teto que Pequim afirma ser consistente com a trégua comercial atual. Autoridades querem publicar os resultados da investigação sobre excesso de capacidade antes da cúpula Xi-Trump, marcada para 24 de setembro em Washington, usando a tarifa como alavanca de negociação. O Ministério do Comércio chinês rebateu as alegações, afirmando que sua produção reflete inovação e reformas, não subsídios.</p>
+        <div class="boxes">
+          <div class="box box-yellow">
+            <div class="box-title">📌 Por que isso importa?</div>
+            <ul>
+              <li>Risco geopolítico e regulatório direto para o sentimento amplo de ações chinesas (MCHI).</li>
+              <li>Setores exportadores intensivos em capacidade (aço, alumínio, VEs) ficam sob maior escrutínio até a cúpula de setembro.</li>
+            </ul>
+          </div>
+          <div class="box box-green">
+            <div class="box-title">🌍 Cobertura Global</div>
+            <div class="coverage-row">
+              <span class="region-flag confirmed">✓ China</span>
+              <span class="region-flag confirmed">✓ EUA</span>
+              <span class="region-flag">Brasil — não apurado</span>
+              <span class="region-flag">Europa — não apurado</span>
+            </div>
+            <p style="font-size:12.5px; margin-top:8px; opacity:0.9">Confirmado também por: Semafor, Fortune, US News.</p>
+            <div class="attention-row"><span class="pill pill-high">Alta atenção</span></div>
+          </div>
+        </div>
+      </article>
+
+      <!-- INT 15 -->
+      <article class="story-card">
+        <div class="story-top">
+          <span class="story-num tabular">15</span>
+          <h3 class="story-headline"><a href="https://finance.yahoo.com/markets/stocks/articles/2-high-yield-vanguard-etfs-212500799.html" target="_blank" rel="noopener">ETFs de dividendos da Vanguard captam mais de US$ 2 bilhões em 2026 com rotação para ações de valor</a></h3>
+        </div>
+        <div class="story-meta">
+          <span class="ticker-tag">VYM</span>
+          <span class="ticker-tag">VYMI</span>
+          <span>17–19 ago 2026</span>
+          <span>Fonte primária: Yahoo Finance</span>
+        </div>
+        <p class="story-summary">O Vanguard High Dividend Yield ETF (VYM) acumula alta de 16,84% no ano até 17/08, superando o S&P 500, com captação líquida de US$ 2,3 bilhões em 2026. O fundo (patrimônio entre US$ 81,6 bi e US$ 99 bi, a depender da data-base) rende entre 2,2% e 2,35% ao ano, com Broadcom, JPMorgan e Exxon Mobil entre as maiores posições. A reportagem enquadra os ETFs de dividendos como beneficiários da rotação de agosto para fora de tecnologia cara em direção a nomes de maior geração de caixa (financeiro, saúde, energia, industriais).</p>
+        <div class="boxes">
+          <div class="box box-yellow">
+            <div class="box-title">📌 Por que isso importa?</div>
+            <ul>
+              <li>Fluxo de captação forte indica rotação de investidores para estratégias de renda/valor em meio à volatilidade de tecnologia.</li>
+              <li>Tendência relevante também para o posicionamento do VYMI (versão internacional).</li>
+            </ul>
+          </div>
+          <div class="box box-green">
+            <div class="box-title">🌍 Cobertura Global</div>
+            <div class="coverage-row">
+              <span class="region-flag confirmed">✓ EUA</span>
+              <span class="region-flag">China — não apurado</span>
+              <span class="region-flag">Brasil — não apurado</span>
+              <span class="region-flag">Europa — não apurado</span>
+            </div>
+            <p style="font-size:12.5px; margin-top:8px; opacity:0.9">Confirmado também por: The Globe and Mail, 24/7 Wall St., Morningstar.</p>
+            <div class="attention-row"><span class="pill pill-low">Baixa atenção</span></div>
+          </div>
+        </div>
+      </article>
+
+    </div>
+  </section>
+
+  <!-- ================= SEÇÃO 4 — ANÁLISE FINAL ================= -->
+  <section class="block" id="analise">
+    <div class="block-head">
+      <span class="block-eyebrow">Seção 4 · Análise</span>
+      <h2 class="block-title">Panorama consolidado e perspectiva Brasil–China–Global</h2>
+    </div>
+
+    <div class="analysis-card">
+      <div class="analysis-h">🇧🇷 Brasil — situação atual</div>
+      <p><strong>Petrobras (PETR4):</strong> pressionada por queda do petróleo ligada às sanções dos EUA ao Irã; risco geopolítico é o principal fator de curto prazo a monitorar, com potencial de reverter caso as sanções não avancem.</p>
+      <p><strong>Vale (VALE3):</strong> favorecida por sinais de novo estímulo econômico chinês e alta do minério de ferro; tese depende da confirmação de medidas concretas de Pequim nas próximas semanas, inclusive da sessão do Comitê Permanente da ANP (25–28/08).</p>
+      <p><strong>Bancos e holdings (BBAS3, ITSA4e pares BBSE3, BRSR6, ABCB4):</strong> momento técnico positivo, com o setor puxando o Ibovespa por quatro pregões seguidos; Itaúsa com pagamento de JCP relevante em 28/08. Banrisul (BRSR6) e Banco ABC Brasil (ABCB4) reportaram lucro no 2T26, mas Banrisul revisou guidance para baixo — vale monitorar deterioração de qualidade de crédito nesse segmento.</p>
+      <p><strong>Utilities e saneamento (CMIG4, CPFE3, TAEE3/TAEE4, ISAE4, SAPR4):</strong> sem fato novo identificado nas últimas 24–48h; Sanepar (SAPR4) reportou prejuízo no 2T26 e merece acompanhamento.</p>
+      <p><strong>Industriais e small caps (UNIP6, FESA4, AXIA3, IRBR3, KLBN4, MGLU3, AMER3):</strong> sem notícia relevante nesta janela; Klabin (KLBN4) teve queda de 34% no lucro do 2T26 e Magazine Luiza (MGLU3) sofreu corte de preço-alvo do Goldman Sachs no início de agosto — ambos seguem sob pressão de tese após o resultado trimestral.</p>
+      <p><strong>Fundos imobiliários (XPML11, HCTR11, GGRC11):</strong> nenhuma notícia relevante identificada nesta apuração.</p>
+    </div>
+
+    <div class="analysis-card">
+      <div class="analysis-h">🇺🇸🇨🇳 EUA e China — situação atual</div>
+      <p><strong>Bitcoin (BTC):</strong> rompimento técnico para perto de US$ 80 mil, sustentado por short squeeze, forte entrada em ETFs (~US$ 1,9 bi na semana) e avanço do CLARITY Act no Senado (votação em 15/09). Analistas da CoinDesk pedem cautela quanto a chamar de novo ciclo altista dada a inflação ainda persistente.</p>
+      <p><strong>Alibaba (BABA):</strong> semana decisiva — resultado do 1T FY27 mostrou nuvem/IA acelerando (+45%) mas lucro caindo 76%; a resposta da empresa foi uma captação recorde de HK$ 80 bi para capex de IA, que gerou queda de até 10% na ação e efeito de contágio no Hang Seng. Analistas divididos: BofA e Nomura mais construtivos, vozes independentes mais céticas sobre sustentabilidade do capex.</p>
+      <p><strong>Semicondutores (SMH) e Nasdaq (QQQ):</strong> mercado em compasso de espera pelo resultado da Nvidia (26/08), com correção prévia puxada pela disputa de patentes da Micron. TSMC segue com tese estrutural positiva, ligada ao acordo de financiamento de IA de US$ 500 bi da Nvidia.</p>
+      <p><strong>Renda fixa curta (SGOV):</strong> patrimônio recorde perto de US$ 100 bi, mas yield em queda; discurso de estreia do novo presidente do Fed, Kevin Warsh, em Jackson Hole (28/08) é o próximo grande catalisador para a curva de juros.</p>
+      <p><strong>China ampla (MCHI):</strong> semana marcada pela sessão do Comitê Permanente da ANP (25–28/08), PBOC tolerando iuane mais fraco com injeção de liquidez, e risco tarifário dos EUA (7,5% adicional sobre excesso de capacidade) como pano de fundo para a cúpula Xi-Trump em 24/09.</p>
+      <p><strong>Renda / dividendos (VYM, VYMI, OHI):</strong> rotação de fluxo para ativos de dividendo/valor segue forte em 2026; Omega Healthcare (OHI) reforçou a tese com resultado acima do esperado, aumento de dividendo e reiteração de compra pelo UBS.</p>
+    </div>
+
+    <div class="analysis-card">
+      <div class="analysis-h">🌐 Perspectiva Brasil–China–Global</div>
+      <p>O fio condutor da janela de 24–48h é a tensão entre <strong>estímulo e risco geopolítico</strong>: sinais de estímulo chinês sustentam commodities e a tese da Vale, enquanto sanções dos EUA ao Irã pressionam petróleo e Petrobras — dois lados da mesma moeda macro que também aparecem na cobertura internacional (tarifas EUA-China, PBOC, cúpula Xi-Trump). No mercado global, o capex bilionário em infraestrutura de IA (Alibaba, Nvidia, TSMC) segue sendo o maior driver estrutural de fluxo, com o mercado dividido entre otimismo de crescimento e receio de compressão de margens — um debate que deve se intensificar após o resultado da Nvidia em 26/08 e influenciar o apetite por risco em ativos ligados à China e à tecnologia global nas próximas semanas.</p>
+      <p>Para o investidor brasileiro, os pontos de atenção mais imediatos são: (1) trajetória do petróleo e seu efeito sobre PETR4; (2) confirmação de estímulo chinês e seu efeito sobre VALE3 e o câmbio; (3) o discurso de Kevin Warsh em Jackson Hole (28/08) como sinalizador de juros globais; e (4) o resultado da Nvidia (26/08) como termômetro de apetite a risco para ativos de tecnologia, com efeito indireto sobre o humor geral do Ibovespa.</p>
+    </div>
+  </section>
+
+  <footer class="report-footer">
+    <p><strong>Metodologia:</strong> apuração automatizada via busca em tempo real, com cruzamento manual entre múltiplas fontes independentes por notícia. Nesta execução, o acesso direto (WebFetch) às fontes mandatórias foi bloqueado pela política de rede do ambiente — os links não puderam ser individualmente confirmados quanto a erros 404. Recomenda-se checagem manual antes de redistribuição.</p>
+    <p style="margin-top:8px">Relatório gerado automaticamente em 25/08/2026. Regiões cobertas nesta edição: Brasil e EUA/China com apuração completa; Europa (BBC, Financial Times, The Economist) inacessível nesta execução.</p>
+  </footer>
+
+</main>
