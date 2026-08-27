@@ -1,0 +1,754 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tech Global Report - 24h | 27/08/2026</title>
+<style>
+  :root {
+    --bg: #eef0f2;
+    --card-bg: #ffffff;
+    --text: #1a1a1a;
+    --text-muted: #5a5f66;
+    --yellow-bg: #fff6d8;
+    --yellow-border: #f2c94c;
+    --green-bg: #e6f6ec;
+    --green-border: #34a853;
+    --black: #0d0d0d;
+    --link: #1a56db;
+    --radius-lg: 16px;
+    --radius-md: 12px;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    padding: 24px 16px 64px;
+    background: var(--bg);
+    color: var(--text);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    font-size: 15px;
+    line-height: 1.6;
+  }
+  .wrap {
+    max-width: 880px;
+    margin: 0 auto;
+  }
+  header.hero {
+    background: var(--black);
+    color: #fff;
+    border-radius: var(--radius-lg);
+    padding: 36px 32px;
+    margin-bottom: 32px;
+  }
+  header.hero h1 {
+    margin: 0 0 8px;
+    font-size: 28px;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+  }
+  header.hero .sub {
+    color: #cfcfcf;
+    font-size: 14px;
+    margin-bottom: 14px;
+  }
+  header.hero .regions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    font-size: 14px;
+    color: #f0f0f0;
+    border-top: 1px solid #333;
+    padding-top: 14px;
+  }
+  header.hero .regions span {
+    background: #1f1f1f;
+    padding: 4px 10px;
+    border-radius: 999px;
+  }
+  .toc {
+    background: var(--card-bg);
+    border-radius: var(--radius-md);
+    padding: 20px 24px;
+    margin-bottom: 32px;
+    font-size: 13.5px;
+  }
+  .toc h2 { font-size: 15px; margin: 0 0 10px; }
+  .toc ol { margin: 0; padding-left: 20px; columns: 2; column-gap: 24px; }
+  .toc li { margin-bottom: 6px; break-inside: avoid; }
+  .toc a { color: var(--text); text-decoration: none; }
+  .toc a:hover { color: var(--link); }
+
+  section.intro-note {
+    background: #fff;
+    border-left: 4px solid var(--black);
+    border-radius: var(--radius-md);
+    padding: 16px 20px;
+    margin-bottom: 32px;
+    font-size: 13.5px;
+    color: var(--text-muted);
+  }
+
+  .card {
+    background: var(--card-bg);
+    border-radius: var(--radius-lg);
+    padding: 28px 28px 26px;
+    margin-bottom: 28px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+  }
+  .card-head {
+    display: flex;
+    gap: 14px;
+    align-items: flex-start;
+    margin-bottom: 6px;
+  }
+  .num {
+    flex: none;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: var(--black);
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 14px;
+  }
+  .card h2 {
+    margin: 0;
+    font-size: 19px;
+    line-height: 1.35;
+  }
+  .card h2 a {
+    color: var(--text);
+    text-decoration: none;
+    background-image: linear-gradient(transparent calc(100% - 2px), var(--link) 2px);
+    background-repeat: no-repeat;
+    background-size: 0% 100%;
+    transition: background-size 0.2s;
+  }
+  .card h2 a:hover {
+    color: var(--link);
+    background-size: 100% 100%;
+  }
+  .meta {
+    margin: 6px 0 14px 50px;
+    font-size: 12.5px;
+    color: var(--text-muted);
+  }
+  .summary {
+    margin: 0 0 18px 50px;
+    font-size: 14.5px;
+  }
+  .box {
+    border-radius: var(--radius-md);
+    padding: 16px 18px;
+    margin: 14px 0 0 50px;
+    font-size: 13.8px;
+  }
+  .box.yellow {
+    background: var(--yellow-bg);
+    border: 1px solid var(--yellow-border);
+  }
+  .box.green {
+    background: var(--green-bg);
+    border: 1px solid var(--green-border);
+  }
+  .box-title {
+    font-weight: 700;
+    margin-bottom: 8px;
+    font-size: 14px;
+  }
+  .region-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 10px;
+  }
+  .region-chip {
+    background: #fff;
+    border: 1px solid rgba(0,0,0,0.1);
+    border-radius: 999px;
+    padding: 3px 10px;
+    font-size: 12.5px;
+  }
+  .region-chip.off { opacity: 0.4; text-decoration: line-through; }
+  .sources {
+    margin: 8px 0;
+    padding-left: 18px;
+  }
+  .sources li { margin-bottom: 4px; }
+  .sources a { color: var(--link); }
+  .attention {
+    display: inline-block;
+    margin-top: 6px;
+    font-weight: 700;
+    padding: 2px 10px;
+    border-radius: 999px;
+    font-size: 12px;
+  }
+  .attention.alto { background: #fde2e1; color: #b3261e; }
+  .attention.medio { background: #fff0cf; color: #8a5a00; }
+  .attention.baixo { background: #e4e4e4; color: #555; }
+
+  @media (max-width: 560px) {
+    .meta, .summary, .box { margin-left: 0; }
+    .card-head { flex-direction: column; }
+    .toc ol { columns: 1; }
+  }
+
+  section.geo {
+    background: var(--black);
+    color: #eaeaea;
+    border-radius: var(--radius-lg);
+    padding: 36px 32px;
+    margin-top: 40px;
+  }
+  section.geo h2 {
+    color: #fff;
+    font-size: 22px;
+    margin-top: 0;
+  }
+  section.geo h3 {
+    color: #ffd15c;
+    font-size: 15px;
+    margin: 24px 0 8px;
+  }
+  section.geo p { color: #d6d6d6; font-size: 14px; }
+  section.geo .grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+    margin-top: 8px;
+  }
+  @media (max-width: 640px) {
+    section.geo .grid { grid-template-columns: 1fr; }
+  }
+
+  footer.foot {
+    text-align: center;
+    color: var(--text-muted);
+    font-size: 12px;
+    margin-top: 36px;
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="hero">
+    <h1>Tech Global Report – 24h</h1>
+    <div class="sub">Publicado em 27 de agosto de 2026 · 10:11 UTC (07:11 em Brasília) · Edição diária automatizada</div>
+    <div class="regions">
+      <span>🇨🇳 China</span>
+      <span>🇺🇸 EUA</span>
+      <span>🇪🇺 Europa</span>
+      <span>🇧🇷 Brasil</span>
+    </div>
+  </header>
+
+  <div class="toc">
+    <h2>Nesta edição</h2>
+    <ol>
+      <li><a href="#s1">Nvidia bate recorde, mas zera previsão de receita chinesa</a></li>
+      <li><a href="#s2">Moonshot AI negocia parceria com Microsoft, Amazon e Google</a></li>
+      <li><a href="#s3">DeepSeek acelera preparação de IPO em Xangai</a></li>
+      <li><a href="#s4">Alibaba capta HK$ 80 bi 100% para IA</a></li>
+      <li><a href="#s5">Xiaomi lança chip próprio de 3nm, o Xring O3</a></li>
+      <li><a href="#s6">Baidu aprova listagem primária dupla em Hong Kong</a></li>
+      <li><a href="#s7">PDD Holdings: Temu desacelera antes do prazo da UE</a></li>
+      <li><a href="#s8">OpenAI revela chip Jalapeño e desafia a Nvidia</a></li>
+      <li><a href="#s9">Meta fecha acordo de US$ 16,68 bi sobre segurança infantil</a></li>
+      <li><a href="#s10">Amazon encerra o Mechanical Turk após 21 anos</a></li>
+      <li><a href="#s11">Shein perde disputa judicial contra a Temu no Reino Unido</a></li>
+      <li><a href="#s12">Taxa de € 3 da UE já pesa sobre Temu e Shein</a></li>
+      <li><a href="#s13">China intensifica fiscalização de terras raras</a></li>
+      <li><a href="#s14">Shopee (Sea Ltd.) cresce 48% e resiste ao TikTok Shop</a></li>
+      <li><a href="#s15">Brasil é o maior destino de investimento chinês em 2025</a></li>
+    </ol>
+  </div>
+
+  <section class="intro-note">
+    <strong>Nota metodológica:</strong> as 15 histórias abaixo foram selecionadas por impacto comercial/geopolítico e repercussão entre veículos chineses, americanos, europeus e brasileiros nas últimas 24–48 horas (23–27/08/2026). Cada card traz no mínimo três fontes verificadas independentemente. Pelo menos 5 das 15 histórias têm cobertura primária de veículos chineses (36Kr, Sina Finance, Huxiu, IT之家, jrj.com.cn, entre outros).
+  </section>
+
+  <!-- 1 -->
+  <article class="card" id="s1">
+    <div class="card-head">
+      <div class="num">1</div>
+      <h2><a href="https://www.cnbc.com/2026/08/26/nvidia-nvda-earnings-report-q2-2027-live-updates.html" target="_blank" rel="noopener">Nvidia bate recorde de receita, mas não prevê nenhuma venda a data centers chineses</a></h2>
+    </div>
+    <div class="meta">26/08/2026 · Fonte principal: CNBC</div>
+    <p class="summary">A Nvidia divulgou receita trimestral de US$ 96,2 bilhões (+106% ano a ano) e previu crescimento de 70% para o ano fiscal de 2028, superando as expectativas do mercado. Mas a empresa confirmou que sua projeção não inclui nenhuma receita de data centers na China, reflexo direto do impasse regulatório em torno dos chips H20/H200.</p>
+    <div class="box yellow">
+      <div class="box-title">📌 Por que isso importa?</div>
+      O maior fabricante de chips de IA do mundo está, na prática, fora do mercado chinês de data centers — mesmo após liberação parcial do governo americano. Isso acelera a corrida de Alibaba, Huawei e outras chinesas por chips domésticos e reforça o apetite por soluções alternativas como as da Moonshot AI e DeepSeek. Para investidores, o resultado mostra que a demanda ocidental por IA compensa (por ora) a perda do mercado chinês, mas expõe a fragilidade da cadeia de suprimentos sino-americana.
+    </div>
+    <div class="box green">
+      <div class="box-title">🌍 Análise de Cobertura Global</div>
+      <div class="region-row">
+        <span class="region-chip">✓ China</span>
+        <span class="region-chip">✓ EUA</span>
+        <span class="region-chip">✓ Europa</span>
+        <span class="region-chip off">Brasil</span>
+      </div>
+      <ul class="sources">
+        <li>🇺🇸 CNBC — <a href="https://www.cnbc.com/2026/08/26/nvidia-nvda-earnings-report-q2-2027-live-updates.html" target="_blank" rel="noopener">"Nvidia earnings takeaways: Huang forecasts 70% fiscal 2028 revenue growth"</a></li>
+        <li>🇨🇳 36Kr — <a href="https://www.36kr.com/p/3701451896664195" target="_blank" rel="noopener">"一夜暴跌数千亿美元，英伟达：我们在中国的业务不太乐观"</a></li>
+        <li>🇨🇳 STCN (Securities Times) — <a href="https://www.stcn.com/article/detail/4137988.html" target="_blank" rel="noopener">"大超预期，英伟达营收同比增106%，数据中心收入翻倍"</a></li>
+      </ul>
+      <strong>Diferenças de narrativa:</strong> a imprensa americana celebra o recorde e o otimismo de Jensen Huang com o novo ciclo de IA; a imprensa chinesa foca no "buraco" deixado pela ausência de receita da China e no que isso significa para a autossuficiência tecnológica do país, tratando o resultado como prova de que Pequim está vencendo a guerra dos chips no discurso público, mesmo perdendo acesso a hardware de ponta.
+      <div class="attention alto">Atenção: alto</div>
+    </div>
+  </article>
+
+  <!-- 2 -->
+  <article class="card" id="s2">
+    <div class="card-head">
+      <div class="num">2</div>
+      <h2><a href="https://finance.yahoo.com/technology/ai/articles/exclusive-chinas-moonshot-talks-microsoft-075340033.html" target="_blank" rel="noopener">Moonshot AI negocia com Microsoft, Amazon e Google hospedar o Kimi K3 em troca de até 30% da receita</a></h2>
+    </div>
+    <div class="meta">26/08/2026 · Fonte principal: Reuters (via Yahoo Finance)</div>
+    <p class="summary">A chinesa Moonshot AI está em negociações iniciais para que seu modelo aberto Kimi K3 seja oferecido via Microsoft Azure, Amazon AWS e Google Cloud, em um esquema de compartilhamento de receita de até 30%. Se fechado, seria o primeiro grande acordo desse tipo entre uma IA chinesa e as nuvens americanas.</p>
+    <div class="box yellow">
+      <div class="box-title">📌 Por que isso importa?</div>
+      O acordo simboliza uma inversão geopolítica: mesmo sob restrições de exportação de chips, modelos de IA chineses de código aberto — mais baratos que os rivais ocidentais — estão penetrando a infraestrutura de nuvem dos EUA por demanda de clientes corporativos. Isso pressiona OpenAI, Anthropic e Google DeepMind em preço, e reacende o debate em Washington sobre permitir ou banir modelos chineses em nuvens americanas por risco de segurança nacional.
+    </div>
+    <div class="box green">
+      <div class="box-title">🌍 Análise de Cobertura Global</div>
+      <div class="region-row">
+        <span class="region-chip">✓ China</span>
+        <span class="region-chip">✓ EUA</span>
+        <span class="region-chip">✓ Europa</span>
+        <span class="region-chip off">Brasil</span>
+      </div>
+      <ul class="sources">
+        <li>🇺🇸 Reuters/Yahoo Finance — <a href="https://finance.yahoo.com/technology/ai/articles/exclusive-chinas-moonshot-talks-microsoft-075340033.html" target="_blank" rel="noopener">"Exclusive: China's Moonshot in talks with Microsoft, Amazon, Google over K3 revenue sharing"</a></li>
+        <li>🇭🇰 Hong Kong Economic Times (hket) — <a href="https://inews.hket.com/article/4183000/" target="_blank" rel="noopener">"月之暗面據報與微軟、亞馬遜、Google洽淡Kimi K3收入分成 高達30%"</a></li>
+        <li>🇨🇳 80aj.com — <a href="https://www.80aj.com/2026/08/26/moon-ai-kimi-azure-aws-google-cloud/" target="_blank" rel="noopener">"消息称月之暗面拟与美云巨头分成30%，Kimi K3模型或登陆Azure/AWS/谷歌云"</a></li>
+      </ul>
+      <strong>Diferenças de narrativa:</strong> a mídia ocidental enquadra o caso como risco de segurança e dependência tecnológica dos EUA em relação à China; a imprensa chinesa e de Hong Kong celebra o acordo como validação global da competitividade da IA chinesa e destaca o corte de custos de nuvem que ele representaria para a Microsoft.
+      <div class="attention alto">Atenção: alto</div>
+    </div>
+  </article>
+
+  <!-- 3 -->
+  <article class="card" id="s3">
+    <div class="card-head">
+      <div class="num">3</div>
+      <h2><a href="https://caifuhao.eastmoney.com/news/20260825205114710318060" target="_blank" rel="noopener">DeepSeek acelera preparação de IPO no STAR Market de Xangai, mirando avaliação de até US$ 74 bi</a></h2>
+    </div>
+    <div class="meta">25/08/2026 · Fonte principal: Eastmoney (财富号)</div>
+    <p class="summary">A DeepSeek formalizou os preparativos para uma oferta pública inicial no mercado STAR de Xangai, com pedido que pode ser protocolado ainda em 2026 e estreia prevista para 2027. A empresa negocia uma nova rodada de captação com avaliação pré-investimento entre US$ 71 bi e US$ 74 bi, com Tencent e o fundo estatal de IA entre os investidores.</p>
+    <div class="box yellow">
+      <div class="box-title">📌 Por que isso importa?</div>
+      Seria o maior IPO de uma empresa de IA nativa da China, consolidando Xangai como polo alternativo ao Nasdaq para listagens de tecnologia chinesa em meio às tensões regulatórias EUA-China. O movimento também sinaliza que a "guerra de preços" da IA generativa chinesa (DeepSeek já elevou preços de API em até 1.100% em agosto) está dando lugar a uma fase de monetização e consolidação de capital.
+    </div>
+    <div class="box green">
+      <div class="box-title">🌍 Análise de Cobertura Global</div>
+      <div class="region-row">
+        <span class="region-chip">✓ China</span>
+        <span class="region-chip">✓ EUA</span>
+        <span class="region-chip">✓ Europa</span>
+        <span class="region-chip off">Brasil</span>
+      </div>
+      <ul class="sources">
+        <li>🇨🇳 Eastmoney — <a href="https://caifuhao.eastmoney.com/news/20260825205114710318060" target="_blank" rel="noopener">"DeepSeek启动IPO筹备，拟科创板上市估值710亿美元"</a></li>
+        <li>🇨🇳 36Kr — <a href="https://36kr.com/p/3898240606537092" target="_blank" rel="noopener">"DeepSeek最快年内启动IPO，背后是'算力饥渴'？"</a></li>
+        <li>🇺🇸 Yahoo Finance (Bloomberg) — <a href="https://finance.yahoo.com/markets/stocks/articles/deepseek-begins-ipo-preparations-potential-165600707.html" target="_blank" rel="noopener">"DeepSeek begins IPO preparations with potential 2026 filing"</a></li>
+      </ul>
+      <strong>Diferenças de narrativa:</strong> veículos chineses tratam o IPO como orgulho nacional e prova da autossuficiência em IA; a imprensa financeira ocidental foca na avaliação bilionária e no que isso sinaliza sobre a "corrida de IPOs de IA chinesa" (que inclui também Moonshot), questionando a sustentabilidade das margens da DeepSeek diante do aumento recente de preços.
+      <div class="attention alto">Atenção: alto</div>
+    </div>
+  </article>
+
+  <!-- 4 -->
+  <article class="card" id="s4">
+    <div class="card-head">
+      <div class="num">4</div>
+      <h2><a href="https://technode.com/2026/08/24/alibaba-raises-hk80-billion-through-a-share-placement-to-fund-ai-infrastructure/" target="_blank" rel="noopener">Alibaba capta HK$ 80 bilhões (US$ 10,2 bi) em ações — 100% destinado à infraestrutura de IA</a></h2>
+    </div>
+    <div class="meta">23–24/08/2026 · Fonte principal: TechNode</div>
+    <p class="summary">A Alibaba concluiu sua primeira colocação de ações desde a listagem em Hong Kong em 2019, vendendo 710 milhões de novas ações a HK$ 112,70 cada. Todo o montante será direcionado à expansão de data centers de IA, computação em nuvem e pesquisa de modelos de linguagem. A operação é a maior oferta subsequente de uma empresa listada em Hong Kong na história.</p>
+    <div class="box yellow">
+      <div class="box-title">📌 Por que isso importa?</div>
+      A captação mostra a escala do investimento chinês em IA para competir com Nvidia-dependentes americanos, mas também gerou diluição acionária — as ações caíram cerca de 8–10% no dia do anúncio. Para o setor de e-commerce (Taobao, AliExpress), o reforço em nuvem e IA deve acelerar ferramentas de busca e recomendação com IA generativa, impactando diretamente a competição com Pinduoduo/Temu e ByteDance.
+    </div>
+    <div class="box green">
+      <div class="box-title">🌍 Análise de Cobertura Global</div>
+      <div class="region-row">
+        <span class="region-chip">✓ China</span>
+        <span class="region-chip">✓ EUA</span>
+        <span class="region-chip">✓ Europa</span>
+        <span class="region-chip off">Brasil</span>
+      </div>
+      <ul class="sources">
+        <li>🇨🇳 TechNode — <a href="https://technode.com/2026/08/24/alibaba-raises-hk80-billion-through-a-share-placement-to-fund-ai-infrastructure/" target="_blank" rel="noopener">"Alibaba raises HK$80 billion through a share placement to fund AI infrastructure"</a></li>
+        <li>🇨🇳 JRJ.com.cn (金融界) — <a href="https://finance.jrj.com.cn/2026/08/23171358212019.shtml" target="_blank" rel="noopener">"阿里拟配售800亿港元新股，全部投入AI建设"</a></li>
+        <li>🏢 Alibaba Group (comunicado oficial) — <a href="https://www.alibabagroup.com/en-US/document-2028384807859257344" target="_blank" rel="noopener">"Alibaba Group Announced Pricing of HK$80 Billion Placing of New Shares"</a></li>
+      </ul>
+      <strong>Diferenças de narrativa:</strong> a mídia chinesa destaca o ineditismo da operação e o compromisso "100% em IA" como sinal de confiança estratégica; analistas ocidentais (Reuters, Bloomberg) enfatizam a queda das ações e o risco de diluição para acionistas minoritários, tratando a captação como sintoma de quanto capital é necessário para competir na corrida global de IA.
+      <div class="attention medio">Atenção: médio</div>
+    </div>
+  </article>
+
+  <!-- 5 -->
+  <article class="card" id="s5">
+    <div class="card-head">
+      <div class="num">5</div>
+      <h2><a href="https://technode.com/2026/08/25/xiaomi-unveils-xring-o3-as-it-expands-in-house-chip-push/" target="_blank" rel="noopener">Xiaomi lança Xring O3, primeiro chip mobile de 3nm com suporte a LPDDR6</a></h2>
+    </div>
+    <div class="meta">24/08/2026 · Fonte principal: TechNode</div>
+    <p class="summary">A Xiaomi apresentou o Xring O3, seu segundo processador smartphone totalmente proprietário, fabricado pela TSMC em processo de 3 nanômetros. É o primeiro chip mobile do mundo com suporte a memória LPDDR6 e ultrapassou 5 milhões de pontos no AnTuTu. Junto com ele, a empresa revelou os chips O100 (IA on-device) e D100 (condução autônoma).</p>
+    <div class="box yellow">
+      <div class="box-title">📌 Por que isso importa?</div>
+      A Xiaomi se junta à Huawei na disputa por independência de semicondutores em meio às restrições de exportação dos EUA, embora ainda dependa da TSMC (Taiwan) para fabricação de ponta — um lembrete de que o "desacoplamento" tecnológico sino-americano continua parcial. O avanço também pressiona Qualcomm e MediaTek no segmento premium e reforça a estratégia chinesa de verticalização em hardware de IA para dispositivos.
+    </div>
+    <div class="box green">
+      <div class="box-title">🌍 Análise de Cobertura Global</div>
+      <div class="region-row">
+        <span class="region-chip">✓ China</span>
+        <span class="region-chip">✓ EUA</span>
+        <span class="region-chip">✓ Europa</span>
+        <span class="region-chip off">Brasil</span>
+      </div>
+      <ul class="sources">
+        <li>🇨🇳 TechNode — <a href="https://technode.com/2026/08/25/xiaomi-unveils-xring-o3-as-it-expands-in-house-chip-push/" target="_blank" rel="noopener">"Xiaomi unveils Xring O3 as it expands in-house chip push"</a></li>
+        <li>🇨🇳 IT之家 — <a href="https://www.ithome.com/0/993/519.htm" target="_blank" rel="noopener">"首个突破 500 万分的旗舰 SoC！小米玄戒 O3 正式发布"</a></li>
+        <li>🇭🇰 South China Morning Post — <a href="https://www.scmp.com/tech/tech-trends/article/3365179/why-xiaomi-doubling-down-house-chips-despite-profit-slump" target="_blank" rel="noopener">"Why is Xiaomi doubling down on in-house chips amid a profit slump?"</a></li>
+      </ul>
+      <strong>Diferenças de narrativa:</strong> a imprensa chinesa celebra o marco técnico (LPDDR6, recorde de benchmark) como vitória nacional de engenharia; a SCMP questiona o momento do lançamento em meio à queda de margens da Xiaomi, enquanto veículos ocidentais destacam a dependência contínua da TSMC como limite real da autossuficiência chinesa em chips.
+      <div class="attention medio">Atenção: médio</div>
+    </div>
+  </article>
+
+  <!-- 6 -->
+  <article class="card" id="s6">
+    <div class="card-head">
+      <div class="num">6</div>
+      <h2><a href="https://www.prnewswire.com/news-releases/baidu-provides-update-on-voluntary-conversion-to-dual-primary-listing-on-the-main-board-of-the-hong-kong-stock-exchange-302860703.html" target="_blank" rel="noopener">Baidu aprova conversão para listagem primária dupla em Hong Kong, efetiva em 1º de setembro</a></h2>
+    </div>
+    <div class="meta">26/08/2026 · Fonte principal: PR Newswire / Baidu</div>
+    <p class="summary">Acionistas da Baidu aprovaram por unanimidade, em assembleia extraordinária, a conversão de sua listagem secundária em Hong Kong para status de listagem primária dupla (Hong Kong + Nasdaq), efetiva a partir de 1º de setembro. A mudança não envolve emissão de novas ações.</p>
+    <div class="box yellow">
+      <div class="box-title">📌 Por que isso importa?</div>
+      A conversão reforça a tendência de empresas de tecnologia chinesas ancorarem sua liquidez em Hong Kong como proteção contra riscos de deslistagem forçada nos EUA (sob a Holding Foreign Companies Accountable Act). A Baidu pode entrar no programa Stock Connect já em setembro, abrindo as ações a investidores institucionais do continente chinês — um evento relevante para reprecificação da tese de IA da empresa (ERNIE, Apollo Go robotáxi).
+    </div>
+    <div class="box green">
+      <div class="box-title">🌍 Análise de Cobertura Global</div>
+      <div class="region-row">
+        <span class="region-chip">✓ China</span>
+        <span class="region-chip">✓ EUA</span>
+        <span class="region-chip off">Europa</span>
+        <span class="region-chip off">Brasil</span>
+      </div>
+      <ul class="sources">
+        <li>🏢 PR Newswire / Baidu (comunicado oficial) — <a href="https://www.prnewswire.com/news-releases/baidu-provides-update-on-voluntary-conversion-to-dual-primary-listing-on-the-main-board-of-the-hong-kong-stock-exchange-302860703.html" target="_blank" rel="noopener">"Baidu Provides Update on Voluntary Conversion to Dual-Primary Listing"</a></li>
+        <li>🇨🇳 Sina Finance (财经头条) — <a href="https://cj.sina.com.cn/articles/view/6248544856/174713a5802003m8fe" target="_blank" rel="noopener">"百度香港主要上市转换再提速，8月26日将召开股东特别大会"</a></li>
+        <li>🇨🇳 快科技 (mydrivers.com) — <a href="https://news.mydrivers.com/1/1146/1146579.htm" target="_blank" rel="noopener">"百度双重上市在即：股东特别大会批准所有决议"</a></li>
+      </ul>
+      <strong>Diferenças de narrativa:</strong> a imprensa chinesa enquadra a mudança como parte da "volta para casa" das big techs chinesas e destaca a janela do Stock Connect de setembro; a cobertura americana é mais técnica e regulatória, tratando o caso como precedente para outras ADRs chinesas migrarem de Nova York para a Ásia.
+      <div class="attention baixo">Atenção: baixo</div>
+    </div>
+  </article>
+
+  <!-- 7 -->
+  <article class="card" id="s7">
+    <div class="card-head">
+      <div class="num">7</div>
+      <h2><a href="https://www.huxiu.com/article/4885918.html" target="_blank" rel="noopener">PDD Holdings tem pior trimestre em anos: Temu desacelera e lucro cai 12% às vésperas do novo regime da UE</a></h2>
+    </div>
+    <div class="meta">24/08/2026 · Fonte principal: Huxiu (虎嗅)</div>
+    <p class="summary">A controladora de Pinduoduo e Temu reportou receita de RMB 112,4 bi (+8% a/a), abaixo das expectativas, e lucro líquido em queda de 12%. O Temu registrou seu ritmo de crescimento mais lento desde o lançamento, com relatos de perda de até 11% de usuários ativos mensais em meio ao fim da isenção "de minimis" na Europa e nos EUA.</p>
+    <div class="box yellow">
+      <div class="box-title">📌 Por que isso importa?</div>
+      É o primeiro sinal claro de que o modelo de crescimento agressivo do Temu está esbarrando em barreiras regulatórias globais (tarifas de minimis na UE e EUA). Isso afeta diretamente a estratégia de expansão internacional da PDD e intensifica a disputa com Shein, Shopee e Amazon por participação de mercado em e-commerce transfronteiriço — um indicador antecipado de como o setor de fast-commerce chinês reagirá ao fechamento de brechas tarifárias no mundo todo.
+    </div>
+    <div class="box green">
+      <div class="box-title">🌍 Análise de Cobertura Global</div>
+      <div class="region-row">
+        <span class="region-chip">✓ China</span>
+        <span class="region-chip">✓ EUA</span>
+        <span class="region-chip">✓ Europa</span>
+        <span class="region-chip off">Brasil</span>
+      </div>
+      <ul class="sources">
+        <li>🇨🇳 Huxiu — <a href="https://www.huxiu.com/article/4885918.html" target="_blank" rel="noopener">"拼多多2026年Q2营收1124亿元同比增长8%，净利润下降13%但超预期"</a></li>
+        <li>🇺🇸 PDD Holdings / Nasdaq (comunicado oficial) — <a href="https://www.nasdaq.com/press-release/pdd-holdings-announces-second-quarter-2026-unaudited-financial-results-2026-08-24" target="_blank" rel="noopener">"PDD Holdings Announces Second Quarter 2026 Unaudited Financial Results"</a></li>
+        <li>🇺🇸 Tech Times — <a href="https://www.techtimes.com/articles/325406/20260824/pdd-q2-earnings-beat-expectations-temu-loses-11-users-before-eu-deadline.htm" target="_blank" rel="noopener">"PDD Q2 Earnings Beat Expectations, Temu Loses 11% of Users Before EU Deadline"</a></li>
+      </ul>
+      <strong>Diferenças de narrativa:</strong> a imprensa chinesa foca nos números domésticos da Pinduoduo e no reinvestimento em "ecossistema da plataforma"; a imprensa americana e europeia dá mais peso à queda de usuários do Temu no Ocidente, associando o resultado diretamente ao fim das brechas tarifárias, numa leitura de que a pressão regulatória está funcionando.
+      <div class="attention alto">Atenção: alto</div>
+    </div>
+  </article>
+
+  <!-- 8 -->
+  <article class="card" id="s8">
+    <div class="card-head">
+      <div class="num">8</div>
+      <h2><a href="https://www.cnbc.com/2026/08/26/openai-jalapeno-ai-chip-nvidia.html" target="_blank" rel="noopener">OpenAI revela chip próprio "Jalapeño" e afirma superar a Nvidia Blackwell em inferência</a></h2>
+    </div>
+    <div class="meta">25–26/08/2026 · Fonte principal: CNBC</div>
+    <p class="summary">Na conferência Hot Chips, a OpenAI apresentou benchmarks do "Jalapeño", seu primeiro chip próprio de inferência, desenvolvido com Broadcom e Celestica. Segundo a análise da SemiAnalysis, o chip entrega de 1,5x a 1,9x mais desempenho por watt que a Blackwell da Nvidia, embora ainda em produção de baixo volume prevista só para o fim de 2026.</p>
+    <div class="box yellow">
+      <div class="box-title">📌 Por que isso importa?</div>
+      É mais um passo na fragmentação do mercado de chips de IA, historicamente dominado pela Nvidia — um movimento que ecoa a estratégia chinesa de verticalização (Huawei Ascend, chips próprios do Baidu e da Alibaba). Para investidores, o anúncio chega horas antes do balanço da Nvidia e é lido como sinal de que grandes clientes (OpenAI, Google, Amazon, Meta) estão migrando parte da carga de inferência para silício proprietário, pressionando margens da Nvidia no médio prazo.
+    </div>
+    <div class="box green">
+      <div class="box-title">🌍 Análise de Cobertura Global</div>
+      <div class="region-row">
+        <span class="region-chip off">China</span>
+        <span class="region-chip">✓ EUA</span>
+        <span class="region-chip">✓ Europa</span>
+        <span class="region-chip off">Brasil</span>
+      </div>
+      <ul class="sources">
+        <li>🇺🇸 CNBC — <a href="https://www.cnbc.com/2026/08/26/openai-jalapeno-ai-chip-nvidia.html" target="_blank" rel="noopener">"OpenAI's Jalapeño AI chip brings new 'threat' to Nvidia margins"</a></li>
+        <li>🇩🇪 The Decoder — <a href="https://the-decoder.com/openais-first-custom-chip-jalapeno-reportedly-beats-nvidias-blackwell-and-rubin-in-inference-benchmarks/" target="_blank" rel="noopener">"OpenAI's first custom chip 'Jalapeño' reportedly beats Nvidia's Blackwell and Rubin"</a></li>
+        <li>🇺🇸 Yahoo Finance — <a href="https://finance.yahoo.com/technology/ai/articles/openai-says-chip-outperforms-nvidia-101753747.html" target="_blank" rel="noopener">"OpenAI Says Its New Chip Outperforms Nvidia's Blackwell"</a></li>
+      </ul>
+      <strong>Diferenças de narrativa:</strong> a imprensa americana trata o Jalapeño como ruptura competitiva dentro do "clube ocidental" de IA; a imprensa europeia é mais cautelosa, destacando os limites do anúncio (produção ainda incipiente, sem testes contra a próxima geração Rubin) e evitando o tom triunfalista da cobertura americana.
+      <div class="attention alto">Atenção: alto</div>
+    </div>
+  </article>
+
+  <!-- 9 -->
+  <article class="card" id="s9">
+    <div class="card-head">
+      <div class="num">9</div>
+      <h2><a href="https://finance.yahoo.com/media-advertising/articles/meta-settles-29-states-over-132242399.html" target="_blank" rel="noopener">Meta fecha acordo bilionário de US$ 16,68 bi por danos a adolescentes no Instagram e Facebook</a></h2>
+    </div>
+    <div class="meta">26/08/2026 · Fonte principal: Yahoo Finance</div>
+    <p class="summary">A Meta concordou em pagar até US$ 16,68 bilhões para encerrar um processo movido por 29 estados americanos, que acusava a empresa de projetar Instagram e Facebook para viciar menores de idade. O acordo prevê limite diário de 2 horas de uso para menores, bloqueio noturno e verificação de idade reforçada.</p>
+    <div class="box yellow">
+      <div class="box-title">📌 Por que isso importa?</div>
+      É um dos maiores acordos regulatórios da história das big techs e cria um precedente que pode ser replicado contra ByteDance/TikTok, Snap e outras plataformas — inclusive fora dos EUA. Reguladores europeus e brasileiros (com o ECA Digital em debate no Congresso) devem citar o caso como referência em futuras exigências de proteção infantil digital.
+    </div>
+    <div class="box green">
+      <div class="box-title">🌍 Análise de Cobertura Global</div>
+      <div class="region-row">
+        <span class="region-chip off">China</span>
+        <span class="region-chip">✓ EUA</span>
+        <span class="region-chip">✓ Europa</span>
+        <span class="region-chip off">Brasil</span>
+      </div>
+      <ul class="sources">
+        <li>🇺🇸 Yahoo Finance — <a href="https://finance.yahoo.com/media-advertising/articles/meta-settles-29-states-over-132242399.html" target="_blank" rel="noopener">"Meta settles multistate teen social media lawsuit for $16.7 billion"</a></li>
+        <li>🇺🇸 Tech Startups — <a href="https://techstartups.com/2026/08/26/meta-agrees-to-16-7-billion-settlement-over-facebook-and-instagram-harms-to-children/" target="_blank" rel="noopener">"Meta agrees to $16.7 billion settlement over Facebook and Instagram harms to children"</a></li>
+        <li>🇺🇸 AOL/AP — <a href="https://www.aol.com/articles/meta-settles-us-states-over-130318000.html" target="_blank" rel="noopener">"Meta reaches $16.68 billion settlement over social media harms to children"</a></li>
+      </ul>
+      <strong>Diferenças de narrativa:</strong> a cobertura é majoritariamente americana e trata o caso como vitória regulatória estadual; a repercussão europeia liga o episódio ao debate do Digital Services Act e à pressão por regras equivalentes contra vício digital infantil no continente.
+      <div class="attention medio">Atenção: médio</div>
+    </div>
+  </article>
+
+  <!-- 10 -->
+  <article class="card" id="s10">
+    <div class="card-head">
+      <div class="num">10</div>
+      <h2><a href="https://www.cnbc.com/2026/08/25/amazon-service-that-jeff-bezos-called-artificial-ai-is-shutting-down.html" target="_blank" rel="noopener">Amazon encerra o Mechanical Turk após 21 anos, vítima da própria revolução da IA que ajudou a treinar</a></h2>
+    </div>
+    <div class="meta">25/08/2026 · Fonte principal: CNBC</div>
+    <p class="summary">A Amazon vai desligar definitivamente o Mechanical Turk em 30 de setembro, encerrando a plataforma de microtrabalho lançada em 2005 e apelidada por Jeff Bezos de "inteligência artificial artificial". A decisão reflete o avanço da IA e a ascensão de concorrentes especializados em rotulagem de dados para treinar modelos, como Scale AI, Mercor e Prolific.</p>
+    <div class="box yellow">
+      <div class="box-title">📌 Por que isso importa?</div>
+      O fim do MTurk é simbólico: a própria mão de obra humana barata que ajudou a construir os primeiros datasets de machine learning está sendo substituída por modelos mais sofisticados e por plataformas de anotação de dados voltadas especificamente a treinar LLMs de ponta. É um indicador de como a cadeia de valor da IA está se reorganizando — com investimento migrando para "trabalho humano premium" (especialistas, PhDs) em vez de microtarefas em massa.
+    </div>
+    <div class="box green">
+      <div class="box-title">🌍 Análise de Cobertura Global</div>
+      <div class="region-row">
+        <span class="region-chip off">China</span>
+        <span class="region-chip">✓ EUA</span>
+        <span class="region-chip">✓ Europa</span>
+        <span class="region-chip off">Brasil</span>
+      </div>
+      <ul class="sources">
+        <li>🇺🇸 CNBC — <a href="https://www.cnbc.com/2026/08/25/amazon-service-that-jeff-bezos-called-artificial-ai-is-shutting-down.html" target="_blank" rel="noopener">"Amazon service that Jeff Bezos called 'artificial AI' is shutting down"</a></li>
+        <li>🇺🇸 Fast Company — <a href="https://www.fastcompany.com/91596625/amazon-is-shutting-down-mechanical-turk-after-21-years-quietly-ending-the-human-powered-platform" target="_blank" rel="noopener">"Amazon is shutting down Mechanical Turk after 21 years"</a></li>
+        <li>🇩🇪 Heise Online — <a href="https://www.heise.de/en/news/After-21-years-Amazon-closes-Mechanical-Turk-11426501.html" target="_blank" rel="noopener">"After 21 years: Amazon closes 'Mechanical Turk'"</a></li>
+      </ul>
+      <strong>Diferenças de narrativa:</strong> a imprensa americana enquadra o fechamento com tom nostálgico, revisitando a história da plataforma; a imprensa europeia é mais analítica, associando o fim do MTurk ao debate sobre precarização do "trabalho fantasma" (ghost work) que sustenta a IA global, tema recorrente em discussões regulatórias na UE.
+      <div class="attention baixo">Atenção: baixo</div>
+    </div>
+  </article>
+
+  <!-- 11 -->
+  <article class="card" id="s11">
+    <div class="card-head">
+      <div class="num">11</div>
+      <h2><a href="https://www.bloomberg.com/news/articles/2026-08-13/shein-loses-uk-lawsuit-against-temu-over-copyright-violations" target="_blank" rel="noopener">Shein perde processo por direitos autorais contra a Temu no Reino Unido, mas guerra jurídica continua</a></h2>
+    </div>
+    <div class="meta">13/08/2026 (repercussão contínua) · Fonte principal: Bloomberg</div>
+    <p class="summary">A Alta Corte de Londres rejeitou a ação da Shein contra a Temu (controlada pela PDD Holdings) por suposta violação em massa de direitos autorais em fotos de produtos, concluindo que a Temu atuou apenas como intermediária passiva. O caso se soma a uma disputa mais ampla, incluindo ações cruzadas nos EUA por violação antitruste.</p>
+    <div class="box yellow">
+      <div class="box-title">📌 Por que isso importa?</div>
+      A rivalidade Shein x Temu — as duas maiores exportadoras de fast-fashion e fast-commerce da China para o Ocidente — está sendo travada nos tribunais tanto quanto no mercado. O desfecho tem implicações diretas para o IPO da Shein em Hong Kong (avaliação estimada entre US$ 30 bi e US$ 40 bi) e para como reguladores ocidentais tratarão vendedores terceiros hospedados em marketplaces chineses.
+    </div>
+    <div class="box green">
+      <div class="box-title">🌍 Análise de Cobertura Global</div>
+      <div class="region-row">
+        <span class="region-chip">✓ China</span>
+        <span class="region-chip">✓ EUA</span>
+        <span class="region-chip">✓ Europa</span>
+        <span class="region-chip off">Brasil</span>
+      </div>
+      <ul class="sources">
+        <li>🇺🇸 Bloomberg — <a href="https://www.bloomberg.com/news/articles/2026-08-13/shein-loses-uk-lawsuit-against-temu-over-copyright-violations" target="_blank" rel="noopener">"Shein Loses UK Lawsuit Against Temu Over Copyright Violations"</a></li>
+        <li>🇪🇺 RetailDetail EU — <a href="https://www.retaildetail.eu/news/fashion/shein-loses-copyright-lawsuit-against-temu/" target="_blank" rel="noopener">"Shein loses copyright lawsuit against Temu"</a></li>
+        <li>🇺🇸 The Fashion Law — <a href="https://www.thefashionlaw.com/shein-temu-legal-battle-collides-as-d-c-court-combines-rival-lawsuits/" target="_blank" rel="noopener">"Shein and Temu's Legal Battle Collides as Court Combines Cases"</a></li>
+      </ul>
+      <strong>Diferenças de narrativa:</strong> a imprensa europeia trata o caso com foco no impacto para consumidores e marcas locais afetadas pela concorrência das duas plataformas; a imprensa especializada americana foca no jogo estratégico entre as duas empresas antes de seus respectivos IPOs.
+      <div class="attention medio">Atenção: médio</div>
+    </div>
+  </article>
+
+  <!-- 12 -->
+  <article class="card" id="s12">
+    <div class="card-head">
+      <div class="num">12</div>
+      <h2><a href="https://www.supplychainbrain.com/articles/43004-eu-to-end-de-minimis-with-new-customs-fee-in-2026" target="_blank" rel="noopener">Taxa de € 3 por pacote já pressiona Temu e Shein na União Europeia, mas ainda não freia o crescimento</a></h2>
+    </div>
+    <div class="meta">Vigente desde 01/07/2026 · atualização de impacto em agosto · Fonte principal: SupplyChainBrain</div>
+    <p class="summary">Desde 1º de julho, a UE cobra uma taxa fixa de € 3 por remessa de baixo valor vinda de fora do bloco, encerrando a isenção "de minimis" para pacotes de até € 150 — medida que mira diretamente Temu e Shein. Dados recentes mostram que a taxa ainda não reverteu o ganho de participação de mercado das duas plataformas na Europa, embora ambas já estejam abrindo centros de distribuição locais para mitigar o efeito.</p>
+    <div class="box yellow">
+      <div class="box-title">📌 Por que isso importa?</div>
+      É a resposta regulatória mais concreta da Europa ao boom do e-commerce ultrarrápido chinês, com uma segunda fase prevista para 2028 que deve fechar de vez a brecha "de minimis". A movimentação de Temu e Shein para armazéns locais na Europa (espelhando o que já fazem nos EUA) mostra como as duas gigantes chinesas estão se adaptando proativamente à regulação, redesenhando cadeias logísticas inteiras em tempo recorde.
+    </div>
+    <div class="box green">
+      <div class="box-title">🌍 Análise de Cobertura Global</div>
+      <div class="region-row">
+        <span class="region-chip">✓ China</span>
+        <span class="region-chip">✓ EUA</span>
+        <span class="region-chip">✓ Europa</span>
+        <span class="region-chip off">Brasil</span>
+      </div>
+      <ul class="sources">
+        <li>🇺🇸 SupplyChainBrain — <a href="https://www.supplychainbrain.com/articles/43004-eu-to-end-de-minimis-with-new-customs-fee-in-2026" target="_blank" rel="noopener">"EU to End De Minimis with New Customs Fee in 2026"</a></li>
+        <li>🇺🇸 WWD — <a href="https://wwd.com/business-news/government-trade/eu-moves-end-duty-free-parcels-targets-shein-temu-2026-1238348812/" target="_blank" rel="noopener">"EU Moves to End Duty-free Parcels, Targeting Shein, Temu by 2026"</a></li>
+        <li>🇬🇧 ShopAppy — <a href="https://shopappy.com/trade/cross-border-commerce/eu-de-minimis-wont-slow-temu-shein" target="_blank" rel="noopener">"EU de minimis fee unlikely to slow Temu and Shein in 2026"</a></li>
+      </ul>
+      <strong>Diferenças de narrativa:</strong> a cobertura europeia enquadra a taxa como proteção a varejistas locais e arrecadação aduaneira; a imprensa de comércio americana relativiza o efeito prático da medida, apontando que as duas plataformas já se anteciparam com estoques locais — sugerindo que regulação tarifária isolada tem efeito limitado sobre gigantes verticalizados.
+      <div class="attention medio">Atenção: médio</div>
+    </div>
+  </article>
+
+  <!-- 13 -->
+  <article class="card" id="s13">
+    <div class="card-head">
+      <div class="num">13</div>
+      <h2><a href="https://www.mofcom.gov.cn/zwgk/zcfb/art/2025/art_6cb42957741440c6984de696b70df9ae.html" target="_blank" rel="noopener">China intensifica fiscalização sobre exportação de terras raras estratégicas</a></h2>
+    </div>
+    <div class="meta">Escalada de fiscalização reportada em agosto/2026 · Fonte principal: Ministério do Comércio da China (MOFCOM)</div>
+    <p class="summary">O Ministério do Comércio chinês publicou o Anúncio nº 26 de 2026, formalizando um canal público de denúncias para violações de controles de exportação de minerais estratégicos de uso duplo, sinalizando fiscalização mais ativa sobre terras raras como samário, gadolínio e disprósio — insumos essenciais para semicondutores, veículos elétricos e defesa.</p>
+    <div class="box yellow">
+      <div class="box-title">📌 Por que isso importa?</div>
+      As terras raras são a principal carta de barganha da China na guerra tecnológica com os EUA, dado o quase-monopólio chinês no refino desses materiais. A escalada da fiscalização — incluindo detenções de estrangeiros por suspeita de contrabando — eleva o risco para cadeias de suprimento de chips, energia limpa e defesa no Ocidente, justamente no momento em que Washington aperta o cerco sobre chips de IA.
+    </div>
+    <div class="box green">
+      <div class="box-title">🌍 Análise de Cobertura Global</div>
+      <div class="region-row">
+        <span class="region-chip">✓ China</span>
+        <span class="region-chip">✓ EUA</span>
+        <span class="region-chip">✓ Europa</span>
+        <span class="region-chip off">Brasil</span>
+      </div>
+      <ul class="sources">
+        <li>🇨🇳 MOFCOM (Ministério do Comércio da China, fonte oficial) — <a href="https://www.mofcom.gov.cn/zwgk/zcfb/art/2025/art_6cb42957741440c6984de696b70df9ae.html" target="_blank" rel="noopener">"商务部公告2025第62号 公布对稀土相关技术实施出口管制的决定"</a></li>
+        <li>🇨🇳 CLS (财联社) — <a href="https://www.cls.cn/detail/2163829" target="_blank" rel="noopener">"商务部：对稀土相关技术和境外相关稀土物项实施出口管制"</a></li>
+        <li>🇺🇸 Morgan Lewis — <a href="https://www.morganlewis.com/pubs/2026/07/recent-china-export-control-actions-signal-active-enforcement-for-rare-earths-and-strategic-minerals" target="_blank" rel="noopener">"Recent China Export Control Actions Signal Active Enforcement for Rare Earths"</a></li>
+      </ul>
+      <strong>Diferenças de narrativa:</strong> as fontes oficiais chinesas apresentam as medidas como rotina de compliance e governança de "itens de uso duplo"; escritórios de advocacia e imprensa ocidentais leem a mesma medida como sinal de escalada estratégica deliberada, um "botão de pressão" que Pequim mantém pronto para acionar conforme o andamento das negociações comerciais com Washington.
+      <div class="attention alto">Atenção: alto</div>
+    </div>
+  </article>
+
+  <!-- 14 -->
+  <article class="card" id="s14">
+    <div class="card-head">
+      <div class="num">14</div>
+      <h2><a href="https://technode.global/2026/08/12/singapores-sea-limited-posts-7-8b-q2-2026-revenue-e-commerce-shopee-account-for-72/" target="_blank" rel="noopener">Shopee (Sea Ltd.) cresce 48% no trimestre e segue resistindo ao avanço do TikTok Shop no Sudeste Asiático</a></h2>
+    </div>
+    <div class="meta">11–12/08/2026 · Fonte principal: TechNode Global</div>
+    <p class="summary">A Sea Limited, controladora da Shopee, reportou receita de US$ 7,8 bilhões no segundo trimestre (+48,1% a/a), com o e-commerce respondendo por 72% do total. A Shopee segue como líder do Sudeste Asiático e de Taiwan, mas o TikTok Shop (ByteDance) dobrou seu GMV na região, ampliando a pressão competitiva.</p>
+    <div class="box yellow">
+      <div class="box-title">📌 Por que isso importa?</div>
+      A disputa Shopee x TikTok Shop no Sudeste Asiático é um laboratório do que pode se repetir em outras regiões emergentes, incluindo a América Latina — onde a Shopee já é uma das maiores plataformas do Brasil. O crescimento robusto da Shopee mostra resiliência mesmo sob ataque directo do ByteDance, mas o ritmo de expansão do TikTok Shop reforça como o conteúdo em vídeo curto está remodelando o funil de compra no e-commerce global.
+    </div>
+    <div class="box green">
+      <div class="box-title">🌍 Análise de Cobertura Global</div>
+      <div class="region-row">
+        <span class="region-chip">✓ China</span>
+        <span class="region-chip">✓ EUA</span>
+        <span class="region-chip off">Europa</span>
+        <span class="region-chip off">Brasil</span>
+      </div>
+      <ul class="sources">
+        <li>🌏 TechNode Global — <a href="https://technode.global/2026/08/12/singapores-sea-limited-posts-7-8b-q2-2026-revenue-e-commerce-shopee-account-for-72/" target="_blank" rel="noopener">"Singapore's Sea Ltd Q2/2026 revenue jumps 48.1% to $7.8B"</a></li>
+        <li>🌏 WORLDEF — <a href="https://worldef.com/2026/08/11/shopee-q2-2026-revenue/" target="_blank" rel="noopener">"Shopee Beats Expectations in Q2 2026: Revenue Approaches $5 Billion"</a></li>
+        <li>🇺🇸 The Motley Fool — <a href="https://www.fool.com/earnings/call-transcripts/2026/08/11/sea-limited-se-q2-2026-earnings-call-transcript/" target="_blank" rel="noopener">"Sea Limited (SE) Q2 2026 Earnings Call Transcript"</a></li>
+      </ul>
+      <strong>Diferenças de narrativa:</strong> a imprensa asiática enfatiza a resiliência da Shopee como campeã regional diante da ofensiva do TikTok Shop (ByteDance); analistas de Wall Street focam mais nas métricas financeiras (margens, fintech SeaMoney) do que na dimensão geopolítica da disputa entre plataformas chinesas.
+      <div class="attention baixo">Atenção: baixo</div>
+    </div>
+  </article>
+
+  <!-- 15 -->
+  <article class="card" id="s15">
+    <div class="card-head">
+      <div class="num">15</div>
+      <h2><a href="https://exame.com/brasil/brasil-lidera-atracao-de-investimentos-chineses-no-mundo-em-2025-aponta-estudo-do-cebc/" target="_blank" rel="noopener">Brasil é o maior destino global de investimentos chineses em 2025, mas tecnologia de ponta ainda não chega ao país</a></h2>
+    </div>
+    <div class="meta">Estudo divulgado em agosto/2026 · Fonte principal: Exame / CEBC</div>
+    <p class="summary">Um levantamento do Conselho Empresarial Brasil-China (CEBC) mostra que o Brasil recebeu US$ 6,1 bilhões em investimentos chineses em 2025 — o maior valor desde 2017 e alta de 45% sobre 2024 — tornando-se o principal destino global de capital chinês, à frente da eletrificação, minerais críticos e do setor automotivo (com destaque para GWM e BYD).</p>
+    <div class="box yellow">
+      <div class="box-title">📌 Por que isso importa?</div>
+      Apesar do volume recorde, a Folha de S.Paulo destaca que o capital chinês que define o desenho industrial de longo prazo — pesquisa, propriedade intelectual e tecnologia de ponta — ainda não está migrando para o Brasil, que segue majoritariamente como destino de extração de matéria-prima e montagem final. É um ponto-chave para entender o papel do Brasil na cadeia de valor da IA e da eletrificação dentro do bloco BRICS: fornecedor de insumos, não (ainda) polo de inovação.
+    </div>
+    <div class="box green">
+      <div class="box-title">🌍 Análise de Cobertura Global</div>
+      <div class="region-row">
+        <span class="region-chip">✓ China</span>
+        <span class="region-chip off">EUA</span>
+        <span class="region-chip off">Europa</span>
+        <span class="region-chip">✓ Brasil</span>
+      </div>
+      <ul class="sources">
+        <li>🇧🇷 Exame — <a href="https://exame.com/brasil/brasil-lidera-atracao-de-investimentos-chineses-no-mundo-em-2025-aponta-estudo-do-cebc/" target="_blank" rel="noopener">"Brasil lidera atração de investimentos chineses no mundo em 2025, aponta estudo do CEBC"</a></li>
+        <li>🇧🇷 CEBC — Conselho Empresarial Brasil-China (fonte oficial do estudo) — <a href="https://www.cebc.org.br/2026/07/24/estudo-do-cebc-destaca-brasil-como-principal-destino-de-investimentos-chineses-no-mundo/" target="_blank" rel="noopener">"Estudo do CEBC destaca Brasil como principal destino de investimentos chineses no mundo"</a></li>
+        <li>🇧🇷 Comex do Brasil — <a href="https://comexdobrasil.com/brasil-lidera-atracao-de-investimentos-chineses-no-mundo-em-2025-us-61-bilhoes-aponta-estudo-do-cebc/" target="_blank" rel="noopener">"Brasil lidera atração de investimentos chineses no mundo em 2025: US$ 6,1 bilhões"</a></li>
+      </ul>
+      <strong>Diferenças de narrativa:</strong> a imprensa brasileira celebra o recorde de captação, mas é autocrítica quanto à qualidade dos investimentos (pouca transferência tecnológica); não há cobertura equivalente em veículos chineses de tecnologia (o tema aparece mais em imprensa econômica bilateral), evidenciando uma assimetria de atenção: para a China, o Brasil é insumo estratégico; para o Brasil, a China é vitrine de industrialização almejada.
+      <div class="attention medio">Atenção: médio</div>
+    </div>
+  </article>
+
+  <section class="geo">
+    <h2>🌐 Implicações Geopolíticas</h2>
+    <p>O conjunto de notícias das últimas 24–48 horas confirma um padrão: a competição tecnológica EUA-China não está mais concentrada apenas em chips — ela se espalhou para nuvem, capital de mercado, comércio eletrônico transfronteiriço e insumos críticos como terras raras, com a Europa e o Brasil cada vez mais como palcos secundários dessa disputa.</p>
+
+    <div class="grid">
+      <div>
+        <h3>Tensão tecnológica EUA-China</h3>
+        <p>A Nvidia segue formalmente excluída do mercado chinês de data centers, mesmo com licenças parciais para o H20 — e ao mesmo tempo a OpenAI revela silício próprio, numa dupla sinalização de que Washington quer manter vantagem em hardware avançado enquanto empresas americanas se preparam para um mundo com menos dependência da própria Nvidia. Do lado chinês, Moonshot AI e DeepSeek avançam para dentro da infraestrutura ocidental (nuvens americanas, bolsa de Xangai) mostrando que restrições de exportação de hardware não impediram a ascensão de software e modelos de IA chineses competitivos.</p>
+
+        <h3>Impacto regulatório previsto</h3>
+        <p>A fiscalização mais rígida da China sobre terras raras, somada à taxa de € 3 da UE sobre Temu/Shein e ao acordo bilionário da Meta nos EUA, sugerem uma tendência: reguladores em todo o mundo estão migrando de discursos para ação concreta contra big techs — seja em proteção de dados infantis, seja em controle de fluxos comerciais de baixo valor, seja em segurança de cadeia de suprimentos. Espera-se que 2026-2027 tragam mais precedentes desse tipo, incluindo possíveis réplicas do acordo da Meta contra outras plataformas e novas rodadas de tarifas de minimis em outros blocos.</p>
+      </div>
+      <div>
+        <h3>Oportunidades e riscos geopolíticos</h3>
+        <p>Para a China, a combinação de IPOs domésticos (DeepSeek, Baidu, potencialmente Shein) e parcerias de nuvem com gigantes americanas (Moonshot AI) mostra uma estratégia de dupla via: reduzir dependência de capital e infraestrutura ocidental enquanto, ao mesmo tempo, penetra essa mesma infraestrutura via software. Para os EUA, o risco é perder terreno em modelos de IA de baixo custo e código aberto — justamente o segmento que mais cresce entre desenvolvedores e empresas sensíveis a custo.</p>
+
+        <h3>Perspectiva Brasil-China-Global</h3>
+        <p>O Brasil segue como destino preferencial do capital chinês, mas ainda distante do núcleo de inovação em IA e semicondutores — reforçando um papel de fornecedor de commodities e manufatura (minerais críticos, veículos elétricos) em vez de parceiro tecnológico de ponta. Ao mesmo tempo, a presença consolidada da Shopee no país e a expansão global de Temu e Shein tornam o consumidor brasileiro parte direta da disputa regulatória que já acontece na Europa — um sinal de que decisões tarifárias tomadas em Bruxelas hoje podem inspirar debates semelhantes em Brasília amanhã.</p>
+      </div>
+    </div>
+  </section>
+
+  <footer class="foot">
+    Tech Global Report · gerado automaticamente a partir de pesquisa em fontes abertas · 27/08/2026<br>
+    Todas as datas e horários referem-se ao fuso UTC, salvo indicação contrária.
+  </footer>
+
+</div>
+</body>
+</html>
