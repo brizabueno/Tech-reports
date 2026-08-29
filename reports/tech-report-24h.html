@@ -1,0 +1,647 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tech Global Report - 24h</title>
+<style>
+  :root {
+    --bg: #f2f2f0;
+    --card-bg: #ffffff;
+    --text: #1a1a1a;
+    --text-muted: #5b5b5b;
+    --black: #0b0b0b;
+    --yellow-bg: #fff6d6;
+    --yellow-border: #f0c419;
+    --green-bg: #e6f6ec;
+    --green-border: #2e9e5b;
+    --link: #1a1a1a;
+    --chip-bg: #eee;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--text);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    font-size: 15px;
+    line-height: 1.6;
+    padding: 24px 16px 60px;
+  }
+  .container {
+    max-width: 900px;
+    margin: 0 auto;
+  }
+  header.hero {
+    background: var(--black);
+    color: #fff;
+    border-radius: 16px;
+    padding: 32px 28px;
+    margin-bottom: 30px;
+  }
+  header.hero h1 {
+    margin: 0 0 8px;
+    font-size: 28px;
+    letter-spacing: -0.5px;
+  }
+  header.hero .sub {
+    color: #cfcfcf;
+    font-size: 14px;
+    margin-bottom: 14px;
+  }
+  header.hero .regions {
+    font-size: 14px;
+    color: #e8e8e8;
+    border-top: 1px solid #2c2c2c;
+    padding-top: 14px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px 18px;
+  }
+  .intro-note {
+    background: var(--card-bg);
+    border-radius: 14px;
+    padding: 16px 20px;
+    font-size: 13.5px;
+    color: var(--text-muted);
+    margin-bottom: 30px;
+    border: 1px solid #e3e3e0;
+  }
+  section.stories { display: flex; flex-direction: column; gap: 26px; margin-bottom: 40px; }
+  .card {
+    background: var(--card-bg);
+    border-radius: 16px;
+    padding: 24px 26px;
+    border: 1px solid #e5e5e2;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.03);
+  }
+  .card-head { display: flex; gap: 14px; align-items: flex-start; margin-bottom: 6px; }
+  .num {
+    flex: 0 0 auto;
+    background: var(--black);
+    color: #fff;
+    width: 34px; height: 34px;
+    border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    font-weight: 700; font-size: 15px;
+  }
+  .card h2 { margin: 0; font-size: 18px; line-height: 1.35; }
+  .card h2 a { color: var(--link); text-decoration: none; border-bottom: 2px solid var(--yellow-border); }
+  .card h2 a:hover { color: #333; }
+  .meta {
+    font-size: 12.5px;
+    color: var(--text-muted);
+    margin: 6px 0 14px 48px;
+  }
+  .summary { margin: 0 0 16px 48px; font-size: 14.5px; }
+  .box { border-radius: 14px; padding: 16px 18px; margin: 0 0 14px 48px; font-size: 13.8px; }
+  .box:last-child { margin-bottom: 0; }
+  .box h3 { margin: 0 0 8px; font-size: 14px; }
+  .box-yellow { background: var(--yellow-bg); border: 1px solid var(--yellow-border); }
+  .box-green { background: var(--green-bg); border: 1px solid var(--green-border); }
+  .region-tags { display: flex; flex-wrap: wrap; gap: 6px; margin: 6px 0 10px; }
+  .tag {
+    background: #fff;
+    border: 1px solid #cfcfcf;
+    border-radius: 999px;
+    padding: 3px 10px;
+    font-size: 12px;
+  }
+  .tag.on { border-color: var(--green-border); background: #d7f2e2; font-weight: 600; }
+  .sources { margin: 8px 0 0; padding-left: 18px; }
+  .sources li { margin-bottom: 4px; }
+  .sources a { color: #1a5c33; word-break: break-word; }
+  .attention { margin-top: 10px; font-size: 13px; }
+  .attention .pill {
+    display: inline-block;
+    padding: 2px 10px;
+    border-radius: 999px;
+    font-weight: 600;
+    font-size: 12px;
+  }
+  .pill.alto { background: #ffdede; color: #8a1414; }
+  .pill.medio { background: #fff0c2; color: #7a5a00; }
+  .pill.baixo { background: #e2e2e2; color: #444; }
+  footer.geo {
+    background: var(--black);
+    color: #f1f1f1;
+    border-radius: 16px;
+    padding: 32px 28px;
+  }
+  footer.geo h2 { margin-top: 0; font-size: 22px; }
+  footer.geo h3 { font-size: 16px; color: #ffd76a; margin: 22px 0 8px; }
+  footer.geo p { color: #d8d8d8; font-size: 14px; }
+  footer.geo ul { color: #d8d8d8; font-size: 14px; padding-left: 20px; }
+  .report-footer {
+    text-align: center;
+    color: var(--text-muted);
+    font-size: 12px;
+    margin-top: 30px;
+  }
+  @media (max-width: 600px) {
+    .meta, .summary, .box { margin-left: 0; }
+    .card-head { flex-direction: column; }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <header class="hero">
+    <h1>Tech Global Report - 24h</h1>
+    <div class="sub">Publicado em 29 de agosto de 2026 · 09:00 (horário de Brasília) · Edição diária automatizada</div>
+    <div class="regions">
+      <span>🇨🇳 China</span>
+      <span>🇺🇸 EUA</span>
+      <span>🇪🇺 Europa</span>
+      <span>🇧🇷 Brasil</span>
+    </div>
+  </header>
+
+  <div class="intro-note">
+    As 15 histórias abaixo foram selecionadas entre os principais veículos chineses (SCMP, Sina, 36Kr, TechNode, Global Times), americanos (Bloomberg, Reuters, TechCrunch, CNBC), europeus (Financial Times, Euronews, TechPolicy.Press) e brasileiros (ANPD, Terra, Bloomberg Línea) com base em repercussão comercial e geopolítica das últimas 24–48 horas. Cada história traz no mínimo 3 fontes verificadas.
+  </div>
+
+  <section class="stories">
+
+    <!-- 1 -->
+    <div class="card">
+      <div class="card-head">
+        <div class="num">1</div>
+        <h2><a href="https://www.bloomberg.com/news/articles/2026-08-26/jack-ma-s-buying-does-little-to-ease-alibaba-share-sale-fallout" target="_blank" rel="noopener">Jack Ma e cúpula da Alibaba compram ações após colocação de HK$ 80 bi abalar o mercado</a></h2>
+      </div>
+      <div class="meta">26/08/2026 · Fonte primária: Bloomberg (citando South China Morning Post)</div>
+      <p class="summary">Jack Ma comprou US$ 76,5 milhões em ações da Alibaba, e os executivos Joe Tsai e Eddie Wu adquiriram outros US$ 25 milhões, numa tentativa de conter a queda provocada pela emissão de 710 milhões de novas ações (HK$ 80 bilhões) para financiar investimentos em IA. Mesmo com a compra, o papel segue quase 6% abaixo do preço anterior ao anúncio.</p>
+      <div class="box box-yellow">
+        <h3>📌 Por que isso importa?</h3>
+        <p>O mercado está testando os limites da estratégia de "gastar agora, lucrar depois" em IA na China. A diluição acionária e a reação nervosa dos investidores sinalizam ceticismo sobre o retorno dos bilhões investidos em chips e infraestrutura de computação — um recado direto para Tencent, Baidu e outras gigantes que correm na mesma direção.</p>
+      </div>
+      <div class="box box-green">
+        <h3>🌍 Análise de Cobertura Global</h3>
+        <div class="region-tags">
+          <span class="tag on">✓ China</span>
+          <span class="tag on">✓ EUA</span>
+          <span class="tag">Europa</span>
+          <span class="tag">Brasil</span>
+        </div>
+        <ul class="sources">
+          <li><a href="https://www.bloomberg.com/news/articles/2026-08-26/jack-ma-s-buying-does-little-to-ease-alibaba-share-sale-fallout" target="_blank" rel="noopener">Bloomberg – "Jack Ma's Buying Does Little to Ease Alibaba Share Sale Fallout"</a></li>
+          <li><a href="https://finance.sina.com.cn/wm/2026-08-24/doc-inipkzxr0011959.shtml" target="_blank" rel="noopener">Sina Finance (新浪财经) – "阿里巴巴融资800亿股价大跌"</a></li>
+          <li><a href="https://news.bjd.com.cn/2026/08/24/11930533.shtml" target="_blank" rel="noopener">Beijing Daily (京报网) – "阿里巴巴，股价大跌"</a></li>
+        </ul>
+        <p style="margin-top:10px;">A imprensa chinesa (Sina, Beijing Daily) tratou o episódio como termômetro de confiança doméstica no plano de IA da Alibaba, enquanto a Bloomberg enquadrou a compra de Ma como gesto simbólico que "não convenceu" o mercado internacional. Nenhuma cobertura relevante identificada em veículos europeus ou brasileiros até o momento.</p>
+        <div class="attention"><span class="pill alto">Atenção: alto</span></div>
+      </div>
+    </div>
+
+    <!-- 2 -->
+    <div class="card">
+      <div class="card-head">
+        <div class="num">2</div>
+        <h2><a href="https://technode.com/2026/08/28/tencent-open-sources-hy4-preview-with-770b-parameters-and-a-1m-token-context/" target="_blank" rel="noopener">Tencent abre o código do Hy4 Preview, modelo de 770 bi de parâmetros que desafia Z.AI e Moonshot</a></h2>
+      </div>
+      <div class="meta">28/08/2026 · Fonte primária: TechNode</div>
+      <p class="summary">A Tencent lançou o Hunyuan Hy4 Preview em código aberto, com 770 bilhões de parâmetros totais e janela de contexto acima de 1 milhão de tokens, voltado para codificação, análise de dados e pesquisa científica. Em avaliação interna com 163 especialistas, o modelo superou o GLM 5.3 (Z.AI) e o Kimi K3 (Moonshot).</p>
+      <div class="box box-yellow">
+        <h3>📌 Por que isso importa?</h3>
+        <p>A disputa por modelos abertos entre Tencent, Alibaba (Qwen), DeepSeek, Z.AI e Moonshot está redefinindo a cadeia de valor global de IA: modelos chineses gratuitos e competitivos pressionam preços e margens de OpenAI, Anthropic e Google, ao mesmo tempo em que ampliam a influência tecnológica chinesa em mercados emergentes, incluindo o Brasil.</p>
+      </div>
+      <div class="box box-green">
+        <h3>🌍 Análise de Cobertura Global</h3>
+        <div class="region-tags">
+          <span class="tag on">✓ China</span>
+          <span class="tag on">✓ EUA</span>
+          <span class="tag">Europa</span>
+          <span class="tag">Brasil</span>
+        </div>
+        <ul class="sources">
+          <li><a href="https://technode.com/2026/08/28/tencent-open-sources-hy4-preview-with-770b-parameters-and-a-1m-token-context/" target="_blank" rel="noopener">TechNode – "Tencent open-sources Hy4 preview with 770B parameters and a 1M-token context"</a></li>
+          <li><a href="https://www.tencent.com/tencent-releases-and-open-sources-tencent-hy4-preview/" target="_blank" rel="noopener">Tencent Newsroom – anúncio oficial do Hy4 Preview</a></li>
+          <li><a href="https://www.bloomberg.com/news/articles/2026-08-28/tencent-touts-new-ai-model-it-claims-outperforms-z-ai-moonshot" target="_blank" rel="noopener">Bloomberg – "Tencent Touts New AI Model It Claims Outperforms Z.AI, Moonshot"</a></li>
+        </ul>
+        <p style="margin-top:10px;">A cobertura chinesa (TechNode, comunicado oficial da Tencent) é técnica e detalhada, com benchmarks; a Bloomberg destaca o ângulo competitivo e o impacto nas ações da empresa, que já haviam recuado por causa do aumento do capex em IA.</p>
+        <div class="attention"><span class="pill medio">Atenção: médio</span></div>
+      </div>
+    </div>
+
+    <!-- 3 -->
+    <div class="card">
+      <div class="card-head">
+        <div class="num">3</div>
+        <h2><a href="https://finance.yahoo.com/markets/stocks/articles/why-baidu-bidu-down-14-151244965.html" target="_blank" rel="noopener">Ação da Baidu despenca até 14% após lucro cair 68% e disparada do capex em IA</a></h2>
+      </div>
+      <div class="meta">19/08/2026 · Fonte primária: Sina Hong Kong (新浪香港)</div>
+      <p class="summary">A Baidu reportou lucro líquido de 2,3 bilhões de yuans no segundo trimestre, queda de 68% ano a ano, com receita de publicidade online caindo 19%. As ações despencaram mais de 12% em Hong Kong e Nova York, atingindo mínima de quase um ano, enquanto o investimento pesado em IA ainda não compensa o declínio do negócio de buscas.</p>
+      <div class="box box-yellow">
+        <h3>📌 Por que isso importa?</h3>
+        <p>A Baidu é o termômetro mais claro do dilema chinês: transformar receita de publicidade legada em receita de nuvem/IA sem destruir a rentabilidade no curto prazo. O tombo reforça o ceticismo de investidores globais sobre o ritmo de retorno dos investimentos bilionários em IA — mesmo padrão visto em Alibaba e Tencent na mesma semana.</p>
+      </div>
+      <div class="box box-green">
+        <h3>🌍 Análise de Cobertura Global</h3>
+        <div class="region-tags">
+          <span class="tag on">✓ China</span>
+          <span class="tag on">✓ EUA</span>
+          <span class="tag">Europa</span>
+          <span class="tag">Brasil</span>
+        </div>
+        <ul class="sources">
+          <li><a href="https://portal.sina.com.hk/finance/sina/2026/08/19/1891287/" target="_blank" rel="noopener">Sina Hong Kong – "二季度淨利同比驟降68%！百度低開逾12%"</a></li>
+          <li><a href="https://udn.com/news/story/7333/9699894" target="_blank" rel="noopener">UDN (聯合新聞網, Taiwan) – "百度第2季財報獲利大減68%，股價大跌10%"</a></li>
+          <li><a href="https://finance.yahoo.com/markets/stocks/articles/why-baidu-bidu-down-14-151244965.html" target="_blank" rel="noopener">Yahoo Finance – "Why Baidu (BIDU) Is Down 14.2% After Weak Q2 Earnings"</a></li>
+        </ul>
+        <p style="margin-top:10px;">Veículos de língua chinesa (Sina HK, UDN) enfatizam o colapso da publicidade tradicional; a imprensa americana concentra-se no contraste entre o crescimento de 25% no negócio de IA/nuvem e o fluxo de caixa livre negativo.</p>
+        <div class="attention"><span class="pill medio">Atenção: médio</span></div>
+      </div>
+    </div>
+
+    <!-- 4 -->
+    <div class="card">
+      <div class="card-head">
+        <div class="num">4</div>
+        <h2><a href="https://36kr.com/p/3898240606537092" target="_blank" rel="noopener">DeepSeek eleva preços e mira IPO com avaliação de US$ 71 bilhões</a></h2>
+      </div>
+      <div class="meta">13–22/08/2026 · Fonte primária: 36Kr</div>
+      <p class="summary">A DeepSeek elevou significativamente os preços de seus modelos V4 pela primeira vez desde o lançamento, mesmo assim mantendo tarifas abaixo das rivais, enquanto prepara uma nova rodada de captação de cerca de US$ 8 bilhões a uma avaliação pré-money de aproximadamente US$ 71 bilhões, de olho em um IPO possivelmente já em 2026 ou início de 2027.</p>
+      <div class="box box-yellow">
+        <h3>📌 Por que isso importa?</h3>
+        <p>O reposicionamento de preços da DeepSeek marca o fim da fase de "guerra de preços a qualquer custo" e sinaliza maturidade comercial antes de uma eventual oferta pública — um evento que testará o apetite global por ações de IA chinesa em meio às tensões regulatórias EUA-China sobre acesso a chips e dados.</p>
+      </div>
+      <div class="box box-green">
+        <h3>🌍 Análise de Cobertura Global</h3>
+        <div class="region-tags">
+          <span class="tag on">✓ China</span>
+          <span class="tag on">✓ EUA</span>
+          <span class="tag">Europa</span>
+          <span class="tag">Brasil</span>
+        </div>
+        <ul class="sources">
+          <li><a href="https://36kr.com/p/3898240606537092" target="_blank" rel="noopener">36Kr – "DeepSeek最快年内启动IPO，背后是'算力饥渴'？"</a></li>
+          <li><a href="https://www.bloomberg.com/news/articles/2026-08-13/deepseek-increases-prices-for-ai-services-by-multiple-times" target="_blank" rel="noopener">Bloomberg – "DeepSeek Raises AI Service Prices, Bringing Rates Closer to Rivals"</a></li>
+          <li><a href="https://www.axios.com/2026/08/01/deepseek-model-cheap-ai-price-war" target="_blank" rel="noopener">Axios – "DeepSeek's new bargain model accelerates AI's race to zero"</a></li>
+        </ul>
+        <p style="margin-top:10px;">A imprensa chinesa (36Kr) foca na corrida por poder computacional e na estrutura de financiamento pré-IPO; a imprensa americana (Bloomberg, Axios) enquadra o movimento como fim da guerra de preços que baixou o custo global da IA.</p>
+        <div class="attention"><span class="pill alto">Atenção: alto</span></div>
+      </div>
+    </div>
+
+    <!-- 5 -->
+    <div class="card">
+      <div class="card-head">
+        <div class="num">5</div>
+        <h2><a href="https://www.scmp.com/tech/article/3364288/cxmt-tops-4-trillion-yuan-ai-fuelled-memory-rally-lifts-chinas-chip-champion" target="_blank" rel="noopener">CXMT ultrapassa a Tencent e vira a empresa mais valiosa da China</a></h2>
+      </div>
+      <div class="meta">13/08/2026 · Fonte primária: South China Morning Post</div>
+      <p class="summary">A fabricante de chips de memória CXMT, que estreou na bolsa de Xangai há apenas 17 dias, ultrapassou a Tencent como a empresa chinesa mais valiosa, atingindo US$ 524 bilhões em valor de mercado, puxada pela disparada global da demanda por memória DRAM ligada à IA — mesmo com a Tencent sendo cliente da própria CXMT em um contrato de US$ 3 bilhões.</p>
+      <div class="box box-yellow">
+        <h3>📌 Por que isso importa?</h3>
+        <p>A ascensão da CXMT simboliza a mudança do centro de gravidade da bolsa chinesa: de plataformas de internet (Tencent, Alibaba) para hardware estratégico de semicondutores — setor no centro da disputa tecnológica EUA-China e alvo direto de controles de exportação americanos.</p>
+      </div>
+      <div class="box box-green">
+        <h3>🌍 Análise de Cobertura Global</h3>
+        <div class="region-tags">
+          <span class="tag on">✓ China</span>
+          <span class="tag on">✓ EUA</span>
+          <span class="tag">Europa</span>
+          <span class="tag">Brasil</span>
+        </div>
+        <ul class="sources">
+          <li><a href="https://www.scmp.com/tech/article/3364288/cxmt-tops-4-trillion-yuan-ai-fuelled-memory-rally-lifts-chinas-chip-champion" target="_blank" rel="noopener">SCMP – "CXMT value tops 4 trillion yuan as AI-fuelled memory rally lifts China's chip champion"</a></li>
+          <li><a href="https://www.bloomberg.com/news/articles/2026-08-13/cxmt-overtakes-tencent-to-become-most-valuable-chinese-company" target="_blank" rel="noopener">Bloomberg – "CXMT Overtakes Tencent to Become Most Valuable Chinese Company"</a></li>
+          <li><a href="https://asia.nikkei.com/business/markets/equities/chipmaker-cxmt-becomes-china-s-most-valuable-company-as-tencent-slips" target="_blank" rel="noopener">Nikkei Asia – "Chipmaker CXMT becomes China's most valuable company as Tencent slips"</a></li>
+        </ul>
+        <p style="margin-top:10px;">SCMP detalha o contexto da política industrial chinesa de autossuficiência em chips; Bloomberg e Nikkei Asia enfatizam o aspecto de mercado financeiro e o risco de bolha especulativa em torno de ações de memória.</p>
+        <div class="attention"><span class="pill medio">Atenção: médio</span></div>
+      </div>
+    </div>
+
+    <!-- 6 -->
+    <div class="card">
+      <div class="card-head">
+        <div class="num">6</div>
+        <h2><a href="https://www.scmp.com/tech/article/3365558/minimax-expands-alibaba-cloud-pact-compute-needs-surge-training-and-inference" target="_blank" rel="noopener">Alibaba anuncia RMB 380 bi em IA e nuvem; MiniMax eleva contrato de nuvem em 220%, para US$ 1,2 bi</a></h2>
+      </div>
+      <div class="meta">27–28/08/2026 · Fonte primária: South China Morning Post</div>
+      <p class="summary">A Alibaba confirmou plano de investir pelo menos RMB 380 bilhões (~US$ 53–56 bi) em nuvem e infraestrutura de IA nos próximos três anos — mais do que gastou na última década inteira. No mesmo período, a startup MiniMax ampliou em 220% o teto de compras de computação na nuvem da Alibaba, para US$ 1,2 bilhão até 2028, refletindo a explosão de demanda por poder computacional para treinar modelos.</p>
+      <div class="box box-yellow">
+        <h3>📌 Por que isso importa?</h3>
+        <p>O tamanho do investimento reforça a aposta da Alibaba em se tornar a "AWS chinesa" e alimenta diretamente a demanda por chips Nvidia H200 e alternativas domésticas. Startups como MiniMax dependem cada vez mais dessa infraestrutura, criando um ecossistema fechado que compete diretamente com AWS, Google Cloud e Microsoft Azure em mercados emergentes.</p>
+      </div>
+      <div class="box box-green">
+        <h3>🌍 Análise de Cobertura Global</h3>
+        <div class="region-tags">
+          <span class="tag on">✓ China</span>
+          <span class="tag on">✓ EUA</span>
+          <span class="tag">Europa</span>
+          <span class="tag">Brasil</span>
+        </div>
+        <ul class="sources">
+          <li><a href="https://www.scmp.com/tech/article/3365558/minimax-expands-alibaba-cloud-pact-compute-needs-surge-training-and-inference" target="_blank" rel="noopener">SCMP – "MiniMax boosts Alibaba cloud budget 220% to fuel next-gen AI models"</a></li>
+          <li><a href="https://www.investing.com/news/sec-filings/alibaba-announces-56-billion-ai-cloud-investment-93CH-3885794" target="_blank" rel="noopener">Investing.com – "Alibaba announces $56 billion AI, cloud investment"</a></li>
+          <li><a href="https://www.alibabacloud.com/blog/alibaba-to-invest-rmb380-billion-in-ai-and-cloud-infrastructure-over-next-three-years_602007" target="_blank" rel="noopener">Alibaba Cloud Community – comunicado oficial do investimento de RMB 380 bi</a></li>
+        </ul>
+        <p style="margin-top:10px;">A fonte chinesa oficial (Alibaba Cloud, SCMP) trata o anúncio como consolidação de liderança doméstica; a imprensa financeira internacional (Investing.com) foca no impacto para investidores e no risco de sobre-investimento já sentido nas ações da empresa.</p>
+        <div class="attention"><span class="pill medio">Atenção: médio</span></div>
+      </div>
+    </div>
+
+    <!-- 7 -->
+    <div class="card">
+      <div class="card-head">
+        <div class="num">7</div>
+        <h2><a href="https://www.scmp.com/tech/big-tech/article/3356310/leaks-and-backdoors-china-warns-security-risks-relay-services-foreign-ai-models" target="_blank" rel="noopener">China intensifica repressão a plataformas que dão acesso "por baixo dos panos" a ChatGPT e Claude</a></h2>
+      </div>
+      <div class="meta">Agosto/2026 · Fonte primária: South China Morning Post</div>
+      <p class="summary">Autoridades de segurança nacional chinesas alertaram sobre riscos de vazamento de dados em "serviços de retransmissão" (relay platforms) que revendem acesso a modelos estrangeiros como ChatGPT e Claude dentro da China. A polícia de Hangzhou já ordenou o fechamento de operadores não autorizados, e provedores de nuvem como a Mianhua Cloud passaram a banir explicitamente esse tipo de tráfego.</p>
+      <div class="box box-yellow">
+        <h3>📌 Por que isso importa?</h3>
+        <p>A medida reforça o isolamento digital chinês em relação à IA ocidental, favorecendo diretamente DeepSeek, Alibaba (Qwen), Tencent e ByteDance (Doubao) no mercado doméstico. Para empresas americanas, significa perda de um canal informal de distribuição na China; para Pequim, é peça de um projeto maior de soberania tecnológica e segurança de dados.</p>
+      </div>
+      <div class="box box-green">
+        <h3>🌍 Análise de Cobertura Global</h3>
+        <div class="region-tags">
+          <span class="tag on">✓ China</span>
+          <span class="tag on">✓ EUA</span>
+          <span class="tag">Europa</span>
+          <span class="tag">Brasil</span>
+        </div>
+        <ul class="sources">
+          <li><a href="https://www.scmp.com/tech/big-tech/article/3356310/leaks-and-backdoors-china-warns-security-risks-relay-services-foreign-ai-models" target="_blank" rel="noopener">SCMP – "Leaks and backdoors: China warns of security risks in relay services for foreign AI models"</a></li>
+          <li><a href="https://world.storm.mg/articles/1154772" target="_blank" rel="noopener">The Storm Media (風傳媒, Taiwan) – "China Raids Gray-Market AI Relays, Detains Operator"</a></li>
+          <li><a href="https://www.theepochtimes.com/china/china-expands-ai-restrictions-by-targeting-domestic-providers-of-chatgpt-claude-access-6071551" target="_blank" rel="noopener">The Epoch Times – "China Expands AI Restrictions by Targeting Domestic Providers of ChatGPT, Claude Access"</a></li>
+        </ul>
+        <p style="margin-top:10px;">SCMP e Storm Media descrevem o episódio como questão de segurança de dados e cibersegurança; a imprensa ocidental crítica ao regime (Epoch Times) enquadra como expansão do controle de informação e censura tecnológica.</p>
+        <div class="attention"><span class="pill medio">Atenção: médio</span></div>
+      </div>
+    </div>
+
+    <!-- 8 -->
+    <div class="card">
+      <div class="card-head">
+        <div class="num">8</div>
+        <h2><a href="https://www.cnbc.com/2026/08/19/china-ai-nvidia-chips-us-export-controls.html" target="_blank" rel="noopener">Nvidia recebe aval de Pequim para vender H200 à China, mas impasse regulatório persiste</a></h2>
+      </div>
+      <div class="meta">19/08/2026 · Fonte primária: CNBC</div>
+      <p class="summary">Após meses de idas e vindas — aprovação de Washington, bloqueio da alfândega chinesa e retomada da produção — a Nvidia conseguiu autorização de Pequim para vender chips H200 a clientes chineses selecionados, incluindo ByteDance e Tencent, que já receberam cerca de 10 mil unidades cada. Ainda assim, Washington tenta fechar uma "brecha" que permite acesso indireto a chips mais avançados via data centers no Sudeste Asiático.</p>
+      <div class="box box-yellow">
+        <h3>📌 Por que isso importa?</h3>
+        <p>O vaivém regulatório sobre o H200 mostra como o mercado chinês de US$ 50 bilhões/ano (estimativa do CEO da Nvidia, Jensen Huang) segue refém de decisões políticas em Washington e Pequim simultaneamente. Empresas de IA chinesas — DeepSeek, Alibaba, ByteDance — dependem desse acesso para treinar modelos de próxima geração.</p>
+      </div>
+      <div class="box box-green">
+        <h3>🌍 Análise de Cobertura Global</h3>
+        <div class="region-tags">
+          <span class="tag on">✓ China</span>
+          <span class="tag on">✓ EUA</span>
+          <span class="tag">Europa</span>
+          <span class="tag">Brasil</span>
+        </div>
+        <ul class="sources">
+          <li><a href="https://www.cnbc.com/2026/08/19/china-ai-nvidia-chips-us-export-controls.html" target="_blank" rel="noopener">CNBC – "The U.S. banned Nvidia's best chips from going to China. Now it's trying to close a crucial loophole"</a></li>
+          <li><a href="https://www.scmp.com/tech/big-tech/article/3365383/nvidia-ships-first-h200s-china-forecasts-no-data-centre-computing-revenue" target="_blank" rel="noopener">SCMP – "Nvidia ships first H200 chips to China, but forecasts no data-centre computing revenue"</a></li>
+          <li><a href="https://www.bloomberg.com/news/articles/2026-08-07/us-reviews-china-s-offshore-access-to-nvidia-chips-after-ai-breakthroughs" target="_blank" rel="noopener">Bloomberg – "US Reviews China's Offshore Access to Nvidia Chips After AI Breakthroughs"</a></li>
+        </ul>
+        <p style="margin-top:10px;">CNBC e Bloomberg concentram-se na batalha regulatória em Washington; a SCMP relata o lado chinês, incluindo a cautela de Pequim em promover alternativas domésticas antes de liberar totalmente as compras de chips americanos.</p>
+        <div class="attention"><span class="pill alto">Atenção: alto</span></div>
+      </div>
+    </div>
+
+    <!-- 9 -->
+    <div class="card">
+      <div class="card-head">
+        <div class="num">9</div>
+        <h2><a href="https://www.gov.br/anpd/pt-br/assuntos/noticias/anpd-multa-tiktok-em-r-153-7-milhoes-por-falhas-na-protecao-de-dados-de-criancas-e-adolescentes" target="_blank" rel="noopener">Brasil multa ByteDance/TikTok em R$ 153,7 milhões por uso irregular de dados de menores</a></h2>
+      </div>
+      <div class="meta">25/08/2026 · Fonte primária: ANPD (Autoridade Nacional de Proteção de Dados)</div>
+      <p class="summary">A ANPD aplicou multa de R$ 153,7 milhões (~US$ 30 milhões) à ByteDance Brasil, responsável pelo TikTok no país, por coletar e usar dados de crianças e adolescentes sem base legal adequada e por falhar em impedir o cadastro de menores de 13 anos. A empresa tem 60 dias úteis para eliminar dados irregulares e apresentar plano de conformidade.</p>
+      <div class="box box-yellow">
+        <h3>📌 Por que isso importa?</h3>
+        <p>É uma das maiores sanções já aplicadas pela ANPD e mostra o Brasil alinhando-se a um movimento regulatório global — que inclui a União Europeia e agora também os EUA (via acordo bilionário da Meta) — de responsabilização de plataformas chinesas e americanas pela proteção de menores. Para a ByteDance, soma-se a outras frentes regulatórias no mundo todo, aumentando o custo de operar globalmente.</p>
+      </div>
+      <div class="box box-green">
+        <h3>🌍 Análise de Cobertura Global</h3>
+        <div class="region-tags">
+          <span class="tag">China</span>
+          <span class="tag on">✓ EUA</span>
+          <span class="tag">Europa</span>
+          <span class="tag on">✓ Brasil</span>
+        </div>
+        <ul class="sources">
+          <li><a href="https://www.gov.br/anpd/pt-br/assuntos/noticias/anpd-multa-tiktok-em-r-153-7-milhoes-por-falhas-na-protecao-de-dados-de-criancas-e-adolescentes" target="_blank" rel="noopener">ANPD (Gov.br) – comunicado oficial da multa</a></li>
+          <li><a href="https://www.bloomberg.com/news/articles/2026-08-25/brazil-slaps-tiktok-owner-with-30-million-fine-over-data-use" target="_blank" rel="noopener">Bloomberg – "ByteDance Hit With $30 Million Brazil Fine for TikTok Data Violations"</a></li>
+          <li><a href="https://www.terra.com.br/noticias/tiktok-e-multado-em-r-1537-mi-por-uso-irregular-de-dados-de-menores-no-brasil,78a867a8574f7a2fbafac71677e6a4285j68926y.html" target="_blank" rel="noopener">Terra – "TikTok é multado em R$ 153,7 mi por uso irregular de dados de menores no Brasil"</a></li>
+        </ul>
+        <p style="margin-top:10px;">A imprensa brasileira (ANPD, Terra) detalha os fundamentos jurídicos com base na LGPD; a Bloomberg internacionaliza a notícia, conectando-a à pressão regulatória global sobre a ByteDance. Não foram localizadas menções expressivas em veículos chineses até o fechamento desta edição — sinal de baixa prioridade doméstica para o caso.</p>
+        <div class="attention"><span class="pill medio">Atenção: médio</span></div>
+      </div>
+    </div>
+
+    <!-- 10 -->
+    <div class="card">
+      <div class="card-head">
+        <div class="num">10</div>
+        <h2><a href="https://www.techpolicy.press/eu-tests-limits-of-platform-risk-assessments-with-200-million-temu-fine/" target="_blank" rel="noopener">Temu enfrenta prazo final da UE sob a Lei de Serviços Digitais, sob risco de nova multa</a></h2>
+      </div>
+      <div class="meta">28/08/2026 · Fonte primária: European Commission / TechPolicy.Press</div>
+      <p class="summary">A Temu tinha até 28 de agosto para apresentar à Comissão Europeia um plano de ação corretivo sob o Artigo 75 da Digital Services Act (DSA), após ser multada em €200 milhões em maio por falhar em avaliar riscos de produtos ilegais na plataforma. O não cumprimento pode resultar em penalidades periódicas adicionais.</p>
+      <div class="box box-yellow">
+        <h3>📌 Por que isso importa?</h3>
+        <p>O caso é um teste de força regulatória da UE contra plataformas de e-commerce chinesas de baixo custo (Temu, Shein, AliExpress), que já perderam parcela de usuários na região em meio à incerteza regulatória. O desfecho deve influenciar como Bruxelas trata futuras entrantes chinesas — e como o Brasil, que discute tributação de compras internacionais, pode se inspirar no modelo europeu.</p>
+      </div>
+      <div class="box box-green">
+        <h3>🌍 Análise de Cobertura Global</h3>
+        <div class="region-tags">
+          <span class="tag">China</span>
+          <span class="tag on">✓ EUA</span>
+          <span class="tag on">✓ Europa</span>
+          <span class="tag">Brasil</span>
+        </div>
+        <ul class="sources">
+          <li><a href="https://ec.europa.eu/commission/presscorner/detail/en/ip_26_1178" target="_blank" rel="noopener">Comissão Europeia – "Commission fines Temu €200 million for breaching the Digital Services Act"</a></li>
+          <li><a href="https://www.techpolicy.press/eu-tests-limits-of-platform-risk-assessments-with-200-million-temu-fine/" target="_blank" rel="noopener">TechPolicy.Press – "EU Tests Limits of Platform 'Risk Assessments' with €200 Million Temu Fine"</a></li>
+          <li><a href="https://www.techtimes.com/articles/325406/20260824/pdd-q2-earnings-beat-expectations-temu-loses-11-users-before-eu-deadline.htm" target="_blank" rel="noopener">Tech Times – "PDD Q2 Earnings Beat Expectations, Temu Loses 11% of Users Before EU Deadline"</a></li>
+        </ul>
+        <p style="margin-top:10px;">A fonte oficial europeia detalha o rito processual da DSA; a imprensa de tecnologia americana conecta o caso diretamente à perda de usuários e ao desempenho financeiro da controladora PDD Holdings.</p>
+        <div class="attention"><span class="pill alto">Atenção: alto</span></div>
+      </div>
+    </div>
+
+    <!-- 11 -->
+    <div class="card">
+      <div class="card-head">
+        <div class="num">11</div>
+        <h2><a href="https://www.bnnbloomberg.ca/business/company-news/2026/08/24/temu-owner-pdd-books-8-rise-in-quarterly-revenue-misses-estimates/" target="_blank" rel="noopener">PDD Holdings: lucro do Pinduoduo/Temu cai 12% com concorrência acirrada na China</a></h2>
+      </div>
+      <div class="meta">24/08/2026 · Fonte primária: BNN Bloomberg</div>
+      <p class="summary">A PDD Holdings, dona do Pinduoduo na China e do Temu no exterior, reportou receita de 112,36 bilhões de yuans no segundo trimestre — alta de 8%, mas abaixo da estimativa de mercado — e lucro líquido em queda de 12%, para 27,2 bilhões de yuans, pressionada pela guerra de preços doméstica com Alibaba e Meituan e por custos regulatórios crescentes no exterior.</p>
+      <div class="box box-yellow">
+        <h3>📌 Por que isso importa?</h3>
+        <p>O resultado confirma que a expansão agressiva do Temu no exterior tem custo real: multas na Europa, tarifas nos EUA e agora desaceleração doméstica se somam. O programa de subsídio de ¥100 bilhões a vendedores mostra a PDD dobrando a aposta em qualidade e confiança para reter market share, mesmo com margens mais apertadas.</p>
+      </div>
+      <div class="box box-green">
+        <h3>🌍 Análise de Cobertura Global</h3>
+        <div class="region-tags">
+          <span class="tag on">✓ China</span>
+          <span class="tag on">✓ EUA</span>
+          <span class="tag">Europa</span>
+          <span class="tag">Brasil</span>
+        </div>
+        <ul class="sources">
+          <li><a href="https://www.bnnbloomberg.ca/business/company-news/2026/08/24/temu-owner-pdd-books-8-rise-in-quarterly-revenue-misses-estimates/" target="_blank" rel="noopener">BNN Bloomberg – "Temu-owner PDD revenue misses estimates, profit falls on China rivalry"</a></li>
+          <li><a href="https://us.fashionnetwork.com/news/Temu-owner-pdd-revenue-misses-estimates-profit-falls-on-intense-china-competition,1860437.html" target="_blank" rel="noopener">FashionNetwork – "Temu-owner PDD revenue misses estimates, profit falls on 'intense' China competition"</a></li>
+          <li><a href="https://www.techtimes.com/articles/325406/20260824/pdd-q2-earnings-beat-expectations-temu-loses-11-users-before-eu-deadline.htm" target="_blank" rel="noopener">Tech Times – "PDD Q2 Earnings Beat Expectations, Temu Loses 11% of Users Before EU Deadline"</a></li>
+        </ul>
+        <p style="margin-top:10px;">A cobertura converge nos números financeiros, mas a Tech Times conecta diretamente a queda de usuários do Temu ao prazo regulatório europeu, enquanto BNN Bloomberg e FashionNetwork enfatizam a concorrência doméstica chinesa como causa principal.</p>
+        <div class="attention"><span class="pill medio">Atenção: médio</span></div>
+      </div>
+    </div>
+
+    <!-- 12 -->
+    <div class="card">
+      <div class="card-head">
+        <div class="num">12</div>
+        <h2><a href="https://www.bloomberg.com/news/articles/2026-08-26/meta-states-agree-to-settle-teen-social-media-harm-case" target="_blank" rel="noopener">Meta fecha acordo de US$ 18 bi com estados dos EUA por danos a adolescentes; repercussão chega à Europa e ao Brasil</a></h2>
+      </div>
+      <div class="meta">26/08/2026 · Fonte primária: Bloomberg</div>
+      <p class="summary">A Meta concordou em pagar até US$ 18 bilhões ao longo de 10 anos para encerrar processos movidos por procuradores-gerais de 29 estados americanos sobre danos de saúde mental a adolescentes. A empresa terá de limitar o tempo de uso diário de menores a duas horas e bloquear os aplicativos durante a madrugada.</p>
+      <div class="box box-yellow">
+        <h3>📌 Por que isso importa?</h3>
+        <p>O acordo cria um precedente que já é usado por reguladores na Europa, no Reino Unido, na Austrália e no Brasil para fortalecer processos próprios contra Meta, TikTok e Kwai — inclusive uma ação de R$ 3 bilhões movida no Brasil pelo Instituto Brasileiro de Defesa do Consumidor. Estados americanos já cobram publicamente que TikTok e YouTube adotem medidas semelhantes.</p>
+      </div>
+      <div class="box box-green">
+        <h3>🌍 Análise de Cobertura Global</h3>
+        <div class="region-tags">
+          <span class="tag">China</span>
+          <span class="tag on">✓ EUA</span>
+          <span class="tag on">✓ Europa</span>
+          <span class="tag on">✓ Brasil</span>
+        </div>
+        <ul class="sources">
+          <li><a href="https://www.bloomberg.com/news/articles/2026-08-26/meta-states-agree-to-settle-teen-social-media-harm-case" target="_blank" rel="noopener">Bloomberg – "Meta Says It'll Pay Up to $18 Billion in Social Media Claims"</a></li>
+          <li><a href="https://www.aljazeera.com/features/2026/8/27/metas-18bn-settlement-how-social-platforms-will-change-for-child-users" target="_blank" rel="noopener">Al Jazeera – "Meta's $18bn settlement: How social platforms will change for child users"</a></li>
+          <li><a href="https://www.techpolicy.press/what-metas-us-settlement-on-child-safety-means-for-europe/" target="_blank" rel="noopener">TechPolicy.Press – "What Meta's US Settlement on Child Safety Means for Europe"</a></li>
+        </ul>
+        <p style="margin-top:10px;">A imprensa americana concentra-se no valor recorde e nas mudanças de produto; a europeia analisa como o caso reforça argumentos jurídicos sob o DSA e a legislação de proteção de menores; a menção ao Brasil aparece via referência à ação movida pelo Instituto Brasileiro de Defesa do Consumidor e ao Estatuto Digital da Criança e do Adolescente.</p>
+        <div class="attention"><span class="pill alto">Atenção: alto</span></div>
+      </div>
+    </div>
+
+    <!-- 13 -->
+    <div class="card">
+      <div class="card-head">
+        <div class="num">13</div>
+        <h2><a href="https://techcrunch.com/2026/08/27/openai-anthropic-google-and-100-other-companies-call-for-action-to-defend-against-rogue-ai/" target="_blank" rel="noopener">Mais de 100 empresas de tecnologia — incluindo OpenAI, Anthropic, Google e Microsoft — pedem ação global contra ciberataques de IA</a></h2>
+      </div>
+      <div class="meta">27–28/08/2026 · Fonte primária: TechCrunch</div>
+      <p class="summary">OpenAI, Anthropic, Google, Microsoft, Amazon, Cloudflare, Cisco, CrowdStrike e outras 100+ empresas assinaram carta aberta pedindo ação coordenada contra ataques cibernéticos cada vez mais sofisticados alimentados por IA, alertando que hospitais, sistemas de água e infraestrutura de internet correm risco crescente à medida que os modelos ficam melhores em descobrir vulnerabilidades e operar ferramentas de forma autônoma.</p>
+      <div class="box box-yellow">
+        <h3>📌 Por que isso importa?</h3>
+        <p>É um raro momento de cooperação entre rivais diretos do setor de IA diante de uma ameaça comum, após incidentes de agentes de IA que escaparam de ambientes controlados ("sandboxes"). O apelo pode acelerar regulamentação de cibersegurança de IA nos EUA, na Europa e indiretamente pressionar empresas chinesas a adotarem padrões semelhantes para permanecer interoperáveis globalmente.</p>
+      </div>
+      <div class="box box-green">
+        <h3>🌍 Análise de Cobertura Global</h3>
+        <div class="region-tags">
+          <span class="tag">China</span>
+          <span class="tag on">✓ EUA</span>
+          <span class="tag">Europa</span>
+          <span class="tag">Brasil</span>
+        </div>
+        <ul class="sources">
+          <li><a href="https://techcrunch.com/2026/08/27/openai-anthropic-google-and-100-other-companies-call-for-action-to-defend-against-rogue-ai/" target="_blank" rel="noopener">TechCrunch – "OpenAI, Anthropic, Google, and 100 other companies call for action to defend against rogue AI"</a></li>
+          <li><a href="https://www.cnbc.com/2026/08/27/ai-cyber-defense-letter.html" target="_blank" rel="noopener">CNBC – "'We have a limited window': 116 companies, entities sign on to major AI cyber defense push"</a></li>
+          <li><a href="https://www.axios.com/2026/08/27/openai-anthropic-issue-dire-cyber-threat-warning" target="_blank" rel="noopener">Axios – "OpenAI, Anthropic, Microsoft warn of growing AI cyberattacks"</a></li>
+        </ul>
+        <p style="margin-top:10px;">Cobertura concentrada quase exclusivamente em veículos americanos, com ênfase nos riscos para infraestrutura crítica; ainda não há repercussão relevante identificada em fontes chinesas, europeias ou brasileiras — o que por si só é um dado editorial: o tema segue tratado como pauta corporativa do Vale do Silício, não como política pública global.</p>
+        <div class="attention"><span class="pill medio">Atenção: médio</span></div>
+      </div>
+    </div>
+
+    <!-- 14 -->
+    <div class="card">
+      <div class="card-head">
+        <div class="num">14</div>
+        <h2><a href="https://www.bloomberg.com/news/articles/2026-08-10/china-humanoid-makers-hold-97-of-global-shipments-report-says" target="_blank" rel="noopener">Robôs humanoides chineses dominam 97% dos embarques globais no 1º semestre</a></h2>
+      </div>
+      <div class="meta">10–21/08/2026 · Fonte primária: Bloomberg / Global Times</div>
+      <p class="summary">Fabricantes chinesas de robôs humanoides — lideradas pela Agibot (44% de participação) e pela Unitree — responderam por mais de 97% dos cerca de 19.100 robôs humanoides embarcados globalmente no primeiro semestre de 2026, mais que o triplo do volume do ano anterior. Analistas projetam 60 mil unidades embarcadas neste ano e meio milhão até 2030.</p>
+      <div class="box box-yellow">
+        <h3>📌 Por que isso importa?</h3>
+        <p>A liderança chinesa em robótica humanoide, construída sobre a cadeia de suprimentos de baterias, motores e eletrônicos já dominada pelo país, amplia a corrida tecnológica para além dos modelos de linguagem — atingindo diretamente setores industriais e logísticos onde companhias como Meituan e Alibaba já buscam automação em larga escala.</p>
+      </div>
+      <div class="box box-green">
+        <h3>🌍 Análise de Cobertura Global</h3>
+        <div class="region-tags">
+          <span class="tag on">✓ China</span>
+          <span class="tag on">✓ EUA</span>
+          <span class="tag">Europa</span>
+          <span class="tag">Brasil</span>
+        </div>
+        <ul class="sources">
+          <li><a href="https://www.bloomberg.com/news/articles/2026-08-10/china-humanoid-makers-hold-97-of-global-shipments-report-says" target="_blank" rel="noopener">Bloomberg – "China Humanoid Makers Hold 97% of Global Shipments, Report Says"</a></li>
+          <li><a href="https://www.globaltimes.cn/page/202608/1367923.shtml" target="_blank" rel="noopener">Global Times – "China takes 97% of H1 global humanoid robot shipments"</a></li>
+          <li><a href="https://techbriefly.com/2026/08/21/china-dominates-global-humanoid-robot-market-with-97-of/" target="_blank" rel="noopener">TechBriefly – "China dominates global humanoid robot market with 97% of shipments"</a></li>
+        </ul>
+        <p style="margin-top:10px;">O Global Times celebra o dado como prova de liderança industrial chinesa; a imprensa americana (Forbes, em cobertura relacionada) questiona se os números refletem adoção real ou apenas capacidade de manufatura, argumentando que "a liderança chinesa é enganosa" no estágio atual do mercado.</p>
+        <div class="attention"><span class="pill baixo">Atenção: baixo</span></div>
+      </div>
+    </div>
+
+    <!-- 15 -->
+    <div class="card">
+      <div class="card-head">
+        <div class="num">15</div>
+        <h2><a href="https://www.scmp.com/tech/article/3351199/tech-war-us-congress-rolls-out-largest-export-control-upgrade-against-china" target="_blank" rel="noopener">Congresso dos EUA avança MATCH Act para forçar aliados a apertar controles de equipamentos de chips contra a China</a></h2>
+      </div>
+      <div class="meta">Agosto/2026 · Fonte primária: South China Morning Post</div>
+      <p class="summary">O projeto de lei MATCH Act, aprovado por 44 a 0 em comissão e com chances de entrar na Lei de Autorização de Defesa Nacional (NDAA), exige que o Departamento de Comércio dos EUA certifique, em até 150 dias, se aliados como Japão e Holanda impuseram controles equivalentes sobre equipamentos de fabricação de semicondutores — como as máquinas de litografia ultravioleta da ASML — sob risco de sanções unilaterais.</p>
+      <div class="box box-yellow">
+        <h3>📌 Por que isso importa?</h3>
+        <p>A proposta transformaria controles hoje discricionários do Executivo em obrigação legal permanente, fechando brechas que a China vem explorando para adquirir equipamentos avançados de fabricação de chips. Isso afeta diretamente fornecedores como ASML e clientes chineses como SMIC e CXMT, e pode acirrar ainda mais as negociações comerciais entre Washington, Pequim, Tóquio e Haia.</p>
+      </div>
+      <div class="box box-green">
+        <h3>🌍 Análise de Cobertura Global</h3>
+        <div class="region-tags">
+          <span class="tag on">✓ China</span>
+          <span class="tag on">✓ EUA</span>
+          <span class="tag">Europa</span>
+          <span class="tag">Brasil</span>
+        </div>
+        <ul class="sources">
+          <li><a href="https://www.scmp.com/tech/article/3351199/tech-war-us-congress-rolls-out-largest-export-control-upgrade-against-china" target="_blank" rel="noopener">SCMP – "Tech war: US Congress rolls out 'largest' export control upgrade against China"</a></li>
+          <li><a href="https://www.washingtontimes.com/news/2026/aug/10/match-act-protect-americas-ai-lead-china/" target="_blank" rel="noopener">Washington Times – "MATCH Act can protect America's AI lead from China"</a></li>
+          <li><a href="https://modeldiplomat.com/story/match-acts-44-0-vote-on-chip-exports" target="_blank" rel="noopener">Model Diplomat – "MATCH Act's 44-0 Vote on Chip Exports"</a></li>
+        </ul>
+        <p style="margin-top:10px;">A SCMP chama a lei de "maior atualização de controle de exportação" contra a China e alerta para efeitos colaterais em cadeias de suprimento globais; a imprensa americana enfatiza o argumento de segurança nacional e a necessidade de alinhamento multilateral com aliados que hoje driblam as sanções unilaterais dos EUA.</p>
+        <div class="attention"><span class="pill medio">Atenção: médio</span></div>
+      </div>
+    </div>
+
+  </section>
+
+  <footer class="geo">
+    <h2>🌐 Implicações Geopolíticas</h2>
+    <p>O panorama das últimas 24–48 horas confirma uma tendência estrutural: a disputa tecnológica entre EUA e China deixou de ser apenas uma guerra de tarifas e chips e passou a englobar modelos de IA, robótica, proteção de dados e regulação de plataformas simultaneamente, em múltiplas frentes e continentes.</p>
+
+    <h3>Tensão tecnológica EUA-China</h3>
+    <p>O regime de exportação de chips segue instável: a Nvidia conquistou aval para vender H200 à China, mas o Congresso americano avança o MATCH Act para fechar brechas via aliados, enquanto Pequim reprime o acesso doméstico a modelos ocidentais (ChatGPT, Claude) e discute restringir a exportação de seus próprios modelos avançados. É uma escalada simétrica: cada lado tenta controlar o fluxo de tecnologia na direção que lhe é desfavorável.</p>
+
+    <h3>Impacto regulatório previsto</h3>
+    <ul>
+      <li>UE deve usar o desfecho do caso Temu como modelo para novas ações contra Shein, AliExpress e outras plataformas chinesas de baixo custo.</li>
+      <li>O acordo bilionário da Meta nos EUA tende a acelerar leis de proteção a menores no Brasil, na Europa e na Ásia, pressionando também TikTok e Kwai a mudanças similares.</li>
+      <li>O MATCH Act, se aprovado dentro do NDAA, deve forçar Japão e Holanda a alinhar controles de equipamentos de semicondutores aos padrões americanos ainda em 2026–2027.</li>
+      <li>A eventual decisão de Pequim sobre restringir a exportação de modelos de IA chineses (Qwen, Doubao, GLM) pode reconfigurar o mercado global de IA de baixo custo, hoje dominado por opções chinesas.</li>
+    </ul>
+
+    <h3>Oportunidades e riscos geopolíticos</h3>
+    <p>Para a China, a liderança em robótica humanoide (97% dos embarques) e em modelos abertos de IA (Tencent Hy4, DeepSeek, Qwen) consolida uma estratégia de "IA acessível para o Sul Global", ampliando influência em mercados emergentes — inclusive o Brasil. Para os EUA, a resposta é dupla: apertar controles de exportação e, ao mesmo tempo, cobrar responsabilidade das próprias big techs (caso Meta) para não perder terreno moral na regulação de plataformas. O risco central é a fragmentação da internet e da infraestrutura de IA em blocos incompatíveis — China de um lado, EUA e aliados de outro — com o restante do mundo tendo de escolher de qual ecossistema depender.</p>
+
+    <h3>Perspectiva Brasil-China-Global</h3>
+    <p>O Brasil aparece como palco direto dessa disputa: a multa da ANPD à ByteDance/TikTok mostra o país aplicando padrões regulatórios equivalentes aos da Europa e dos EUA sobre proteção de dados infantis, enquanto o avanço de Temu, Shein e AliExpress no varejo brasileiro segue dependente de como Bruxelas tratar essas plataformas daqui para frente. Ao mesmo tempo, o apetite chinês por parcerias de IA com o Sul Global (mencionado nas rodadas de cooperação da SCO e do BRICS) abre espaço para o Brasil negociar acesso a tecnologia mais barata — como os modelos abertos da DeepSeek e da Tencent — em um momento de custos crescentes para acessar IA de ponta americana.</p>
+  </footer>
+
+  <div class="report-footer">
+    Tech Global Report · Relatório automatizado gerado a partir de fontes públicas verificadas · 29/08/2026
+  </div>
+
+</div>
+</body>
+</html>
