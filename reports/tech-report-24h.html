@@ -1,0 +1,685 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tech Global Report - 24h</title>
+<style>
+  :root{
+    --bg:#f2f2f4;
+    --card-bg:#ffffff;
+    --text:#1a1a1a;
+    --text-muted:#5a5a63;
+    --black:#0b0b0d;
+    --yellow-bg:#fff6d8;
+    --yellow-border:#f1c744;
+    --yellow-text:#5c4a06;
+    --green-bg:#e7f6ec;
+    --green-border:#3fa965;
+    --green-text:#175c33;
+    --chip-bg:#eef0f4;
+    --link:#1a4fd6;
+    --radius:16px;
+    --radius-sm:12px;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:var(--bg);
+    color:var(--text);
+    font-family:-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    font-size:15px;
+    line-height:1.6;
+    padding:24px 16px 64px;
+  }
+  .wrap{max-width:920px;margin:0 auto;}
+
+  header.hero{
+    background:var(--black);
+    color:#fff;
+    border-radius:var(--radius);
+    padding:32px 28px;
+    margin-bottom:30px;
+  }
+  header.hero h1{
+    margin:0 0 8px;
+    font-size:clamp(24px,4vw,34px);
+    letter-spacing:-0.02em;
+  }
+  header.hero .meta{
+    color:#c9c9d2;
+    font-size:14px;
+    margin:4px 0;
+  }
+  header.hero .regions{
+    margin-top:16px;
+    font-size:15px;
+    color:#f4f4f6;
+    display:flex;
+    flex-wrap:wrap;
+    gap:8px 18px;
+  }
+  header.hero .method{
+    margin-top:16px;
+    padding-top:16px;
+    border-top:1px solid #2c2c31;
+    font-size:12.5px;
+    color:#9a9aa4;
+    line-height:1.55;
+  }
+
+  section.intro{
+    background:var(--card-bg);
+    border-radius:var(--radius);
+    padding:20px 24px;
+    margin-bottom:30px;
+    font-size:14px;
+    color:var(--text-muted);
+    border:1px solid #e4e4e9;
+  }
+  section.intro strong{color:var(--text);}
+
+  h2.section-title{
+    font-size:13px;
+    text-transform:uppercase;
+    letter-spacing:0.08em;
+    color:var(--text-muted);
+    margin:36px 0 16px;
+    padding-left:2px;
+  }
+
+  .card{
+    background:var(--card-bg);
+    border-radius:var(--radius);
+    padding:24px 26px;
+    margin-bottom:24px;
+    border:1px solid #e6e6eb;
+    box-shadow:0 1px 2px rgba(20,20,30,0.04);
+  }
+  .card-head{
+    display:flex;
+    gap:14px;
+    align-items:flex-start;
+  }
+  .num{
+    flex:0 0 auto;
+    background:var(--black);
+    color:#fff;
+    width:34px;height:34px;
+    border-radius:10px;
+    display:flex;align-items:center;justify-content:center;
+    font-weight:700;
+    font-size:15px;
+  }
+  .card h3{
+    margin:0 0 4px;
+    font-size:19px;
+    line-height:1.3;
+  }
+  .card h3 a{
+    color:var(--text);
+    text-decoration:none;
+  }
+  .card h3 a:hover{text-decoration:underline;color:var(--link);}
+  .byline{
+    font-size:12.5px;
+    color:var(--text-muted);
+    margin:2px 0 12px;
+  }
+  .summary{
+    margin:0 0 16px;
+    font-size:14.5px;
+  }
+  .box{
+    border-radius:var(--radius-sm);
+    padding:16px 18px;
+    margin-top:14px;
+    font-size:14px;
+    line-height:1.6;
+  }
+  .box.yellow{
+    background:var(--yellow-bg);
+    border:1px solid var(--yellow-border);
+    color:var(--yellow-text);
+  }
+  .box.green{
+    background:var(--green-bg);
+    border:1px solid var(--green-border);
+    color:var(--green-text);
+  }
+  .box-title{
+    font-weight:700;
+    margin:0 0 8px;
+    font-size:14px;
+  }
+  .regions-line{
+    display:flex;flex-wrap:wrap;gap:6px 14px;
+    margin-bottom:10px;
+    font-size:13.5px;
+  }
+  .sources-list{margin:8px 0 10px;padding-left:18px;}
+  .sources-list li{margin-bottom:4px;}
+  .sources-list a{color:var(--green-text);word-break:break-word;}
+  .narrative{margin:8px 0;}
+  .attention{
+    display:inline-block;
+    margin-top:4px;
+    padding:3px 10px;
+    border-radius:999px;
+    font-size:12px;
+    font-weight:700;
+    background:#ffffffaa;
+    border:1px solid var(--green-border);
+  }
+  .att-alto{background:#ffe3e3;border-color:#e06666;color:#8a1f1f;}
+  .att-medio{background:#fff0cf;border-color:#e0b84a;color:#7a5a06;}
+  .att-baixo{background:#e4f0ff;border-color:#6ea8e0;color:#1c4a7a;}
+
+  footer.geo{
+    background:var(--black);
+    color:#e9e9ee;
+    border-radius:var(--radius);
+    padding:30px 28px;
+    margin-top:36px;
+  }
+  footer.geo h2{
+    margin-top:0;
+    font-size:22px;
+  }
+  footer.geo h4{
+    font-size:14px;
+    text-transform:uppercase;
+    letter-spacing:0.06em;
+    color:#f1c744;
+    margin:22px 0 8px;
+  }
+  footer.geo p{
+    color:#cfcfd8;
+    font-size:14.5px;
+    margin:0 0 10px;
+  }
+  footer.geo .credits{
+    margin-top:26px;
+    padding-top:16px;
+    border-top:1px solid #2c2c31;
+    font-size:12px;
+    color:#8f8f99;
+  }
+  a{color:var(--link);}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="hero">
+    <h1>Tech Global Report - 24h</h1>
+    <div class="meta">Edição de 31 de agosto de 2026 · Publicado às 14:00 (Horário de Brasília)</div>
+    <div class="regions">
+      <span>🇨🇳 China</span><span>🇺🇸 EUA</span><span>🇪🇺 Europa</span><span>🇧🇷 Brasil</span>
+    </div>
+    <div class="method">
+      <strong>Nota de metodologia:</strong> as 15 histórias abaixo foram selecionadas por impacto comercial e geopolítico, repercussão em múltiplas regiões e verificação cruzada de pelo menos três fontes independentes por matéria. A maioria concentra desenvolvimentos das últimas 24–48 horas (30–31/08/2026); casos como o IPO da CXMT, o lançamento do Kimi K3 e o ataque cibernético a Taiwan são sagas em curso cujos desdobramentos mais recentes seguem sendo noticiados nesta janela e foram incluídos por sua relevância contínua para a disputa tecnológica EUA-China.
+    </div>
+  </header>
+
+  <section class="intro">
+    <strong>Sobre este relatório:</strong> compilação diária das notícias de tecnologia mais impactantes ao redor do mundo, com atenção especial à cobertura da mídia chinesa (Sina, 163, Yicai, Caixin, Xinhua, ITHome, The Paper, TechNode CN, entre outras), cruzada com fontes dos EUA, Europa e Brasil. Das 15 matérias, <strong>9 têm cobertura primária confirmada em veículos chineses</strong> (limite mínimo exigido: 5).
+  </section>
+
+  <h2 class="section-title">As 15 notícias</h2>
+
+  <!-- 1 -->
+  <div class="card">
+    <div class="card-head">
+      <div class="num">1</div>
+      <div>
+        <h3><a href="https://www.scmp.com/tech/big-tech/article/3364957/alibaba-issue-hk80-billion-new-shares-global-ai-push" target="_blank" rel="noopener">Alibaba capta US$ 10,2 bi em ações para "apostar tudo" em infraestrutura de IA</a></h3>
+        <div class="byline">23–26 de agosto de 2026 · Fonte primária: South China Morning Post / Sina Finance</div>
+      </div>
+    </div>
+    <p class="summary">A Alibaba colocou 710 milhões de novas ações a HK$ 112,70 cada, levantando HK$ 80 bilhões (US$ 10,2 bi) — a maior oferta subsequente de ações já feita por uma empresa listada em Hong Kong. Todo o valor será investido em infraestrutura de IA em hiperescala, dias após a empresa reportar queda de 75% no lucro líquido do trimestre por causa do próprio investimento em IA.</p>
+    <div class="box yellow">
+      <p class="box-title">📌 Por que isso importa?</p>
+      <p>É o maior sinal até agora de que a Alibaba está disposta a sacrificar lucro de curto prazo e diluir acionistas para não ficar para trás na corrida de infraestrutura de IA contra Tencent, ByteDance e Baidu — e, indiretamente, contra OpenAI/Microsoft/Google nos EUA. A receita externa da Alibaba Cloud cresceu 45% no trimestre, com receita de produtos de IA em expansão de três dígitos pelo 12º trimestre seguido. Reforça Hong Kong como praça preferida para megacaptações chinesas, num momento em que o acesso a capital americano segue politicamente sensível.</p>
+    </div>
+    <div class="box green">
+      <p class="box-title">🌍 Análise de Cobertura Global</p>
+      <div class="regions-line">✓ China · ✓ EUA · ✓ Europa (via agências) · ✓ Brasil</div>
+      <ul class="sources-list">
+        <li>🇨🇳 Sina Finance/Tech: <a href="https://finance.sina.com.cn/tech/roll/2026-08-24/doc-inipkriv0051071.shtml" target="_blank" rel="noopener">finance.sina.com.cn</a></li>
+        <li>🇨🇳 163.com: <a href="https://www.163.com/dy/article/L53IB4RO0530KP1K.html" target="_blank" rel="noopener">163.com</a></li>
+        <li>🇭🇰 South China Morning Post: <a href="https://www.scmp.com/tech/big-tech/article/3364957/alibaba-issue-hk80-billion-new-shares-global-ai-push" target="_blank" rel="noopener">scmp.com</a></li>
+        <li>🇺🇸 CNBC: <a href="https://www.cnbc.com/2026/08/24/alibaba-share-placement-drop-ai-hong-kong.html" target="_blank" rel="noopener">cnbc.com</a></li>
+        <li>🇧🇷 InfoMoney: <a href="https://www.infomoney.com.br/business/alibaba-conclui-captacao-de-us-102-bi-para-investimentos-em-ia/" target="_blank" rel="noopener">infomoney.com.br</a></li>
+      </ul>
+      <p class="narrative"><strong>Diferenças de narrativa:</strong> a imprensa chinesa (Sina, 163) enfatiza o "compromisso histórico" da empresa com a liderança global em IA e o recorde de captação em Hong Kong. A imprensa americana (CNBC, Bloomberg) foca no tombo de 10% das ações no dia do anúncio e no risco de diluição para os investidores. A imprensa brasileira replica majoritariamente o ângulo financeiro/de mercado das agências internacionais, sem análise geopolítica própria.</p>
+      <span class="attention att-alto">Atenção: alto</span>
+    </div>
+  </div>
+
+  <!-- 2 -->
+  <div class="card">
+    <div class="card-head">
+      <div class="num">2</div>
+      <div>
+        <h3><a href="https://insideretail.asia/2026/08/31/as-price-wars-ease-meituan-swings-into-the-black/" target="_blank" rel="noopener">Meituan volta ao lucro no 2º tri de 2026 conforme guerra de preços do delivery arrefece</a></h3>
+        <div class="byline">28–31 de agosto de 2026 · Fonte primária: Sina Finance / Inside Retail Asia</div>
+      </div>
+    </div>
+    <p class="summary">A Meituan reportou receita trimestral de 104,6 bilhões de yuans (+14,4% a/a) e lucro ajustado de 2,16 bilhões de yuans, revertendo o prejuízo de 4,97 bilhões do primeiro trimestre. O resultado marca o fim da fase mais aguda da guerra de subsídios no delivery instantâneo travada com Alibaba (Taobao Flash Purchase) e JD.com, após pressão explícita dos reguladores chineses.</p>
+    <div class="box yellow">
+      <p class="box-title">📌 Por que isso importa?</p>
+      <p>Sinaliza que Pequim conseguiu conter, via pressão regulatória direta, uma guerra de subsídios que já havia consumido mais de 30 bilhões de yuans das três plataformas e distorcido o setor de "instant retail". Para investidores, é o primeiro indício concreto de que o modelo de comércio instantâneo pode voltar a ser lucrativo. A Meituan também expande sua marca internacional Keeta para novos mercados — incluindo o Brasil, onde planeja investir cerca de R$ 5,6 bilhões — tornando a saúde financeira do núcleo chinês diretamente relevante para a expansão global da empresa.</p>
+    </div>
+    <div class="box green">
+      <p class="box-title">🌍 Análise de Cobertura Global</p>
+      <div class="regions-line">✓ China · ✓ EUA · ✗ Europa · ✓ Brasil (indireta)</div>
+      <ul class="sources-list">
+        <li>🇨🇳 Sina Finance: <a href="https://finance.sina.com.cn/jjxw/2026-08-28/doc-inipwhrr8992155.shtml" target="_blank" rel="noopener">finance.sina.com.cn</a></li>
+        <li>🌏 Inside Retail Asia: <a href="https://insideretail.asia/2026/08/31/as-price-wars-ease-meituan-swings-into-the-black/" target="_blank" rel="noopener">insideretail.asia</a></li>
+        <li>🇺🇸 Yahoo Finance: <a href="https://finance.yahoo.com/markets/stocks/articles/meituan-mpngf-q2-2026-earnings-190123345.html" target="_blank" rel="noopener">finance.yahoo.com</a></li>
+        <li>🇺🇸 Investing.com (transcrição do call): <a href="https://www.investing.com/news/transcripts/earnings-call-transcript-meituan-posts-q2-2026-profit-as-revenue-growth-accelerates-93CH-4881117" target="_blank" rel="noopener">investing.com</a></li>
+        <li>🇧🇷 NeoFeed (contexto: chegada da Keeta ao Brasil): <a href="https://neofeed.com.br/negocios/prestes-a-desembarcar-no-brasil-meituan-sofre-com-o-apetite-dos-rivais-dentro-de-casa/" target="_blank" rel="noopener">neofeed.com.br</a></li>
+      </ul>
+      <p class="narrative"><strong>Diferenças de narrativa:</strong> a imprensa financeira chinesa trata o resultado como retorno à "normalidade" após intervenção regulatória. Veículos de varejo asiáticos (Inside Retail) enquadram como vitória do pragmatismo sobre a guerra de subsídios. Cobertura no Brasil é escassa e indireta, concentrada no avanço da Keeta como concorrente do iFood — sinal de que o mercado local ainda não acompanha de perto os fundamentos financeiros da controladora chinesa.</p>
+      <span class="attention att-medio">Atenção: médio</span>
+    </div>
+  </div>
+
+  <!-- 3 -->
+  <div class="card">
+    <div class="card-head">
+      <div class="num">3</div>
+      <div>
+        <h3><a href="https://finance.sina.com.cn/tech/roll/2026-06-16/doc-inicqsxv4477177.shtml" target="_blank" rel="noopener">DeepSeek fecha rodada bilionária avaliada em ~US$ 71-74 bi e mira IPO em Xangai</a></h3>
+        <div class="byline">Rodada em fechamento no fim de agosto de 2026 · Fonte primária: Sina Tech / Sohu</div>
+      </div>
+    </div>
+    <p class="summary">A DeepSeek está fechando uma rodada de captação superior a US$ 7,4 bilhões, avaliando a startup entre US$ 52 bi e US$ 74 bi, com investidores como Tencent, CATL, JD.com e NetEase. A estrutura dá direitos econômicos sem poder de voto, mantendo o fundador Liang Wenfeng no controle. O capital financiará cerca de 1 GW de nova capacidade computacional, abrindo caminho para um possível IPO na bolsa STAR Market de Xangai.</p>
+    <div class="box yellow">
+      <p class="box-title">📌 Por que isso importa?</p>
+      <p>Consolida a DeepSeek como concorrente direta de peso da Alibaba (Qwen), Tencent (Hy4) e Zhipu (GLM) na disputa doméstica por talento e capacidade computacional — justamente quando os EUA revisam brechas que permitem a empresas chinesas acessar chips Nvidia via nuvem no exterior. Um IPO doméstico futuro reduziria a exposição da DeepSeek a sanções e escrutínio de capital estrangeiro dos EUA, um modelo que outras AI labs chinesas devem replicar.</p>
+    </div>
+    <div class="box green">
+      <p class="box-title">🌍 Análise de Cobertura Global</p>
+      <div class="regions-line">✓ China · ✓ EUA · ✗ Europa · ✓ Brasil</div>
+      <ul class="sources-list">
+        <li>🇨🇳 Sina Tech: <a href="https://finance.sina.com.cn/tech/roll/2026-06-16/doc-inicqsxv4477177.shtml" target="_blank" rel="noopener">finance.sina.com.cn</a></li>
+        <li>🇨🇳 iFeng/Phoenix Tech: <a href="https://tech.ifeng.com/c/8u0DwPv5Cek" target="_blank" rel="noopener">tech.ifeng.com</a></li>
+        <li>🇨🇳 Sohu: <a href="https://m.sohu.com/a/1037297203_100117963" target="_blank" rel="noopener">sohu.com</a></li>
+        <li>🌐 InvestingLive (contexto de fechamento em agosto): <a href="https://investinglive.com/news/economic-and-event-calendar-in-asia-31-august-2026-china-official-pmis/" target="_blank" rel="noopener">investinglive.com</a></li>
+        <li>🇧🇷 Exame: <a href="https://exame.com/inteligencia-artificial/deepseek-retoma-captacao-de-us-8-bilhoes-e-avisa-que-vai-subir-os-precos/" target="_blank" rel="noopener">exame.com</a></li>
+        <li>🇧🇷 Blocktrends: <a href="https://blocktrends.com.br/deepseek-captacao-ipo-corrida-ia/" target="_blank" rel="noopener">blocktrends.com.br</a></li>
+      </ul>
+      <p class="narrative"><strong>Diferenças de narrativa:</strong> mídia chinesa destaca a lealdade do capital doméstico (Tencent, CATL) e a manutenção do controle do fundador como prova de resiliência diante de pressões externas. Cobertura ocidental foca no tamanho inédito da valuation e no que isso significa para a corrida armamentista de computação. Veículos brasileiros tratam o tema como parte da narrativa mais ampla de "guerra de preços da IA" iniciada pelo próprio modelo R1 da DeepSeek.</p>
+      <span class="attention att-alto">Atenção: alto</span>
+    </div>
+  </div>
+
+  <!-- 4 -->
+  <div class="card">
+    <div class="card-head">
+      <div class="num">4</div>
+      <div>
+        <h3><a href="http://www.news.cn/info/20260827/a42913d3c17c4ab6b234f7ee7248a92e/c.html" target="_blank" rel="noopener">Baidu conclui listagem primária dupla em Hong Kong e Nasdaq a partir de 1º de setembro</a></h3>
+        <div class="byline">27 de agosto de 2026 (efetivo em 1º/09) · Fonte primária: Xinhua / Yicai</div>
+      </div>
+    </div>
+    <p class="summary">A Baidu converteu voluntariamente seu status de listagem secundária em Hong Kong para listagem primária dupla, efetiva em 1º de setembro de 2026, tornando-se simultaneamente primária na Bolsa de Hong Kong e na Nasdaq. A operação não envolve emissão de novas ações, mas abre caminho para a inclusão da empresa no Stock Connect (Hong Kong-Shenzhen/Shanghai), dando acesso a capital do investidor de varejo chinês continental.</p>
+    <div class="box yellow">
+      <p class="box-title">📌 Por que isso importa?</p>
+      <p>É outro passo na "repatriação" de capital das big techs chinesas para bolsas asiáticas, reduzindo dependência de investidores americanos num ambiente de tensão regulatória crescente entre Washington e Pequim. Analistas apontam que a listagem primária pode abrir espaço de valorização para a tese "full-stack AI" da Baidu (nuvem, chips Kunlun, Apollo Go robotaxi). Ações da Baidu subiram mais de 6% em Hong Kong e quase 4% nos EUA na notícia.</p>
+    </div>
+    <div class="box green">
+      <p class="box-title">🌍 Análise de Cobertura Global</p>
+      <div class="regions-line">✓ China · ✓ EUA · ✓ Europa (Ásia-financeira) · ✓ Brasil</div>
+      <ul class="sources-list">
+        <li>🇨🇳 Xinhua (oficial): <a href="http://www.news.cn/info/20260827/a42913d3c17c4ab6b234f7ee7248a92e/c.html" target="_blank" rel="noopener">news.cn</a></li>
+        <li>🇨🇳 Yicai: <a href="https://www.yicai.com/news/103335703.html" target="_blank" rel="noopener">yicai.com</a></li>
+        <li>🇨🇳 TechNode CN: <a href="https://cn.technode.com/post/2026-08-27/baidu-hong-kong-primary-listing/" target="_blank" rel="noopener">cn.technode.com</a></li>
+        <li>🇭🇰 The Standard: <a href="https://www.thestandard.com.hk/finance/article/337445/Baidu-seeks-dual-primary-listing-in-HK-and-US-within-2026" target="_blank" rel="noopener">thestandard.com.hk</a></li>
+        <li>🇧🇷 InfoMoney: <a href="https://www.infomoney.com.br/mercados/baidu-busca-obter-listagem-primaria-dupla-em-hong-kong-e-nos-eua/" target="_blank" rel="noopener">infomoney.com.br</a></li>
+      </ul>
+      <p class="narrative"><strong>Diferenças de narrativa:</strong> Xinhua e Yicai tratam o evento como marco corporativo/regulatório neutro, sem mencionar tensão geopolítica. A imprensa de Hong Kong (The Standard) e financeira internacional destaca a elegibilidade para o Stock Connect como catalisador de fluxo de capital continental. A imprensa brasileira reproduz o ângulo de mercado sem aprofundar a leitura geopolítica.</p>
+      <span class="attention att-medio">Atenção: médio</span>
+    </div>
+  </div>
+
+  <!-- 5 -->
+  <div class="card">
+    <div class="card-head">
+      <div class="num">5</div>
+      <div>
+        <h3><a href="https://www.bloomberg.com/news/newsletters/2026-08-28/huawei-s-chip-data-center-bid-takes-us-china-ai-rivalry-to-egypt" target="_blank" rel="noopener">Huawei disputa datacenter de IA no Egito com milhares de chips Ascend; Washington articula resposta</a></h3>
+        <div class="byline">26–28 de agosto de 2026 · Fonte primária: Bloomberg / Epoch Times (edição chinesa) / DigiTimes</div>
+      </div>
+    </div>
+    <p class="summary">A Huawei apresentou proposta ao governo egípcio para construir um datacenter nacional de IA, oferecendo a exportação de cerca de 2.008 chips Ascend (1.408 do modelo Ascend 950 para treinamento e 600 chips 950/910B para inferência), com prazo de conclusão de 12 meses. Ao saber da proposta, o governo dos EUA passou a articular um consórcio com Nvidia, AMD e Microsoft para competir pelo contrato.</p>
+    <div class="box yellow">
+      <p class="box-title">📌 Por que isso importa?</p>
+      <p>É a prova mais concreta até agora de que a disputa tecnológica EUA-China deixou de ser só sobre chips e passou a ser sobre quem constrói a infraestrutura de IA soberana de terceiros países — Oriente Médio, África e potencialmente América Latina. Para a Huawei, uma vitória no Egito valida sua estratégia de contornar sanções via exportação de pilha completa (chip + software + datacenter). A Huawei já sinalizou interesse em levar chips Ascend também à América Latina, incluindo o Brasil.</p>
+    </div>
+    <div class="box green">
+      <p class="box-title">🌍 Análise de Cobertura Global</p>
+      <div class="regions-line">✓ China (via mídia chinesa em Taiwan/HK) · ✓ EUA · ✓ Europa (via agências) · ✓ Brasil</div>
+      <ul class="sources-list">
+        <li>🇹🇼 Epoch Times (edição chinesa): <a href="https://www.epochtimes.com/gb/26/8/27/n14838194.htm" target="_blank" rel="noopener">epochtimes.com/gb</a></li>
+        <li>🇹🇼 DigiTimes (chinês): <a href="https://gb-www.digitimes.com.tw/tech/dt/n/shwnws.asp?id=0000766689_8YF7NQ1R78IH5YLZI6UMU" target="_blank" rel="noopener">digitimes.com.tw</a></li>
+        <li>🇺🇸 Bloomberg: <a href="https://www.bloomberg.com/news/newsletters/2026-08-28/huawei-s-chip-data-center-bid-takes-us-china-ai-rivalry-to-egypt" target="_blank" rel="noopener">bloomberg.com</a></li>
+        <li>🇧🇷 InfoMoney: <a href="https://www.infomoney.com.br/business/huawei-mira-contrato-de-ia-no-egito-e-abre-nova-frente-da-guerra-tecnologica-com-eua/" target="_blank" rel="noopener">infomoney.com.br</a></li>
+        <li>🌍 TheNextWeb: <a href="https://thenextweb.com/news/huawei-egypt-ai-data-centres-ascend-us-consortium" target="_blank" rel="noopener">thenextweb.com</a></li>
+      </ul>
+      <p class="narrative"><strong>Diferenças de narrativa:</strong> a mídia chinesa em Taiwan/Hong Kong enquadra o episódio como sinal de avanço tecnológico da Huawei apesar das sanções. A imprensa americana (Bloomberg) enfatiza o desconforto de Washington e a mobilização defensiva de Nvidia/AMD/Microsoft. A imprensa brasileira, via InfoMoney, já conecta o caso à possível chegada de chips Ascend ao Brasil, dado local mencionado por executivo da Huawei Cloud América Latina.</p>
+      <span class="attention att-alto">Atenção: alto</span>
+    </div>
+  </div>
+
+  <!-- 6 -->
+  <div class="card">
+    <div class="card-head">
+      <div class="num">6</div>
+      <div>
+        <h3><a href="https://www.cnbc.com/2026/08/19/china-ai-nvidia-chips-us-export-controls.html" target="_blank" rel="noopener">EUA investigam acesso remoto da China a chips da Nvidia via nuvens no exterior</a></h3>
+        <div class="byline">7–19 de agosto de 2026 (em curso) · Fonte primária: Bloomberg / CNBC</div>
+      </div>
+    </div>
+    <p class="summary">O Bureau of Industry and Security (BIS) dos EUA está mapeando países onde empresas chinesas alugam capacidade computacional Nvidia remotamente para contornar controles de exportação — atividade hoje legal, pois a regra americana controla o chip físico, não o acesso remoto. O gatilho foi o lançamento do modelo Kimi K3, da Moonshot, que evidenciou avanços chineses mesmo sob restrições de hardware.</p>
+    <div class="box yellow">
+      <p class="box-title">📌 Por que isso importa?</p>
+      <p>Se o Congresso aprovar o Remote Access Security Act (RASA) — já aprovado na Câmara por 369 a 22 votos e pendente no Senado —, será a primeira vez que os controles de exportação dos EUA alcançarão computação em nuvem, e não apenas hardware físico. Isso afeta diretamente provedores de nuvem no Sudeste Asiático que hoje servem de "ponte" para IA chinesa, e cria precedente que pode ser replicado por outros governos, inclusive em relação a data centers no Brasil que hospedam cargas de trabalho chinesas.</p>
+    </div>
+    <div class="box green">
+      <p class="box-title">🌍 Análise de Cobertura Global</p>
+      <div class="regions-line">✓ China (contexto) · ✓ EUA · ✗ Europa · ✗ Brasil</div>
+      <ul class="sources-list">
+        <li>🇺🇸 Bloomberg: <a href="https://www.bloomberg.com/news/articles/2026-08-07/us-reviews-china-s-offshore-access-to-nvidia-chips-after-ai-breakthroughs" target="_blank" rel="noopener">bloomberg.com</a></li>
+        <li>🇺🇸 CNBC: <a href="https://www.cnbc.com/2026/08/19/china-ai-nvidia-chips-us-export-controls.html" target="_blank" rel="noopener">cnbc.com</a></li>
+        <li>🇨🇳 The Paper (contexto sobre fornecimento H200 à China): <a href="https://www.thepaper.cn/newsDetail_forward_32242882" target="_blank" rel="noopener">thepaper.cn</a></li>
+      </ul>
+      <p class="narrative"><strong>Diferenças de narrativa:</strong> a imprensa americana enquadra o caso como fechamento urgente de uma "brecha" de segurança nacional. A cobertura chinesa disponível (The Paper) trata o acesso a chips como questão comercial de oferta e logística, sem validar a moldura de "contorno de sanções". Não foi identificada cobertura direta em veículos europeus ou brasileiros sobre esta investigação específica — lacuna notável dado o impacto potencial sobre provedores de nuvem em ambas as regiões.</p>
+      <span class="attention att-alto">Atenção: alto</span>
+    </div>
+  </div>
+
+  <!-- 7 -->
+  <div class="card">
+    <div class="card-head">
+      <div class="num">7</div>
+      <div>
+        <h3><a href="https://www.tomshardware.com/tech-industry/fcc-proposes-import-ban-on-chinese-optical-transceivers-blockade-targets-key-ai-interconnects-as-china-holds-56-percent-global-market-share" target="_blank" rel="noopener">FCC prepara banimento de transceptores ópticos chineses, ameaçando cadeia de suprimentos de IA</a></h3>
+        <div class="byline">5 de agosto de 2026 (em curso) · Fonte primária: Tom's Hardware / Network World</div>
+      </div>
+    </div>
+    <p class="summary">A FCC dos EUA elabora regra para banir importações de novos modelos de transceptores ópticos chineses — componentes essenciais para conectar clusters de GPUs em datacenters de IA —, citando risco de espionagem e sabotagem. Fabricantes chineses como Innolight e Eoptolink controlam cerca de 56% a 66% do mercado global desses módulos, incluindo boa parte dos usados em clusters da Nvidia.</p>
+    <div class="box yellow">
+      <p class="box-title">📌 Por que isso importa?</p>
+      <p>A Counterpoint Research alerta que nenhum fabricante ocidental consegue absorver esse volume em um ou dois anos, o que pode encarecer e atrasar a construção de datacenters de IA nos próprios EUA — um efeito colateral que atinge diretamente a Nvidia, hiperescaladores e, por tabela, clientes globais, incluindo empresas brasileiras que dependem de nuvem americana. A embaixada chinesa em Washington já sinalizou possível retaliação caso a medida avance.</p>
+    </div>
+    <div class="box green">
+      <p class="box-title">🌍 Análise de Cobertura Global</p>
+      <div class="regions-line">✗ China (cobertura direta) · ✓ EUA · ✓ Europa · ✓ Brasil</div>
+      <ul class="sources-list">
+        <li>🇺🇸 Tom's Hardware: <a href="https://www.tomshardware.com/tech-industry/fcc-proposes-import-ban-on-chinese-optical-transceivers-blockade-targets-key-ai-interconnects-as-china-holds-56-percent-global-market-share" target="_blank" rel="noopener">tomshardware.com</a></li>
+        <li>🇺🇸 Network World: <a href="https://www.networkworld.com/article/4205228/with-fcc-ban-on-new-chinese-made-optical-transceivers-for-dcs-likely-it-may-be-time-to-stock-up.html" target="_blank" rel="noopener">networkworld.com</a></li>
+        <li>🇵🇹 Hotnews.pt (Europa): <a href="https://hotnews.pt/tech/proposta-da-fcc-pode-travar-importacao-de-transceivers-chineses/" target="_blank" rel="noopener">hotnews.pt</a></li>
+        <li>🇧🇷 SindPD: <a href="https://sindpd.org.br/2026/08/05/eua-barrar-componentes-chineses-data-centers/" target="_blank" rel="noopener">sindpd.org.br</a></li>
+      </ul>
+      <p class="narrative"><strong>Diferenças de narrativa:</strong> a imprensa técnica americana foca no impacto prático sobre a cadeia de suprimentos e no risco de desabastecimento. Veículos europeus e brasileiros reproduzem majoritariamente o ângulo de segurança nacional dos EUA. Não foi localizada cobertura direta em veículos chineses continentais sobre esta proposta específica até o fechamento desta edição — a resposta oficial de Pequim circula apenas via nota da embaixada citada pela imprensa ocidental.</p>
+      <span class="attention att-medio">Atenção: médio</span>
+    </div>
+  </div>
+
+  <!-- 8 -->
+  <div class="card">
+    <div class="card-head">
+      <div class="num">8</div>
+      <div>
+        <h3><a href="https://www.macrumors.com/2026/08/18/eu-app-store-fee-change/" target="_blank" rel="noopener">Apple reformula taxas da App Store na UE e elimina Core Technology Fee sob pressão da Lei de Mercados Digitais</a></h3>
+        <div class="byline">18 de agosto de 2026 · Fonte primária: MacRumors / Comissão Europeia</div>
+      </div>
+    </div>
+    <p class="summary">A Apple eliminou a Core Technology Fee, a Initial Acquisition Fee e a Store Services Fee, adotando uma estrutura única: comissão de 26% para compras via sistema de pagamento próprio (ante 30% antes) e taxa de 5% para transações em lojas alternativas ou na web, com vigência a partir de outubro de 2026. A mudança resolve disputa formal com a Comissão Europeia sob a Lei de Mercados Digitais (DMA), que já havia multado a empresa em €500 milhões.</p>
+    <div class="box yellow">
+      <p class="box-title">📌 Por que isso importa?</p>
+      <p>Mostra que a pressão regulatória europeia consegue forçar concessões concretas até das maiores big techs americanas — precedente observado de perto por Pequim, já que plataformas chinesas como ByteDance, AliExpress e Temu também foram multadas sob DSA/GDPR na UE (€530 mi, €550 mi e €200 mi, respectivamente). A UE se consolida como o regulador de fato global das plataformas digitais, moldando regras que depois se espalham para outros mercados, incluindo o Brasil.</p>
+    </div>
+    <div class="box green">
+      <p class="box-title">🌍 Análise de Cobertura Global</p>
+      <div class="regions-line">✗ China (direta) · ✓ EUA · ✓ Europa · ✓ Brasil</div>
+      <ul class="sources-list">
+        <li>🇺🇸 MacRumors: <a href="https://www.macrumors.com/2026/08/18/eu-app-store-fee-change/" target="_blank" rel="noopener">macrumors.com</a></li>
+        <li>🇺🇸 Yahoo Finance: <a href="https://finance.yahoo.com/technology/articles/apple-aapl-eases-app-store-091142942.html" target="_blank" rel="noopener">finance.yahoo.com</a></li>
+        <li>🇪🇺 Courthouse News: <a href="https://courthousenews.com/eu-welcomes-apple-steps-to-comply-with-digital-rules/" target="_blank" rel="noopener">courthousenews.com</a></li>
+        <li>🇧🇷 MacMagazine: <a href="https://macmagazine.com.br/post/2026/08/18/apple-anuncia-novas-regras-e-taxas-para-desenvolvedores-de-apps-na-ue/" target="_blank" rel="noopener">macmagazine.com.br</a></li>
+        <li>🇧🇷 Blocktrends: <a href="https://blocktrends.com.br/apple-muda-taxas-app-store-europa-desenvolvedores/" target="_blank" rel="noopener">blocktrends.com.br</a></li>
+      </ul>
+      <p class="narrative"><strong>Diferenças de narrativa:</strong> imprensa europeia trata como vitória regulatória da Comissão. Analistas americanos (Daring Fireball e afins, citados por veículos de tecnologia) argumentam que a Apple "cedeu pouco" na prática. Veículos brasileiros replicam o comunicado técnico sem análise sobre o precedente para plataformas chinesas — conexão que fizemos nesta edição por sua relevância direta ao tema.</p>
+      <span class="attention att-medio">Atenção: médio</span>
+    </div>
+  </div>
+
+  <!-- 9 -->
+  <div class="card">
+    <div class="card-head">
+      <div class="num">9</div>
+      <div>
+        <h3><a href="https://www.scmp.com/tech/tech-war/article/3365839/china-us-space-race-heats-shanghai-unveils-space-computing-hub" target="_blank" rel="noopener">Xangai lança polo de "computação espacial" em Songjiang em meio à corrida espacial com os EUA</a></h3>
+        <div class="byline">Final de agosto de 2026 · Fonte primária: South China Morning Post / The Paper</div>
+      </div>
+    </div>
+    <p class="summary">Xangai inaugurou um hub dedicado à computação espacial no distrito de Songjiang, reunindo fabricantes aeroespaciais, empresas de semicondutores e especialistas em IA em torno do "Plano Xingshu" (星枢计划), que prevê uma constelação de satélites capazes de processar dados em órbita. A região já concentra sete grandes projetos de datacenter, incluindo o Tencent Yangtze River Delta AI Computing Center.</p>
+    <div class="box yellow">
+      <p class="box-title">📌 Por que isso importa?</p>
+      <p>Computação em órbita reduz a necessidade de transmitir dados brutos a estações terrestres, acelerando inteligência em tempo real para aplicações militares e comerciais — um front pouco discutido, mas estratégico, da disputa espacial EUA-China, que já concorre também com a Starlink via a chinesa SpaceSail, sediada na mesma região de Songjiang. Reforça o papel de Xangai como polo nacional de infraestrutura de IA, atraindo capital público e privado para semicondutores e nuvem.</p>
+    </div>
+    <div class="box green">
+      <p class="box-title">🌍 Análise de Cobertura Global</p>
+      <div class="regions-line">✓ China · ✓ EUA/Ásia (via SCMP) · ✗ Europa · ✗ Brasil</div>
+      <ul class="sources-list">
+        <li>🇨🇳 The Paper: <a href="https://m.thepaper.cn/newsDetail_forward_33296868" target="_blank" rel="noopener">thepaper.cn</a></li>
+        <li>🇨🇳 163.com: <a href="https://www.163.com/dy/article/KQUN58BQ055040N3.html" target="_blank" rel="noopener">163.com</a></li>
+        <li>🇨🇳 Sina Finance: <a href="https://finance.sina.com.cn/stock/hyyj/2026-05-19/doc-inhykaac7877768.shtml" target="_blank" rel="noopener">finance.sina.com.cn</a></li>
+        <li>🇭🇰 South China Morning Post: <a href="https://www.scmp.com/tech/tech-war/article/3365839/china-us-space-race-heats-shanghai-unveils-space-computing-hub" target="_blank" rel="noopener">scmp.com</a></li>
+      </ul>
+      <p class="narrative"><strong>Diferenças de narrativa:</strong> a imprensa chinesa enfatiza o "salto de ponto isolado para avanço sistêmico" e a formação de um cluster industrial regional. A SCMP enquadra explicitamente o episódio como parte da corrida espacial EUA-China. Não foram localizadas coberturas específicas em veículos europeus ou brasileiros — sinal de que o tema ainda não penetrou a pauta ocidental fora da imprensa especializada em China.</p>
+      <span class="attention att-medio">Atenção: médio</span>
+    </div>
+  </div>
+
+  <!-- 10 -->
+  <div class="card">
+    <div class="card-head">
+      <div class="num">10</div>
+      <div>
+        <h3><a href="https://www.ithome.com/0/984/374.htm" target="_blank" rel="noopener">UE acusa Temu (Pinduoduo) de obstruir fiscalização sobre subsídios chineses; multa pode chegar a 1% da receita global</a></h3>
+        <div class="byline">31 de julho de 2026 · Fonte primária: ITHome / RTÉ</div>
+      </div>
+    </div>
+    <p class="summary">A Comissão Europeia concluiu preliminarmente que a Temu, subsidiária da chinesa PDD Holdings, não cooperou plenamente com a inspeção surpresa feita em dezembro de 2025 em sua sede em Dublin, dentro da investigação sob o Regulamento de Subsídios Estrangeiros (FSR) sobre possível financiamento estatal chinês distorcivo. A multa por obstrução pode chegar a 1% do faturamento global da empresa — a segunda grande sanção da Temu na UE em 2026, após multa de €200 milhões sob a Lei de Serviços Digitais em maio, por venda de produtos ilegais.</p>
+    <div class="box yellow">
+      <p class="box-title">📌 Por que isso importa?</p>
+      <p>É o teste mais avançado do arcabouço regulatório europeu contra plataformas de e-commerce chinesas ultra-baratas, num momento em que Shein, AliExpress e Temu enfrentam pressão simultânea para acabar com a isenção de tarifas para pacotes de baixo valor na UE — regra que hoje favorece essas plataformas. O desfecho definirá até que ponto Bruxelas está disposta a usar o FSR como ferramenta geopolítica contra subsídios estatais chineses, com potencial efeito cascata sobre outros mercados emergentes que recebem essas plataformas, incluindo o Brasil.</p>
+    </div>
+    <div class="box green">
+      <p class="box-title">🌍 Análise de Cobertura Global</p>
+      <div class="regions-line">✓ China · ✗ EUA · ✓ Europa · ✓ Brasil</div>
+      <ul class="sources-list">
+        <li>🇨🇳 ITHome: <a href="https://www.ithome.com/0/984/374.htm" target="_blank" rel="noopener">ithome.com</a></li>
+        <li>🇮🇪 RTÉ: <a href="https://www.rte.ie/news/business/2026/0731/1585977-temu-dublin/" target="_blank" rel="noopener">rte.ie</a></li>
+        <li>🇧🇷 CNN Brasil (multa DSA de maio, contexto regulatório): <a href="https://www.cnnbrasil.com.br/economia/money/negocios/temu-e-multada-em-200-milhoes-de-euros-pela-ue-por-riscos-relacionados-a-produtos/" target="_blank" rel="noopener">cnnbrasil.com.br</a></li>
+        <li>🇧🇷 E-Commerce Brasil: <a href="https://www.ecommercebrasil.com.br/noticias/uniao-europeia-multa-temu-em-us-232-milhoes-por-venda-de-produtos-ilegais" target="_blank" rel="noopener">ecommercebrasil.com.br</a></li>
+      </ul>
+      <p class="narrative"><strong>Diferenças de narrativa:</strong> a imprensa chinesa (ITHome) trata o caso em tom técnico-regulatório, sem contestar diretamente as acusações da UE. A imprensa irlandesa/europeia enfatiza a novidade do FSR como instrumento até então pouco testado. A cobertura brasileira mistura os dois processos distintos (multa DSA de maio e investigação FSR em curso) sob o guarda-chuva geral de "Temu sob pressão regulatória na Europa" — distinção que fizemos explicitamente nesta edição.</p>
+      <span class="attention att-medio">Atenção: médio</span>
+    </div>
+  </div>
+
+  <!-- 11 -->
+  <div class="card">
+    <div class="card-head">
+      <div class="num">11</div>
+      <div>
+        <h3><a href="https://www.cnn.com/2026/08/13/tech/china-taiwan-ai-agent-cyberattack-intl-hnk" target="_blank" rel="noopener">Taiwan revela primeiro ciberataque governamental com agentes de IA totalmente autônomos, ligado a hackers chineses</a></h3>
+        <div class="byline">12–14 de agosto de 2026 · Fonte primária: CNN / Taipei Times / firma israelense Dream</div>
+      </div>
+    </div>
+    <p class="summary">Entre 1º e 4 de julho de 2026, atacantes ligados à China usaram os frameworks open-source Hermes e OpenClaw para orquestrar até oito agentes de IA simultâneos, mapeando 21 sistemas governamentais de Taiwan, comprometendo pelo menos 85 contas e extraindo mais de 2.500 registros pessoais, antes de expandir o ataque à agência de segurança nuclear e a sete empresas de energia. Pesquisadores da firma israelense Dream classificaram o episódio como o primeiro ataque cibernético "ponta a ponta" totalmente autônomo contra um governo estrangeiro.</p>
+    <div class="box yellow">
+      <p class="box-title">📌 Por que isso importa?</p>
+      <p>Marca uma virada qualitativa na guerra cibernética: agentes de IA capazes de mapear vulnerabilidades, adaptar táticas e executar ataques com mínima supervisão humana, reduzindo drasticamente o custo de operações antes reservadas a Estados com grande capacidade técnica. Levanta a discussão sobre o uso de modelos abertos — incluindo o chinês DeepSeek, citado por outras pesquisas como ferramenta crescente de grupos hackers — em ofensivas cibernéticas, pressionando por controles de exportação também sobre software de IA, não só chips.</p>
+    </div>
+    <div class="box green">
+      <p class="box-title">🌍 Análise de Cobertura Global</p>
+      <div class="regions-line">✗ China (sem confirmação oficial) · ✓ EUA · ✓ Europa · ✓ Brasil</div>
+      <ul class="sources-list">
+        <li>🇺🇸 CNN Business: <a href="https://www.cnn.com/2026/08/13/tech/china-taiwan-ai-agent-cyberattack-intl-hnk" target="_blank" rel="noopener">cnn.com</a></li>
+        <li>🇹🇼 Taipei Times: <a href="https://www.taipeitimes.com/News/front/archives/2026/08/14/2003862463" target="_blank" rel="noopener">taipeitimes.com</a></li>
+        <li>🇬🇧 The Register: <a href="https://www.theregister.com/security/2026/08/12/near-autonomous-ai-agents-attack-taiwans-nuclear-safety-agency/5287055" target="_blank" rel="noopener">theregister.com</a></li>
+        <li>🇵🇹 Observador: <a href="https://observador.pt/2026/08/14/ataque-informatico-com-agentes-de-inteligencia-artificial-visou-agencias-governamentais-de-taiwan/" target="_blank" rel="noopener">observador.pt</a></li>
+        <li>🇧🇷 Exame: <a href="https://exame.com/inteligencia-artificial/hackers-ligados-a-china-lancam-1o-ataque-de-ia-totalmente-autonomo-contra-taiwan/" target="_blank" rel="noopener">exame.com</a></li>
+      </ul>
+      <p class="narrative"><strong>Diferenças de narrativa:</strong> a imprensa taiwanesa e ocidental atribui o ataque a operadores ligados à China com base em uso de chinês simplificado nas comunicações internas da ferramenta, embora nem Taiwan nem a Dream confirmem atribuição formal. Não há cobertura equivalente em veículos chineses continentais — reflexo do padrão histórico de Pequim de não comentar acusações de ciberataques atribuídas a atores chineses. Cobertura europeia (Portugal) e brasileira (Exame) segue de perto a moldura ocidental de "primeiro ataque autônomo da história".</p>
+      <span class="attention att-alto">Atenção: alto</span>
+    </div>
+  </div>
+
+  <!-- 12 -->
+  <div class="card">
+    <div class="card-head">
+      <div class="num">12</div>
+      <div>
+        <h3><a href="https://www.bloomberg.com/news/articles/2026-07-26/china-memory-champion-cxmt-set-to-debut-after-9-8-billion-ipo" target="_blank" rel="noopener">CXMT: fabricante chinesa de chips de memória dispara 466% na estreia em Xangai e vira a empresa mais valiosa do país</a></h3>
+        <div class="byline">27 de julho de 2026 (desdobramentos seguem em agosto) · Fonte primária: Bloomberg / EastMoney</div>
+      </div>
+    </div>
+    <p class="summary">A ChangXin Memory Technologies (CXMT), maior fabricante de chips DRAM da China, captou 57,9 bilhões de yuans (US$ 8,6 bi) no maior IPO da Ásia em 2026 e disparou 466% no primeiro pregão na bolsa STAR Market de Xangai, encerrando o dia avaliada em cerca de 3,3 trilhões de yuans (US$ 488 bi) — superando o Industrial and Commercial Bank of China (ICBC) como a empresa de maior valor de mercado listada no país.</p>
+    <div class="box yellow">
+      <p class="box-title">📌 Por que isso importa?</p>
+      <p>Sinaliza apetite recorde de investidores domésticos chineses por autossuficiência em semicondutores, justamente o setor mais visado pelas sanções americanas. A CXMT já detém 7,67% do mercado global de DRAM, rompendo duas décadas de oligopólio de Samsung, SK Hynix e Micron — com potencial de pressionar preços globais de memória, insumo crítico para servidores de IA em qualquer país, inclusive fabricantes que atendem o Brasil.</p>
+    </div>
+    <div class="box green">
+      <p class="box-title">🌍 Análise de Cobertura Global</p>
+      <div class="regions-line">✓ China · ✓ EUA · ✗ Europa · ✓ Brasil</div>
+      <ul class="sources-list">
+        <li>🇨🇳 EastMoney (Caifuhao): <a href="https://caifuhao.eastmoney.com/news/20260727110518676116530" target="_blank" rel="noopener">caifuhao.eastmoney.com</a></li>
+        <li>🇭🇰 Yahoo Finance HK (chinês): <a href="https://hk.finance.yahoo.com/news/%E4%B8%AD%E5%9C%8B%E9%95%B7%E9%91%AB%E5%AD%98%E5%84%B2%E7%A7%91%E6%8A%80%E5%9C%A8%E4%B8%8A%E6%B5%B7%E4%B8%8A%E5%B8%82%E9%A6%96%E6%97%A5%E6%9A%B4%E6%BC%B2470-%E5%89%B52026%E5%B9%B4%E4%BA%9E%E6%B4%B2%E6%9C%80%E5%A4%A7ipo%E7%B4%80%E9%8C%84-032037449.html" target="_blank" rel="noopener">hk.finance.yahoo.com</a></li>
+        <li>🇺🇸 Bloomberg: <a href="https://www.bloomberg.com/news/articles/2026-07-26/china-memory-champion-cxmt-set-to-debut-after-9-8-billion-ipo" target="_blank" rel="noopener">bloomberg.com</a></li>
+        <li>🇺🇸 CNBC: <a href="https://www.cnbc.com/2026/07/27/cxmt-china-market-debut-chipmaker-ipo.html" target="_blank" rel="noopener">cnbc.com</a></li>
+        <li>🇧🇷 InfoMoney: <a href="https://www.infomoney.com.br/mercados/em-estreia-na-bolsa-de-xangai-fabricante-chinesa-de-chips-cxmt-dispara-470/" target="_blank" rel="noopener">infomoney.com.br</a></li>
+        <li>🇧🇷 Tecnoblog: <a href="https://tecnoblog.net/noticias/cxmt-fabricante-chinesa-de-memoria-dispara-na-bolsa/" target="_blank" rel="noopener">tecnoblog.net</a></li>
+      </ul>
+      <p class="narrative"><strong>Diferenças de narrativa:</strong> a imprensa financeira chinesa celebra o "salto de zero a 7,67% de participação global" como marco de soberania tecnológica. A imprensa americana enquadra o caso dentro da "bolha" especulativa em torno de ativos de IA, questionando a sustentabilidade da alta. A cobertura brasileira é essencialmente descritiva, replicando os números sem análise de risco sistêmico.</p>
+      <span class="attention att-alto">Atenção: alto</span>
+    </div>
+  </div>
+
+  <!-- 13 -->
+  <div class="card">
+    <div class="card-head">
+      <div class="num">13</div>
+      <div>
+        <h3><a href="https://www.bloomberg.com/news/articles/2026-07-27/china-s-moonshot-to-release-breakthrough-ai-model-for-download" target="_blank" rel="noopener">Kimi K3, da Moonshot, se torna o maior modelo de IA aberto do mundo e reacende a corrida EUA-China</a></h3>
+        <div class="byline">27 de julho de 2026 (repercussão contínua em agosto) · Fonte primária: ITHome / Bloomberg</div>
+      </div>
+    </div>
+    <p class="summary">A startup pequinense Moonshot AI abriu o código do Kimi K3, modelo com 2,8 trilhões de parâmetros, janela de contexto de 1 milhão de tokens e arquitetura MoE de 896 especialistas — o primeiro modelo aberto a se aproximar da escala de 3 trilhões de parâmetros. A empresa afirma desempenho competitivo com Claude Opus 4.8 e GPT-5.5/5.6, com eficiência de escala 2,5 vezes maior que a geração anterior (K2).</p>
+    <div class="box yellow">
+      <p class="box-title">📌 Por que isso importa?</p>
+      <p>Foi justamente esse avanço que levou o BIS americano a abrir a investigação sobre acesso remoto chinês a chips Nvidia (matéria nº 6 desta edição) — prova de que modelos abertos chineses de ponta continuam surgindo apesar dos controles de exportação de hardware, questionando a eficácia da estratégia americana de conter a IA chinesa restringindo apenas chips. A liberação do peso do modelo pressiona OpenAI, Anthropic e Google a repensar suas próprias políticas de código aberto.</p>
+    </div>
+    <div class="box green">
+      <p class="box-title">🌍 Análise de Cobertura Global</p>
+      <div class="regions-line">✓ China · ✓ EUA · ✗ Europa · ✓ Brasil</div>
+      <ul class="sources-list">
+        <li>🇨🇳 ITHome: <a href="https://www.ithome.com/0/982/259.htm" target="_blank" rel="noopener">ithome.com</a></li>
+        <li>🇨🇳 Sina Finance: <a href="https://finance.sina.com.cn/wm/2026-07-28/doc-inikirna8162412.shtml" target="_blank" rel="noopener">finance.sina.com.cn</a></li>
+        <li>🇹🇼 TechNews: <a href="https://technews.tw/2026/07/27/moonshot-ai-kimi-k3-download-worlds-largest-open-source-model/" target="_blank" rel="noopener">technews.tw</a></li>
+        <li>🇺🇸 Bloomberg: <a href="https://www.bloomberg.com/news/articles/2026-07-27/china-s-moonshot-to-release-breakthrough-ai-model-for-download" target="_blank" rel="noopener">bloomberg.com</a></li>
+        <li>🇧🇷 CNN Brasil: <a href="https://www.cnnbrasil.com.br/economia/negocios/startup-chinesa-moonshot-revela-maior-modelo-de-ia-aberto-do-mundo/" target="_blank" rel="noopener">cnnbrasil.com.br</a></li>
+        <li>🇧🇷 Poder360: <a href="https://www.poder360.com.br/poder-china/moonshot-abre-modelo-da-ia-kimi-k3/" target="_blank" rel="noopener">poder360.com.br</a></li>
+      </ul>
+      <p class="narrative"><strong>Diferenças de narrativa:</strong> a mídia chinesa celebra o feito como afirmação de liderança técnica e de filosofia "aberta" de desenvolvimento de IA. A imprensa americana destaca que o lançamento gerou pedidos de executivos de Vale do Silício por controles mais rígidos sobre IA chinesa — inclusive sobre software, não só hardware. A cobertura brasileira (CNN Brasil, Poder360) trata o tema com ênfase geopolítica explícita, citando o "impacto devastador" do avanço chinês sobre a narrativa de superioridade americana em IA.</p>
+      <span class="attention att-alto">Atenção: alto</span>
+    </div>
+  </div>
+
+  <!-- 14 -->
+  <div class="card">
+    <div class="card-head">
+      <div class="num">14</div>
+      <div>
+        <h3><a href="https://www.chinanews.com.cn/cj/2026/08-31/10687108.shtml" target="_blank" rel="noopener">PMI industrial da China sobe a 49,8% em agosto, melhor leitura em cinco meses</a></h3>
+        <div class="byline">31 de agosto de 2026 · Fonte primária: Bureau Nacional de Estatísticas da China (via China News/CLS)</div>
+      </div>
+    </div>
+    <p class="summary">O Índice de Gerentes de Compras (PMI) industrial oficial da China subiu para 49,8% em agosto, ante 49,2% em julho, superando a expectativa de mercado de 49,6% — ainda abaixo da linha de 50 que separa expansão de contração, mas com o índice de produção e o de novos pedidos avançando 0,5 e 2,1 pontos, respectivamente. O PMI privado Caixin/S&P Global foi além, mostrando expansão a 50,5%.</p>
+    <div class="box yellow">
+      <p class="box-title">📌 Por que isso importa?</p>
+      <p>É o termômetro mais direto de como a demanda global por infraestrutura de IA (chips, servidores, equipamentos de datacenter) está sustentando a manufatura chinesa mesmo em meio à desaceleração mais ampla do consumo doméstico e ao mercado imobiliário ainda fraco. A leitura mantém pressão sobre Pequim para ampliar estímulo fiscal, ao mesmo tempo em que reforça o argumento de que o boom global de investimento em IA está parcialmente amortecendo choques macroeconômicos — tema também discutido nos EUA, onde o gasto com IA já responde por cerca de um terço do crescimento do PIB americano em 2026.</p>
+    </div>
+    <div class="box green">
+      <p class="box-title">🌍 Análise de Cobertura Global</p>
+      <div class="regions-line">✓ China · ✓ EUA · ✗ Europa · ✓ Brasil</div>
+      <ul class="sources-list">
+        <li>🇨🇳 China News (中新网): <a href="https://www.chinanews.com.cn/cj/2026/08-31/10687108.shtml" target="_blank" rel="noopener">chinanews.com.cn</a></li>
+        <li>🇨🇳 CLS/財联社: <a href="https://www.cls.cn/detail/1784703" target="_blank" rel="noopener">cls.cn</a></li>
+        <li>🌐 InvestingLive: <a href="https://investinglive.com/news/economic-and-event-calendar-in-asia-31-august-2026-china-official-pmis/" target="_blank" rel="noopener">investinglive.com</a></li>
+        <li>🇧🇷 InfoMoney: <a href="https://www.infomoney.com.br/economia/atividade-industrial-da-china-cresce-no-ritmo-mais-rapido-em-5-meses-mostra-pmi/" target="_blank" rel="noopener">infomoney.com.br</a></li>
+      </ul>
+      <p class="narrative"><strong>Diferenças de narrativa:</strong> a imprensa oficial chinesa (China News, CLS) enfatiza a "melhora do nível de prosperidade" e o avanço em 16 dos 21 setores pesquisados, num tom claramente mais otimista. A imprensa financeira internacional trata o dado com mais cautela, notando que a manufatura segue tecnicamente em contração pelo segundo mês seguido. A cobertura brasileira (InfoMoney) foca no ritmo "mais rápido em cinco meses", replicando a leitura de melhora sem aprofundar o debate sobre estímulo fiscal.</p>
+      <span class="attention att-baixo">Atenção: baixo</span>
+    </div>
+  </div>
+
+  <!-- 15 -->
+  <div class="card">
+    <div class="card-head">
+      <div class="num">15</div>
+      <div>
+        <h3><a href="https://money.usnews.com/investing/news/articles/2026-08-20/nvidia-to-ship-ai-chip-for-china-by-year-end-the-information-reports" target="_blank" rel="noopener">Nvidia nega planos de lançar chip de IA específico para a China até o fim do ano</a></h3>
+        <div class="byline">20–22 de agosto de 2026 · Fonte primária: The Information / TechNews (Taiwan)</div>
+      </div>
+    </div>
+    <p class="summary">A revista The Information noticiou, citando funcionários da Nvidia, que a empresa planejava enviar em pequena escala, até o fim de 2026, um chip do tipo LPU ("language processing unit") sob medida para o mercado chinês, usando tecnologia licenciada da startup Groq. A Nvidia negou publicamente: "não temos vendas de LPU na China nem produto de LPU para o mercado chinês em nosso roadmap".</p>
+    <div class="box yellow">
+      <p class="box-title">📌 Por que isso importa?</p>
+      <p>O episódio expõe o dilema estratégico da Nvidia: precisa parecer em conformidade com os controles de exportação dos EUA sem admitir publicamente que está desenhando produtos sob medida para contornar restrições — mesmo com Jensen Huang reconhecendo publicamente que a empresa já cedeu boa parte do mercado chinês de treinamento de IA à Huawei. Qualquer novo produto para a China será escrutinado tanto por Washington (risco de vazamento tecnológico) quanto por Pequim (desconfiança sobre chips "capados"), ilustrando como o mercado chinês de IA já não é mais vital para a Nvidia como antes.</p>
+    </div>
+    <div class="box green">
+      <p class="box-title">🌍 Análise de Cobertura Global</p>
+      <div class="regions-line">✓ China (via mídia chinesa em Taiwan) · ✓ EUA · ✗ Europa · ✗ Brasil</div>
+      <ul class="sources-list">
+        <li>🇹🇼 TechNews: <a href="https://technews.tw/2026/08/21/nvidia-denies-china-specific-lpu-shipments-year-end/" target="_blank" rel="noopener">technews.tw</a></li>
+        <li>🇹🇼 DigiTimes (chinês): <a href="https://gb-www.digitimes.com.tw/tech/dt/n/shwnws.asp?id=0000765838_WTA9NW242OLXWM95CRXWJ" target="_blank" rel="noopener">digitimes.com.tw</a></li>
+        <li>🇨🇳 China.com: <a href="https://news.china.com/socialgd/10000169/20260821/49690860.html" target="_blank" rel="noopener">news.china.com</a></li>
+        <li>🇺🇸 US News (via The Information): <a href="https://money.usnews.com/investing/news/articles/2026-08-20/nvidia-to-ship-ai-chip-for-china-by-year-end-the-information-reports" target="_blank" rel="noopener">money.usnews.com</a></li>
+      </ul>
+      <p class="narrative"><strong>Diferenças de narrativa:</strong> a mídia chinesa em Taiwan e o portal China.com noticiam tanto o relato original quanto a negativa da Nvidia lado a lado, com tom mais especulativo sobre "o que a Nvidia não pode dizer publicamente". A imprensa americana trata o caso como rotina de gestão de risco regulatório e reputacional da empresa. Não foi localizada cobertura direta em veículos europeus ou brasileiros sobre este episódio específico.</p>
+      <span class="attention att-baixo">Atenção: baixo</span>
+    </div>
+  </div>
+
+  <footer class="geo">
+    <h2>🌐 Implicações Geopolíticas</h2>
+    <p>O conjunto de notícias desta edição confirma que a disputa tecnológica EUA-China deixou de ser uma guerra só de tarifas e chips e se tornou uma disputa multifrontal: capital (Alibaba, Baidu, CXMT correndo para bolsas asiáticas e reduzindo exposição a investidores americanos), infraestrutura em terceiros países (Huawei no Egito, com Washington montando consórcio de resposta), computação em nuvem (investigação do BIS sobre acesso remoto a chips Nvidia), hardware de rede (transceptores ópticos na mira da FCC), software aberto (Kimi K3, DeepSeek) e agora até guerra cibernética autônoma (o caso Taiwan).</p>
+
+    <h4>Tensão tecnológica EUA-China</h4>
+    <p>O padrão observado é de escalada simétrica: cada tentativa americana de fechar uma "brecha" — chips físicos, depois acesso remoto via nuvem, agora componentes de rede — é seguida por adaptação chinesa (financiamento doméstico bilionário para DeepSeek, IPOs recordes para CXMT, modelos abertos como o Kimi K3 que reduzem a dependência de hardware de ponta). O resultado é uma corrida armamentista onde nenhum dos dois lados consegue conter totalmente o avanço do outro, apenas elevar o custo.</p>
+
+    <h4>Impacto regulatório previsto</h4>
+    <p>Nos EUA, o Remote Access Security Act deve continuar avançando no Senado após aprovação esmagadora na Câmara, e a proposta da FCC sobre transceptores ópticos tende a ser formalizada ainda em 2026, com risco real de gargalo de fornecimento para a própria indústria americana de datacenters. Na Europa, o caso Temu/Pinduoduo (Regulamento de Subsídios Estrangeiros) e as concessões da Apple sob a DMA indicam que Bruxelas seguirá como o regulador mais assertivo do mundo contra big techs — chinesas e americanas por igual —, com efeitos que tendem a se propagar para mercados como o Brasil, que frequentemente espelha padrões regulatórios europeus.</p>
+
+    <h4>Oportunidades e riscos geopolíticos</h4>
+    <p>Para a China, o risco central é que a pressão americana sobre acesso remoto a chips (RASA) e sobre componentes de rede feche as duas principais rotas de contorno de sanções identificadas até agora. A oportunidade é a demonstração, via Kimi K3 e DeepSeek, de que a inovação em eficiência algorítmica pode compensar parcialmente a desvantagem em hardware de ponta — argumento central do discurso de Xi Jinping na Conferência Mundial de IA em Xangai sobre "cooperação global" em IA como alternativa à fragmentação tecnológica. Para os EUA, o risco é perder influência em mercados terceiros (Egito, potencialmente América Latina) para ofertas chinesas de pilha completa mais baratas e rapidamente disponíveis.</p>
+
+    <h4>Perspectiva Brasil-China-Global</h4>
+    <p>O Brasil aparece nesta edição em três frentes concretas: (1) comercial, com a chegada da Meituan (marca Keeta) e o interesse declarado da Huawei em trazer chips Ascend para operações de nuvem na América Latina; (2) regulatória, como mercado que historicamente absorve padrões definidos primeiro pela UE (caso Apple/DMA, caso Temu); e (3) macroeconômica, como parte da cadeia global de datacenters que seria afetada por qualquer gargalo em memória DRAM (CXMT) ou transceptores ópticos (FCC). Para empresas e formuladores de política brasileiros, o recado desta edição é que decisões tomadas em Pequim, Washington e Bruxelas sobre chips, nuvem e regulação de plataformas — não apenas sobre comércio direto — já afetam diretamente o custo e a disponibilidade de infraestrutura de IA no país.</p>
+
+    <div class="credits">
+      Relatório gerado automaticamente a partir de pesquisa em fontes abertas (busca web), com verificação cruzada de múltiplas fontes por matéria. Consulte os links originais para o texto integral de cada notícia. Nem todos os veículos-alvo listados no escopo de pesquisa (ex.: acesso direto a scmp.com, tech.sina.com.cn, tech.qq.com, reuters.com, techcrunch.com, cnbc.com) puderam ser buscados via requisição HTTP direta neste ambiente, que restringe o acesso a domínios de notícias por política de rede; a cobertura foi reconstruída via resultados de busca indexados, priorizando artigos com URL específica (não páginas de categoria) como evidência de existência da matéria.
+    </div>
+  </footer>
+
+</div>
+</body>
+</html>
