@@ -1,0 +1,742 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tech Global Report - 24h</title>
+<style>
+  :root{
+    --bg:#eef0f2;
+    --card-bg:#ffffff;
+    --text:#1a1a1a;
+    --text-soft:#4a4a4a;
+    --border:#e2e4e8;
+    --yellow-bg:#fff7d6;
+    --yellow-border:#f0d878;
+    --green-bg:#e6f6ec;
+    --green-border:#a9dcbb;
+    --black:#0d0d0d;
+    --link:#0b5fff;
+    --chip-bg:#f0f1f3;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    background:var(--bg);
+    color:var(--text);
+    font-family:-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    font-size:15px;
+    line-height:1.6;
+    padding:24px 16px 60px;
+  }
+  .wrap{max-width:920px; margin:0 auto;}
+
+  header.hero{
+    background:var(--black);
+    color:#fff;
+    border-radius:16px;
+    padding:32px 28px;
+    margin-bottom:28px;
+  }
+  header.hero h1{
+    margin:0 0 8px;
+    font-size:28px;
+    letter-spacing:-0.02em;
+  }
+  header.hero .meta{
+    color:#c9c9c9;
+    font-size:14px;
+    margin-bottom:14px;
+  }
+  header.hero .regions{
+    display:flex;
+    flex-wrap:wrap;
+    gap:10px;
+    font-size:14px;
+  }
+  header.hero .regions span{
+    background:rgba(255,255,255,0.08);
+    border:1px solid rgba(255,255,255,0.18);
+    padding:6px 12px;
+    border-radius:999px;
+  }
+
+  .intro-note{
+    background:var(--card-bg);
+    border:1px solid var(--border);
+    border-radius:14px;
+    padding:18px 22px;
+    margin-bottom:28px;
+    font-size:13.5px;
+    color:var(--text-soft);
+  }
+  .intro-note strong{color:var(--text);}
+
+  section.stories{
+    display:flex;
+    flex-direction:column;
+    gap:26px;
+    margin-bottom:36px;
+  }
+
+  .card{
+    background:var(--card-bg);
+    border:1px solid var(--border);
+    border-radius:16px;
+    padding:24px 26px;
+  }
+  .card .num{
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    width:30px;
+    height:30px;
+    background:var(--black);
+    color:#fff;
+    border-radius:8px;
+    font-size:14px;
+    font-weight:700;
+    margin-right:10px;
+    flex-shrink:0;
+  }
+  .card .headline{
+    display:flex;
+    align-items:flex-start;
+    gap:2px;
+    margin-bottom:6px;
+  }
+  .card h2{
+    font-size:18.5px;
+    line-height:1.35;
+    margin:0;
+  }
+  .card h2 a{
+    color:var(--text);
+    text-decoration:none;
+  }
+  .card h2 a:hover{text-decoration:underline; color:var(--link);}
+  .card .byline{
+    color:var(--text-soft);
+    font-size:12.5px;
+    margin:0 0 12px 40px;
+  }
+  .card .summary{
+    margin:0 0 16px 40px;
+    font-size:14.5px;
+  }
+
+  .box{
+    border-radius:14px;
+    padding:16px 18px;
+    margin:0 0 14px 40px;
+    font-size:13.8px;
+  }
+  .box:last-child{margin-bottom:0;}
+  .box .box-title{
+    font-weight:700;
+    font-size:13.5px;
+    margin-bottom:8px;
+    display:block;
+  }
+  .box.yellow{
+    background:var(--yellow-bg);
+    border:1px solid var(--yellow-border);
+  }
+  .box.green{
+    background:var(--green-bg);
+    border:1px solid var(--green-border);
+  }
+  .coverage-regions{
+    display:flex;
+    flex-wrap:wrap;
+    gap:8px;
+    margin:8px 0 10px;
+  }
+  .coverage-regions span{
+    background:rgba(255,255,255,0.6);
+    border:1px solid rgba(0,0,0,0.08);
+    border-radius:999px;
+    padding:3px 10px;
+    font-size:12.5px;
+  }
+  .coverage-regions span.no{
+    opacity:0.55;
+    text-decoration:line-through;
+  }
+  .sources-list{
+    margin:6px 0 10px;
+    padding-left:18px;
+  }
+  .sources-list li{margin-bottom:4px;}
+  .sources-list a{color:var(--link); word-break:break-word;}
+  .attention{
+    display:inline-block;
+    margin-top:4px;
+    font-size:12.5px;
+    font-weight:600;
+    padding:3px 10px;
+    border-radius:999px;
+    background:#fff;
+    border:1px solid rgba(0,0,0,0.1);
+  }
+  .narrative{margin:8px 0 0;}
+  .narrative strong{display:block; margin-bottom:4px;}
+
+  .cn-flag-badge{
+    display:inline-block;
+    margin-left:8px;
+    font-size:11px;
+    font-weight:700;
+    color:#b3261e;
+    background:#fdeceb;
+    border:1px solid #f3c6c2;
+    border-radius:6px;
+    padding:2px 6px;
+    vertical-align:middle;
+  }
+
+  section.geo{
+    background:var(--black);
+    color:#f2f2f2;
+    border-radius:16px;
+    padding:30px 28px;
+    margin-bottom:20px;
+  }
+  section.geo h2{
+    font-size:22px;
+    margin:0 0 18px;
+    color:#fff;
+  }
+  section.geo h3{
+    font-size:15.5px;
+    color:#ffd873;
+    margin:22px 0 8px;
+  }
+  section.geo h3:first-of-type{margin-top:0;}
+  section.geo p{
+    color:#d8d8d8;
+    margin:0 0 6px;
+    font-size:14px;
+  }
+  section.geo ul{
+    margin:6px 0 0;
+    padding-left:20px;
+    color:#d8d8d8;
+  }
+  section.geo li{margin-bottom:6px; font-size:14px;}
+
+  footer.report-footer{
+    text-align:center;
+    color:#8a8f98;
+    font-size:12.5px;
+    padding-top:10px;
+  }
+
+  @media (max-width:560px){
+    .card .byline, .card .summary, .box{margin-left:0;}
+    .card .headline{flex-direction:column;}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="hero">
+    <h1>Tech Global Report — 24h</h1>
+    <div class="meta">Publicado em 3 de setembro de 2026 · Edição diária · Cobertura das últimas 24–72 horas</div>
+    <div class="regions">
+      <span>🇨🇳 China</span>
+      <span>🇺🇸 EUA</span>
+      <span>🇪🇺 Europa</span>
+      <span>🇧🇷 Brasil</span>
+    </div>
+  </header>
+
+  <div class="intro-note">
+    <strong>Nota metodológica:</strong> as 15 notícias abaixo foram selecionadas por impacto comercial e geopolítico, repercussão em múltiplos veículos e prioridade para cobertura chinesa (mínimo de 5 histórias com fonte primária chinesa, conforme critério editorial). As datas de publicação de cada fonte estão indicadas em cada card — priorizamos o ciclo de notícias mais recente disponível no momento da apuração (1–3 de setembro de 2026), com duas histórias estruturais de maior prazo (regulação europeia e IPO da Unitree) mantidas pela sua relevância contínua para o mesmo ciclo noticioso.
+  </div>
+
+  <section class="stories">
+
+    <!-- 1 -->
+    <article class="card">
+      <div class="headline">
+        <span class="num">1</span>
+        <h2><a href="https://www.bloomberg.com/news/articles/2026-09-02/nvidia-nears-14-billion-hugging-face-deal-this-week" target="_blank" rel="noopener">Nvidia está perto de fechar aquisição da Hugging Face por até US$ 14 bilhões</a></h2>
+      </div>
+      <p class="byline">2 de setembro de 2026 · Bloomberg</p>
+      <p class="summary">A Nvidia negocia a compra da Hugging Face, a maior plataforma de compartilhamento de modelos de IA de código aberto, por cerca de US$ 12,9 bilhões em dinheiro/ações, mais US$ 1 bilhão em retenção de funcionários. Seria a maior aquisição da história da Nvidia, ampliando seu controle sobre toda a cadeia de IA, do chip ao software.</p>
+
+      <div class="box yellow">
+        <span class="box-title">📌 Por que isso importa?</span>
+        Se concretizado, o negócio dá à Nvidia controle sobre o principal repositório mundial de modelos abertos — incluindo modelos chineses populares como Qwen (Alibaba) e DeepSeek, hospedados na plataforma. Isso aprofunda a dependência global da infraestrutura da Nvidia mesmo fora do hardware, pressiona concorrentes como AMD, Google e AWS, e adiciona uma nova camada à disputa EUA-China por controle da pilha de IA — já que empresas chinesas usam o Hugging Face Hub para distribuir seus modelos ao mundo.
+      </div>
+
+      <div class="box green">
+        <span class="box-title">🌍 Análise de Cobertura Global</span>
+        <div class="coverage-regions">
+          <span>✓ China</span><span>✓ EUA</span><span class="no">✗ Europa</span><span class="no">✗ Brasil</span>
+        </div>
+        <ul class="sources-list">
+          <li>🇺🇸 Bloomberg — <a href="https://www.bloomberg.com/news/articles/2026-09-02/nvidia-nears-14-billion-hugging-face-deal-this-week" target="_blank" rel="noopener">"Nvidia Nears $14 Billion Hugging Face Deal This Week"</a></li>
+          <li>🇺🇸 Yahoo Finance — <a href="https://finance.yahoo.com/technology/ai/articles/nvidia-nears-14-billion-hugging-001556090.html" target="_blank" rel="noopener">"Nvidia Nears $14 Billion Hugging Face Deal"</a></li>
+          <li>🇨🇳 Sina Tech (新浪科技) — <a href="https://finance.sina.com.cn/tech/digi/2026-09-02/doc-iniqkzme2990789.shtml" target="_blank" rel="noopener">"英伟达接近以140亿美元收购Hugging Face"</a></li>
+          <li>🇨🇳 IT之家 — <a href="https://www.ithome.com/0/997/238.htm" target="_blank" rel="noopener">"英伟达接近以140亿美元收购Hugging Face，最快本周达成协议"</a></li>
+        </ul>
+        <p class="narrative"><strong>Diferenças de narrativa:</strong> a imprensa americana trata o caso como consolidação estratégica de Jensen Huang para ampliar a base de clientes da Nvidia rumo ao software. A imprensa chinesa destaca o risco de dependência: como boa parte dos modelos abertos chineses trafega pela plataforma, a compra é lida como mais um ponto de controle americano sobre a infraestrutura de IA usada por desenvolvedores chineses.</p>
+        <span class="attention">Nível de atenção: <strong>alto</strong></span>
+      </div>
+    </article>
+
+    <!-- 2 -->
+    <article class="card">
+      <div class="headline">
+        <span class="num">2</span>
+        <h2><a href="https://techcrunch.com/2026/09/01/open-ais-astra-model-is-on-the-way-and-very-good-at-breaking-into-computer-systems/" target="_blank" rel="noopener">Modelo Astra, da OpenAI, é o primeiro a cruzar o limiar "crítico" de risco cibernético</a></h2>
+      </div>
+      <p class="byline">1 de setembro de 2026 · TechCrunch / OpenAI</p>
+      <p class="summary">A OpenAI anunciou que seu próximo modelo, Astra, é o primeiro a ultrapassar o limiar "Crítico" de capacidade cibernética de seu Preparedness Framework: em testes internos, encontrou e explorou sozinho falhas de segurança inéditas (zero-days) em sistemas fortemente protegidos. A empresa pausou o desenvolvimento para reforçar salvaguardas antes do lançamento.</p>
+
+      <div class="box yellow">
+        <span class="box-title">📌 Por que isso importa?</span>
+        Marca uma nova fase na corrida armamentista de IA: modelos capazes de ataques cibernéticos autônomos de alto nível mudam o cálculo de segurança nacional em todo o mundo, inclusive na China, onde reguladores e empresas de defesa acompanham de perto o ritmo de capacidades da OpenAI. O acesso será restrito a parceiros selecionados, o que deve acelerar pressões regulatórias dos EUA e da UE sobre modelos de fronteira.
+      </div>
+
+      <div class="box green">
+        <span class="box-title">🌍 Análise de Cobertura Global</span>
+        <div class="coverage-regions">
+          <span>✓ EUA</span><span class="no">✗ China</span><span class="no">✗ Europa</span><span class="no">✗ Brasil</span>
+        </div>
+        <ul class="sources-list">
+          <li>🇺🇸 TechCrunch — <a href="https://techcrunch.com/2026/09/01/open-ais-astra-model-is-on-the-way-and-very-good-at-breaking-into-computer-systems/" target="_blank" rel="noopener">"OpenAI's Astra model is on the way — and very good at breaking into computer systems"</a></li>
+          <li>🇺🇸 CNBC — <a href="https://www.cnbc.com/2026/09/01/open-ai-astra-cyber-model.html" target="_blank" rel="noopener">"OpenAI says Astra AI model is its first that crosses 'Critical' cybersecurity capability"</a></li>
+          <li>🇺🇸 OpenAI (fonte primária) — <a href="https://openai.com/index/path-to-astra/" target="_blank" rel="noopener">"Path to Astra: critical capabilities and frontier safeguards"</a></li>
+          <li>🇺🇸 Security Boulevard — <a href="https://securityboulevard.com/2026/09/openai-reveals-astra-its-first-ai-model-to-reach-critical-cybersecurity-risk-threshold/" target="_blank" rel="noopener">"OpenAI Reveals Astra, Its First AI Model to Reach 'Critical' Cybersecurity Risk Threshold"</a></li>
+        </ul>
+        <p class="narrative"><strong>Diferenças de narrativa:</strong> a cobertura ainda está concentrada na imprensa americana especializada em segurança e tecnologia, com foco em governança e nos limites impostos pela própria OpenAI. Ainda não há repercussão relevante em veículos chineses ou europeus até o fechamento desta edição — o que deve mudar à medida que Pequim e Bruxelas avaliam as implicações do anúncio.</p>
+        <span class="attention">Nível de atenção: <strong>médio</strong></span>
+      </div>
+    </article>
+
+    <!-- 3 -->
+    <article class="card">
+      <div class="headline">
+        <span class="num">3</span>
+        <h2><a href="https://www.cnbc.com/2026/09/01/shein-ipo-market-debut-hong-kong.html" target="_blank" rel="noopener">Shein estreia na bolsa de Hong Kong e ações caem abaixo do preço de IPO</a></h2>
+      </div>
+      <p class="byline">1 de setembro de 2026 · CNBC / Bloomberg / Sina Finance <span class="cn-flag-badge">Cobertura chinesa primária</span></p>
+      <p class="summary">A gigante de fast-fashion Shein estreou na Bolsa de Hong Kong (código 00625) após captar cerca de HK$ 13,6 bilhões (US$ 1,7 bilhão), avaliando a empresa em cerca de US$ 26 bilhões — bem abaixo dos US$ 100 bilhões de sua última avaliação privada em 2022. As ações chegaram a cair 10% no pregão, fechando o dia abaixo do preço de lançamento.</p>
+
+      <div class="box yellow">
+        <span class="box-title">📌 Por que isso importa?</span>
+        O tropeço no debute é um termômetro para todo o e-commerce transfronteiriço chinês (Shein, Temu, AliExpress, Shopee) em meio a tarifas mais altas nos EUA e na Europa e à taxação crescente de pacotes de baixo valor no Brasil. A escolha de Hong Kong — depois de tentativas frustradas em Londres e Nova York — também reforça a tendência de empresas chinesas voltarem a listar mais perto de casa em meio às tensões regulatórias com o Ocidente.
+      </div>
+
+      <div class="box green">
+        <span class="box-title">🌍 Análise de Cobertura Global</span>
+        <div class="coverage-regions">
+          <span>✓ China</span><span>✓ EUA</span><span>✓ Europa</span><span class="no">✗ Brasil</span>
+        </div>
+        <ul class="sources-list">
+          <li>🇺🇸 CNBC — <a href="https://www.cnbc.com/2026/09/01/shein-ipo-market-debut-hong-kong.html" target="_blank" rel="noopener">"Fast-fashion giant Shein's shares drop 9% in Hong Kong market debut"</a></li>
+          <li>🇺🇸 Bloomberg — <a href="https://www.bloomberg.com/news/articles/2026-08-31/shein-set-to-debut-in-test-of-investor-demand-for-consumer-plays" target="_blank" rel="noopener">"Shein Shares Fall in Hong Kong Trading Debut After $1.7 Billion IPO"</a></li>
+          <li>🇪🇺 The Japan Times (rede internacional) — <a href="https://www.japantimes.co.jp/business/2026/09/01/shein-shares-hk-debut-ipo/" target="_blank" rel="noopener">"Shein shares plunge 10% in Hong Kong debut after rocky road to IPO"</a></li>
+          <li>🇨🇳 Sina Finance (新浪财经) — <a href="https://finance.sina.com.cn/tech/roll/2026-09-01/doc-iniqhsea4786473.shtml" target="_blank" rel="noopener">"希音上市首日破发"</a></li>
+          <li>🇨🇳 163.com (网易) — <a href="https://www.163.com/dy/article/L5O1NK6C05119MAU.html" target="_blank" rel="noopener">"希音上市首日破发"</a></li>
+          <li>🇨🇳 VOA Chinês — <a href="https://www.voachinese.com/amp/shein-shares-fall-after-hong-kong-trading-debut-20260901/8192989.html" target="_blank" rel="noopener">"希音香港上市首日破发，分析：'市场用真实价格替希音定价'"</a></li>
+        </ul>
+        <p class="narrative"><strong>Diferenças de narrativa:</strong> a imprensa ocidental enquadra o resultado como um "reality check" para o apetite global por consumo chinês, citando riscos regulatórios e de reputação (trabalho, sustentabilidade). Os veículos chineses tratam o episódio de forma mais factual/financeira, com menos ênfase nas críticas ESG e mais foco na leitura de que "o mercado precificou a Shein pela realidade", evitando o tom crítico das reportagens ocidentais sobre práticas trabalhistas.</p>
+        <span class="attention">Nível de atenção: <strong>alto</strong></span>
+      </div>
+    </article>
+
+    <!-- 4 -->
+    <article class="card">
+      <div class="headline">
+        <span class="num">4</span>
+        <h2><a href="https://www.bloomberg.com/news/articles/2026-09-02/meituan-s-500-estimate-surge-may-revive-china-delivery-stocks" target="_blank" rel="noopener">Lucro da Meituan dispara e sinaliza fim da guerra de preços no delivery chinês</a></h2>
+      </div>
+      <p class="byline">2 de setembro de 2026 · Bloomberg / Yicai <span class="cn-flag-badge">Cobertura chinesa primária</span></p>
+      <p class="summary">A Meituan reportou receita trimestral de RMB 104,6 bilhões (+14,4% a/a) e lucro líquido de RMB 2,15 bilhões, alta de cerca de 490% ante o mesmo período do ano passado, encerrando três trimestres seguidos de prejuízo. Alibaba e JD.com também reduziram perdas em suas divisões de "quick commerce" no trimestre, à medida que os descontos agressivos perdem força.</p>
+
+      <div class="box yellow">
+        <span class="box-title">📌 Por que isso importa?</span>
+        A guerra de subsídios entre Meituan, Alibaba (Taobao/Ele.me) e JD.com consumiu bilhões de dólares em 2025-2026 e pressionou as ações do setor. Sinais de trégua — impulsionados também por pressão regulatória de Pequim contra "competição desordenada" (内卷) — podem devolver apetite de investidores ao setor de e-commerce/delivery chinês, com efeitos diretos sobre a avaliação de Meituan, Alibaba, JD.com e, por extensão, sobre a estratégia global desses grupos (incluindo AliExpress e Shopee, que competem pelos mesmos consumidores).
+      </div>
+
+      <div class="box green">
+        <span class="box-title">🌍 Análise de Cobertura Global</span>
+        <div class="coverage-regions">
+          <span>✓ China</span><span>✓ EUA</span><span class="no">✗ Europa</span><span class="no">✗ Brasil</span>
+        </div>
+        <ul class="sources-list">
+          <li>🇺🇸 Bloomberg — <a href="https://www.bloomberg.com/news/articles/2026-09-02/meituan-s-500-estimate-surge-may-revive-china-delivery-stocks" target="_blank" rel="noopener">"Meituan Earnings Surge Lifts Outlook for China Delivery Stocks"</a></li>
+          <li>🇺🇸 Investing.com — <a href="https://www.investing.com/news/transcripts/earnings-call-transcript-meituan-posts-q2-2026-profit-as-revenue-growth-accelerates-93CH-4881117" target="_blank" rel="noopener">"Earnings call transcript: Meituan posts Q2 2026 profit as revenue growth accelerates"</a></li>
+          <li>🇨🇳 Yicai (第一财经) — <a href="https://www.yicai.com/news/102796558.html" target="_blank" rel="noopener">"美团二季度净利润下降89%，外卖大战谁是赢家" (contexto trimestral)</a></li>
+          <li>🇨🇳 TMTPost (钛媒体) — <a href="https://www.tmtpost.com/8011985.html" target="_blank" rel="noopener">"外卖大战一年：美团回不去、阿里停不下"</a></li>
+        </ul>
+        <p class="narrative"><strong>Diferenças de narrativa:</strong> a imprensa financeira ocidental foca no impacto para investidores globais e ADRs. A imprensa chinesa aprofunda o contexto da guerra de subsídios interna (Meituan vs. Taobao Shanguo vs. JD Waimai) e o papel da intervenção regulatória de Pequim para conter a "competição involutiva", um ângulo pouco explorado fora da China.</p>
+        <span class="attention">Nível de atenção: <strong>alto</strong></span>
+      </div>
+    </article>
+
+    <!-- 5 -->
+    <article class="card">
+      <div class="headline">
+        <span class="num">5</span>
+        <h2><a href="https://finance.sina.com.cn/jjxw/2026-08-31/doc-iniqepex7565626.shtml" target="_blank" rel="noopener">Novo modelo de IA da Tencent, Hunyuan Hy4, é tomado de assalto por demanda e força expansão emergencial</a></h2>
+      </div>
+      <p class="byline">2 de setembro de 2026 · Sina Finance / IT之家 <span class="cn-flag-badge">Cobertura chinesa primária</span></p>
+      <p class="summary">A Tencent integrou o modelo Hunyuan Hy4 (preview) ao seu assistente corporativo WorkBuddy em 28 de agosto e, já no primeiro dia, enfrentou filas na fila de tarefas por excesso de demanda. A empresa anunciou expansão emergencial da capacidade de inferência e recomendou uso em horários de menor pico, com testes gratuitos estendidos até setembro.</p>
+
+      <div class="box yellow">
+        <span class="box-title">📌 Por que isso importa?</span>
+        O episódio ilustra a corrida da Tencent para não ficar para trás de DeepSeek, Alibaba (Qwen) e Moonshot (Kimi) na disputa por modelos de IA corporativos "agentic" na China. A demanda que supera a infraestrutura disponível também expõe o gargalo real de poder computacional das empresas chinesas de IA, que dependem cada vez mais de chips domésticos (Huawei Ascend) em vez de GPUs Nvidia.
+      </div>
+
+      <div class="box green">
+        <span class="box-title">🌍 Análise de Cobertura Global</span>
+        <div class="coverage-regions">
+          <span>✓ China</span><span class="no">✗ EUA</span><span class="no">✗ Europa</span><span class="no">✗ Brasil</span>
+        </div>
+        <ul class="sources-list">
+          <li>🇨🇳 Sina Finance (新浪财经) — <a href="https://finance.sina.com.cn/jjxw/2026-08-31/doc-iniqepex7565626.shtml" target="_blank" rel="noopener">"腾讯WorkBuddy生态发布会9月2日举办，Hy4 preview调用激增 WorkBuddy已紧急扩容"</a></li>
+          <li>🇨🇳 IT之家 — <a href="https://www.ithome.com/0/996/414.htm" target="_blank" rel="noopener">"腾讯混元：Hy4 preview 调用激增，WorkBuddy 已紧急扩容"</a></li>
+          <li>🇨🇳 163.com (网易) — <a href="https://m.163.com/dy/article/L5LKRTDJ05568W0A.html" target="_blank" rel="noopener">"腾讯WorkBuddy生态发布会9月2日举办"</a></li>
+          <li>🇨🇳 Tencent Cloud Developer Community — <a href="https://developer.cloud.tencent.com/news/4529848" target="_blank" rel="noopener">"腾讯混元：Hy4 preview调用激增，WorkBuddy紧急扩容"</a></li>
+        </ul>
+        <p class="narrative"><strong>Diferenças de narrativa:</strong> esta é uma história essencialmente doméstica, ainda sem tradução relevante para a imprensa ocidental — um lembrete de que boa parte da disputa real por adoção de IA na China acontece fora do radar de Wall Street e do Vale do Silício, mesmo quando tem implicações diretas na corrida chip/infraestrutura EUA-China.</p>
+        <span class="attention">Nível de atenção: <strong>médio</strong></span>
+      </div>
+    </article>
+
+    <!-- 6 -->
+    <article class="card">
+      <div class="headline">
+        <span class="num">6</span>
+        <h2><a href="https://technode.com/2026/08/24/alibaba-raises-hk80-billion-through-a-share-placement-to-fund-ai-infrastructure/" target="_blank" rel="noopener">Alibaba capta HK$ 80 bilhões em oferta de ações para financiar infraestrutura de IA</a></h2>
+      </div>
+      <p class="byline">23–26 de agosto de 2026 · TechNode / CNBC / Sina <span class="cn-flag-badge">Cobertura chinesa primária</span></p>
+      <p class="summary">A Alibaba precificou uma colocação de 710 milhões de novas ações a HK$ 112,70 cada, levantando HK$ 80 bilhões (~US$ 10,3 bilhões) — sua primeira emissão de ações desde a listagem dupla em Hong Kong em 2019. Todo o valor será direcionado à expansão de infraestrutura de IA full-stack. A oferta foi cerca de 3 vezes sobre-subscrita, com fundos soberanos do Oriente Médio, Europa e Ásia participando.</p>
+
+      <div class="box yellow">
+        <span class="box-title">📌 Por que isso importa?</span>
+        É um dos maiores compromissos de capital de uma Big Tech chinesa com IA em 2026, sinalizando que a Alibaba aposta pesado para competir com DeepSeek, ByteDance e as gigantes americanas em modelos e data centers. A diluição acionária derrubou as ações no curto prazo, mas o forte interesse de investidores institucionais globais mostra apetite renovado por ativos de tecnologia chinesa apesar das tensões EUA-China sobre chips avançados.
+      </div>
+
+      <div class="box green">
+        <span class="box-title">🌍 Análise de Cobertura Global</span>
+        <div class="coverage-regions">
+          <span>✓ China</span><span>✓ EUA</span><span class="no">✗ Europa</span><span class="no">✗ Brasil</span>
+        </div>
+        <ul class="sources-list">
+          <li>🇨🇳 TechNode — <a href="https://technode.com/2026/08/24/alibaba-raises-hk80-billion-through-a-share-placement-to-fund-ai-infrastructure/" target="_blank" rel="noopener">"Alibaba raises HK$80 billion through a share placement to fund AI infrastructure"</a></li>
+          <li>🇺🇸 CNBC — <a href="https://www.cnbc.com/2026/08/24/alibaba-share-placement-drop-ai-hong-kong.html" target="_blank" rel="noopener">"Alibaba plunges after announcing $10.2 billion share placement to fund AI push"</a></li>
+          <li>🇨🇳 Xinhua Silk Road — <a href="https://en.imsilkroad.com/p/351884.html" target="_blank" rel="noopener">"Alibaba unveils pricing of HKD80 bln equity placement for AI infrastructure"</a></li>
+          <li>🇨🇳 Sina Finance (新浪财经) — <a href="https://finance.sina.com.cn/roll/2026-08-24/doc-inipkvrw6178432.shtml" target="_blank" rel="noopener">"阿里巴巴拟配售800亿港元新股 募资全部投入AI能力建设"</a></li>
+        </ul>
+        <p class="narrative"><strong>Diferenças de narrativa:</strong> a imprensa americana enfatiza a queda das ações e o risco de diluição para acionistas. Os veículos chineses, principalmente Sina, celebram a operação como demonstração de força — "全押AI" ("tudo em IA") — e destacam a sobre-subscrição por fundos soberanos como validação internacional da estratégia de IA da Alibaba.</p>
+        <span class="attention">Nível de atenção: <strong>alto</strong></span>
+      </div>
+    </article>
+
+    <!-- 7 -->
+    <article class="card">
+      <div class="headline">
+        <span class="num">7</span>
+        <h2><a href="https://www.bloomberg.com/news/articles/2026-09-01/china-freezes-china-court-freezes-nexperia-assets-in-fight-over-dutch-chipmaker" target="_blank" rel="noopener">Tribunal chinês congela ativos da Nexperia em Dongguan, escalando disputa com fabricante de chips holandês</a></h2>
+      </div>
+      <p class="byline">1 de setembro de 2026 · Bloomberg / SCMP / Epoch Times <span class="cn-flag-badge">Cobertura chinesa primária</span></p>
+      <p class="summary">Um tribunal de Dongguan congelou participações da Nexperia B.V. em quatro subsidiárias chinesas, avaliadas em cerca de 2,14 bilhões de yuans (~US$ 318 milhões), até agosto de 2029, a pedido da controladora chinesa Wingtech. A ordem preserva ativos enquanto tramita processo movido pela Wingtech, que acusa a matriz holandesa de medidas discriminatórias que causaram prejuízos "irreparáveis".</p>
+
+      <div class="box yellow">
+        <span class="box-title">📌 Por que isso importa?</span>
+        A Nexperia produz chips básicos essenciais para praticamente toda a indústria automotiva e eletrônica global; a disputa começou depois que os EUA colocaram a Wingtech na "Entity List" e o governo holandês assumiu controle da matriz por lei de guerra fria. O congelamento judicial chinês é uma escalada direta que ameaça reacender a crise de fornecimento de semicondutores que já afetou montadoras em 2025, e mostra como Pequim está disposta a usar seu sistema judicial como ferramenta geopolítica na guerra de chips.
+      </div>
+
+      <div class="box green">
+        <span class="box-title">🌍 Análise de Cobertura Global</span>
+        <div class="coverage-regions">
+          <span>✓ China</span><span>✓ EUA</span><span>✓ Europa</span><span class="no">✗ Brasil</span>
+        </div>
+        <ul class="sources-list">
+          <li>🇺🇸 Bloomberg — <a href="https://www.bloomberg.com/news/articles/2026-09-01/china-freezes-china-court-freezes-nexperia-assets-in-fight-over-dutch-chipmaker" target="_blank" rel="noopener">"China Freezes Nexperia Assets in Fight Over Dutch Chipmaker"</a></li>
+          <li>🇨🇳 South China Morning Post — <a href="https://www.scmp.com/tech/article/3365996/whats-next-after-china-court-freezes-us318m-nexperia-assets-amid-wingtech-battle" target="_blank" rel="noopener">"What's next after China court freezes US$318m in Nexperia assets amid Wingtech battle?"</a></li>
+          <li>🇺🇸 Tom's Hardware — <a href="https://www.tomshardware.com/tech-industry/chinese-court-freezes-318-million-in-nexperia-assets-as-wingtech-presses-to-regain-control" target="_blank" rel="noopener">"Chinese court freezes $318 million in Nexperia assets as Wingtech presses to regain control"</a></li>
+          <li>🇪🇺 Evertiq — <a href="https://evertiq.com/design/2026-09-03-chinese-court-freezes-nexperia-assets-worth-270-million" target="_blank" rel="noopener">"Chinese court freezes Nexperia assets worth €270 million"</a></li>
+          <li>🇨🇳 Epoch Times (大纪元, chinês) — <a href="https://www.epochtimes.com/gb/26/8/31/n14840284.htm/amp" target="_blank" rel="noopener">"中共法院冻结安世中国子公司股权 母公司回应"</a></li>
+        </ul>
+        <p class="narrative"><strong>Diferenças de narrativa:</strong> SCMP e a imprensa europeia tratam o caso como risco concreto à cadeia de suprimentos automotiva global e testam a resiliência da relação comercial China-Holanda/UE. A imprensa chinesa oficial enquadra a ação como parte de um esforço legítimo da Wingtech para "restaurar o controle" sobre um ativo chinês supostamente sequestrado por Haia sob pressão de Washington — um enquadramento soberanista quase ausente na cobertura ocidental.</p>
+        <span class="attention">Nível de atenção: <strong>alto</strong></span>
+      </div>
+    </article>
+
+    <!-- 8 -->
+    <article class="card">
+      <div class="headline">
+        <span class="num">8</span>
+        <h2><a href="https://fortune.com/2026/08/24/trump-new-tariff-china-cheap-exports-trade-war-truce-summit-xi-jinping/" target="_blank" rel="noopener">Trump avalia nova tarifa de 7,5% sobre a China por excesso de exportações baratas, às vésperas da cúpula com Xi</a></h2>
+      </div>
+      <p class="byline">24–25 de agosto de 2026 · Fortune / Benzinga / Business Standard</p>
+      <p class="summary">O governo Trump avalia impor uma tarifa adicional de 7,5% sobre produtos chineses associados a excesso de capacidade industrial (aço, painéis solares, veículos elétricos, eletrônicos), somando-se às tarifas de 10%–12,5% já anunciadas. A medida é calibrada para não descarrilar a trégua comercial nem a cúpula prevista com Xi Jinping em Washington no fim de setembro.</p>
+
+      <div class="box yellow">
+        <span class="box-title">📌 Por que isso importa?</span>
+        Mostra a linha tênue que Washington tenta caminhar: punir o excesso de capacidade industrial chinesa sem inviabilizar o encontro Trump-Xi. Setores diretamente afetados incluem eletrônicos de consumo e componentes usados por Xiaomi, BYD e fabricantes de painéis solares — com efeito cascata para exportadoras de e-commerce como Shein, Temu e AliExpress, que já operam sob tarifas mais altas nos EUA.
+      </div>
+
+      <div class="box green">
+        <span class="box-title">🌍 Análise de Cobertura Global</span>
+        <div class="coverage-regions">
+          <span class="no">✗ China</span><span>✓ EUA</span><span class="no">✗ Europa</span><span class="no">✗ Brasil</span>
+        </div>
+        <ul class="sources-list">
+          <li>🇺🇸 Fortune — <a href="https://fortune.com/2026/08/24/trump-new-tariff-china-cheap-exports-trade-war-truce-summit-xi-jinping/" target="_blank" rel="noopener">"Trump readies a new tariff to punish China for its flood of cheap exports"</a></li>
+          <li>🇺🇸 Benzinga — <a href="https://www.benzinga.com/news/politics/26/08/61400051/trump-china-tariff-cheap-goods-xi-meeting" target="_blank" rel="noopener">"Trump Moves Toward 7.5% Tariff on China for Flooding Global Markets With Cheap Goods Ahead of Xi Meeting"</a></li>
+          <li>🇺🇸 Business Standard — <a href="https://www.business-standard.com/world-news/trump-weighs-7-5-tariff-on-china-for-flooding-market-with-cheap-goods-126082500051_1.html" target="_blank" rel="noopener">"Trump weighs 7.5% tariff on China for flooding market with cheap goods"</a></li>
+        </ul>
+        <p class="narrative"><strong>Diferenças de narrativa:</strong> a cobertura disponível é majoritariamente americana, com foco na engenharia política da tarifa (nível calibrado para não afetar a cúpula). Reportagens citam a resposta da embaixada chinesa em Washington, que rejeita a tese de "excesso de capacidade" e defende que o tema seja resolvido bilateralmente — mas ainda sem ampla repercussão em veículos chineses de tecnologia até o fechamento desta edição.</p>
+        <span class="attention">Nível de atenção: <strong>alto</strong></span>
+      </div>
+    </article>
+
+    <!-- 9 -->
+    <article class="card">
+      <div class="headline">
+        <span class="num">9</span>
+        <h2><a href="https://www.cnbc.com/2026/09/02/trump-xi-summit-iran-china-trade-elections.html" target="_blank" rel="noopener">Cúpula Trump-Xi em Washington é esperada para 24 de setembro, com IA e tarifas na pauta</a></h2>
+      </div>
+      <p class="byline">31 de agosto – 2 de setembro de 2026 · CNBC</p>
+      <p class="summary">O presidente chinês Xi Jinping deve visitar Washington em 24 de setembro para se reunir com Trump, em encontro ainda não formalmente confirmado por Pequim. As conversas devem incluir cortes tarifários recíprocos sobre cerca de US$ 30 bilhões em bens não estratégicos de cada lado, além de salvaguardas de segurança em inteligência artificial — reforçando a trégua comercial firmada em outubro do ano anterior.</p>
+
+      <div class="box yellow">
+        <span class="box-title">📌 Por que isso importa?</span>
+        É o principal marco geopolítico do trimestre para a relação EUA-China: o resultado da cúpula deve definir se a trégua comercial se aprofunda ou racha diante de episódios recentes como a disputa da Nexperia, as novas tarifas propostas e as restrições a chips de IA. Para empresas como Nvidia, Alibaba, Tencent e ByteDance, o desfecho determina o ambiente regulatório dos próximos meses — inclusive o futuro da venda de chips H200 à China.
+      </div>
+
+      <div class="box green">
+        <span class="box-title">🌍 Análise de Cobertura Global</span>
+        <div class="coverage-regions">
+          <span class="no">✗ China</span><span>✓ EUA</span><span class="no">✗ Europa</span><span class="no">✗ Brasil</span>
+        </div>
+        <ul class="sources-list">
+          <li>🇺🇸 CNBC — <a href="https://www.cnbc.com/2026/09/02/trump-xi-summit-iran-china-trade-elections.html" target="_blank" rel="noopener">"Trump-Xi Washington summit: Why some expectations are low"</a></li>
+          <li>🇺🇸 CNBC — <a href="https://www.cnbc.com/2026/08/31/china-xi-us-trump-visit-sco-brics-modi-india.html" target="_blank" rel="noopener">"China's Xi builds diplomatic clout with multiple state visits ahead of Trump summit"</a></li>
+          <li>🇺🇸 Ag Bull Trading — <a href="https://www.agbull.com/trump-xi-september-summit-faces-questions-but-2027-delay-is-unconfirmed/" target="_blank" rel="noopener">"Trump/Xi September Summit Faces Questions, but 2027 Delay Is Unconfirmed"</a></li>
+        </ul>
+        <p class="narrative"><strong>Diferenças de narrativa:</strong> a imprensa americana enfatiza o ceticismo sobre resultados concretos e cita a agenda paralela de sanções dos EUA contra parceiros comerciais do Irã (dos quais a China é o maior). Pequim, por ora, evita comentar publicamente a data antes da confirmação oficial — um padrão diplomático típico que contrasta com a cobertura mais especulativa da imprensa ocidental.</p>
+        <span class="attention">Nível de atenção: <strong>alto</strong></span>
+      </div>
+    </article>
+
+    <!-- 10 -->
+    <article class="card">
+      <div class="headline">
+        <span class="num">10</span>
+        <h2><a href="https://www.cnn.com/2026/08/18/tech/china-unitree-ipo-intl-hnk" target="_blank" rel="noopener">Unitree dispara mais de 600% em estreia na bolsa de Xangai após robô "Superman" viralizar</a></h2>
+      </div>
+      <p class="byline">17–19 de agosto de 2026 · CNN / Sina / The Paper <span class="cn-flag-badge">Cobertura chinesa primária</span></p>
+      <p class="summary">Dias antes de sua estreia recorde na bolsa STAR de Xangai — ações subiram mais de 600%, com IPO de 8.000 vezes sobre-subscrito —, a Unitree divulgou vídeo do robô humanoide "Superman", capaz de saltar 2 metros na vertical e correr a 12,66 m/s, superando recordes humanos. A empresa é hoje a maior fabricante de robôs humanoides do mundo em vendas.</p>
+
+      <div class="box yellow">
+        <span class="box-title">📌 Por que isso importa?</span>
+        A avaliação de mercado da Unitree (~US$ 90 bilhões após o pico) consolida a robótica humanoide como a nova fronteira de investimento da China, com Pequim tratando o setor como prioridade estratégica industrial. O timing do vídeo viral às vésperas do IPO também exemplifica como empresas chinesas de "hard tech" usam demonstrações espetaculares para turbinar avaliações — um padrão que investidores ocidentais monitoram de perto ao avaliar a "bolha" versus fundamentos reais do setor de robótica chinês.
+      </div>
+
+      <div class="box green">
+        <span class="box-title">🌍 Análise de Cobertura Global</span>
+        <div class="coverage-regions">
+          <span>✓ China</span><span>✓ EUA</span><span class="no">✗ Europa</span><span class="no">✗ Brasil</span>
+        </div>
+        <ul class="sources-list">
+          <li>🇺🇸 CNN Business — <a href="https://www.cnn.com/2026/08/18/tech/china-unitree-ipo-intl-hnk" target="_blank" rel="noopener">"World's top humanoid robot maker Unitree surges in blockbuster market debut in China"</a></li>
+          <li>🇯🇵 The Japan Times — <a href="https://www.japantimes.co.jp/business/2026/08/12/tech/unitree-china-humanoid-robot-makers/" target="_blank" rel="noopener">"What is Unitree and why are China's humanoid robot makers racing to list?"</a></li>
+          <li>🇨🇳 Sina Finance (新浪财经/创事记) — <a href="https://finance.sina.com.cn/tech/csj/2026-08-17/doc-ininrkkr7826268.shtml" target="_blank" rel="noopener">"宇树发布'超人'机器人，行业震动"</a></li>
+          <li>🇨🇳 The Paper (澎湃新闻) — <a href="https://www.thepaper.cn/newsDetail_forward_33798806" target="_blank" rel="noopener">"宇树科技发布新品机器人'超人'：超人类原地跳高和奔跑速度纪录"</a></li>
+          <li>🇨🇳 Tencent News (腾讯新闻) — <a href="https://news.qq.com/rain/a/20260817A07JNO00" target="_blank" rel="noopener">"为上市预热，宇树'超人'亮相"</a></li>
+        </ul>
+        <p class="narrative"><strong>Diferenças de narrativa:</strong> a imprensa ocidental é mais cética, destacando que a empresa descreve o "Superman" como plataforma experimental sem mãos ou garras, sem protocolos de teste publicados — insinuando marketing pré-IPO. A imprensa chinesa celebra o feito como orgulho nacional de engenharia ("行业震动" — "abalou o setor"), com menor ênfase nas ressalvas técnicas.</p>
+        <span class="attention">Nível de atenção: <strong>alto</strong></span>
+      </div>
+    </article>
+
+    <!-- 11 -->
+    <article class="card">
+      <div class="headline">
+        <span class="num">11</span>
+        <h2><a href="https://www.scmp.com/news/china/article/3365246/brazil-fines-tiktok-record-us30-million-profiting-childrens-data" target="_blank" rel="noopener">Brasil multa ByteDance/TikTok em quase US$ 30 milhões por uso de dados de crianças</a></h2>
+      </div>
+      <p class="byline">25 de agosto de 2026 · ANPD / Bloomberg / SCMP</p>
+      <p class="summary">A Autoridade Nacional de Proteção de Dados (ANPD) aplicou multa recorde de mais de R$ 153 milhões (quase US$ 30 milhões) ao TikTok por falhas na proteção de dados de crianças e adolescentes, incluindo em sessões de convidado sem login. A empresa terá de apagar dados irregulares e reforçar verificação de idade e controles parentais; tem dez dias para recorrer.</p>
+
+      <div class="box yellow">
+        <span class="box-title">📌 Por que isso importa?</span>
+        É um dos sinais mais claros de que o Brasil está disposto a aplicar penalidades pesadas contra plataformas chinesas mesmo em meio à parceria comercial estratégica entre os dois países — reforçando a tendência global de escrutínio regulatório sobre a ByteDance, que já enfrenta pressão nos EUA (venda forçada de operações) e na Europa (DSA). Para o TikTok, o caso se soma a um acordo de US$ 400 milhões com o Departamento de Justiça dos EUA por violações de privacidade infantil.
+      </div>
+
+      <div class="box green">
+        <span class="box-title">🌍 Análise de Cobertura Global</span>
+        <div class="coverage-regions">
+          <span>✓ China</span><span>✓ EUA</span><span class="no">✗ Europa</span><span>✓ Brasil</span>
+        </div>
+        <ul class="sources-list">
+          <li>🇧🇷/🇨🇳 South China Morning Post — <a href="https://www.scmp.com/news/china/article/3365246/brazil-fines-tiktok-record-us30-million-profiting-childrens-data" target="_blank" rel="noopener">"Brazil fines TikTok record US$30 million for profiting from children's data"</a></li>
+          <li>🇺🇸 Bloomberg — <a href="https://www.bloomberg.com/news/articles/2026-08-25/brazil-slaps-tiktok-owner-with-30-million-fine-over-data-use" target="_blank" rel="noopener">"ByteDance Hit With $30 Million Brazil Fine for TikTok Data Violations"</a></li>
+          <li>🇶🇦 Al Jazeera — <a href="https://www.aljazeera.com/news/2026/8/25/brazil-fines-tiktok-30m-for-child-data-privacy-violations" target="_blank" rel="noopener">"Brazil fines TikTok $30m for child data privacy violations"</a></li>
+          <li>🇫🇷 France24 — <a href="https://www.france24.com/en/live-news/20260825-brazil-fines-tiktok-30-mn-in-powerful-signal-over-child-safety" target="_blank" rel="noopener">"Brazil fines TikTok $30 mn in 'powerful signal' over child safety"</a></li>
+        </ul>
+        <p class="narrative"><strong>Diferenças de narrativa:</strong> a imprensa brasileira e internacional destaca a multa como marco regulatório inédito para a proteção de menores online. A SCMP, ao noticiar o caso para leitores chineses, enquadra o episódio dentro do padrão mais amplo de escrutínio global sobre a ByteDance, sem entrar em detalhes sobre a legislação brasileira específica (LGPD) — um recorte mais geopolítico do que jurídico.</p>
+        <span class="attention">Nível de atenção: <strong>médio</strong></span>
+      </div>
+    </article>
+
+    <!-- 12 -->
+    <article class="card">
+      <div class="headline">
+        <span class="num">12</span>
+        <h2><a href="https://www.gizmochina.com/2026/09/01/phone-launching-in-september-2026/" target="_blank" rel="noopener">Setembro vira o mês mais concorrido de smartphones da história, com Huawei, Apple e Xiaomi colidindo</a></h2>
+      </div>
+      <p class="byline">1 de setembro de 2026 · Gizmochina / ProPakistani / Android Headlines</p>
+      <p class="summary">Mais de 20 novos smartphones devem ser lançados em setembro por Apple, Huawei, Xiaomi, Vivo, Oppo, Honor e iQOO. A Huawei confirmou o tri-fold Mate XT2 para 7 de setembro; a Xiaomi lança o 18 Fold com chip próprio Xring O3; a disputa acirra a corrida por dobráveis e chips domésticos, reduzindo a dependência de fornecedores americanos.</p>
+
+      <div class="box yellow">
+        <span class="box-title">📌 Por que isso importa?</span>
+        A concentração de lançamentos mostra como as fabricantes chinesas (Huawei, Xiaomi) aceleraram sua recuperação tecnológica mesmo sob sanções de chips dos EUA, investindo pesado em silício próprio. O calendário apertado também pressiona a Apple, que compete diretamente por participação de mercado no maior mercado de smartphones do mundo, a China, onde marcas locais já dominam a maior parte das vendas.
+      </div>
+
+      <div class="box green">
+        <span class="box-title">🌍 Análise de Cobertura Global</span>
+        <div class="coverage-regions">
+          <span class="no">✗ China</span><span class="no">✗ EUA</span><span class="no">✗ Europa</span><span class="no">✗ Brasil</span>
+        </div>
+        <ul class="sources-list">
+          <li>Gizmochina — <a href="https://www.gizmochina.com/2026/09/01/phone-launching-in-september-2026/" target="_blank" rel="noopener">"Every Phone Launching in September 2026"</a></li>
+          <li>ProPakistani — <a href="https://propakistani.pk/2026/09/01/these-are-the-biggest-smartphones-launches-of-september-2026/" target="_blank" rel="noopener">"These Are the Biggest Smartphones Launches of September 2026"</a></li>
+          <li>Android Headlines — <a href="https://www.androidheadlines.com/2026/08/over-20-smartphones-are-launching-in-september-and-thats-just-the-start-of-whats-coming.html" target="_blank" rel="noopener">"Over 20 Smartphones Are Launching in September"</a></li>
+          <li>Huawei Central — <a href="https://www.huaweicentral.com/huawei-apple-xiaomi-to-raise-smartphone-competition-bar-in-september/" target="_blank" rel="noopener">"Huawei, Apple, Xiaomi to raise smartphone competition bar in September"</a></li>
+        </ul>
+        <p class="narrative"><strong>Diferenças de narrativa:</strong> a cobertura disponível vem majoritariamente de veículos especializados em hardware com forte presença de fontes e vazamentos chineses (Weibo), mas sem tradução direta ainda em grandes veículos generalistas chineses, americanos, europeus ou brasileiros — um sinal de que a história é, por ora, mais "de nicho" tech do que geopolítica, mas com potencial de ganhar tração à medida que os lançamentos ocorrem ao longo do mês.</p>
+        <span class="attention">Nível de atenção: <strong>baixo</strong></span>
+      </div>
+    </article>
+
+    <!-- 13 -->
+    <article class="card">
+      <div class="headline">
+        <span class="num">13</span>
+        <h2><a href="https://exame.com/tecnologia/examelab/comprar-na-shein-shopee-e-aliexpress-em-2026-taxacao-rastreio-e-o-que-sai-mais-barato/" target="_blank" rel="noopener">Brasil se aproxima do prazo final para votar regras de taxação de Shein, Shopee, AliExpress e Temu</a></h2>
+      </div>
+      <p class="byline">Vigente desde maio; prazo em 22 de setembro de 2026 · Exame / Estado de Minas</p>
+      <p class="summary">A Medida Provisória 1.357/2026, que zerou o Imposto de Importação para compras de até US$ 50 dentro do programa Remessa Conforme, precisa ser votada pelo Congresso até 22 de setembro de 2026 ou perde validade — o que poderia trazer de volta a cobrança de 20% sobre pequenas compras internacionais. ICMS estadual (17%–20%) continua incidindo normalmente sobre todas as remessas.
+</p>
+
+      <div class="box yellow">
+        <span class="box-title">📌 Por que isso importa?</span>
+        A decisão do Congresso brasileiro nas próximas semanas afeta diretamente o modelo de negócio de Shein, Shopee, AliExpress e Temu no Brasil — um dos mercados de crescimento mais importantes para essas plataformas chinesas fora da China. Uma reversão da isenção elevaria custos para milhões de consumidores brasileiros e pode se tornar um novo ponto de fricção comercial entre Brasília e Pequim, ecoando debates semelhantes em curso nos EUA e na União Europeia sobre pacotes de baixo valor.
+      </div>
+
+      <div class="box green">
+        <span class="box-title">🌍 Análise de Cobertura Global</span>
+        <div class="coverage-regions">
+          <span class="no">✗ China</span><span class="no">✗ EUA</span><span class="no">✗ Europa</span><span>✓ Brasil</span>
+        </div>
+        <ul class="sources-list">
+          <li>🇧🇷 Exame — <a href="https://exame.com/tecnologia/examelab/comprar-na-shein-shopee-e-aliexpress-em-2026-taxacao-rastreio-e-o-que-sai-mais-barato/" target="_blank" rel="noopener">"Comprar na Shein, Shopee e AliExpress em 2026: taxação, rastreio e o que sai mais barato"</a></li>
+          <li>🇧🇷 Estado de Minas — <a href="https://www.em.com.br/emfoco/2026/04/25/lojas-online-como-shopee-aliexpress-e-shein-passam-a-seguir-novas-regras-de-taxacao-e-fiscalizacao-na-alfandega/" target="_blank" rel="noopener">"Lojas online como Shopee, AliExpress e Shein passam a seguir novas regras de taxação"</a></li>
+          <li>🇧🇷 Giro Costa do Sol — <a href="https://girocostadosol.com.br/shopee-shein-e-temu-taxa-das-blusinhas-chega-ao-fim-para-compras-de-ate-us-50/" target="_blank" rel="noopener">"Shopee, Shein e Temu: 'Taxa das blusinhas' chega ao fim para compras de até US$ 50"</a></li>
+        </ul>
+        <p class="narrative"><strong>Diferenças de narrativa:</strong> por ora, esta é essencialmente uma pauta doméstica brasileira, tratada como questão de política tributária e proteção ao varejo nacional (Magazine Luiza, Americanas, Mercado Livre pressionam por regras mais rígidas). Ainda não repercute em veículos chineses, que tendem a cobrir o tema apenas quando há decisão final — um ponto de atenção para as próximas semanas, à medida que o prazo de 22 de setembro se aproxima.</p>
+        <span class="attention">Nível de atenção: <strong>médio</strong></span>
+      </div>
+    </article>
+
+    <!-- 14 -->
+    <article class="card">
+      <div class="headline">
+        <span class="num">14</span>
+        <h2><a href="https://www.euronews.com/next/2026/08/31/eu-places-chatgpt-reddit-and-roblox-under-strictest-digital-safety-rules" target="_blank" rel="noopener">UE enquadra ChatGPT, Reddit e Roblox nas regras mais rígidas de segurança digital</a></h2>
+      </div>
+      <p class="byline">31 de agosto de 2026 (após entrada em vigor do AI Act em 2 de agosto) · Euronews / Comissão Europeia</p>
+      <p class="summary">A Comissão Europeia classificou ChatGPT, Reddit e Roblox como "plataformas online de grande porte" (VLOPs) sob o Digital Services Act, exigindo avaliações anuais de risco sistêmico e auditorias independentes até novembro de 2026. A medida vem na esteira da entrada em vigor, em 2 de agosto, das novas regras de transparência do AI Act, que obrigam rotulagem de conteúdo gerado por IA e identificação clara de chatbots.
+</p>
+
+      <div class="box yellow">
+        <span class="box-title">📌 Por que isso importa?</span>
+        Bruxelas consolida-se como o regulador mais agressivo do mundo em IA e plataformas digitais, criando um padrão que pressiona empresas chinesas com operação na Europa (TikTok, AliExpress, Shein, Temu, CapCut) a se adaptarem às mesmas exigências de transparência e auditoria já aplicadas a Google, Meta e OpenAI. O timing também aumenta o risco de retaliação tarifária dos EUA, que já classificou multas da UE contra Big Techs americanas como "extorsão regulatória".
+      </div>
+
+      <div class="box green">
+        <span class="box-title">🌍 Análise de Cobertura Global</span>
+        <div class="coverage-regions">
+          <span class="no">✗ China</span><span class="no">✗ EUA</span><span>✓ Europa</span><span class="no">✗ Brasil</span>
+        </div>
+        <ul class="sources-list">
+          <li>🇪🇺 Euronews — <a href="https://www.euronews.com/next/2026/08/31/eu-places-chatgpt-reddit-and-roblox-under-strictest-digital-safety-rules" target="_blank" rel="noopener">"EU places ChatGPT, Reddit and Roblox under strictest digital safety rules"</a></li>
+          <li>🇪🇺 Euronews — <a href="https://www.euronews.com/my-europe/2026/08/02/eu-rules-on-ai-models-become-enforceable-whats-going-to-change" target="_blank" rel="noopener">"EU rules on AI models become enforceable. What's going to change?"</a></li>
+          <li>🇪🇺 Comissão Europeia (fonte primária) — <a href="https://ec.europa.eu/commission/presscorner/detail/en/ip_26_1714" target="_blank" rel="noopener">"Commission starts enforcing AI Act rules and new transparency requirements on 2 August"</a></li>
+        </ul>
+        <p class="narrative"><strong>Diferenças de narrativa:</strong> a cobertura europeia enquadra a medida como proteção ao cidadão e soberania digital do bloco. A ausência, até o momento, de repercussão direta em veículos chineses ou americanos é notável — sugerindo que o impacto sobre empresas chinesas (que também operam essas categorias de plataforma na Europa) ainda não foi plenamente assimilado fora de Bruxelas, mas deve crescer conforme auditorias avancem.</p>
+        <span class="attention">Nível de atenção: <strong>médio</strong></span>
+      </div>
+    </article>
+
+    <!-- 15 -->
+    <article class="card">
+      <div class="headline">
+        <span class="num">15</span>
+        <h2><a href="https://www.tomshardware.com/pc-components/gpus/china-approves-first-nvidia-h200-deliveries-to-bytedance-and-tencent-under-case-by-case-import-licenses" target="_blank" rel="noopener">China libera primeiras remessas de chips H200 da Nvidia para ByteDance e Tencent, mas só para treinamento</a></h2>
+      </div>
+      <p class="byline">Julho–agosto de 2026 (desdobramentos recentes) · Tom's Hardware / TrendForce</p>
+      <p class="summary">Depois de meses de impasse, Pequim aprovou as primeiras remessas relevantes de GPUs H200 da Nvidia para ByteDance, Alibaba e Tencent — cerca de 10 mil unidades cada até agora, de um total aprovado que pode superar 400 mil. Mas o governo chinês restringe o uso dos chips a treinamento de modelos, orientando empresas a usar processadores domésticos (like Huawei Ascend) para inferência do dia a dia.</p>
+
+      <div class="box yellow">
+        <span class="box-title">📌 Por que isso importa?</span>
+        Mesmo com a liberação parcial anunciada por Washington (mediante taxa de exportação de 25%), Pequim segue priorizando a soberania em chips, limitando o volume real que entra no país e direcionando a demanda doméstica para o ecossistema Huawei. Isso confirma que, apesar da distensão tarifária às vésperas da cúpula Trump-Xi, a "guerra dos chips" está longe do fim — e que a estratégia chinesa de dupla via (usar Nvidia onde inevitável, mas migrar para silício doméstico sempre que possível) seguirá moldando a demanda global por GPUs nos próximos trimestres.
+      </div>
+
+      <div class="box green">
+        <span class="box-title">🌍 Análise de Cobertura Global</span>
+        <div class="coverage-regions">
+          <span class="no">✗ China</span><span>✓ EUA</span><span class="no">✗ Europa</span><span class="no">✗ Brasil</span>
+        </div>
+        <ul class="sources-list">
+          <li>🇺🇸 Tom's Hardware — <a href="https://www.tomshardware.com/pc-components/gpus/china-approves-first-nvidia-h200-deliveries-to-bytedance-and-tencent-under-case-by-case-import-licenses" target="_blank" rel="noopener">"H200 AI GPUs finally reach China under case-by-case import licenses"</a></li>
+          <li>TrendForce — <a href="https://www.trendforce.com/news/2026/07/09/news-china-reportedly-to-allow-nvidia-h200-imports-but-approvals-may-be-capped-below-200k-chips-less-than-half-requested/" target="_blank" rel="noopener">"China Reportedly to Allow NVIDIA H200 Imports, but Approvals May Fall Below 200K Chips"</a></li>
+          <li>Tech Times — <a href="https://www.techtimes.com/articles/320544/20260715/nvidia-h200-shipments-china-called-trivial-blackwell-loophole-draws-fire.htm" target="_blank" rel="noopener">"Nvidia H200 Shipments to China Called 'Trivial' as Blackwell Loophole Draws Fire"</a></li>
+        </ul>
+        <p class="narrative"><strong>Diferenças de narrativa:</strong> a imprensa técnica americana enfatiza que os volumes reais são "triviais" perto do potencial de mercado, sugerindo que a vantagem da Nvidia na China já foi estruturalmente corroída pela substituição doméstica. Não encontramos, até o fechamento desta edição, cobertura direta e recente em grandes veículos chineses generalistas sobre este ponto específico — o tema aparece mais em análises setoriais e é tratado com discrição oficial por Pequim.</p>
+        <span class="attention">Nível de atenção: <strong>alto</strong></span>
+      </div>
+    </article>
+
+  </section>
+
+  <section class="geo">
+    <h2>🌐 Implicações Geopolíticas</h2>
+
+    <h3>Tensões tecnológicas EUA-China: onde estamos</h3>
+    <p>O ciclo das últimas 72 horas mostra uma relação EUA-China simultaneamente mais tensa e mais transacional. De um lado, o governo Trump avalia uma nova tarifa de 7,5% sobre exportações chinesas de "excesso de capacidade" (história 8) e a disputa judicial em torno da Nexperia escalou com o congelamento de ativos em Dongguan (história 7) — sinal de que Pequim está disposta a usar seu sistema jurídico como arma geopolítica. De outro, os dois governos seguem trabalhando para viabilizar a cúpula Trump-Xi prevista para 24 de setembro (história 9), com cortes tarifários recíprocos e salvaguardas de IA na mesa, e a China segue liberando, ainda que a conta-gotas, remessas de chips H200 da Nvidia (história 15).</p>
+
+    <h3>Impacto regulatório previsto</h3>
+    <ul>
+      <li><strong>Curto prazo (próximas 2–3 semanas):</strong> decisão do Congresso brasileiro sobre a MP do Remessa Conforme (22/09) e desfecho da cúpula Trump-Xi (24/09) devem ser os principais catalisadores de novas regras para e-commerce e tecnologia chinesa no Ocidente.</li>
+      <li><strong>Médio prazo:</strong> a consolidação do AI Act europeu e a designação de novas VLOPs (história 14) tende a se estender a plataformas chinesas como TikTok, AliExpress, Shein e Temu, elevando custos de compliance na Europa.</li>
+      <li><strong>Chips:</strong> mesmo com liberação parcial de H200, a preferência estrutural de Pequim por silício doméstico (Huawei Ascend, alimentando DeepSeek e Hunyuan) sinaliza que a "desacoplagem tecnológica" seletiva veio para ficar, independentemente do resultado da cúpula de setembro.</li>
+    </ul>
+
+    <h3>Oportunidades e riscos geopolíticos</h3>
+    <p><strong>Oportunidades:</strong> a trégua tarifária e a cúpula de setembro abrem espaço para acordos pontuais (agricultura, terras raras, tecnologia não estratégica) que podem beneficiar cadeias de suprimento globais. A onda de capital para IA chinesa (placement da Alibaba, corrida de modelos da Tencent) mostra um mercado de investidores institucionais internacionais ainda disposto a apostar em tecnologia chinesa apesar do risco político.</p>
+    <p><strong>Riscos:</strong> a escalada judicial da Nexperia pode reacender gargalos de fornecimento automotivo global a qualquer momento; uma cúpula Trump-Xi malsucedida poderia acelerar novas rodadas tarifárias; e a concentração de poder de mercado em torno da Nvidia (aquisição da Hugging Face) levanta questões antitruste que podem atrair atenção regulatória tanto nos EUA quanto na China e na UE.</p>
+
+    <h3>Perspectiva Brasil-China-Global</h3>
+    <p>O Brasil aparece neste ciclo em dois papéis distintos: como regulador assertivo (multa recorde ao TikTok por dados de crianças) e como mercado de destino disputado pelo e-commerce chinês (decisão iminente do Congresso sobre taxação de remessas internacionais). Para empresas como Shein, Shopee, AliExpress e Temu, o Brasil consolidou-se como um dos principais mercados de expansão fora da Ásia — o que torna as próximas semanas particularmente relevantes: qualquer sinalização de reoneração tributária ou nova rodada de fiscalização tende a ecoar rapidamente em Pequim, dado o peso crescente do comércio eletrônico chinês na pauta bilateral Brasil-China.</p>
+  </section>
+
+  <footer class="report-footer">
+    Tech Global Report · Relatório gerado automaticamente a partir de apuração via busca na web · 3 de setembro de 2026<br>
+    Este relatório é produzido por um processo autônomo e deve ser lido como um resumo jornalístico, não como aconselhamento financeiro ou de investimento.
+  </footer>
+
+</div>
+</body>
+</html>
