@@ -1,0 +1,1033 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<title>Stocks Report — Top Notícias 24h</title>
+<style>
+  :root {
+    --bg: #f2f3f5;
+    --card-bg: #ffffff;
+    --text: #1c1c1e;
+    --text-muted: #6b6b70;
+    --header-bg: #0a0a0c;
+    --header-text: #ffffff;
+    --yellow-bg: #fff8dd;
+    --yellow-border: #f4d35e;
+    --yellow-text: #6b5400;
+    --green-bg: #e8f8ee;
+    --green-border: #7fd8a0;
+    --green-text: #17663a;
+    --link: #0a58ca;
+    --radius: 16px;
+    --radius-sm: 12px;
+  }
+  * { box-sizing: border-box; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    font-size: 15px;
+    line-height: 1.6;
+    margin: 0;
+  }
+  a { color: var(--link); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+
+  header.top {
+    background: var(--header-bg);
+    color: var(--header-text);
+    width: 100%;
+    padding: 32px 24px;
+    border-radius: 0 0 var(--radius) var(--radius);
+    text-align: center;
+  }
+  header.top .logo {
+    font-size: 28px;
+    font-weight: 700;
+    letter-spacing: -0.5px;
+  }
+  header.top .logo span { color: #f4d35e; }
+  header.top .pubdate {
+    margin-top: 6px;
+    color: #c9c9cd;
+    font-size: 14px;
+  }
+  header.top .regions {
+    margin-top: 18px;
+    display: flex;
+    justify-content: center;
+    gap: 22px;
+    flex-wrap: wrap;
+    font-size: 14px;
+  }
+  header.top .regions span {
+    background: rgba(255,255,255,0.08);
+    padding: 6px 14px;
+    border-radius: 999px;
+  }
+
+  .container {
+    max-width: 980px;
+    margin: 0 auto;
+    padding: 0 20px 60px;
+  }
+
+  .methodology {
+    background: #fdf4f4;
+    border: 1px solid #f0c9c9;
+    border-radius: var(--radius-sm);
+    padding: 20px 24px;
+    margin: 28px 0;
+    font-size: 13.5px;
+    color: #7a2323;
+  }
+  .methodology h4 { margin: 0 0 8px; font-size: 14px; }
+  .methodology ul { margin: 8px 0 0; padding-left: 20px; }
+
+  section.section-block {
+    margin-top: 44px;
+  }
+  section.section-block > h2 {
+    font-size: 22px;
+    font-weight: 700;
+    margin-bottom: 4px;
+    letter-spacing: -0.3px;
+  }
+  section.section-block > p.section-sub {
+    color: var(--text-muted);
+    margin-top: 0;
+    margin-bottom: 24px;
+    font-size: 14px;
+  }
+
+  .story-card {
+    background: var(--card-bg);
+    border-radius: var(--radius);
+    padding: 24px 26px;
+    margin-bottom: 22px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+  }
+  .story-head {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+  }
+  .story-num {
+    flex: none;
+    background: #0a0a0c;
+    color: #f4d35e;
+    font-weight: 700;
+    font-size: 14px;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .story-head h3 {
+    margin: 3px 0 0;
+    font-size: 17px;
+    line-height: 1.4;
+    font-weight: 600;
+  }
+  .story-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+    color: var(--text-muted);
+    font-size: 13px;
+    margin: 10px 0 14px;
+    padding-left: 42px;
+  }
+  .story-summary {
+    margin: 0 0 14px;
+    padding-left: 42px;
+    font-size: 14.5px;
+  }
+  .story-note {
+    padding-left: 42px;
+    font-size: 12.5px;
+    color: #9a6b00;
+    font-style: italic;
+    margin: -6px 0 14px;
+  }
+  .box {
+    border-radius: var(--radius-sm);
+    padding: 16px 18px;
+    margin: 0 0 14px 42px;
+    font-size: 13.5px;
+  }
+  .box:last-child { margin-bottom: 0; }
+  .box-title {
+    font-weight: 700;
+    margin-bottom: 8px;
+    font-size: 13.5px;
+  }
+  .box-yellow {
+    background: var(--yellow-bg);
+    border: 1px solid var(--yellow-border);
+    color: var(--yellow-text);
+  }
+  .box-yellow ul { margin: 0; padding-left: 20px; }
+  .box-yellow li { margin-bottom: 4px; }
+  .box-green {
+    background: var(--green-bg);
+    border: 1px solid var(--green-border);
+    color: var(--green-text);
+  }
+  .box-green p { margin: 6px 0; }
+  .reg-yes { font-weight: 600; }
+  .reg-no { opacity: 0.45; }
+  .att-badge {
+    padding: 2px 10px;
+    border-radius: 999px;
+    font-weight: 700;
+    font-size: 11.5px;
+    letter-spacing: 0.3px;
+  }
+  .att-high { background: #ffdede; color: #a11d1d; }
+  .att-med { background: #fff1c9; color: #8a6300; }
+  .att-low { background: #dfeee0; color: #2f6b32; }
+
+  .analysis-section {
+    margin-top: 50px;
+  }
+  .analysis-section h2 {
+    font-size: 22px;
+    margin-bottom: 20px;
+  }
+  .analysis-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 18px;
+  }
+  @media (max-width: 720px) {
+    .analysis-grid { grid-template-columns: 1fr; }
+    .story-meta, .story-summary, .story-note, .box { padding-left: 0; margin-left: 0; }
+    .story-head { flex-direction: column; }
+  }
+  .analysis-card {
+    background: var(--card-bg);
+    border-radius: var(--radius-sm);
+    padding: 20px 22px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+  }
+  .analysis-card h4 {
+    margin: 0 0 10px;
+    font-size: 15px;
+  }
+  .analysis-card p {
+    margin: 0;
+    font-size: 13.8px;
+    color: #33333a;
+  }
+  .analysis-perspective {
+    margin-top: 20px;
+    background: #101014;
+    color: #f2f2f4;
+    border-radius: var(--radius);
+    padding: 24px 26px;
+  }
+  .analysis-perspective h4 { margin-top: 0; color: #f4d35e; }
+  .analysis-perspective p { margin-bottom: 0; font-size: 14px; }
+
+  footer.report-footer {
+    text-align: center;
+    color: var(--text-muted);
+    font-size: 12.5px;
+    margin-top: 50px;
+    padding-bottom: 10px;
+  }
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="logo">📈 <span>Stocks</span> Report</div>
+  <div class="pubdate">Publicado em 06 de setembro de 2026 — 12:30 (Horário de Brasília) &nbsp;•&nbsp; Top Notícias das Últimas 24h</div>
+  <div class="regions">
+    <span>🇨🇳 China</span>
+    <span>🇺🇸 EUA</span>
+    <span>🇪🇺 Europa</span>
+    <span>🇧🇷 Brasil</span>
+  </div>
+</header>
+
+<div class="container">
+
+  <div class="methodology">
+    <h4>⚠️ Nota Metodológica e Limitações de Verificação</h4>
+    <p>Este relatório foi produzido por pesquisa automatizada combinando múltiplos agentes de busca. É importante registrar, com transparência, as limitações encontradas nesta execução:</p>
+    <ul>
+      <li><strong>Verificação direta de links:</strong> o ambiente de execução bloqueou o acesso direto (fetch) a praticamente todos os domínios de notícias, incluindo veículos obrigatórios como InfoMoney, Money Times, Investing.com, Reuters, Bloomberg, BBC, Financial Times e The Economist. Não foi possível confirmar tecnicamente que cada link retorna código HTTP 200 (ausência de erro 404). Todas as URLs abaixo foram obtidas via busca (não inventadas), com checagem cruzada entre múltiplas fontes sempre que possível — mas recomenda-se conferência manual antes de qualquer decisão de investimento.</li>
+      <li><strong>Cobertura europeia:</strong> não foi possível obter, nesta execução, notícias diretamente indexadas de BBC, Financial Times ou The Economist sobre os tickers monitorados; a coluna "Europa" na análise de cobertura global reflete essa limitação.</li>
+      <li><strong>Janela temporal:</strong> a grande maioria das notícias está concentrada entre 1º e 6 de setembro de 2026. Itens publicados há mais de 24 horas foram mantidos apenas quando representam o desenvolvimento mais relevante e recente disponível para o ativo, e estão sinalizados individualmente.</li>
+    </ul>
+  </div>
+
+  <section class="section-block">
+    <h2>2. Principais Notícias — Ações Brasileiras (B3)</h2>
+    <p class="section-sub">15 histórias com maior potencial de impacto para BBAS3, BBSE3, ITSA4, BRSR6, ABCB4, BAZA3, SAPR4, ISAE4/TAEE4/TAEE3, PETR4, CMIG4, CPFE3, VALE3, UNIP6, FESA4, AXIA3, IRBR3, KLBN4, MGLU3, AMER3, XPML11, HCTR11 e GGRC11.</p>
+    
+    <article class="story-card">
+      <div class="story-head">
+        <span class="story-num">1</span>
+        <h3><a href="https://www.infomoney.com.br/mercados/ibovespa-abertura-fechamento-02092026/" target="_blank" rel="noopener noreferrer">Ibovespa dispara após pesquisa Quaest mostrar empate técnico entre Lula e Flávio Bolsonaro</a></h3>
+      </div>
+      <div class="story-meta">
+        <span>🗓️ 02/09/2026</span>
+        <span>📰 Fonte primária: <strong>InfoMoney</strong></span>
+      </div>
+      <p class="story-summary">O Ibovespa saltou 3,05%, para 185.205 pontos, sua maior alta percentual em um único dia desde março e a 11ª sessão consecutiva de ganhos, após pesquisa Quaest apontar Lula (42%) e Flávio Bolsonaro (41%) em empate técnico num eventual segundo turno. O movimento foi lido pelo mercado como redução do risco de intervenção estatal em empresas ligadas ao governo. O dólar recuou para R$ 5,1065, menor patamar desde 7 de agosto, em meio a forte entrada de capital estrangeiro.</p>
+      
+      <div class="box box-yellow">
+        <div class="box-title">📌 Por que isso importa?</div>
+        <ul><li>Pesquisa eleitoral reduz percepção de risco político sobre estatais e bancos públicos</li><li>Fluxo estrangeiro reforça apreciação do real e otimismo com ativos brasileiros</li><li>Rali beneficia diretamente bancos (BBAS3, ITSA4) e blue chips como Vale (VALE3)</li></ul>
+      </div>
+      <div class="box box-green">
+        <div class="box-title">🌍 Análise de Cobertura Global</div>
+        <p class="regions"><span class="reg-no">✗ China</span> &nbsp;|&nbsp; <span class="reg-no">✗ EUA</span> &nbsp;|&nbsp; <span class="reg-no">✗ Europa</span> &nbsp;|&nbsp; <span class="reg-yes">✓ Brasil</span></p>
+        <p class="outlets"><strong>Veículos que noticiaram:</strong> InfoMoney, Money Times, Forbes Brasil, Bloomberg Línea</p>
+        <p class="attention">Nível de atenção: <span class="att-badge att-high">ALTA</span></p>
+      </div>
+    </article>
+    
+    <article class="story-card">
+      <div class="story-head">
+        <span class="story-num">2</span>
+        <h3><a href="https://www.infomoney.com.br/mercados/banco-do-brasil-bbas3-desempenho-02092026/" target="_blank" rel="noopener noreferrer">Banco do Brasil (BBAS3) sobe até 7% com novo JCP e “trade eleitoral”</a></h3>
+      </div>
+      <div class="story-meta">
+        <span>🗓️ 02/09/2026</span>
+        <span>📰 Fonte primária: <strong>InfoMoney</strong></span>
+      </div>
+      <p class="story-summary">BBAS3 foi a maior alta do Ibovespa, subindo até 6,8% intradia e fechando com ganho de cerca de 5,5%, combinando o alívio eleitoral com a confirmação de novo JCP de R$ 0,10 por ação (total de R$ 584,9 milhões, a ser pago em 11/09). A XP manteve recomendação Neutra e preço-alvo de R$ 21, projetando crescimento de dividendos por ação de R$ 0,70 (2026) para R$ 1,60 (2028).</p>
+      
+      <div class="box box-yellow">
+        <div class="box-title">📌 Por que isso importa?</div>
+        <ul><li>Anúncio concreto de JCP reforça a tese de dividendos do banco estatal</li><li>Menor risco de interferência política eleva o apetite por BBAS3 entre estrangeiros</li><li>Casas de análise (XP) revisam projeções de payout para os próximos anos</li></ul>
+      </div>
+      <div class="box box-green">
+        <div class="box-title">🌍 Análise de Cobertura Global</div>
+        <p class="regions"><span class="reg-no">✗ China</span> &nbsp;|&nbsp; <span class="reg-no">✗ EUA</span> &nbsp;|&nbsp; <span class="reg-no">✗ Europa</span> &nbsp;|&nbsp; <span class="reg-yes">✓ Brasil</span></p>
+        <p class="outlets"><strong>Veículos que noticiaram:</strong> InfoMoney, Money Times</p>
+        <p class="attention">Nível de atenção: <span class="att-badge att-high">ALTA</span></p>
+      </div>
+    </article>
+    
+    <article class="story-card">
+      <div class="story-head">
+        <span class="story-num">3</span>
+        <h3><a href="https://www.infomoney.com.br/mercados/producao-de-petroleo-do-brasil-bate-recorde-com-45-mi-bpd-em-julho/" target="_blank" rel="noopener noreferrer">Produção de petróleo do Brasil bate recorde pelo 2º mês seguido, com 4,5 milhões de bpd em julho</a></h3>
+      </div>
+      <div class="story-meta">
+        <span>🗓️ 02-03/09/2026</span>
+        <span>📰 Fonte primária: <strong>InfoMoney (via Reuters)</strong></span>
+      </div>
+      <p class="story-summary">A produção nacional de petróleo atingiu 4,498 milhões de barris/dia em julho, alta de 13,6% em 12 meses, novo recorde após o marco anterior de junho (4,475 milhões de bpd), puxada pelos campos do pré-sal Búzios (1,11 milhão de bpd) e Mero. A Petrobras respondeu por 87,3% da produção nacional de óleo e gás. Nos mesmos dias, PETR4 renovou máxima histórica nominal, subindo mais de 4% no acumulado da semana.</p>
+      
+      <div class="box box-yellow">
+        <div class="box-title">📌 Por que isso importa?</div>
+        <ul><li>Recorde de produção sustenta a tese de geração de caixa e dividendos da Petrobras</li><li>Pré-sal (Búzios/Mero) segue como motor de crescimento operacional</li><li>Dado divulgado pela ANP tem repercussão em veículos internacionais de energia</li></ul>
+      </div>
+      <div class="box box-green">
+        <div class="box-title">🌍 Análise de Cobertura Global</div>
+        <p class="regions"><span class="reg-no">✗ China</span> &nbsp;|&nbsp; <span class="reg-yes">✓ EUA</span> &nbsp;|&nbsp; <span class="reg-no">✗ Europa</span> &nbsp;|&nbsp; <span class="reg-yes">✓ Brasil</span></p>
+        <p class="outlets"><strong>Veículos que noticiaram:</strong> InfoMoney, Forbes Brasil, Money Times, Bloomberg Línea, Investing.com Brasil</p>
+        <p class="attention">Nível de atenção: <span class="att-badge att-high">ALTA</span></p>
+      </div>
+    </article>
+    
+    <article class="story-card">
+      <div class="story-head">
+        <span class="story-num">4</span>
+        <h3><a href="https://www.infomoney.com.br/mercados/irb-irbr3-sobe-4-com-aprovacao-de-corte-de-impostos-para-resseguradoras/" target="_blank" rel="noopener noreferrer">IRB Brasil RE (IRBR3) dispara com aprovação de corte de impostos para resseguradoras no Senado</a></h3>
+      </div>
+      <div class="story-meta">
+        <span>🗓️ 04/09/2026</span>
+        <span>📰 Fonte primária: <strong>InfoMoney</strong></span>
+      </div>
+      <p class="story-summary">O Senado aprovou o PL 3.540/2026, que segue para sanção presidencial e reduz a alíquota efetiva de imposto sobre resseguradoras de cerca de 40% para 24%: remove o teto de 30% no uso de créditos tributários diferidos, corta a CSLL de 15% para 9% a partir de 2027 e elimina, a partir de 2030, o adicional de 10 pontos do IRPJ. As ações do IRB chegaram a subir 4,17%, a R$ 61,93.</p>
+      
+      <div class="box box-yellow">
+        <div class="box-title">📌 Por que isso importa?</div>
+        <ul><li>JPMorgan estima ganho de valor presente líquido de até 22% para o IRB</li><li>BTG Pactual classifica a mudança como &#x27;muito positiva&#x27;, citando monetização mais rápida de créditos tributários acumulados</li><li>Nova legislação reequilibra o ambiente competitivo do setor de resseguros locais</li></ul>
+      </div>
+      <div class="box box-green">
+        <div class="box-title">🌍 Análise de Cobertura Global</div>
+        <p class="regions"><span class="reg-no">✗ China</span> &nbsp;|&nbsp; <span class="reg-no">✗ EUA</span> &nbsp;|&nbsp; <span class="reg-no">✗ Europa</span> &nbsp;|&nbsp; <span class="reg-yes">✓ Brasil</span></p>
+        <p class="outlets"><strong>Veículos que noticiaram:</strong> InfoMoney, Money Times</p>
+        <p class="attention">Nível de atenção: <span class="att-badge att-high">ALTA</span></p>
+      </div>
+    </article>
+    
+    <article class="story-card">
+      <div class="story-head">
+        <span class="story-num">5</span>
+        <h3><a href="https://www.infomoney.com.br/mercados/vale-apos-goldman-bbi-reitera-visao-positiva-e-ve-vale3-acima-de-r-100-em-2026/" target="_blank" rel="noopener noreferrer">Vale (VALE3): dividendo de R$ 2,03 por ação é creditado e Bradesco BBI eleva preço-alvo para R$ 102</a></h3>
+      </div>
+      <div class="story-meta">
+        <span>🗓️ 02/09/2026</span>
+        <span>📰 Fonte primária: <strong>InfoMoney</strong></span>
+      </div>
+      <p class="story-summary">A Vale creditou em 02/09 o pagamento de R$ 2,030721898 por ação (R$ 1,5687 de JCP + R$ 0,4620 de dividendo, cerca de R$ 8,6 bilhões no total), além de um novo programa de recompra de até 100 milhões de ações (~2,3% do capital). O Bradesco BBI elevou o preço-alvo para o fim de 2026 de R$ 83 para R$ 102, reiterando recomendação de compra, na esteira de uma chamada também otimista do Goldman Sachs.</p>
+      
+      <div class="box box-yellow">
+        <div class="box-title">📌 Por que isso importa?</div>
+        <ul><li>Elevação de preço-alvo por dois bancos globais (Goldman Sachs e BBI) reforça a tese de valorização</li><li>Combinação de dividendo robusto + recompra de ações sinaliza disciplina de capital</li><li>Pagamento via ADR em 10/09 amplia o alcance do evento para investidores internacionais</li></ul>
+      </div>
+      <div class="box box-green">
+        <div class="box-title">🌍 Análise de Cobertura Global</div>
+        <p class="regions"><span class="reg-no">✗ China</span> &nbsp;|&nbsp; <span class="reg-yes">✓ EUA</span> &nbsp;|&nbsp; <span class="reg-no">✗ Europa</span> &nbsp;|&nbsp; <span class="reg-yes">✓ Brasil</span></p>
+        <p class="outlets"><strong>Veículos que noticiaram:</strong> InfoMoney, Forbes Brasil, Money Times</p>
+        <p class="attention">Nível de atenção: <span class="att-badge att-high">ALTA</span></p>
+      </div>
+    </article>
+    
+    <article class="story-card">
+      <div class="story-head">
+        <span class="story-num">6</span>
+        <h3><a href="https://www.moneytimes.com.br/lucro-da-klabin-klbn11-encolhe-34-no-2t26-a-r-387-milhoes-veja-os-numeros-lmrs/" target="_blank" rel="noopener noreferrer">Klabin (KLBN4/KLBN11): lucro cai 34% no 2T26, para R$ 387 milhões, mas supera consenso</a></h3>
+      </div>
+      <div class="story-meta">
+        <span>🗓️ Divulgado em agosto/2026 (resultado ainda em debate por analistas)</span>
+        <span>📰 Fonte primária: <strong>Money Times</strong></span>
+      </div>
+      <p class="story-summary">A Klabin reportou lucro líquido de R$ 387 milhões no segundo trimestre de 2026, queda de 34% frente aos R$ 585 milhões do ano anterior, mas acima do consenso Bloomberg (R$ 371 milhões). O Ebitda ajustado recuou 4%, para R$ 1,96 bilhão, enquanto a receita líquida caiu 2%, para R$ 5,15 bilhões. O volume de vendas cresceu 1%, para 1,018 milhão de toneladas, e a dívida líquida caiu 14% na comparação anual, para R$ 24,03 bilhões.</p>
+      <p class="story-note">⚠️ Notícia referente à divulgação de resultados do 2T26 (agosto/2026); mantida por ser o dado fundamentalista mais recente disponível para o papel.</p>
+      <div class="box box-yellow">
+        <div class="box-title">📌 Por que isso importa?</div>
+        <ul><li>Resultado confirma pressão de margens no setor de papel e celulose apesar de volumes resilientes</li><li>Queda de dívida líquida é vista como sinal positivo de disciplina financeira</li><li>Citi e Itaú BBA debatem publicamente o potencial de alta remanescente para os papéis</li></ul>
+      </div>
+      <div class="box box-green">
+        <div class="box-title">🌍 Análise de Cobertura Global</div>
+        <p class="regions"><span class="reg-no">✗ China</span> &nbsp;|&nbsp; <span class="reg-no">✗ EUA</span> &nbsp;|&nbsp; <span class="reg-no">✗ Europa</span> &nbsp;|&nbsp; <span class="reg-yes">✓ Brasil</span></p>
+        <p class="outlets"><strong>Veículos que noticiaram:</strong> Money Times, InfoMoney</p>
+        <p class="attention">Nível de atenção: <span class="att-badge att-med">MÉDIA</span></p>
+      </div>
+    </article>
+    
+    <article class="story-card">
+      <div class="story-head">
+        <span class="story-num">7</span>
+        <h3><a href="https://www.moneytimes.com.br/bofa-da-duplo-upgrade-em-magazine-luiza-mglu3-apos-disparada-da-acao-lils/" target="_blank" rel="noopener noreferrer">Magazine Luiza (MGLU3): BofA dá “duplo upgrade” para compra em meio à crise da Casas Bahia</a></h3>
+      </div>
+      <div class="story-meta">
+        <span>🗓️ Agosto/2026</span>
+        <span>📰 Fonte primária: <strong>Money Times</strong></span>
+      </div>
+      <p class="story-summary">MGLU3 subiu 5,1% em um único pregão, para R$ 4,11, liderando os ganhos do Ibovespa, à medida que a crise financeira da Casas Bahia (BHIA3) alimentou uma rotação de capital para o Magalu, apostando em ganho de participação de mercado. O Bank of America elevou a recomendação de Venda para Compra, com preço-alvo saltando de R$ 5 para R$ 8 (potencial de alta de ~48% à época). A empresa também anunciou que passará a vender o estoque próprio (Magazine Luiza, KaBuM! e Época Cosméticos) dentro do marketplace do Mercado Livre.</p>
+      <p class="story-note">⚠️ Catalisador mais recente disponível para MGLU3; publicado em agosto/2026 mas com efeitos ainda em curso.</p>
+      <div class="box box-yellow">
+        <div class="box-title">📌 Por que isso importa?</div>
+        <ul><li>Upgrade duplo de banco global (venda→compra) é sinal raro e forte para o mercado</li><li>Crise de concorrente direto (Casas Bahia) pode significar ganho estrutural de market share</li><li>Parceria com Mercado Livre amplia canal de distribuição do estoque próprio</li></ul>
+      </div>
+      <div class="box box-green">
+        <div class="box-title">🌍 Análise de Cobertura Global</div>
+        <p class="regions"><span class="reg-no">✗ China</span> &nbsp;|&nbsp; <span class="reg-yes">✓ EUA</span> &nbsp;|&nbsp; <span class="reg-no">✗ Europa</span> &nbsp;|&nbsp; <span class="reg-yes">✓ Brasil</span></p>
+        <p class="outlets"><strong>Veículos que noticiaram:</strong> Money Times, Forbes Brasil, Investing.com Brasil</p>
+        <p class="attention">Nível de atenção: <span class="att-badge att-high">ALTA</span></p>
+      </div>
+    </article>
+    
+    <article class="story-card">
+      <div class="story-head">
+        <span class="story-num">8</span>
+        <h3><a href="https://www.infomoney.com.br/mercados/casas-bahia-recuperacao-judicial-r-17-bi-de-divida-e-queda-de-78-da-acao-o-que-esperar-de-bhia3/" target="_blank" rel="noopener noreferrer">Casas Bahia (BHIA3) mergulha em crise: prejuízo de R$ 10 bi e pedido de recuperação judicial pressionam o setor</a></h3>
+      </div>
+      <div class="story-meta">
+        <span>🗓️ Agosto/2026</span>
+        <span>📰 Fonte primária: <strong>InfoMoney</strong></span>
+      </div>
+      <p class="story-summary">A Casas Bahia registrou prejuízo de R$ 10 bilhões no 2T26, dívida de R$ 17,3 bilhões e queda acumulada de cerca de 78% no ano (um pregão de -33%, a R$ 0,44). A varejista fechou 298 lojas e demitiu cerca de 3 mil funcionários em agosto, além de buscar um empréstimo DIP de R$ 1 bilhão enquanto avalia pedido de recuperação judicial.</p>
+      
+      <div class="box box-yellow">
+        <div class="box-title">📌 Por que isso importa?</div>
+        <ul><li>Crise de peso no varejo eletrônico redesenha a disputa competitiva com Magazine Luiza e Americanas</li><li>Sinaliza fragilidade persistente do crédito ao consumidor em ambiente de juros elevados</li><li>Investidores monitoram efeito cascata sobre fornecedores e sobre percepção de risco do setor</li></ul>
+      </div>
+      <div class="box box-green">
+        <div class="box-title">🌍 Análise de Cobertura Global</div>
+        <p class="regions"><span class="reg-no">✗ China</span> &nbsp;|&nbsp; <span class="reg-no">✗ EUA</span> &nbsp;|&nbsp; <span class="reg-no">✗ Europa</span> &nbsp;|&nbsp; <span class="reg-yes">✓ Brasil</span></p>
+        <p class="outlets"><strong>Veículos que noticiaram:</strong> InfoMoney, Forbes Brasil, Money Times</p>
+        <p class="attention">Nível de atenção: <span class="att-badge att-med">MÉDIA</span></p>
+      </div>
+    </article>
+    
+    <article class="story-card">
+      <div class="story-head">
+        <span class="story-num">9</span>
+        <h3><a href="https://www.infomoney.com.br/mercados/cpfl-cpfe3-resultados-segundo-trimestre-2026/" target="_blank" rel="noopener noreferrer">CPFL Energia (CPFE3): lucro sobe 21,3% no 2T26, puxado por data centers; dividendo de R$ 700 milhões em 24/09</a></h3>
+      </div>
+      <div class="story-meta">
+        <span>🗓️ Agosto/2026 (pagamento de dividendos confirmado para 24/09/2026)</span>
+        <span>📰 Fonte primária: <strong>InfoMoney</strong></span>
+      </div>
+      <p class="story-summary">A CPFL Energia reportou lucro líquido consolidado de R$ 1,438 bilhão no 2T26, alta de 21,3% na comparação anual, sobre receita operacional de R$ 11,107 bilhões (+5,3%), citando a demanda residencial e o consumo crescente de energia por data centers como vetores de crescimento. A companhia confirmou pagamento de R$ 700 milhões em dividendos (R$ 0,6075 por ação) em 24 de setembro de 2026.</p>
+      
+      <div class="box box-yellow">
+        <div class="box-title">📌 Por que isso importa?</div>
+        <ul><li>Demanda de data centers surge como novo pilar estrutural de crescimento para distribuidoras</li><li>Data de pagamento de dividendos já confirmada é informação diretamente acionável para investidores de renda</li><li>Resultado reforça previsibilidade de fluxo de caixa típica do setor elétrico regulado</li></ul>
+      </div>
+      <div class="box box-green">
+        <div class="box-title">🌍 Análise de Cobertura Global</div>
+        <p class="regions"><span class="reg-no">✗ China</span> &nbsp;|&nbsp; <span class="reg-no">✗ EUA</span> &nbsp;|&nbsp; <span class="reg-no">✗ Europa</span> &nbsp;|&nbsp; <span class="reg-yes">✓ Brasil</span></p>
+        <p class="outlets"><strong>Veículos que noticiaram:</strong> InfoMoney, Money Times</p>
+        <p class="attention">Nível de atenção: <span class="att-badge att-med">MÉDIA</span></p>
+      </div>
+    </article>
+    
+    <article class="story-card">
+      <div class="story-head">
+        <span class="story-num">10</span>
+        <h3><a href="https://www.infomoney.com.br/mercados/agepar-nega-recurso-da-sanepar-sobre-uso-de-precatorios-em-desconto-a-usuarios/" target="_blank" rel="noopener noreferrer">Sanepar (SAPR4): Agepar nega recurso sobre destino de R$ 3,94 bi em precatórios; ação cai 6%</a></h3>
+      </div>
+      <div class="story-meta">
+        <span>🗓️ Agosto/2026</span>
+        <span>📰 Fonte primária: <strong>InfoMoney</strong></span>
+      </div>
+      <p class="story-summary">A agência reguladora do Paraná (Agepar) manteve, em recurso, a decisão de que os cerca de R$ 3,94 bilhões recuperados pela Sanepar via precatório sejam integralmente redirecionados a descontos tarifários para os consumidores, e não divididos 75/25 como a empresa pleiteava. As ações SAPR4/SAPR11 caíram até 6,29%/6,56% na notícia; a companhia afirmou que buscará 'todas as medidas judiciais cabíveis'.</p>
+      
+      <div class="box box-yellow">
+        <div class="box-title">📌 Por que isso importa?</div>
+        <ul><li>Decisão elimina, no curto prazo, a expectativa de dividendo extraordinário que sustentava parte da tese de investimento</li><li>Expõe risco regulatório/político relevante para estatais de saneamento às vésperas das eleições de 2026</li><li>BlackRock foi reportada aumentando participação em SAPR11 mesmo após a decisão desfavorável</li></ul>
+      </div>
+      <div class="box box-green">
+        <div class="box-title">🌍 Análise de Cobertura Global</div>
+        <p class="regions"><span class="reg-no">✗ China</span> &nbsp;|&nbsp; <span class="reg-no">✗ EUA</span> &nbsp;|&nbsp; <span class="reg-no">✗ Europa</span> &nbsp;|&nbsp; <span class="reg-yes">✓ Brasil</span></p>
+        <p class="outlets"><strong>Veículos que noticiaram:</strong> InfoMoney, Money Times</p>
+        <p class="attention">Nível de atenção: <span class="att-badge att-med">MÉDIA</span></p>
+      </div>
+    </article>
+    
+    <article class="story-card">
+      <div class="story-head">
+        <span class="story-num">11</span>
+        <h3><a href="https://forbes.com.br/forbes-money/2026/08/axia-energia-libera-ate-r-77-bilhoes-para-resgate-de-acoes-no-semestre/" target="_blank" rel="noopener noreferrer">Axia Energia (ex-Eletrobras): libera até R$ 7,7 bi para resgate de ações preferenciais; BTG e Santander otimistas</a></h3>
+      </div>
+      <div class="story-meta">
+        <span>🗓️ Agosto/2026</span>
+        <span>📰 Fonte primária: <strong>Forbes Brasil</strong></span>
+      </div>
+      <p class="story-summary">A Axia Energia (nova marca da ex-Eletrobras) destinou até R$ 7,7 bilhões no primeiro semestre de 2026 ao resgate de ações preferenciais classe C (R$ 4,0 bi do lucro do 1T mais R$ 3,7 bi do 2T), a R$ 53,71 por ação, com opção de conversão em ordinárias (proporção 1,1:1). O BTG Pactual reiterou compra com preço-alvo de R$ 74 (~26% de potencial de alta); o Santander citou a ação como 'top pick', com alvo de R$ 62,66 para o fim do ano.</p>
+      
+      <div class="box box-yellow">
+        <div class="box-title">📌 Por que isso importa?</div>
+        <ul><li>Mecanismo de resgate obrigatório de ações preferenciais é incomum e representa retorno de caixa relevante aos acionistas</li><li>Duas casas de análise renomadas (BTG e Santander) reiteram recomendação de compra</li><li>Reforça o processo de reestruturação societária da companhia pós-privatização</li></ul>
+      </div>
+      <div class="box box-green">
+        <div class="box-title">🌍 Análise de Cobertura Global</div>
+        <p class="regions"><span class="reg-no">✗ China</span> &nbsp;|&nbsp; <span class="reg-no">✗ EUA</span> &nbsp;|&nbsp; <span class="reg-no">✗ Europa</span> &nbsp;|&nbsp; <span class="reg-yes">✓ Brasil</span></p>
+        <p class="outlets"><strong>Veículos que noticiaram:</strong> Forbes Brasil, Money Times, InfoMoney</p>
+        <p class="attention">Nível de atenção: <span class="att-badge att-med">MÉDIA</span></p>
+      </div>
+    </article>
+    
+    <article class="story-card">
+      <div class="story-head">
+        <span class="story-num">12</span>
+        <h3><a href="https://www.moneytimes.com.br/dividendos-da-taesa-taee11-em-xeque-acoes-caem-apos-2t26-e-analistas-avaliam-forca-dos-proventos-lmrs/" target="_blank" rel="noopener noreferrer">Taesa (TAEE3/TAEE4/TAEE11): lucro regulatório cai 28,5% no 2T26, mas Itaú BBA eleva recomendação por dividendos atrativos</a></h3>
+      </div>
+      <div class="story-meta">
+        <span>🗓️ Agosto/2026</span>
+        <span>📰 Fonte primária: <strong>Money Times</strong></span>
+      </div>
+      <p class="story-summary">O lucro líquido regulatório da Taesa recuou 28,5% na comparação anual, para R$ 206,8 milhões no 2T26, enquanto o Ebitda regulatório subiu 10,6%, para R$ 577,2 milhões, e a receita cresceu 9,3%, para R$ 679,2 milhões. A companhia declarou R$ 207 milhões em dividendos (yield de 1,6% sobre o fechamento de 11 de agosto). O Itaú BBA elevou a recomendação para os papéis, citando dividendos atrativos apesar da alavancagem elevada.</p>
+      
+      <div class="box box-yellow">
+        <div class="box-title">📌 Por que isso importa?</div>
+        <ul><li>Tensão entre &#x27;dividendo atrativo&#x27; e &#x27;alavancagem elevada&#x27; é o principal debate entre analistas para o papel</li><li>Setor de transmissão de energia segue como opção defensiva de renda em carteiras</li><li>Upgrade do Itaú BBA pode atrair fluxo adicional para as units TAEE11</li></ul>
+      </div>
+      <div class="box box-green">
+        <div class="box-title">🌍 Análise de Cobertura Global</div>
+        <p class="regions"><span class="reg-no">✗ China</span> &nbsp;|&nbsp; <span class="reg-no">✗ EUA</span> &nbsp;|&nbsp; <span class="reg-no">✗ Europa</span> &nbsp;|&nbsp; <span class="reg-yes">✓ Brasil</span></p>
+        <p class="outlets"><strong>Veículos que noticiaram:</strong> Money Times, InfoMoney</p>
+        <p class="attention">Nível de atenção: <span class="att-badge att-med">MÉDIA</span></p>
+      </div>
+    </article>
+    
+    <article class="story-card">
+      <div class="story-head">
+        <span class="story-num">13</span>
+        <h3><a href="https://www.infomoney.com.br/mercados/itau-bba-reforca-aposta-na-caixa-seguridade-e-reduz-projecoes-para-bb-seguridade/" target="_blank" rel="noopener noreferrer">BB Seguridade (BBSE3): Itaú BBA reduz projeções e reforça preferência por Caixa Seguridade</a></h3>
+      </div>
+      <div class="story-meta">
+        <span>🗓️ Data exata não confirmada — publicação recente de 2026</span>
+        <span>📰 Fonte primária: <strong>InfoMoney</strong></span>
+      </div>
+      <p class="story-summary">O Itaú BBA reduziu projeções financeiras para a BB Seguridade, reforçando preferência pela Caixa Seguridade (CXSE3) dentro do setor de seguros, em meio a preocupações com o crescimento de prêmios (parcialmente ligado à crise no agronegócio) e pressão sobre a receita financeira à medida que a Selic recua.</p>
+      <p class="story-note">⚠️ Não foi possível confirmar com precisão a data de publicação nem uma segunda fonte independente para esta nota específica do Itaú BBA.</p>
+      <div class="box box-yellow">
+        <div class="box-title">📌 Por que isso importa?</div>
+        <ul><li>BBSE3 é um dos principais pagadores de dividendos da bolsa; revisão de projeções tem efeito direto sobre expectativa de payout</li><li>Crise no agronegócio pode pressionar crescimento de prêmios de seguro rural</li><li>Queda da Selic reduz a rentabilidade financeira das reservas técnicas da seguradora</li></ul>
+      </div>
+      <div class="box box-green">
+        <div class="box-title">🌍 Análise de Cobertura Global</div>
+        <p class="regions"><span class="reg-no">✗ China</span> &nbsp;|&nbsp; <span class="reg-no">✗ EUA</span> &nbsp;|&nbsp; <span class="reg-no">✗ Europa</span> &nbsp;|&nbsp; <span class="reg-yes">✓ Brasil</span></p>
+        <p class="outlets"><strong>Veículos que noticiaram:</strong> InfoMoney</p>
+        <p class="attention">Nível de atenção: <span class="att-badge att-med">MÉDIA</span></p>
+      </div>
+    </article>
+    
+    <article class="story-card">
+      <div class="story-head">
+        <span class="story-num">14</span>
+        <h3><a href="https://forbes.com.br/forbes-money/2026/09/ibovespa-pausa-sequencia-de-altas-com-realizacao-de-lucros-dolar-fecha-acima-dos-r510/" target="_blank" rel="noopener noreferrer">Ibovespa interrompe sequência de 11 altas seguidas com realização de lucros e payroll dos EUA</a></h3>
+      </div>
+      <div class="story-meta">
+        <span>🗓️ 03-04/09/2026</span>
+        <span>📰 Fonte primária: <strong>Forbes Brasil</strong></span>
+      </div>
+      <p class="story-summary">Após 11 pregões seguidos de alta impulsionados pelo rali eleitoral, o Ibovespa fez uma pausa em 3 de setembro (-0,01%, a 185.188 pontos) e operou misto em 4 de setembro, em meio a realização de lucros e a um payroll americano mais fraco do que o esperado. O dólar fechou acima de R$ 5,10.</p>
+      
+      <div class="box box-yellow">
+        <div class="box-title">📌 Por que isso importa?</div>
+        <ul><li>Sinaliza possível fase de consolidação após o forte rali em bancos e estatais</li><li>Dado de emprego dos EUA (payroll) segue como fator de contágio direto sobre a bolsa brasileira</li><li>Contexto de risco relevante para quem avalia entrar em BBAS3/ITSA4 após a disparada</li></ul>
+      </div>
+      <div class="box box-green">
+        <div class="box-title">🌍 Análise de Cobertura Global</div>
+        <p class="regions"><span class="reg-no">✗ China</span> &nbsp;|&nbsp; <span class="reg-yes">✓ EUA</span> &nbsp;|&nbsp; <span class="reg-no">✗ Europa</span> &nbsp;|&nbsp; <span class="reg-yes">✓ Brasil</span></p>
+        <p class="outlets"><strong>Veículos que noticiaram:</strong> Forbes Brasil, InfoMoney</p>
+        <p class="attention">Nível de atenção: <span class="att-badge att-med">MÉDIA</span></p>
+      </div>
+    </article>
+    
+    <article class="story-card">
+      <div class="story-head">
+        <span class="story-num">15</span>
+        <h3><a href="https://www.infomoney.com.br/mercados/itausa-itsa4-eleva-fatia-na-aegea-e-divulga-calendario-de-pagamento-de-proventos/" target="_blank" rel="noopener noreferrer">Itaúsa (ITSA4) eleva fatia na Aegea e divulga calendário de pagamento de R$ 2,8 bi em JCP</a></h3>
+      </div>
+      <div class="story-meta">
+        <span>🗓️ Agosto-setembro/2026</span>
+        <span>📰 Fonte primária: <strong>InfoMoney</strong></span>
+      </div>
+      <p class="story-summary">A Itaúsa aumentou sua participação na Aegea (saneamento) e divulgou o calendário de pagamento de R$ 2,8 bilhões em juros sobre capital próprio (JCP) aos acionistas. Casas de análise seguem divergentes: enquanto a Ágora e a Planner retiraram ITSA4 de suas carteiras recomendadas de dividendos em favor de Itaú (ITUB4), JPMorgan e Goldman Sachs mantêm recomendação de compra, com potencial de alta estimado em 21% a 44%.</p>
+      
+      <div class="box box-yellow">
+        <div class="box-title">📌 Por que isso importa?</div>
+        <ul><li>Aumento de participação na Aegea reforça diversificação da holding para além do setor financeiro</li><li>Divergência entre casas de análise (saída de carteiras de dividendos vs. recomendação de compra) gera debate sobre o momento da ação</li><li>Calendário de JCP é informação direta e acionável para investidores de renda</li></ul>
+      </div>
+      <div class="box box-green">
+        <div class="box-title">🌍 Análise de Cobertura Global</div>
+        <p class="regions"><span class="reg-no">✗ China</span> &nbsp;|&nbsp; <span class="reg-no">✗ EUA</span> &nbsp;|&nbsp; <span class="reg-no">✗ Europa</span> &nbsp;|&nbsp; <span class="reg-yes">✓ Brasil</span></p>
+        <p class="outlets"><strong>Veículos que noticiaram:</strong> InfoMoney, Money Times</p>
+        <p class="attention">Nível de atenção: <span class="att-badge att-med">MÉDIA</span></p>
+      </div>
+    </article>
+    
+  </section>
+
+  <section class="section-block">
+    <h2>3. Principais Notícias — Ações Internacionais</h2>
+    <p class="section-sub">15 histórias com maior potencial de impacto para SGOV, BTC, OHI, MCHI, QQQ, SMH, VYMI, VYM e BABA, com cobertura de EUA e China.</p>
+    
+    <article class="story-card">
+      <div class="story-head">
+        <span class="story-num">1</span>
+        <h3><a href="https://finance.yahoo.com/markets/stocks/articles/markets-news-sept-4-2026-105243532.html" target="_blank" rel="noopener noreferrer">Payroll de agosto nos EUA reacende aposta de alta de juros do Fed; mercados fecham em queda</a></h3>
+      </div>
+      <div class="story-meta">
+        <span>🗓️ 04/09/2026</span>
+        <span>📰 Fonte primária: <strong>Yahoo Finance</strong></span>
+      </div>
+      <p class="story-summary">A folha de pagamentos não agrícola dos EUA cresceu 162 mil vagas em agosto, muito acima do consenso de ~55 mil, com desemprego estável em 4,1% e revisão para cima do dado de julho. O Dow Jones caiu cerca de 272 pontos (-0,5%), para 53.414,25; o S&P 500 recuou 0,4%, para 7.718,60; e o Nasdaq cedeu 0,3%, para 26.506,99. A probabilidade de alta de juros na reunião do Fed de 15-16 de setembro saltou de cerca de 50% para mais de 60%.</p>
+      
+      <div class="box box-yellow">
+        <div class="box-title">📌 Por que isso importa?</div>
+        <ul><li>Impacta diretamente o cálculo de rendimento e duração do SGOV, atrelado a juros de curtíssimo prazo</li><li>Ativos de maior múltiplo (tecnologia, semicondutores) tendem a sofrer mais com juros mais altos, afetando QQQ e SMH</li><li>Eleva incerteza para a decisão do FOMC de setembro, principal evento macro do mês</li></ul>
+      </div>
+      <div class="box box-green">
+        <div class="box-title">🌍 Análise de Cobertura Global</div>
+        <p class="regions"><span class="reg-no">✗ China</span> &nbsp;|&nbsp; <span class="reg-yes">✓ EUA</span> &nbsp;|&nbsp; <span class="reg-no">✗ Europa</span> &nbsp;|&nbsp; <span class="reg-no">✗ Brasil</span></p>
+        <p class="outlets"><strong>Veículos que noticiaram:</strong> Yahoo Finance, Investing.com (via Reuters)</p>
+        <p class="attention">Nível de atenção: <span class="att-badge att-high">ALTA</span></p>
+      </div>
+    </article>
+    
+    <article class="story-card">
+      <div class="story-head">
+        <span class="story-num">2</span>
+        <h3><a href="https://www.bloomberg.com/news/articles/2026-09-03/treasuries-rise-after-fed-s-waller-notes-progress-on-inflation" target="_blank" rel="noopener noreferrer">Treasuries sobem após dirigente do Fed (Waller) sinalizar avanço no combate à inflação</a></h3>
+      </div>
+      <div class="story-meta">
+        <span>🗓️ 03/09/2026</span>
+        <span>📰 Fonte primária: <strong>Bloomberg</strong></span>
+      </div>
+      <p class="story-summary">O diretor do Fed Christopher Waller sinalizou inclinação a manter os juros estáveis, na ausência de surpresas inflacionárias, derrubando o rendimento da T-note de 10 anos para 4,772%, enquanto o título de 2 anos (mais relevante para o SGOV) subiu em meio ao debate ainda aberto sobre alta de juros. As apostas de mercado para alta em setembro oscilaram entre 50% e 70% ao longo da semana.</p>
+      
+      <div class="box box-yellow">
+        <div class="box-title">📌 Por que isso importa?</div>
+        <ul><li>Rendimento de curtíssimo prazo é o principal determinante da renda mensal distribuída pelo SGOV</li><li>Volatilidade nas falas de dirigentes do Fed segue como o maior driver de curto prazo para o ETF</li><li>Reforça o cenário de indecisão que antecede a decisão de política monetária de setembro</li></ul>
+      </div>
+      <div class="box box-green">
+        <div class="box-title">🌍 Análise de Cobertura Global</div>
+        <p class="regions"><span class="reg-no">✗ China</span> &nbsp;|&nbsp; <span class="reg-yes">✓ EUA</span> &nbsp;|&nbsp; <span class="reg-no">✗ Europa</span> &nbsp;|&nbsp; <span class="reg-no">✗ Brasil</span></p>
+        <p class="outlets"><strong>Veículos que noticiaram:</strong> Bloomberg</p>
+        <p class="attention">Nível de atenção: <span class="att-badge att-med">MÉDIA</span></p>
+      </div>
+    </article>
+    
+    <article class="story-card">
+      <div class="story-head">
+        <span class="story-num">3</span>
+        <h3><a href="https://www.forbes.com/sites/digital-assets/2026/09/02/bitcoin-is-suddenly-braced-for-a-bessent-price-shock-as-selling-panic-crash-fears-surge/" target="_blank" rel="noopener noreferrer">Bitcoin despenca cerca de 10% em meio a temores fiscais de &#x27;espiral da dívida&#x27; nos EUA</a></h3>
+      </div>
+      <div class="story-meta">
+        <span>🗓️ 02/09/2026</span>
+        <span>📰 Fonte primária: <strong>Forbes</strong></span>
+      </div>
+      <p class="story-summary">O Bitcoin recuou de mais de US$ 81 mil para cerca de US$ 76 mil, em meio a temores de que os EUA estejam entrando em uma dinâmica de 'espiral da dívida' de US$ 40 trilhões. A especulação girou em torno de uma possível nova intervenção do secretário do Tesouro, Scott Bessent, nos mercados de títulos — como a expansão de recompras em 19 de agosto — caso o rendimento da T-note de 10 anos se aproxime de 5%.</p>
+      
+      <div class="box box-yellow">
+        <div class="box-title">📌 Por que isso importa?</div>
+        <ul><li>Conecta diretamente a cotação do BTC ao estresse fiscal e ao mercado de títulos dos EUA</li><li>Mesmo vínculo macro afeta o apetite por risco em SGOV e nos demais ativos financeiros</li><li>Aumenta volatilidade de curto prazo às vésperas da decisão do Fed em setembro</li></ul>
+      </div>
+      <div class="box box-green">
+        <div class="box-title">🌍 Análise de Cobertura Global</div>
+        <p class="regions"><span class="reg-no">✗ China</span> &nbsp;|&nbsp; <span class="reg-yes">✓ EUA</span> &nbsp;|&nbsp; <span class="reg-no">✗ Europa</span> &nbsp;|&nbsp; <span class="reg-no">✗ Brasil</span></p>
+        <p class="outlets"><strong>Veículos que noticiaram:</strong> Forbes, Yahoo Finance</p>
+        <p class="attention">Nível de atenção: <span class="att-badge att-high">ALTA</span></p>
+      </div>
+    </article>
+    
+    <article class="story-card">
+      <div class="story-head">
+        <span class="story-num">4</span>
+        <h3><a href="https://www.forbes.com/sites/digital-assets/2026/09/05/trump-issues-serious-fed-warning-as-bitcoin-braces-for-a-huge-price-shock/" target="_blank" rel="noopener noreferrer">Trump intensifica pressão sobre o Fed; Bitcoin se prepara para forte volatilidade antes da decisão de juros</a></h3>
+      </div>
+      <div class="story-meta">
+        <span>🗓️ 05/09/2026</span>
+        <span>📰 Fonte primária: <strong>Forbes</strong></span>
+      </div>
+      <p class="story-summary">O presidente Donald Trump renovou críticas e pressão política sobre o Federal Reserve às vésperas da reunião de 15-16 de setembro, adicionando um fator de incerteza política às apostas já divididas (cerca de 50/50) entre alta e manutenção de juros. Investidores em criptomoedas se preparam para reação volátil em qualquer um dos cenários.</p>
+      <p class="story-note">⚠️ Fonte única identificada nesta rodada de pesquisa; recomenda-se checagem cruzada adicional antes de decisões de investimento.</p>
+      <div class="box box-yellow">
+        <div class="box-title">📌 Por que isso importa?</div>
+        <ul><li>Pressão política sobre o Fed é fator de risco adicional para ativos sensíveis a juros, como o BTC</li><li>Aumenta a assimetria de risco para o mercado cripto antes de um dos eventos macro mais importantes do mês</li><li>Notícia com data mais próxima às últimas 24-48 horas entre os itens levantados sobre BTC</li></ul>
+      </div>
+      <div class="box box-green">
+        <div class="box-title">🌍 Análise de Cobertura Global</div>
+        <p class="regions"><span class="reg-no">✗ China</span> &nbsp;|&nbsp; <span class="reg-yes">✓ EUA</span> &nbsp;|&nbsp; <span class="reg-no">✗ Europa</span> &nbsp;|&nbsp; <span class="reg-no">✗ Brasil</span></p>
+        <p class="outlets"><strong>Veículos que noticiaram:</strong> Forbes</p>
+        <p class="attention">Nível de atenção: <span class="att-badge att-high">ALTA</span></p>
+      </div>
+    </article>
+    
+    <article class="story-card">
+      <div class="story-head">
+        <span class="story-num">5</span>
+        <h3><a href="https://finance.yahoo.com/markets/crypto/articles/bitcoin-etfs-post-best-day-155446523.html" target="_blank" rel="noopener noreferrer">ETFs de Bitcoin à vista registram a melhor sequência de captação de 2026</a></h3>
+      </div>
+      <div class="story-meta">
+        <span>🗓️ Início de setembro/2026</span>
+        <span>📰 Fonte primária: <strong>Yahoo Finance</strong></span>
+      </div>
+      <p class="story-summary">Os ETFs à vista de Bitcoin nos EUA captaram cerca de US$ 730 milhões somente em 3 de setembro (o IBIT, da BlackRock, respondendo por ~60% do total), completando uma sequência de três semanas com captação líquida de US$ 3,8 bilhões até 4 de setembro — a mais forte de 2026.</p>
+      
+      <div class="box box-yellow">
+        <div class="box-title">📌 Por que isso importa?</div>
+        <ul><li>Forte demanda por veículos regulamentados é sinal estrutural positivo para o BTC, mesmo com volatilidade de curto prazo</li><li>Concentração de fluxo no IBIT reforça o papel da BlackRock como principal canalizadora de capital institucional</li><li>Contrasta com o movimento de queda de preço, mostrando dissociação entre fluxo e cotação no curto prazo</li></ul>
+      </div>
+      <div class="box box-green">
+        <div class="box-title">🌍 Análise de Cobertura Global</div>
+        <p class="regions"><span class="reg-no">✗ China</span> &nbsp;|&nbsp; <span class="reg-yes">✓ EUA</span> &nbsp;|&nbsp; <span class="reg-no">✗ Europa</span> &nbsp;|&nbsp; <span class="reg-no">✗ Brasil</span></p>
+        <p class="outlets"><strong>Veículos que noticiaram:</strong> Yahoo Finance</p>
+        <p class="attention">Nível de atenção: <span class="att-badge att-med">MÉDIA</span></p>
+      </div>
+    </article>
+    
+    <article class="story-card">
+      <div class="story-head">
+        <span class="story-num">6</span>
+        <h3><a href="https://www.bloomberg.com/news/articles/2026-08-23/alibaba-to-raise-10-billion-by-selling-shares-for-ai-expansion" target="_blank" rel="noopener noreferrer">Alibaba capta US$ 10,2 bilhões em Hong Kong na maior oferta de ações da história da bolsa para expandir investimentos em IA</a></h3>
+      </div>
+      <div class="story-meta">
+        <span>🗓️ 23/08/2026</span>
+        <span>📰 Fonte primária: <strong>Bloomberg</strong></span>
+      </div>
+      <p class="story-summary">A Alibaba colocou 710 milhões de novas ações a HK$ 112,70 cada, a maior oferta subsequente primária já feita por uma empresa listada em Hong Kong, com 100% dos recursos destinados à infraestrutura de inteligência artificial. As ações chegaram a cair entre 8,5% e 10% na notícia, em meio a preocupações com diluição.</p>
+      <p class="story-note">⚠️ Evento-âncora da narrativa Alibaba/BABA no período; funciona como base para os desdobramentos das notícias seguintes.</p>
+      <div class="box box-yellow">
+        <div class="box-title">📌 Por que isso importa?</div>
+        <ul><li>Sinaliza aposta agressiva da Alibaba em capex de IA, mesmo com diluição de curto prazo para os acionistas</li><li>Uma das maiores captações de capital para IA já feitas por uma empresa chinesa</li><li>Evento com forte peso tanto para BABA quanto para o índice de tecnologia de Hong Kong, componente relevante do MCHI</li></ul>
+      </div>
+      <div class="box box-green">
+        <div class="box-title">🌍 Análise de Cobertura Global</div>
+        <p class="regions"><span class="reg-yes">✓ China</span> &nbsp;|&nbsp; <span class="reg-yes">✓ EUA</span> &nbsp;|&nbsp; <span class="reg-no">✗ Europa</span> &nbsp;|&nbsp; <span class="reg-no">✗ Brasil</span></p>
+        <p class="outlets"><strong>Veículos que noticiaram:</strong> Bloomberg, Investing.com (via Reuters), TechNode, South China Morning Post, Yicai Global</p>
+        <p class="attention">Nível de atenção: <span class="att-badge att-high">ALTA</span></p>
+      </div>
+    </article>
+    
+    <article class="story-card">
+      <div class="story-head">
+        <span class="story-num">7</span>
+        <h3><a href="https://www.investing.com/news/stock-market-news/jack-ma-buys-over-hk600-million-in-alibaba-shares--report-93CH-4874991" target="_blank" rel="noopener noreferrer">Jack Ma, Joe Tsai e Eddie Wu compram ações da Alibaba após queda provocada pela oferta bilionária</a></h3>
+      </div>
+      <div class="story-meta">
+        <span>🗓️ Final de agosto/2026</span>
+        <span>📰 Fonte primária: <strong>Investing.com</strong></span>
+      </div>
+      <p class="story-summary">Após a queda provocada pela oferta de ações, o fundador da Alibaba, Jack Ma, comprou mais de HK$ 600 milhões em ações ao longo de sessões consecutivas; o presidente Joe Tsai adicionou cerca de HK$ 160 milhões; e o CEO Eddie Wu também realizou compras — o total combinado de Tsai e Wu superou HK$ 200 milhões.</p>
+      
+      <div class="box box-yellow">
+        <div class="box-title">📌 Por que isso importa?</div>
+        <ul><li>Compras relevantes de insiders logo após uma queda acentuada e ligada à diluição são lidas como sinal de confiança</li><li>Reforça a legitimidade da estratégia de investimento pesado em infraestrutura de IA</li><li>Movimento amplamente replicado por múltiplos veículos chineses e internacionais</li></ul>
+      </div>
+      <div class="box box-green">
+        <div class="box-title">🌍 Análise de Cobertura Global</div>
+        <p class="regions"><span class="reg-yes">✓ China</span> &nbsp;|&nbsp; <span class="reg-yes">✓ EUA</span> &nbsp;|&nbsp; <span class="reg-no">✗ Europa</span> &nbsp;|&nbsp; <span class="reg-no">✗ Brasil</span></p>
+        <p class="outlets"><strong>Veículos que noticiaram:</strong> Investing.com, Caixin Global</p>
+        <p class="attention">Nível de atenção: <span class="att-badge att-med">MÉDIA</span></p>
+      </div>
+    </article>
+    
+    <article class="story-card">
+      <div class="story-head">
+        <span class="story-num">8</span>
+        <h3><a href="https://finance.yahoo.com/news/alibaba-cloud-growth-explodes-earnings-111756982.html" target="_blank" rel="noopener noreferrer">Resultado da Alibaba: receita de nuvem de IA acelera para +45%, mas lucro cai com pesado investimento em capex</a></h3>
+      </div>
+      <div class="story-meta">
+        <span>🗓️ Agosto/2026 (resultados do trimestre encerrado em junho)</span>
+        <span>📰 Fonte primária: <strong>Yahoo Finance</strong></span>
+      </div>
+      <p class="story-summary">A receita externa de nuvem da Alibaba acelerou para cerca de 45% de crescimento, com a receita relacionada a IA emplacando o 12º trimestre seguido de crescimento de três dígitos, perto de um ritmo anualizado de US$ 10 bilhões. Ainda assim, o lucro por ação decepcionou (RMB 8,52 vs. RMB 10,72 esperado), com a margem Ebitda ajustada comprimindo de 16% para 10%. A receita total cresceu 9%.</p>
+      
+      <div class="box box-yellow">
+        <div class="box-title">📌 Por que isso importa?</div>
+        <ul><li>Resume o principal debate sobre a tese de investimento em BABA: crescimento explosivo em nuvem/IA vs. compressão de margem</li><li>Mesma tensão que motivou a oferta de ações e as compras subsequentes de insiders</li><li>Referência direta para o peso da Alibaba dentro do MCHI</li></ul>
+      </div>
+      <div class="box box-green">
+        <div class="box-title">🌍 Análise de Cobertura Global</div>
+        <p class="regions"><span class="reg-yes">✓ China</span> &nbsp;|&nbsp; <span class="reg-yes">✓ EUA</span> &nbsp;|&nbsp; <span class="reg-no">✗ Europa</span> &nbsp;|&nbsp; <span class="reg-no">✗ Brasil</span></p>
+        <p class="outlets"><strong>Veículos que noticiaram:</strong> Yahoo Finance, Investing.com, Caixin Global</p>
+        <p class="attention">Nível de atenção: <span class="att-badge att-high">ALTA</span></p>
+      </div>
+    </article>
+    
+    <article class="story-card">
+      <div class="story-head">
+        <span class="story-num">9</span>
+        <h3><a href="https://www.globenewswire.com/news-release/2026/09/02/3355209/0/en/shareholder-alert-bernstein-liebhard-llp-announces-a-securities-fraud-class-action-lawsuit-has-been-filed-against-alibaba-group-holding-limited-baba.html" target="_blank" rel="noopener noreferrer">Alibaba enfrenta múltiplas ações coletivas nos EUA por suposta fraude a investidores (caso Anthropic/Claude)</a></h3>
+      </div>
+      <div class="story-meta">
+        <span>🗓️ 01-04/09/2026</span>
+        <span>📰 Fonte primária: <strong>GlobeNewswire / PRNewswire (comunicados de escritórios de advocacia)</strong></span>
+      </div>
+      <p class="story-summary">As ações cobrem o período entre 25 de junho de 2025 e 24 de junho de 2026, alegando que a Alibaba teria escondido riscos após reportagem da Bloomberg sobre acusação da Anthropic de que a Alibaba usou milhares de contas falsas para acessar indevidamente modelos Claude para 'destilação' de treinamento. As ações teriam caído cerca de 45% da máxima do período em diferentes momentos ligados a essas revelações e à inclusão em lista do Pentágono. O prazo para líder do processo é 5 de outubro de 2026.</p>
+      <p class="story-note">⚠️ Fonte primária não consta na lista de veículos obrigatórios (comunicados jurídicos, não jornalismo tradicional); incluída por relevância e por consistência entre múltiplas fontes independentes.</p>
+      <div class="box box-yellow">
+        <div class="box-title">📌 Por que isso importa?</div>
+        <ul><li>Adiciona risco jurídico e regulatório relevante à tese de investimento em BABA, independente do capex em IA</li><li>Ligação direta com controvérsia envolvendo uso indevido de modelos de IA de terceiros</li><li>Fonte não pertence à lista de veículos obrigatórios; mantida por relevância e por ser corroborada por múltiplos escritórios de advocacia independentes</li></ul>
+      </div>
+      <div class="box box-green">
+        <div class="box-title">🌍 Análise de Cobertura Global</div>
+        <p class="regions"><span class="reg-no">✗ China</span> &nbsp;|&nbsp; <span class="reg-yes">✓ EUA</span> &nbsp;|&nbsp; <span class="reg-no">✗ Europa</span> &nbsp;|&nbsp; <span class="reg-no">✗ Brasil</span></p>
+        <p class="outlets"><strong>Veículos que noticiaram:</strong> GlobeNewswire, PRNewswire (múltiplos escritórios: Bernstein Liebhard, Hagens Berman, Pomerantz, Rosen, SBS Law)</p>
+        <p class="attention">Nível de atenção: <span class="att-badge att-med">MÉDIA</span></p>
+      </div>
+    </article>
+    
+    <article class="story-card">
+      <div class="story-head">
+        <span class="story-num">10</span>
+        <h3><a href="https://finance.yahoo.com/markets/stocks/articles/semiconductor-stocks-slide-global-bond-131516395.html" target="_blank" rel="noopener noreferrer">Ações de semicondutores caem com disparada dos juros dos títulos dos EUA a máxima de 19 meses</a></h3>
+      </div>
+      <div class="story-meta">
+        <span>🗓️ 01/09/2026</span>
+        <span>📰 Fonte primária: <strong>Yahoo Finance</strong></span>
+      </div>
+      <p class="story-summary">A alta do petróleo e uma liquidação global de títulos levaram o rendimento da T-note de 10 anos a mais de 4,75%, máxima em 19 meses, pressionando com mais força as ações de maior múltiplo, como as de semicondutores. Intel caiu 3% no dia; AMD e Nvidia também recuaram.</p>
+      
+      <div class="box box-yellow">
+        <div class="box-title">📌 Por que isso importa?</div>
+        <ul><li>Ilustra diretamente a sensibilidade a juros das principais posições do SMH (Nvidia, TSMC, Broadcom)</li><li>Efeito se estende ao QQQ, dada a forte concentração em megacaps de tecnologia</li><li>Reforça o vínculo entre o mercado de títulos e o desempenho do setor de tecnologia</li></ul>
+      </div>
+      <div class="box box-green">
+        <div class="box-title">🌍 Análise de Cobertura Global</div>
+        <p class="regions"><span class="reg-no">✗ China</span> &nbsp;|&nbsp; <span class="reg-yes">✓ EUA</span> &nbsp;|&nbsp; <span class="reg-no">✗ Europa</span> &nbsp;|&nbsp; <span class="reg-no">✗ Brasil</span></p>
+        <p class="outlets"><strong>Veículos que noticiaram:</strong> Yahoo Finance, Bloomberg, 24/7 Wall St</p>
+        <p class="attention">Nível de atenção: <span class="att-badge att-high">ALTA</span></p>
+      </div>
+    </article>
+    
+    <article class="story-card">
+      <div class="story-head">
+        <span class="story-num">11</span>
+        <h3><a href="https://www.scmp.com/news/china/diplomacy/article/3362590/beijing-impose-exit-bans-export-control-tech-transfer-breaches" target="_blank" rel="noopener noreferrer">China cria regras de proibição de saída do país por violação a controles de exportação de tecnologia</a></h3>
+      </div>
+      <div class="story-meta">
+        <span>🗓️ Agosto/2026 (regra entra em vigor em 15/09/2026)</span>
+        <span>📰 Fonte primária: <strong>South China Morning Post</strong></span>
+      </div>
+      <p class="story-summary">O Conselho de Estado da China finalizou regulamentação que permite às autoridades impedir a saída do país de cidadãos cuja conduta 'ameace a segurança industrial ou tecnológica nacional' — mirando violações de controle de exportação ou transferência de tecnologia, com ênfase especial em IA, semicondutores, computação quântica e tecnologias de terras raras/baterias.</p>
+      
+      <div class="box box-yellow">
+        <div class="box-title">📌 Por que isso importa?</div>
+        <ul><li>Endurece o controle chinês sobre vazamento de tecnologia sensível às vésperas da cúpula Trump-Xi de 24/09</li><li>Eleva o risco de conformidade para multinacionais e cadeias de suprimentos de semicondutores (relevante para SMH)</li><li>Sinaliza postura mais dura da China em meio às negociações comerciais com os EUA</li></ul>
+      </div>
+      <div class="box box-green">
+        <div class="box-title">🌍 Análise de Cobertura Global</div>
+        <p class="regions"><span class="reg-yes">✓ China</span> &nbsp;|&nbsp; <span class="reg-no">✗ EUA</span> &nbsp;|&nbsp; <span class="reg-no">✗ Europa</span> &nbsp;|&nbsp; <span class="reg-no">✗ Brasil</span></p>
+        <p class="outlets"><strong>Veículos que noticiaram:</strong> South China Morning Post, Asia Times</p>
+        <p class="attention">Nível de atenção: <span class="att-badge att-high">ALTA</span></p>
+      </div>
+    </article>
+    
+    <article class="story-card">
+      <div class="story-head">
+        <span class="story-num">12</span>
+        <h3><a href="https://finance.yahoo.com/news/tariffs-and-tiktok-to-dominate-another-round-of-us-china-trade-talks-161643377.html" target="_blank" rel="noopener noreferrer">EUA e China preparam nova rodada de negociações comerciais (14-17/09) antes da cúpula Xi-Trump; tarifas e TikTok em pauta</a></h3>
+      </div>
+      <div class="story-meta">
+        <span>🗓️ Início de setembro/2026</span>
+        <span>📰 Fonte primária: <strong>Yahoo Finance</strong></span>
+      </div>
+      <p class="story-summary">O secretário do Tesouro dos EUA, Scott Bessent, e o vice-premiê chinês He Lifeng devem se reunir entre 14 e 17 de setembro, com o futuro do TikTok e medidas tarifárias unilaterais dos EUA na pauta. As tarifas atuais estão em 30% (China) e 10% (EUA) após prorrogação de 90 dias; a trégua expira estruturalmente em 10 de novembro, com uma cúpula Xi-Trump prevista para 24 de setembro como o próximo grande ponto de pressão.</p>
+      
+      <div class="box box-yellow">
+        <div class="box-title">📌 Por que isso importa?</div>
+        <ul><li>As maiores posições do MCHI (Tencent, Alibaba, etc.) estão diretamente expostas ao risco de manchetes sobre tarifas</li><li>10 de novembro (fim da trégua) e 24 de setembro (cúpula) são as datas-chave para a volatilidade de curto prazo do ETF</li><li>Desfecho das negociações pode afetar toda a cadeia de semicondutores, com reflexo em SMH e QQQ</li></ul>
+      </div>
+      <div class="box box-green">
+        <div class="box-title">🌍 Análise de Cobertura Global</div>
+        <p class="regions"><span class="reg-yes">✓ China</span> &nbsp;|&nbsp; <span class="reg-yes">✓ EUA</span> &nbsp;|&nbsp; <span class="reg-no">✗ Europa</span> &nbsp;|&nbsp; <span class="reg-no">✗ Brasil</span></p>
+        <p class="outlets"><strong>Veículos que noticiaram:</strong> Yahoo Finance, South China Morning Post, CNBC</p>
+        <p class="attention">Nível de atenção: <span class="att-badge att-high">ALTA</span></p>
+      </div>
+    </article>
+    
+    <article class="story-card">
+      <div class="story-head">
+        <span class="story-num">13</span>
+        <h3><a href="https://finance.yahoo.com/news/sgov-first-ultra-short-term-120000205.html" target="_blank" rel="noopener noreferrer">SGOV se torna o primeiro ETF de títulos de curtíssimo prazo a ultrapassar US$ 50 bilhões em patrimônio</a></h3>
+      </div>
+      <div class="story-meta">
+        <span>🗓️ 2026 (data exata não confirmada)</span>
+        <span>📰 Fonte primária: <strong>Yahoo Finance</strong></span>
+      </div>
+      <p class="story-summary">O SGOV se tornou o primeiro ETF de títulos do Tesouro de duração ultracurta a superar US$ 50 bilhões em patrimônio sob gestão (posteriormente reportado próximo de US$ 75 bilhões), rendendo entre 3,66% e 3,9% ao ano via T-bills de 0 a 3 meses, com taxa de administração de 0,09% e risco de duração praticamente nulo.</p>
+      <p class="story-note">⚠️ Não foi possível confirmar a data exata de publicação desta matéria dentro da janela das últimas 24 horas.</p>
+      <div class="box box-yellow">
+        <div class="box-title">📌 Por que isso importa?</div>
+        <ul><li>Confirma o papel do SGOV como o principal &#x27;porto seguro&#x27; de caixa enquanto investidores aguardam definição do Fed</li><li>Volume recorde de captação reflete apetite por proteção em meio à incerteza sobre juros</li><li>Referência direta ao tema de rendimento de curto prazo abordado nas notícias 1 e 2 desta seção</li></ul>
+      </div>
+      <div class="box box-green">
+        <div class="box-title">🌍 Análise de Cobertura Global</div>
+        <p class="regions"><span class="reg-no">✗ China</span> &nbsp;|&nbsp; <span class="reg-yes">✓ EUA</span> &nbsp;|&nbsp; <span class="reg-no">✗ Europa</span> &nbsp;|&nbsp; <span class="reg-no">✗ Brasil</span></p>
+        <p class="outlets"><strong>Veículos que noticiaram:</strong> Yahoo Finance</p>
+        <p class="attention">Nível de atenção: <span class="att-badge att-med">MÉDIA</span></p>
+      </div>
+    </article>
+    
+    <article class="story-card">
+      <div class="story-head">
+        <span class="story-num">14</span>
+        <h3><a href="https://finance.yahoo.com/markets/stocks/articles/vig-vym-vymi-vanguard-dividend-160500069.html" target="_blank" rel="noopener noreferrer">ETFs internacionais de dividendos (VYMI) superam pares americanos em 2026</a></h3>
+      </div>
+      <div class="story-meta">
+        <span>🗓️ 2026 (data exata não confirmada)</span>
+        <span>📰 Fonte primária: <strong>Yahoo Finance</strong></span>
+      </div>
+      <p class="story-summary">O VYMI (dividendos internacionais de alto rendimento) acumula alta de cerca de 18,6% no ano até meados de agosto de 2026, com yield de aproximadamente 3,4% e o Japão como maior peso geográfico (~12%); já o VYM (dividendos domésticos) rende cerca de 2,4% e é negociado perto de US$ 164. Ações internacionais pagadoras de dividendos superam o S&P 500 pelo segundo ano consecutivo.</p>
+      <p class="story-note">⚠️ Não foi possível confirmar a data exata de publicação desta matéria dentro da janela das últimas 24 horas.</p>
+      <div class="box box-yellow">
+        <div class="box-title">📌 Por que isso importa?</div>
+        <ul><li>Sinaliza rotação de fluxo global para ações internacionais de dividendos, tema direto para VYM e VYMI</li><li>Segundo ano seguido de superação frente a índices americanos reforça a tendência estrutural, não pontual</li><li>Relevante para investidores brasileiros que utilizam esses ETFs como exposição internacional de renda</li></ul>
+      </div>
+      <div class="box box-green">
+        <div class="box-title">🌍 Análise de Cobertura Global</div>
+        <p class="regions"><span class="reg-no">✗ China</span> &nbsp;|&nbsp; <span class="reg-yes">✓ EUA</span> &nbsp;|&nbsp; <span class="reg-no">✗ Europa</span> &nbsp;|&nbsp; <span class="reg-no">✗ Brasil</span></p>
+        <p class="outlets"><strong>Veículos que noticiaram:</strong> Yahoo Finance</p>
+        <p class="attention">Nível de atenção: <span class="att-badge att-med">MÉDIA</span></p>
+      </div>
+    </article>
+    
+    <article class="story-card">
+      <div class="story-head">
+        <span class="story-num">15</span>
+        <h3><a href="https://www.omegahealthcare.com/investors/news-events/press-releases/detail/347/omega-reports-second-quarter-2026-results-and-recent" target="_blank" rel="noopener noreferrer">Omega Healthcare (OHI) eleva dividendo pela 23ª vez consecutiva e anuncia sucessão de CEO</a></h3>
+      </div>
+      <div class="story-meta">
+        <span>🗓️ Agosto/2026 (resultados do 2T26)</span>
+        <span>📰 Fonte primária: <strong>Comunicado oficial da Omega Healthcare</strong></span>
+      </div>
+      <p class="story-summary">A Omega Healthcare reportou lucro líquido de US$ 380 milhões (US$ 1,19 por ação diluída) no 2T26 e FFO ajustado de US$ 261 milhões (US$ 0,83 por ação) no trimestre, concluiu US$ 126 milhões em novos investimentos e elevou o dividendo trimestral em US$ 0,01, para US$ 0,68 por ação — 23º aumento anual consecutivo. Separadamente, o presidente Matthew Gourmand assumirá como CEO em 1º de outubro de 2026, sucedendo Taylor Pickett.</p>
+      
+      <div class="box box-yellow">
+        <div class="box-title">📌 Por que isso importa?</div>
+        <ul><li>Aumento consecutivo de dividendos reforça o status de &#x27;Dividend Achiever&#x27; do REIT hospitalar</li><li>Plano de sucessão de CEO reduz incerteza de governança para os investidores</li><li>Analistas seguem divididos: BMO rebaixou para Neutro (alvo de US$ 45) por potencial de alta limitado, enquanto Truist mantém recomendação neutra com alvo entre US$ 46-48</li></ul>
+      </div>
+      <div class="box box-green">
+        <div class="box-title">🌍 Análise de Cobertura Global</div>
+        <p class="regions"><span class="reg-no">✗ China</span> &nbsp;|&nbsp; <span class="reg-yes">✓ EUA</span> &nbsp;|&nbsp; <span class="reg-no">✗ Europa</span> &nbsp;|&nbsp; <span class="reg-no">✗ Brasil</span></p>
+        <p class="outlets"><strong>Veículos que noticiaram:</strong> Comunicado da companhia, Investing.com</p>
+        <p class="attention">Nível de atenção: <span class="att-badge att-med">MÉDIA</span></p>
+      </div>
+    </article>
+    
+  </section>
+
+  
+<section class="analysis-section">
+  <h2>4. Análise Final — Panorama por Ativo</h2>
+
+  <div class="analysis-grid">
+
+    <div class="analysis-card">
+      <h4>🇧🇷 Bancos e Estatais (BBAS3, ITSA4, BBSE3)</h4>
+      <p>O evento dominante da semana foi o "trade eleitoral": a pesquisa Quaest mostrando empate técnico entre Lula e Flávio Bolsonaro derrubou a percepção de risco de intervenção estatal, elevando BBAS3 e o Ibovespa como um todo. A XP mantém BBAS3 como Neutra (alvo R$ 21), enquanto JPMorgan e Goldman Sachs seguem compradores em Itaúsa, mesmo com Ágora e Planner reduzindo exposição em suas carteiras táticas de dividendos. Já BB Seguridade enfrenta revisão de projeções para baixo pelo Itaú BBA, que prefere Caixa Seguridade no setor. <strong>Previsão:</strong> volatilidade elevada deve persistir até as eleições de 2026, com bancos estatais funcionando como termômetro direto do humor eleitoral.</p>
+    </div>
+
+    <div class="analysis-card">
+      <h4>🇧🇷 Petrobras (PETR4) e Energia (CMIG4, CPFE3, TAEE3/4, ISAE4/AXIA3)</h4>
+      <p>Petrobras segue em trajetória de recordes operacionais (4,5 milhões de bpd em julho), sustentando a tese de dividendos robustos mesmo em cenário de volatilidade do petróleo. No setor elétrico, a CPFL surpreende positivamente com o novo vetor de demanda de data centers, enquanto Taesa e Sanepar mostram histórias mais mistas: dividendos ainda atrativos, mas pressionados por alavancagem (Taesa) ou por decisões regulatórias desfavoráveis (Sanepar). A Axia Energia se destaca com um incomum programa de resgate de ações preferenciais, visto favoravelmente por BTG e Santander. <strong>Previsão:</strong> setor elétrico regulado deve seguir como porto seguro de dividendos, mas com dispersão de resultados conforme jurisdição regulatória de cada distribuidora.</p>
+    </div>
+
+    <div class="analysis-card">
+      <h4>🇧🇷 Vale (VALE3), Klabin (KLBN4) e Commodities</h4>
+      <p>A Vale segue como consenso de compra entre bancos globais (Goldman Sachs e Bradesco BBI elevaram preço-alvo para acima de R$ 100), sustentada por dividendos e recompra de ações. Klabin, por outro lado, mostra lucro em queda, ainda que acima do consenso, refletindo pressão de margens no setor de papel e celulose globalmente. <strong>Previsão:</strong> Vale deve seguir sensível a preços de minério de ferro e ao humor com a economia chinesa (ver seção internacional), enquanto Klabin depende de recuperação de preços de celulose para reverter a tendência de queda de lucro.</p>
+    </div>
+
+    <div class="analysis-card">
+      <h4>🇧🇷 Varejo (MGLU3, AMER3) — Efeito Casas Bahia</h4>
+      <p>A crise da Casas Bahia (BHIA3), com prejuízo de R$ 10 bilhões e risco de recuperação judicial, está redesenhando a disputa competitiva no varejo eletrônico. O Bank of America deu um raro "duplo upgrade" (venda→compra) para o Magazine Luiza, apostando em ganho de market share, enquanto a Americanas segue mais discreta nas notícias recentes. <strong>Previsão:</strong> Magalu tende a ser o principal beneficiário de curto prazo da fragilidade da concorrente, mas o cenário de crédito ao consumidor em juros elevados segue como risco estrutural para todo o setor.</p>
+    </div>
+
+    <div class="analysis-card">
+      <h4>🇺🇸 Renda Fixa Curta e Bitcoin (SGOV, BTC)</h4>
+      <p>SGOV segue como o principal instrumento de proteção de caixa em meio à indecisão do Fed sobre a reunião de 15-16 de setembro — o payroll forte de agosto e as falas divergentes de dirigentes (Waller) mantêm as apostas de mercado entre 50% e 70% para alta de juros. O Bitcoin, por sua vez, viveu semana de forte volatilidade: queda de ~10% em meio a temores fiscais nos EUA, seguida de recorde de captação em ETFs à vista, evidenciando dissociação entre fluxo institucional e preço no curto prazo. <strong>Previsão:</strong> ambos os ativos devem seguir extremamente sensíveis a qualquer sinalização do FOMC nas próximas duas semanas.</p>
+    </div>
+
+    <div class="analysis-card">
+      <h4>🇨🇳 Alibaba (BABA) e MCHI</h4>
+      <p>A Alibaba concentrou o maior volume de notícias do período: captação recorde de US$ 10,2 bilhões em Hong Kong para IA, seguida de compras relevantes de insiders (Jack Ma, Joe Tsai, Eddie Wu), resultados com nuvem de IA em forte aceleração mas lucro pressionado, e um overhang jurídico crescente nos EUA (ações coletivas ligadas ao caso Anthropic/Claude). Analistas seguem divididos entre a tese de crescimento estrutural em IA e a preocupação com diluição e risco regulatório/jurídico. <strong>Previsão:</strong> BABA deve continuar como o ativo mais volátil da lista, com MCHI amplificando qualquer notícia relevante sobre a empresa dado seu peso no índice.</p>
+    </div>
+
+    <div class="analysis-card">
+      <h4>🇨🇳🇺🇸 Semicondutores (SMH, QQQ) e Geopolítica China-EUA</h4>
+      <p>O setor de semicondutores sofreu com a disparada dos juros dos títulos dos EUA a máximas de 19 meses, penalizando as principais posições do SMH (Nvidia, TSMC, Broadcom). Em paralelo, a China endureceu regras de controle de saída do país por violações a controles de exportação de tecnologia, às vésperas da rodada de negociações comerciais EUA-China (14-17/09) e da possível cúpula Xi-Trump em 24/09. <strong>Previsão:</strong> o desfecho das negociações comerciais e a trajetória dos juros americanos devem ser os dois principais vetores de volatilidade para SMH e QQQ nas próximas semanas.</p>
+    </div>
+
+    <div class="analysis-card">
+      <h4>🌍 Dividendos Internacionais e Saúde (VYM, VYMI, OHI)</h4>
+      <p>Ações internacionais pagadoras de dividendos (VYMI) superam pares americanos (VYM) pelo segundo ano seguido, refletindo rotação global de fluxo. No setor de saúde, a Omega Healthcare (OHI) elevou dividendos pela 23ª vez consecutiva e anunciou plano de sucessão de CEO, mesmo com analistas mantendo recomendações neutras por potencial de alta limitado. <strong>Previsão:</strong> tendência de rotação para ativos de renda internacional deve se manter enquanto persistir a incerteza sobre juros nos EUA.</p>
+    </div>
+
+  </div>
+
+  <div class="analysis-perspective">
+    <h4>🔗 Perspectiva Brasil–China–Global</h4>
+    <p>O fio condutor entre as três regiões nesta janela de 24-48 horas foi a incerteza sobre juros: nos EUA, o payroll forte e a indecisão do Fed pressionam SGOV, BTC e ativos de maior múltiplo (QQQ, SMH); no Brasil, o alívio eleitoral gerou um rali expressivo em bancos e estatais, mas a pausa de 3-4 de setembro mostrou como o mercado local segue sensível a dados americanos; na China, o desfecho das negociações comerciais com os EUA (14-17/09) e a cúpula Xi-Trump (24/09) são o principal catalisador para MCHI e para a cadeia de semicondutores, com a Alibaba como o nome mais volátil de todos, concentrando ao mesmo tempo a maior aposta em IA e o maior risco jurídico/regulatório do período. Investidores expostos às três regiões devem monitorar de perto a reunião do FOMC de 15-16 de setembro e a cúpula de 24 de setembro como os dois eventos de maior potencial de contágio cruzado nas próximas semanas.</p>
+  </div>
+</section>
+
+
+  <footer class="report-footer">
+    Relatório gerado automaticamente • Fontes: Valor Econômico, InfoMoney, Money Times, InvestNews, Investing.com, Forbes, Estadão, Folha de S.Paulo, Bloomberg Línea, SCMP, Caixin, Yicai, China Daily, Xinhua, Reuters, Bloomberg, Yahoo Finance, BBC, FT, The Economist.<br>
+    Este documento tem caráter informativo e não constitui recomendação de investimento.
+  </footer>
+
+</div>
+</body>
+</html>
