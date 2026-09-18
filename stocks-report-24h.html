@@ -1,0 +1,664 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Stocks Report — Boletim Diário</title>
+<style>
+  :root{
+    --bg:#f5f5f7;
+    --card:#ffffff;
+    --text:#1d1d1f;
+    --muted:#6e6e73;
+    --black:#0a0a0a;
+    --yellow-bg:#fff8e1;
+    --yellow-border:#f5b400;
+    --green-bg:#e8f7ee;
+    --green-border:#2fae60;
+    --notice-bg:#fdecea;
+    --notice-border:#e0524a;
+    --radius:16px;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    background:var(--bg);
+    color:var(--text);
+    font-family:-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    font-size:15px;
+    line-height:1.6;
+  }
+  header.top{
+    background:var(--black);
+    color:#fff;
+    width:100%;
+    padding:36px 24px 30px;
+    border-radius:0 0 var(--radius) var(--radius);
+  }
+  .header-inner{
+    max-width:1100px;
+    margin:0 auto;
+  }
+  .logo-row{
+    display:flex;
+    align-items:baseline;
+    gap:10px;
+    flex-wrap:wrap;
+  }
+  .logo-row h1{
+    font-size:28px;
+    margin:0;
+    font-weight:700;
+    letter-spacing:-0.02em;
+  }
+  .logo-row span.tag{
+    font-size:13px;
+    color:#b0b0b5;
+    font-weight:500;
+  }
+  .pubdate{
+    margin-top:6px;
+    font-size:13.5px;
+    color:#c7c7cc;
+  }
+  .regions{
+    margin-top:18px;
+    display:flex;
+    gap:18px;
+    flex-wrap:wrap;
+    font-size:14px;
+    color:#e5e5ea;
+  }
+  .regions b{color:#fff;font-weight:600;}
+
+  main{
+    max-width:1100px;
+    margin:0 auto;
+    padding:0 20px 60px;
+  }
+
+  .notice{
+    background:var(--notice-bg);
+    border:1px solid var(--notice-border);
+    border-radius:var(--radius);
+    padding:20px 24px;
+    margin:28px 0;
+    font-size:13.5px;
+    color:#7a2620;
+  }
+  .notice h3{margin:0 0 8px;font-size:15px;color:#7a2620;}
+  .notice ul{margin:8px 0 0;padding-left:20px;}
+  .notice li{margin-bottom:4px;}
+
+  section.block{margin:44px 0;}
+  section.block > h2{
+    font-size:22px;
+    font-weight:700;
+    letter-spacing:-0.01em;
+    margin-bottom:6px;
+  }
+  section.block > p.lede{
+    color:var(--muted);
+    font-size:14px;
+    margin-top:0;
+    margin-bottom:24px;
+  }
+
+  .story{
+    background:var(--card);
+    border-radius:var(--radius);
+    padding:26px 28px;
+    margin-bottom:24px;
+    box-shadow:0 1px 3px rgba(0,0,0,0.06);
+  }
+  .story h3{
+    font-size:17px;
+    margin:0 0 8px;
+    line-height:1.4;
+  }
+  .story h3 a{
+    color:#0a0a0a;
+    text-decoration:none;
+    border-bottom:1px solid #d0d0d5;
+  }
+  .story h3 a:hover{border-bottom-color:#0a0a0a;}
+  .story .meta{
+    font-size:12.5px;
+    color:var(--muted);
+    margin-bottom:14px;
+  }
+  .story .meta b{color:var(--text);}
+  .story p.summary{
+    margin:0 0 18px;
+    font-size:14.5px;
+  }
+
+  .box{
+    border-radius:12px;
+    padding:16px 18px;
+    margin-top:14px;
+    font-size:13.5px;
+  }
+  .box.yellow{
+    background:var(--yellow-bg);
+    border:1px solid var(--yellow-border);
+  }
+  .box.green{
+    background:var(--green-bg);
+    border:1px solid var(--green-border);
+  }
+  .box h4{
+    margin:0 0 8px;
+    font-size:13.5px;
+    font-weight:700;
+  }
+  .box ul{margin:0;padding-left:18px;}
+  .box li{margin-bottom:4px;}
+  .attention{
+    display:inline-block;
+    margin-top:8px;
+    padding:3px 10px;
+    border-radius:20px;
+    font-size:11.5px;
+    font-weight:700;
+    text-transform:uppercase;
+    letter-spacing:0.03em;
+  }
+  .attention.high{background:#2fae60;color:#fff;}
+  .attention.medium{background:#f5b400;color:#332600;}
+  .attention.low{background:#c7c7cc;color:#333;}
+
+  .ticker-chip{
+    display:inline-block;
+    background:#eceef0;
+    border-radius:6px;
+    padding:2px 7px;
+    font-size:11.5px;
+    font-weight:600;
+    color:#444;
+    margin:0 4px 4px 0;
+  }
+
+  .analysis-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fill, minmax(320px,1fr));
+    gap:18px;
+  }
+  .analysis-card{
+    background:var(--card);
+    border-radius:var(--radius);
+    padding:20px 22px;
+    box-shadow:0 1px 3px rgba(0,0,0,0.06);
+  }
+  .analysis-card h4{
+    margin:0 0 8px;
+    font-size:15px;
+  }
+  .analysis-card p{
+    margin:0;
+    font-size:13.5px;
+    color:#333;
+  }
+  .analysis-card.nodata{
+    background:#fafafa;
+    border:1px dashed #d0d0d5;
+    color:var(--muted);
+  }
+
+  footer{
+    text-align:center;
+    color:var(--muted);
+    font-size:12px;
+    padding:30px 20px 40px;
+  }
+
+  @media (max-width:600px){
+    header.top{padding:28px 16px 24px;}
+    .logo-row h1{font-size:24px;}
+    .story{padding:20px 18px;}
+  }
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="header-inner">
+    <div class="logo-row">
+      <h1>📈 Stocks Report</h1>
+      <span class="tag">Boletim Diário de Mercados</span>
+    </div>
+    <div class="pubdate">Publicado em 18 de setembro de 2026 · Janela de cobertura: 16–18 de setembro de 2026</div>
+    <div class="regions">
+      <span>🇧🇷 <b>Brasil</b></span>
+      <span>🇺🇸 <b>EUA</b></span>
+      <span>🇪🇺 <b>Europa</b></span>
+      <span>🇨🇳 <b>China</b></span>
+    </div>
+  </div>
+</header>
+
+<main>
+
+  <div class="notice">
+    <h3>⚠️ Aviso metodológico — leia antes de usar este relatório</h3>
+    <p>Este relatório foi montado com pesquisa via busca (WebSearch) em fontes obrigatórias. O ambiente de execução desta sessão <b>bloqueia integralmente qualquer acesso direto a URLs externas</b> (WebFetch e requisições HTTP via terminal) — o bloqueio foi confirmado inclusive em domínios neutros de controle (ex.: Google, Wikipedia), ou seja, é uma restrição de política de rede do ambiente, não uma falha pontual. Isso significa que:</p>
+    <ul>
+      <li>Os links abaixo <b>não puderam ser abertos e confirmados individualmente</b> (HTTP 200 + data) por esta sessão. Foram triangulados por múltiplas buscas independentes e, na maioria dos casos, por convergência entre dois ou mais veículos obrigatórios — mas recomendamos uma checagem manual rápida antes da publicação final.</li>
+      <li>Das 30 notícias-alvo (15 Brasil + 15 internacional) solicitadas, a pesquisa reuniu <b>14 histórias</b> que atendiam simultaneamente aos três critérios exigidos (últimas 24–48h, veículo da lista obrigatória, fato verificável por múltiplas buscas): <b>6 sobre tickers brasileiros</b> e <b>8 sobre tickers internacionais</b>. Preferimos reportar esse número honestamente a completar a cota com itens fracos, especulativos ou de fontes fora da lista obrigatória.</li>
+      <li>Vários tickers de nicho da lista de monitoramento (BRSR6, ABCB4, BAZA3, UNIP6, ISAE4, FESA4, AXIA3, KLBN4, XPML11, HCTR11, GGRC11, BABA) simplesmente não tiveram cobertura noticiosa nova nas fontes obrigatórias dentro da janela de 24–48h — eles aparecem apenas na seção de Análise Final, com contexto disponível mais recente.</li>
+    </ul>
+  </div>
+
+  <section class="block" id="brasil">
+    <h2>🇧🇷 Principais Notícias — Ações Brasileiras</h2>
+    <p class="lede">6 histórias verificadas por triangulação entre fontes obrigatórias, 16–17 de setembro de 2026.</p>
+
+    <div class="story">
+      <h3>1. <a href="https://forbes.com.br/forbes-money/2026/09/copom-selic-superquarta-inflacao-fiscal-petroleo/" target="_blank" rel="noopener">Copom corta a Selic para 13,75% ao ano, quinta redução seguida, em dia de "Super Quarta" com o Fed</a></h3>
+      <div class="meta">🕒 16/09/2026 (noite) · 📰 Fonte primária: <b>Forbes Brasil</b></div>
+      <p class="summary">O Comitê de Política Monetária do Banco Central cortou a Selic em 0,25 p.p., de 14,00% para 13,75% ao ano, de forma unânime — a quinta queda consecutiva. O Copom não sinalizou o próximo passo, preferindo esperar a reunião de 4 de novembro, citando inflação cheia ainda acima da meta (Focus projeta 4,9% para 2026 e 4,3% para 2027) e incertezas ligadas à guerra no Oriente Médio. A decisão ocorreu no mesmo dia em que o Federal Reserve elevou os juros nos EUA — a chamada "Super Quarta" com bancos centrais em direções opostas.</p>
+      <div class="box yellow">
+        <h4>📌 Por que é importante?</h4>
+        <ul>
+          <li>Corte da Selic favorece ações de dividendos e setores de alta distribuição — bancos, elétricas, seguradoras (BBAS3, ITSA4, BBSE3, BRSR6, ABCB4, CMIG4, CPFE3, TAEE4, SAPR4).</li>
+          <li>Ausência de sinalização sobre novos cortes gera cautela entre analistas quanto ao ritmo de flexibilização até novembro.</li>
+          <li>Diferencial de juros Brasil-EUA diminui (Fed sobe, BC corta), pressionando o real e o fluxo estrangeiro para a bolsa.</li>
+        </ul>
+      </div>
+      <div class="box green">
+        <h4>🌍 Cobertura Global</h4>
+        <p>Regiões: ✓ Brasil &nbsp;|&nbsp; Ásia/EUA (cobertura cruzada do Fed no mesmo dia)</p>
+        <p>Veículos: <a href="https://forbes.com.br/forbes-money/2026/09/copom-selic-superquarta-inflacao-fiscal-petroleo/" target="_blank" rel="noopener">Forbes Brasil</a>, <a href="https://www.infomoney.com.br/mercados/super-4a-com-copom-e-fed-em-direcoes-opostas-o-que-esperar-para-mercado-brasileiro/" target="_blank" rel="noopener">InfoMoney</a></p>
+        <span class="attention high">Atenção: Alta</span>
+      </div>
+      <div style="margin-top:12px;"><span class="ticker-chip">BBAS3</span><span class="ticker-chip">ITSA4</span><span class="ticker-chip">BBSE3</span><span class="ticker-chip">CMIG4</span><span class="ticker-chip">CPFE3</span><span class="ticker-chip">TAEE4</span></div>
+    </div>
+
+    <div class="story">
+      <h3>2. <a href="https://www.infomoney.com.br/mercados/ibovespa-petrobras-stf-federal-reserve-copom-160926/" target="_blank" rel="noopener">Fed eleva juros para 3,75%–4% e sinaliza mais aperto; Ibovespa cai 0,51% pressionado por Petrobras</a></h3>
+      <div class="meta">🕒 16/09/2026 · 📰 Fonte primária: <b>InfoMoney</b></div>
+      <p class="summary">O Federal Reserve elevou a taxa de juros americana em 0,25 p.p., para a faixa de 3,75%–4%, sinalizando que os juros nos EUA podem superar 4% até o fim de 2026. A notícia, somada à queda do petróleo (Brent recuou 2,69% no dia, para US$ 105,83), pressionou o Ibovespa, que fechou em queda de 0,51%. Petrobras foi o principal vetor negativo: PETR4 caiu 3,53% e PETR3 recuou 4,27% na sessão.</p>
+      <div class="box yellow">
+        <h4>📌 Por que é importante?</h4>
+        <ul>
+          <li>Fed mais "hawkish" reduz o apetite por risco em mercados emergentes, pressionando o real e ativos brasileiros ligados a commodities.</li>
+          <li>Queda do Brent atinge diretamente margem e caixa da Petrobras, tema sensível às vésperas da temporada de resultados do 3T26.</li>
+          <li>Reforça a narrativa de bancos centrais em rotas opostas no mesmo dia, elevando a volatilidade cambial.</li>
+        </ul>
+      </div>
+      <div class="box green">
+        <h4>🌍 Cobertura Global</h4>
+        <p>Regiões: ✓ Brasil &nbsp;|&nbsp; ✓ EUA</p>
+        <p>Veículos: <a href="https://www.infomoney.com.br/mercados/ibovespa-petrobras-stf-federal-reserve-copom-160926/" target="_blank" rel="noopener">InfoMoney</a></p>
+        <span class="attention high">Atenção: Alta</span>
+      </div>
+      <div style="margin-top:12px;"><span class="ticker-chip">PETR4</span><span class="ticker-chip">VALE3</span></div>
+    </div>
+
+    <div class="story">
+      <h3>3. <a href="https://forbes.com.br/forbes-money/2026/09/ibovespa-sobe-03-com-vale-e-fecha-aos-186-mil-pontos-dolar-recua/" target="_blank" rel="noopener">Ibovespa fecha em alta puxado por Vale, apesar da turbulência causada pelo reajuste de 15% no Bolsa Família</a></h3>
+      <div class="meta">🕒 17/09/2026 · 📰 Fonte primária: <b>Forbes Brasil</b></div>
+      <p class="summary">O governo publicou o Decreto nº 13.120, reajustando o Bolsa Família em 15,04% (piso de R$ 600 para R$ 691 a partir de outubro), com custo estimado de R$ 5,8 bi em 2026 e ~R$ 22 bi em 2027, beneficiando 19,3 milhões de famílias — a 17 dias do 1º turno das eleições. O Ibovespa, que chegou a cair quase 3.000 pontos após o anúncio por temor fiscal, recuperou-se ao longo do dia e fechou em alta (~+0,3%, na faixa de 186 mil pontos), puxado por Vale (VALE3 +2,07%) e recuperação parcial de Petrobras.</p>
+      <div class="box yellow">
+        <h4>📌 Por que é importante?</h4>
+        <ul>
+          <li>Expansão fiscal a poucos dias da eleição reativa o debate sobre a trajetória da dívida/PIB — tema central para o humor de curto prazo do mercado.</li>
+          <li>Recuperação de Vale e Petrobras mostra o mercado separando o "ruído" político-fiscal do fluxo de commodities e resultados corporativos.</li>
+          <li>Volatilidade intradiária elevada (queda de ~3.000 pontos revertida no mesmo pregão) sinaliza nervosismo com o calendário eleitoral.</li>
+        </ul>
+      </div>
+      <div class="box green">
+        <h4>🌍 Cobertura Global</h4>
+        <p>Regiões: ✓ Brasil</p>
+        <p>Veículos: <a href="https://forbes.com.br/forbes-money/2026/09/ibovespa-sobe-03-com-vale-e-fecha-aos-186-mil-pontos-dolar-recua/" target="_blank" rel="noopener">Forbes Brasil</a>, <a href="https://www.infomoney.com.br/mercados/ibovespa-hoje-bolsa-de-valores-ao-vivo-17092026/" target="_blank" rel="noopener">InfoMoney</a></p>
+        <span class="attention high">Atenção: Alta</span>
+      </div>
+      <div style="margin-top:12px;"><span class="ticker-chip">VALE3</span><span class="ticker-chip">PETR4</span></div>
+    </div>
+
+    <div class="story">
+      <h3>4. <a href="https://www.infomoney.com.br/brasil/petrobras-reajustara-preco-do-diesel-mas-aumento-sera-neutralizado-por-subsidio/" target="_blank" rel="noopener">Petrobras reajusta diesel em R$ 1 por litro, mas subsídio federal neutraliza o aumento</a></h3>
+      <div class="meta">🕒 16–17/09/2026 · 📰 Fonte primária: <b>InfoMoney</b></div>
+      <p class="summary">A Petrobras subiu em R$ 1,00/litro o preço do diesel A vendido às distribuidoras a partir de 17/09, mas o governo publicou a Portaria MF nº 2.813 (16/09), no âmbito da MP 1.391/2026, concedendo subsídio de R$ 1,00/litro por 30 dias — neutralizando o repasse ao consumidor final (subsídio total chega a R$ 2,12/litro). Segundo o Itaú BBA, a defasagem em relação à paridade de importação cai de ~36% para ~22% após o ajuste.</p>
+      <div class="box yellow">
+        <h4>📌 Por que é importante?</h4>
+        <ul>
+          <li>BTG Pactual estima receita incremental de ~US$ 800 milhões/mês à Petrobras (até US$ 2,8 bi até o fim do ano) — impacto direto em caixa e potencial de dividendos.</li>
+          <li>Bradesco BBI classifica a medida como "bastante positiva" para a estatal, por reduzir a defasagem sem repasse ao consumidor.</li>
+          <li>Padrão recorrente de intervenção do governo na política de preços da Petrobras — risco político estrutural para o papel.</li>
+        </ul>
+      </div>
+      <div class="box green">
+        <h4>🌍 Cobertura Global</h4>
+        <p>Regiões: ✓ Brasil</p>
+        <p>Veículos: <a href="https://www.infomoney.com.br/mercados/petrobras-subsidio-compensa-corte-do-diesel-mas-eventuais-atrasos-preocupam/" target="_blank" rel="noopener">InfoMoney</a>, <a href="https://www.moneytimes.com.br/petrobras-petr4-ajuste-no-preco-do-diesel-reduz-defasagem-e-novos-aumentos-continuam-no-radar-lils/" target="_blank" rel="noopener">Money Times</a></p>
+        <span class="attention high">Atenção: Alta</span>
+      </div>
+      <div style="margin-top:12px;"><span class="ticker-chip">PETR4</span></div>
+    </div>
+
+    <div class="story">
+      <h3>5. <a href="https://www.infomoney.com.br/mercados/minerio-de-ferro-sobe-com-reposicao-de-estoques-na-china-antes-de-feriado-nacional/" target="_blank" rel="noopener">Minério de ferro sobe com reposição de estoques na China antes do feriado; Vale acompanha</a></h3>
+      <div class="meta">🕒 17/09/2026 · 📰 Fonte primária: <b>InfoMoney</b> (conteúdo de agência)</div>
+      <p class="summary">O contrato mais negociado de minério de ferro na Bolsa de Dalian fechou em alta de 0,28%, a 710,5 iuanes (US$ 105,92)/tonelada, ainda 4,6% abaixo da máxima de várias semanas. Siderúrgicas chinesas anteciparam compras marítimas antes do feriado do Dia Nacional (1–7 de outubro): o volume diário de transações marítimas saltou 43%, para 1,41 milhão de toneladas, segundo a Mysteel. Vale (VALE3) subiu 2,07% no pregão de 17/09, revertendo duas sessões de queda.</p>
+      <div class="box yellow">
+        <h4>📌 Por que é importante?</h4>
+        <ul>
+          <li>Reposição de estoques pré-feriado é catalisador de curto prazo para o preço do minério e, por consequência, para a receita/margem da Vale.</li>
+          <li>Margens mais fracas do setor siderúrgico chinês limitam o potencial de alta sustentada da demanda — ponto de atenção de médio prazo.</li>
+          <li>Reforça a sensibilidade direta de VALE3 a notícias de curtíssimo prazo vindas da China.</li>
+        </ul>
+      </div>
+      <div class="box green">
+        <h4>🌍 Cobertura Global</h4>
+        <p>Regiões: ✓ Brasil &nbsp;|&nbsp; ✓ China</p>
+        <p>Veículos: <a href="https://www.infomoney.com.br/mercados/minerio-de-ferro-sobe-com-reposicao-de-estoques-na-china-antes-de-feriado-nacional/" target="_blank" rel="noopener">InfoMoney</a>, <a href="https://br.investing.com/news/stock-market-news/minerio-de-ferro-sobe-com--reposicao-de-estoques-na-china-antes-de-feriado-nacional-2068491" target="_blank" rel="noopener">Investing.com Brasil</a></p>
+        <span class="attention medium">Atenção: Média</span>
+      </div>
+      <div style="margin-top:12px;"><span class="ticker-chip">VALE3</span><span class="ticker-chip">MCHI</span></div>
+    </div>
+
+    <div class="story">
+      <h3>6. <a href="https://www.moneytimes.com.br/cemig-cmig4-anuncia-r-200-milhoes-em-jcp-pads/" target="_blank" rel="noopener">Cemig (CMIG4) aprova R$ 200 milhões em juros sobre capital próprio</a></h3>
+      <div class="meta">🕒 17/09/2026 · 📰 Fonte primária: <b>Money Times</b></div>
+      <p class="summary">A diretoria executiva da Cemig aprovou, em 17/09, a distribuição de R$ 200 milhões em JCP, equivalente a R$ 0,0699134 por ação (bruto). Terão direito os acionistas posicionados até o fechamento de 22/09/2026; a partir de 23/09 os papéis passam a ser negociados "ex-JCP". O pagamento será feito em duas parcelas iguais, até 30/06/2027 e até 30/12/2027, com IR de 17,5% retido na fonte.</p>
+      <div class="box yellow">
+        <h4>📌 Por que é importante?</h4>
+        <ul>
+          <li>Reforça o perfil da Cemig como pagadora recorrente de proventos, na mesma tese de dividendos do setor elétrico (CPFE3, TAEE4, SAPR4).</li>
+          <li>Pagamento parcelado até 2027 indica gestão de caixa mais conservadora — ponto para analistas de crédito acompanharem.</li>
+          <li>Corte da Selic (notícia 1) torna o carrego desses proventos relativamente mais atrativo frente à renda fixa.</li>
+        </ul>
+      </div>
+      <div class="box green">
+        <h4>🌍 Cobertura Global</h4>
+        <p>Regiões: ✓ Brasil</p>
+        <p>Veículos: <a href="https://www.moneytimes.com.br/cemig-cmig4-anuncia-r-200-milhoes-em-jcp-pads/" target="_blank" rel="noopener">Money Times</a>, <a href="https://www.infomoney.com.br/mercados/b3-b3sa3-e-cemig-cmig4-anunciam-pagamento-de-proventos/" target="_blank" rel="noopener">InfoMoney</a></p>
+        <span class="attention medium">Atenção: Média</span>
+      </div>
+      <div style="margin-top:12px;"><span class="ticker-chip">CMIG4</span></div>
+    </div>
+
+  </section>
+
+  <section class="block" id="internacional">
+    <h2>🌎 Principais Notícias — Ações Internacionais</h2>
+    <p class="lede">8 histórias verificadas por triangulação entre fontes obrigatórias, 15–18 de setembro de 2026.</p>
+
+    <div class="story">
+      <h3>1. <a href="https://www.bloomberg.com/news/articles/2026-09-16/fed-raises-rates-as-warsh-bucks-trump-to-contain-inflation" target="_blank" rel="noopener">Fed eleva juros em 25 pontos-base, primeira alta desde 2023</a></h3>
+      <div class="meta">🕒 16/09/2026 · 📰 Fonte primária: <b>Bloomberg</b></div>
+      <p class="summary">O Federal Reserve, sob o presidente Kevin Warsh, elevou por votação unânime (12-0) a taxa básica em 25 pontos-base, para a faixa de 3,75%–4,00% — a primeira alta desde julho de 2023. A decisão veio após dados de inflação persistentemente altos e pressão política de Trump por juros mais baixos, que Warsh rejeitou. O "dot plot" atualizado mostrou 16 dos 18 dirigentes prevendo pelo menos mais uma alta ainda em 2026.</p>
+      <div class="box yellow">
+        <h4>📌 Por que é importante?</h4>
+        <ul>
+          <li>O mercado já precificava ~93–94% de chance da alta; reação inicial foi de queda nos índices, seguida de recuperação no dia seguinte.</li>
+          <li>Sinaliza reabertura do ciclo de aperto monetário, pressionando avaliação de ativos de risco e favorecendo renda fixa de curto prazo.</li>
+          <li>Eleva o custo de capital para empresas endividadas (afeta REITs como OHI) e fortalece o dólar.</li>
+        </ul>
+      </div>
+      <div class="box green">
+        <h4>🌍 Cobertura Global</h4>
+        <p>Regiões: ✓ EUA &nbsp;|&nbsp; ✓ China &nbsp;|&nbsp; Europa (cobertura indireta)</p>
+        <p>Veículos: <a href="https://www.bloomberg.com/news/articles/2026-09-16/fed-raises-rates-as-warsh-bucks-trump-to-contain-inflation" target="_blank" rel="noopener">Bloomberg</a>, <a href="https://www.investing.com/news/economy-news/wall-st-futures-rise-as-fed-rate-hike-lifts-longstanding-overhang-4905088" target="_blank" rel="noopener">Investing.com</a>, <a href="https://finance.yahoo.com/markets/stocks/articles/stock-market-today-sept-17-134502255.html" target="_blank" rel="noopener">Yahoo Finance</a>, <a href="https://english.news.cn/20260917/67b94888c9274c068b66325cc7037de2/c.html" target="_blank" rel="noopener">Xinhua</a>, <a href="https://global.chinadaily.com.cn/a/202609/17/WS6aaadb08e4b06d4aa055e701.html" target="_blank" rel="noopener">China Daily</a>, <a href="https://www.caixinglobal.com/2026-09-17/business-brief-sept-17-us-hikes-rates-for-first-time-in-three-years-102485944.html" target="_blank" rel="noopener">Caixin Global</a></p>
+        <span class="attention high">Atenção: Alta</span>
+      </div>
+      <div style="margin-top:12px;"><span class="ticker-chip">SGOV</span><span class="ticker-chip">QQQ</span><span class="ticker-chip">SMH</span><span class="ticker-chip">VYM</span><span class="ticker-chip">VYMI</span><span class="ticker-chip">OHI</span><span class="ticker-chip">BTC</span></div>
+    </div>
+
+    <div class="story">
+      <h3>2. <a href="https://www.bloomberg.com/news/articles/2026-09-16/dollar-jumps-after-fed-raises-rates-sends-hawkish-signal" target="_blank" rel="noopener">Dólar sobe e Treasuries seguram ganhos após sinal "hawkish" do Fed</a></h3>
+      <div class="meta">🕒 16/09/2026 · 📰 Fonte primária: <b>Bloomberg</b></div>
+      <p class="summary">O dólar avançou e os rendimentos dos Treasuries de curto prazo subiram (2 anos chegando a 4,73%, maior nível desde 2024) após o Fed sinalizar que o ciclo de alta pode não ter terminado. Apesar disso, os títulos de prazo mais longo (10 e 30 anos) recuaram no pregão seguinte, com o mercado reprecificando expectativas.</p>
+      <div class="box yellow">
+        <h4>📌 Por que é importante?</h4>
+        <ul>
+          <li>Eleva diretamente o retorno de fundos de T-bills de curtíssimo prazo como SGOV (yield SEC de 30 dias em torno de 3,6% e subindo).</li>
+          <li>Fortalecimento do dólar tende a pressionar ativos emergentes e commodities precificadas em dólar.</li>
+          <li>Yields de 2 anos em alta, yields de 10–30 anos caindo no dia seguinte — curva se achatando.</li>
+        </ul>
+      </div>
+      <div class="box green">
+        <h4>🌍 Cobertura Global</h4>
+        <p>Regiões: ✓ EUA</p>
+        <p>Veículos: <a href="https://www.bloomberg.com/news/articles/2026-09-16/dollar-jumps-after-fed-raises-rates-sends-hawkish-signal" target="_blank" rel="noopener">Bloomberg</a>, <a href="https://www.bloomberg.com/news/articles/2026-09-16/treasuries-hold-gains-as-fed-hikes-rates-signaling-more-ahead" target="_blank" rel="noopener">Bloomberg (Treasuries)</a></p>
+        <span class="attention high">Atenção: Alta</span>
+      </div>
+      <div style="margin-top:12px;"><span class="ticker-chip">SGOV</span><span class="ticker-chip">VYM</span><span class="ticker-chip">VYMI</span></div>
+    </div>
+
+    <div class="story">
+      <h3>3. <a href="https://global.chinadaily.com.cn/a/202609/18/WS6aac8d15e4b06d4aa055eb00.html" target="_blank" rel="noopener">China: PBOC eleva levemente taxa de referência em resposta ao Fed; economistas dizem impacto "limitado"</a></h3>
+      <div class="meta">🕒 18/09/2026 · 📰 Fonte primária: <b>China Daily</b></div>
+      <p class="summary">Após a alta de juros dos EUA, o Banco Popular da China (PBOC) elevou em 0,05 ponto percentual a taxa de sua linha de empréstimo de um ano a bancos comerciais, sem alterar taxas para empresas, público ou depósitos. Economistas citados dizem que o efeito sobre as bolsas chinesas e a economia doméstica deve ser limitado, já que a China mantém política monetária "moderadamente flexível".</p>
+      <div class="box yellow">
+        <h4>📌 Por que é importante?</h4>
+        <ul>
+          <li>O diferencial de juros China-EUA se amplia, gerando risco de saída especulativa de capital de curto prazo, mas o valuation das ações chinesas seguiria "razoável" no médio prazo.</li>
+          <li>Pressão deflacionária doméstica pode pesar mais do que o movimento do Fed nas decisões futuras do PBOC.</li>
+          <li>Bolsas de Hong Kong e Xangai caíram levemente em 17/09, mas recuperaram em 18/09 (Hang Seng +0,7%, Xangai +1,0%).</li>
+        </ul>
+      </div>
+      <div class="box green">
+        <h4>🌍 Cobertura Global</h4>
+        <p>Regiões: ✓ China &nbsp;|&nbsp; EUA (cobertura cruzada)</p>
+        <p>Veículos: <a href="https://global.chinadaily.com.cn/a/202609/18/WS6aac8d15e4b06d4aa055eb00.html" target="_blank" rel="noopener">China Daily</a>, <a href="https://english.news.cn/20260917/67b94888c9274c068b66325cc7037de2/c.html" target="_blank" rel="noopener">Xinhua</a>, <a href="https://www.caixinglobal.com/2026-09-17/business-brief-sept-17-us-hikes-rates-for-first-time-in-three-years-102485944.html" target="_blank" rel="noopener">Caixin Global</a></p>
+        <span class="attention medium">Atenção: Média</span>
+      </div>
+      <div style="margin-top:12px;"><span class="ticker-chip">MCHI</span><span class="ticker-chip">BABA</span></div>
+    </div>
+
+    <div class="story">
+      <h3>4. <a href="https://finance.yahoo.com/markets/stocks/articles/stock-market-today-sept-17-134502255.html" target="_blank" rel="noopener">Nasdaq e S&amp;P 500 se recuperam na quinta-feira após venda inicial provocada pelo Fed</a></h3>
+      <div class="meta">🕒 17/09/2026 · 📰 Fonte primária: <b>Yahoo Finance</b></div>
+      <p class="summary">Após fecharem em queda na quarta-feira (dia da decisão do Fed), os futuros de Dow, S&amp;P 500 e Nasdaq-100 subiram com força na quinta-feira, impulsionados pela queda do petróleo (WTI caiu ~3%) e por rendimentos de Treasuries mais baixos. Dados de pedidos de auxílio-desemprego vieram abaixo do esperado, reforçando o apetite por risco.</p>
+      <div class="box yellow">
+        <h4>📌 Por que é importante?</h4>
+        <ul>
+          <li>A mensagem central é que o Fed "pode não ter terminado" de subir juros, mas o mercado preferiu focar na queda do petróleo/yields no curto prazo.</li>
+          <li>Recuo de custos de energia beneficia margens de empresas de tecnologia com alto consumo de dados/IA.</li>
+          <li>Nasdaq-100 (QQQ) subiu ~1,7% na quinta-feira, revertendo a perda do dia anterior.</li>
+        </ul>
+      </div>
+      <div class="box green">
+        <h4>🌍 Cobertura Global</h4>
+        <p>Regiões: ✓ EUA</p>
+        <p>Veículos: <a href="https://finance.yahoo.com/markets/stocks/articles/stock-market-today-sept-17-134502255.html" target="_blank" rel="noopener">Yahoo Finance</a>, <a href="https://www.investing.com/news/economy-news/wall-st-futures-rise-as-fed-rate-hike-lifts-longstanding-overhang-4905088" target="_blank" rel="noopener">Investing.com</a></p>
+        <span class="attention high">Atenção: Alta</span>
+      </div>
+      <div style="margin-top:12px;"><span class="ticker-chip">QQQ</span><span class="ticker-chip">SMH</span></div>
+    </div>
+
+    <div class="story">
+      <h3>5. <a href="https://www.bloomberg.com/news/articles/2026-09-17/stock-market-today-dow-s-p-live-updates" target="_blank" rel="noopener">Jensen Huang (Nvidia) diz que vendas de chips vão dobrar em 2027; ações de semicondutores sobem</a></h3>
+      <div class="meta">🕒 17–18/09/2026 · 📰 Fonte primária: <b>Bloomberg</b></div>
+      <p class="summary">O CEO da Nvidia, Jensen Huang, afirmou que a empresa dobrará o número de chips vendidos no próximo ano à medida que a IA se espalha por mais setores. O comentário otimista elevou ações de fornecedores regionais de chips, incluindo Samsung Electronics e SK Hynix, e ajudou a sustentar o rali de ações de tecnologia nos EUA.</p>
+      <div class="box yellow">
+        <h4>📌 Por que é importante?</h4>
+        <ul>
+          <li>Reforça a tese de demanda estrutural de longo prazo por capacidade de IA, sustentando múltiplos elevados do setor.</li>
+          <li>Beneficia toda a cadeia de semicondutores (fundições, memória, equipamentos) representada no ETF SMH.</li>
+          <li>Nvidia subiu mais de 2% na quinta-feira, no segundo pregão consecutivo de alta.</li>
+        </ul>
+      </div>
+      <div class="box green">
+        <h4>🌍 Cobertura Global</h4>
+        <p>Regiões: ✓ EUA &nbsp;|&nbsp; Ásia (Coreia/Taiwan, cobertura cruzada)</p>
+        <p>Veículos: <a href="https://www.bloomberg.com/news/articles/2026-09-17/stock-market-today-dow-s-p-live-updates" target="_blank" rel="noopener">Bloomberg</a></p>
+        <span class="attention medium">Atenção: Média</span>
+      </div>
+      <div style="margin-top:12px;"><span class="ticker-chip">SMH</span><span class="ticker-chip">QQQ</span></div>
+    </div>
+
+    <div class="story">
+      <h3>6. <a href="https://finance.yahoo.com/economy/policy/articles/fed-hikes-rates-first-time-181538441.html" target="_blank" rel="noopener">Bitcoin oscila e depois sobe após decisão do Fed; ETFs de criptomoedas registram saída de ~US$ 520 milhões</a></h3>
+      <div class="meta">🕒 16–17/09/2026 · 📰 Fonte primária: <b>Yahoo Finance</b></div>
+      <p class="summary">O Bitcoin ficou praticamente estável entre US$ 75.000 e US$ 75.800 nos minutos antes e depois do anúncio do Fed, mas logo subiu para a faixa de US$ 76.000–78.000. No mesmo período, os ETFs spot de Bitcoin e Ethereum nos EUA registraram saída líquida combinada de cerca de US$ 520 milhões, a maior desde 25 de junho, refletindo cautela institucional de curto prazo.</p>
+      <div class="box yellow">
+        <h4>📌 Por que é importante?</h4>
+        <ul>
+          <li>O mercado já havia precificado a alta (93% de probabilidade implícita), o que limitou o impacto negativo; o "dot plot" foi lido como alívio relativo.</li>
+          <li>Juros mais altos por mais tempo aumentam o custo de oportunidade de manter ativos sem rendimento como o BTC.</li>
+          <li>Fluxos de ETF negativos no curto prazo contrastam com captação institucional forte em agosto (US$ 3,52 bilhões).</li>
+        </ul>
+      </div>
+      <div class="box green">
+        <h4>🌍 Cobertura Global</h4>
+        <p>Regiões: ✓ EUA</p>
+        <p>Veículos: <a href="https://finance.yahoo.com/economy/policy/articles/fed-hikes-rates-first-time-181538441.html" target="_blank" rel="noopener">Yahoo Finance</a></p>
+        <span class="attention medium">Atenção: Média</span>
+      </div>
+      <div style="margin-top:12px;"><span class="ticker-chip">BTC</span></div>
+    </div>
+
+    <div class="story">
+      <h3>7. <a href="https://finance.yahoo.com/markets/crypto/articles/clarity-act-fails-50-49-122058280.html" target="_blank" rel="noopener">Projeto de lei CLARITY Act (marco regulatório de criptomoedas dos EUA) fracassa no Senado</a></h3>
+      <div class="meta">🕒 15/09/2026 (efeitos ainda repercutindo em 17–18/09) · 📰 Fonte primária: <b>Yahoo Finance</b></div>
+      <p class="summary">O Senado dos EUA rejeitou, por 49 a 50 votos, o CLARITY Act, projeto apoiado por Trump que dividiria a supervisão do setor de criptomoedas entre SEC e CFTC. Quatro republicanos votaram com os democratas contra o texto, após impasse sobre regras de ética e pagamento de juros por stablecoins. O Bitcoin caiu mais de 3%, para abaixo de US$ 77.000, e ações como Coinbase, Strategy e Robinhood recuaram.</p>
+      <div class="box yellow">
+        <h4>📌 Por que é importante?</h4>
+        <ul>
+          <li>O mercado de apostas Polymarket reduziu a chance de aprovação da lei ainda em 2026 para cerca de 5%, empurrando o tema para depois das eleições de meio de mandato em novembro.</li>
+          <li>A ausência de marco legal claro mantém incerteza sobre custódia, stablecoins e supervisão de exchanges nos EUA.</li>
+          <li>Empresas do setor (mineradoras, exchanges, tesourarias corporativas de Bitcoin) ficam sem clareza regulatória de curto prazo.</li>
+        </ul>
+      </div>
+      <div class="box green">
+        <h4>🌍 Cobertura Global</h4>
+        <p>Regiões: ✓ EUA</p>
+        <p>Veículos: <a href="https://finance.yahoo.com/markets/crypto/articles/clarity-act-fails-50-49-122058280.html" target="_blank" rel="noopener">Yahoo Finance</a></p>
+        <span class="attention medium">Atenção: Média</span>
+      </div>
+      <div style="margin-top:12px;"><span class="ticker-chip">BTC</span></div>
+    </div>
+
+    <div class="story">
+      <h3>8. <a href="https://www.bloomberg.com/news/newsletters/2026-09-17/oil-traders-stymied-by-iran-war-stalemate-evening-briefing-americas" target="_blank" rel="noopener">Petróleo recua com impasse na guerra do Irã, mas segue perto de US$ 105/barril</a></h3>
+      <div class="meta">🕒 17/09/2026 · 📰 Fonte primária: <b>Bloomberg</b></div>
+      <p class="summary">Mais de seis meses após EUA e Israel iniciarem operações militares contra o Irã, analistas do JPMorgan (citados pela Bloomberg) dizem ser "quase impossível" prever o fim do conflito. O petróleo caiu na quinta-feira, mas permanece perto de US$ 105/barril, com o Estreito de Hormuz continuando como ponto de tensão logística — o que tem redirecionado compradores asiáticos, sobretudo chineses, para o petróleo brasileiro.</p>
+      <div class="box yellow">
+        <h4>📌 Por que é importante?</h4>
+        <ul>
+          <li>Preços de petróleo estruturalmente mais altos por conflito prolongado, sem catalisador claro de resolução no curto prazo.</li>
+          <li>A Petrobras tem se beneficiado como fornecedora alternativa à China diante da disrupção em Hormuz — tema relevante para a tese Brasil-China-EUA em commodities.</li>
+          <li>Petróleo mais caro pressiona custos de energia para setores de tecnologia/dados (indireto para QQQ/SMH) e favorece Petrobras/Vale no Ibovespa.</li>
+        </ul>
+      </div>
+      <div class="box green">
+        <h4>🌍 Cobertura Global</h4>
+        <p>Regiões: ✓ EUA/Global</p>
+        <p>Veículos: <a href="https://www.bloomberg.com/news/newsletters/2026-09-17/oil-traders-stymied-by-iran-war-stalemate-evening-briefing-americas" target="_blank" rel="noopener">Bloomberg</a></p>
+        <span class="attention medium">Atenção: Média</span>
+      </div>
+      <div style="margin-top:12px;"><span class="ticker-chip">PETR4</span><span class="ticker-chip">VALE3</span><span class="ticker-chip">MCHI</span></div>
+    </div>
+
+  </section>
+
+  <section class="block" id="analise">
+    <h2>🧭 Análise Final — Situação Atual por Ativo</h2>
+    <p class="lede">Visão de analistas, impacto esperado em resultados e perspectiva Brasil-China-Global. Inclui contexto adicional (fora da janela estrita de 24h) para tickers sem notícia nova nas fontes obrigatórias.</p>
+
+    <div class="analysis-grid">
+
+      <div class="analysis-card">
+        <h4>PETR4 — Petrobras</h4>
+        <p>Dupla força em jogo: petróleo internacional em queda (pressão de curto prazo, Fed hawkish) vs. subsídio ao diesel (colchão de caixa doméstico). BTG Pactual mantém visão construtiva de longo prazo, citando resiliência de margem mesmo com o Brent oscilando. É a ação mais recomendada em carteiras de setembro entre casas como BTG, BB Investimentos, Safra, Ágora e Genial. Bônus geopolítico: China tem comprado mais petróleo brasileiro diante da disrupção em Hormuz.</p>
+      </div>
+
+      <div class="analysis-card">
+        <h4>VALE3 — Vale</h4>
+        <p>Recuperação de curto prazo ligada à reposição de estoques chineses pré-feriado do Dia Nacional, mas a tese de longo prazo segue pressionada pela demanda estrutural mais fraca do setor imobiliário/aço chinês. A volatilidade do preço do minério continua sendo o principal driver de curto prazo da ação.</p>
+      </div>
+
+      <div class="analysis-card">
+        <h4>BBSE3 — BB Seguridade</h4>
+        <p>Contexto (09/09/2026, fora da janela de 24h): Citi rebaixou a ação para venda, cortando o preço-alvo de R$ 36 para R$ 35, considerando renovações de contrato menos favoráveis com o Banco do Brasil — em cenário de não renovação, o valor teórico cairia até 55%. Sentimento de analistas dividido e majoritariamente cauteloso.</p>
+      </div>
+
+      <div class="analysis-card">
+        <h4>BBAS3 / ITSA4 — Banco do Brasil / Itaúsa</h4>
+        <p>O setor bancário deve ser beneficiado pelo ciclo de corte da Selic (crédito, margem financeira). Contexto: BB pagou JCP complementar de R$ 584,9 milhões em 11/09, mas o lucro ajustado do 1S26 caiu 34% na comparação anual (agronegócio/inadimplência rural). Itaúsa mantém tese de holding sólida, com ROE de ~20% via Itaú.</p>
+      </div>
+
+      <div class="analysis-card">
+        <h4>CMIG4 / CPFE3 / TAEE4 / SAPR4 — Setor Elétrico/Saneamento</h4>
+        <p>Tese de dividendos ganha força relativa com a Selic em queda. Cemig e CPFL confirmaram novos proventos na semana (CPFE3 tem 4ª parcela de R$ 700 milhões prevista para 24/09). Debate Taesa vs. ISA Energia segue dividindo analistas entre desconto (Taesa) e crescimento/margem (ISA Energia).</p>
+      </div>
+
+      <div class="analysis-card">
+        <h4>AMER3 — Americanas</h4>
+        <p>Processo de recuperação judicial avança com venda de ativos não-core (imóveis no Rio, Uni.Co) para reforçar caixa — editais de leilão de três imóveis saíram em 09/09, com leilão marcado para 22/10/2026 e valor mínimo de R$ 129,9 milhões. Discurso da administração é de "normalização gradual", mas o prejuízo persiste.</p>
+      </div>
+
+      <div class="analysis-card">
+        <h4>MGLU3 — Magazine Luiza</h4>
+        <p>Parceria com o Mercado Livre anunciada em 02/09 (listagem de ~27 mil SKUs próprios, incluindo KaBuM! e Época Cosméticos) fez a ação disparar 17–22% no dia. Lida como tentativa de monetizar estoque próprio via novo canal com margem potencialmente superior à mídia paga; resultado ainda pressionado (prejuízo ajustado no 2T26).</p>
+      </div>
+
+      <div class="analysis-card">
+        <h4>IRBR3 — IRB Brasil RE</h4>
+        <p>Catalisador regulatório no radar: Senado aprovou o PL 3.540/2026 (início de setembro), que pode liberar aumento de proventos. BTG estima potencial de criação de valor superior a 20% do valor de mercado atual da companhia.</p>
+      </div>
+
+      <div class="analysis-card">
+        <h4>SGOV — Treasury ETF (curtíssimo prazo)</h4>
+        <p>Com a alta do Fed para 3,75%–4,00%, o yield SEC de 30 dias do SGOV deve subir para perto de 3,6–3,9%, mantendo-o atrativo frente a fundos de money market. Sinalização de possível nova alta em 2026 reforça seu papel de "porto seguro" de renda fixa de curtíssima duração.</p>
+      </div>
+
+      <div class="analysis-card">
+        <h4>BTC — Bitcoin</h4>
+        <p>Semana marcada por dois choques simultâneos: fracasso do CLARITY Act no Senado (15/09) e alta de juros do Fed (16/09). O BTC mostrou resiliência relativa, mas os fluxos de ETF ficaram negativos no curtíssimo prazo. A tese de "olhar através" do aperto monetário depende da confirmação do dot-plot (apenas +1 alta prevista); qualquer sinal de mais apertos tende a pressionar o ativo.</p>
+      </div>
+
+      <div class="analysis-card nodata">
+        <h4>OHI — Omega Healthcare Investors</h4>
+        <p>Sem notícia específica e recente (24–48h) nas fontes obrigatórias. Contexto: dividendo trimestral elevado para US$ 0,68/ação (pago em agosto); recomendações mistas (RBC "Hold", Wells Fargo com teto reduzido a US$ 48, UBS "Buy" a US$ 54). REITs tendem a sofrer com juros mais altos, mas casas com dívida a taxa fixa sofrem menos.</p>
+      </div>
+
+      <div class="analysis-card">
+        <h4>MCHI — iShares MSCI China ETF</h4>
+        <p>Mercado chinês reagiu com cautela curta (leve queda em 17/09) e recuperação em 18/09, acompanhando Wall Street e a queda do petróleo. PBOC respondeu com ajuste marginal de taxa, mantendo discurso de política "moderadamente flexível". Consumo interno chinês ainda fraco, produção industrial em recuperação.</p>
+      </div>
+
+      <div class="analysis-card">
+        <h4>QQQ — Nasdaq-100 ETF</h4>
+        <p>Semana de volatilidade típica de decisão do Fed — queda no dia do anúncio, forte recuperação no dia seguinte, puxada pelo otimismo em IA/semicondutores e pela queda do petróleo/yields.</p>
+      </div>
+
+      <div class="analysis-card">
+        <h4>SMH — Semicondutores</h4>
+        <p>Tom construtivo reforçado pelos comentários de Jensen Huang (Nvidia) sobre dobrar vendas de chips em 2027. Setor segue como principal termômetro do ciclo de capex em IA.</p>
+      </div>
+
+      <div class="analysis-card">
+        <h4>VYM / VYMI — Dividendos EUA / Internacional</h4>
+        <p>O ciclo de alta do Fed tende a favorecer, dentro do universo de dividendos, papéis com ativos a taxa flutuante e setores financeiro/energia — relevante para a composição setorial de VYM. Já para VYMI, o dólar mais forte pós-decisão do Fed é um vento contrário via conversão cambial.</p>
+      </div>
+
+      <div class="analysis-card nodata">
+        <h4>BABA — Alibaba</h4>
+        <p>Sem notícia específica datada de 17–18/09/2026 nas fontes obrigatórias. Contexto mais recente disponível: captação de HK$ 80 bi (~US$ 10,2 bi) para financiar plano de capex em IA de RMB 380 bi, com melhora de margem na unidade de cloud/IA. Recomendação predominante de analistas é "Strong Buy".</p>
+      </div>
+
+      <div class="analysis-card nodata">
+        <h4>BRSR6 / ABCB4 / BAZA3 / UNIP6 / ISAE4 / FESA4 / AXIA3 / KLBN4 / XPML11 / HCTR11 / GGRC11</h4>
+        <p>Nenhuma notícia específica verificável nas últimas 24–48h nas fontes obrigatórias para estes tickers. Recomenda-se acompanhar o próximo ciclo de resultados trimestrais e comunicados de proventos para atualização.</p>
+      </div>
+
+      <div class="analysis-card">
+        <h4>Perspectiva Brasil-China-Global (commodities/petróleo)</h4>
+        <p>O tema mais forte do momento é o realinhamento de fluxos de petróleo por conta da guerra no Irã: a China tem comprado volumes maiores de petróleo brasileiro à medida que o Estreito de Hormuz permanece disruptado, com a Petrobras se posicionando como fornecedora alternativa. É positivo para a tese de exportação de commodities brasileiras à China, mas dados numéricos mais específicos de recordes de exportação vieram de veículos fora da lista mandatória e não entraram como notícia "verificada" neste relatório — apenas como nota de contexto.</p>
+      </div>
+
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  Stocks Report · Boletim automatizado gerado por pesquisa em fontes financeiras (WebSearch) · Verificação de links não realizada por acesso direto às URLs devido a bloqueio de rede do ambiente de execução — recomenda-se checagem manual antes de redistribuição.
+</footer>
+
+</body>
+</html>
