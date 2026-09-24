@@ -1,0 +1,677 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tech Global Report - 24h</title>
+<style>
+  :root{
+    --bg:#f2f2f4;
+    --card-bg:#ffffff;
+    --text:#1a1a1a;
+    --muted:#5b5b63;
+    --header-bg:#0a0a0a;
+    --header-text:#f5f5f5;
+    --yellow-bg:#fff6d9;
+    --yellow-border:#f0c419;
+    --yellow-text:#5c4a06;
+    --green-bg:#e7f6ec;
+    --green-border:#34a853;
+    --green-text:#1e5631;
+    --link:#0a58ff;
+    --chip-bg:#eeeeee;
+    --shadow: 0 1px 3px rgba(0,0,0,0.08), 0 1px 2px rgba(0,0,0,0.06);
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    padding:0;
+    background:var(--bg);
+    color:var(--text);
+    font-family:-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    font-size:15px;
+    line-height:1.6;
+  }
+  .wrap{
+    max-width:900px;
+    margin:0 auto;
+    padding:20px 16px 60px;
+  }
+  header.top{
+    background:var(--header-bg);
+    color:var(--header-text);
+    border-radius:16px;
+    padding:32px 28px;
+    margin-bottom:28px;
+  }
+  header.top h1{
+    margin:0 0 8px;
+    font-size:28px;
+    font-weight:700;
+    letter-spacing:-0.02em;
+  }
+  header.top .meta{
+    font-size:14px;
+    color:#c9c9c9;
+    margin-bottom:14px;
+  }
+  header.top .regions{
+    font-size:14px;
+    color:#e6e6e6;
+    background:rgba(255,255,255,0.08);
+    display:inline-block;
+    padding:8px 14px;
+    border-radius:999px;
+  }
+  section.intro{
+    background:var(--card-bg);
+    border-radius:14px;
+    padding:18px 22px;
+    margin-bottom:28px;
+    box-shadow:var(--shadow);
+    font-size:14px;
+    color:var(--muted);
+  }
+  h2.section-title{
+    font-size:13px;
+    text-transform:uppercase;
+    letter-spacing:0.08em;
+    color:var(--muted);
+    margin:36px 4px 16px;
+    font-weight:700;
+  }
+  .card{
+    background:var(--card-bg);
+    border-radius:16px;
+    padding:22px 24px;
+    margin-bottom:22px;
+    box-shadow:var(--shadow);
+  }
+  .card-head{
+    display:flex;
+    gap:12px;
+    align-items:flex-start;
+    margin-bottom:6px;
+  }
+  .num{
+    flex:0 0 auto;
+    width:32px;
+    height:32px;
+    border-radius:50%;
+    background:var(--header-bg);
+    color:#fff;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-weight:700;
+    font-size:14px;
+  }
+  .card h3{
+    margin:0;
+    font-size:18px;
+    line-height:1.35;
+    font-weight:700;
+  }
+  .card h3 a{
+    color:var(--text);
+    text-decoration:none;
+  }
+  .card h3 a:hover{
+    color:var(--link);
+    text-decoration:underline;
+  }
+  .card .subline{
+    font-size:12.5px;
+    color:var(--muted);
+    margin:4px 0 12px 44px;
+  }
+  .card p.summary{
+    margin:0 0 16px 44px;
+    font-size:14.5px;
+  }
+  .box{
+    border-radius:12px;
+    padding:14px 16px;
+    margin:14px 0 0 44px;
+    font-size:13.8px;
+  }
+  .box.yellow{
+    background:var(--yellow-bg);
+    border:1px solid var(--yellow-border);
+    color:var(--yellow-text);
+  }
+  .box.green{
+    background:var(--green-bg);
+    border:1px solid var(--green-border);
+    color:var(--green-text);
+  }
+  .box strong.box-title{
+    display:block;
+    margin-bottom:6px;
+    font-size:14px;
+  }
+  .box ul{
+    margin:6px 0 0;
+    padding-left:18px;
+  }
+  .box li{
+    margin-bottom:4px;
+  }
+  .region-tags{
+    display:flex;
+    flex-wrap:wrap;
+    gap:6px;
+    margin:2px 0 10px;
+  }
+  .tag{
+    background:rgba(255,255,255,0.6);
+    border:1px solid rgba(30,86,49,0.25);
+    border-radius:999px;
+    padding:3px 10px;
+    font-size:12px;
+    font-weight:600;
+  }
+  .tag.off{
+    opacity:0.45;
+    text-decoration:line-through;
+  }
+  .links{
+    margin:8px 0 10px;
+  }
+  .links a{
+    color:#0a6b3a;
+    word-break:break-word;
+  }
+  .attn{
+    display:inline-block;
+    margin-top:6px;
+    font-size:12px;
+    font-weight:700;
+    padding:3px 10px;
+    border-radius:999px;
+  }
+  .attn.alto{ background:#fde3e3; color:#8a1414; }
+  .attn.medio{ background:#fff0d0; color:#8a5a00; }
+  .attn.baixo{ background:#e3ecfd; color:#1a3d8a; }
+  footer.final{
+    background:var(--header-bg);
+    color:#eaeaea;
+    border-radius:16px;
+    padding:30px 28px;
+    margin-top:40px;
+  }
+  footer.final h2{
+    margin-top:0;
+    font-size:20px;
+  }
+  footer.final h3{
+    font-size:15px;
+    color:#ffd966;
+    margin:20px 0 8px;
+  }
+  footer.final p{
+    font-size:14px;
+    color:#d6d6d6;
+    margin:0 0 10px;
+  }
+  .report-footer-note{
+    text-align:center;
+    font-size:12px;
+    color:var(--muted);
+    margin-top:24px;
+  }
+  @media (max-width:600px){
+    header.top{padding:24px 18px;}
+    header.top h1{font-size:22px;}
+    .card{padding:18px;}
+    .card .subline, .card p.summary, .box{margin-left:0;}
+    .card-head{gap:10px;}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header class="top">
+  <h1>Tech Global Report — 24h</h1>
+  <div class="meta">Publicado em 24 de setembro de 2026 · Compilado com base nas últimas 24–48 horas de cobertura internacional</div>
+  <div class="regions">🇨🇳 China | 🇺🇸 EUA | 🇪🇺 Europa | 🇧🇷 Brasil</div>
+</header>
+
+<section class="intro">
+  As 15 notícias mais relevantes de tecnologia do último dia, com foco especial na cobertura da mídia chinesa. Cada reportagem inclui análise de impacto comercial e geopolítico, além de comparação de como diferentes regiões do mundo cobriram o mesmo fato. Empresas monitoradas: Alibaba, Taobao, Meituan, AliExpress, DeepSeek, ByteDance, TikTok, Tencent, Shopee, Shein, Pinduoduo e Temu.
+</section>
+
+<h2 class="section-title">As 15 notícias</h2>
+
+<!-- CARD 1 -->
+<div class="card">
+  <div class="card-head">
+    <div class="num">1</div>
+    <h3><a href="https://www.nbcnews.com/world/asia/trump-xi-summit-meet-white-house-tensions-taiwan-trade-ai-rcna598073" target="_blank" rel="noopener">Xi Jinping chega a Washington para cúpula com Trump em meio a impasse sobre chips e Taiwan</a></h3>
+  </div>
+  <div class="subline">24 de setembro de 2026 · Fonte primária: NBC News</div>
+  <p class="summary">Xi Jinping desembarcou nos EUA para sua primeira visita de Estado a Washington em 11 anos, recebido por Trump na pista do aeroporto. Comércio, Taiwan, minerais críticos e controles de exportação de chips de IA dominam a pauta, mas analistas preveem poucos resultados concretos além da estabilização da trégua comercial.</p>
+  <div class="box yellow">
+    <strong class="box-title">📌 Por que isso importa?</strong>
+    O desfecho da cúpula define o ritmo de exportação de chips avançados da Nvidia, o futuro das tarifas sobre Shein, Temu e AliExpress, e o status de Taiwan — variáveis que movem diretamente as ações de Alibaba, Tencent e ByteDance. Um "diálogo de IA" formal entre os dois países reduziria o risco sistêmico para toda a cadeia de suprimentos de semicondutores.
+  </div>
+  <div class="box green">
+    <strong class="box-title">🌍 Análise de Cobertura Global</strong>
+    <div class="region-tags">
+      <span class="tag off">China</span><span class="tag">EUA ✓</span><span class="tag">Europa ✓</span><span class="tag off">Brasil</span>
+    </div>
+    <div class="links">
+      Fontes verificadas: <a href="https://www.nbcnews.com/world/asia/trump-xi-summit-meet-white-house-tensions-taiwan-trade-ai-rcna598073" target="_blank" rel="noopener">NBC News</a> ·
+      <a href="https://www.cnbc.com/2026/09/24/trump-xi-china-summit-ai-export-control-nvidia-huawei-alibaba-.html" target="_blank" rel="noopener">CNBC</a> ·
+      <a href="https://www.euronews.com/business/2026/09/18/what-to-expect-from-the-trump-xi-summit-from-tariffs-to-a-possible-30-billion-deal" target="_blank" rel="noopener">Euronews</a>
+    </div>
+    Diferenças de narrativa: a imprensa americana enfatiza as tensões sobre Taiwan e resultados "limitados"; a Euronews foca no possível acordo comercial de US$30 bilhões e no ceticismo europeu quanto a concessões tecnológicas dos EUA. Não foi localizada, nesta checagem, cobertura primária de veículo estatal chinês sobre o encontro específico de 24/9.
+    <div class="attn alto">Atenção: Alto</div>
+  </div>
+</div>
+
+<!-- CARD 2 -->
+<div class="card">
+  <div class="card-head">
+    <div class="num">2</div>
+    <h3><a href="https://foreignpolicy.com/2026/09/22/china-rare-earth-xi-trump-meeting-summit/" target="_blank" rel="noopener">Terras raras se tornam a principal moeda de troca da China na véspera da cúpula</a></h3>
+  </div>
+  <div class="subline">22–23 de setembro de 2026 · Fonte primária: Foreign Policy</div>
+  <p class="summary">Com controle de cerca de 70% da mineração e 90% do processamento global de terras raras, Pequim chega à cúpula em posição de força. Trump evita nova rodada de tarifas ou restrições tecnológicas radicais, refletindo a dependência ocidental desse insumo crítico para veículos elétricos, defesa e semicondutores.</p>
+  <div class="box yellow">
+    <strong class="box-title">📌 Por que isso importa?</strong>
+    Terras raras são insumo essencial para chips avançados, motores elétricos e sistemas de defesa. A hegemonia chinesa nesse mercado limita a capacidade dos EUA de intensificar sanções tecnológicas sem prejudicar sua própria indústria — incluindo fornecedores da Apple, Tesla e fabricantes de semicondutores dos EUA.
+  </div>
+  <div class="box green">
+    <strong class="box-title">🌍 Análise de Cobertura Global</strong>
+    <div class="region-tags">
+      <span class="tag off">China</span><span class="tag">EUA ✓</span><span class="tag off">Europa</span><span class="tag off">Brasil</span>
+    </div>
+    <div class="links">
+      Fontes verificadas: <a href="https://foreignpolicy.com/2026/09/22/china-rare-earth-xi-trump-meeting-summit/" target="_blank" rel="noopener">Foreign Policy</a> ·
+      <a href="https://thediplomat.com/2026/09/rare-earths-at-the-trump-xi-summit-relief-without-a-resolution/" target="_blank" rel="noopener">The Diplomat</a> ·
+      <a href="https://asia.nikkei.com/spotlight/trump-xi-summit/trump-xi-summit-live-eu-flags-rare-earth-worries-despite-us-china-truce-extension" target="_blank" rel="noopener">Nikkei Asia</a>
+    </div>
+    Diferenças de narrativa: a mídia americana destaca a "perda de alavancagem" de Trump diante da dependência de terras raras; a Nikkei Asia relata preocupações da própria União Europeia em ficar de fora de um eventual acordo; análises asiáticas enfatizam o prazo de 10 de novembro para a trégua comercial expirar.
+    <div class="attn alto">Atenção: Alto</div>
+  </div>
+</div>
+
+<!-- CARD 3 -->
+<div class="card">
+  <div class="card-head">
+    <div class="num">3</div>
+    <h3><a href="https://www.globaltimes.cn/page/202609/1371127.shtml" target="_blank" rel="noopener">Alibaba revela chip Zhenwu V900, "o mais poderoso da China", e compromete US$53 bi em IA</a></h3>
+  </div>
+  <div class="subline">22 de setembro de 2026 · Fonte primária: Global Times</div>
+  <p class="summary">Na Conferência Apsara, em Hangzhou, o CEO Eddie Wu apresentou o Zhenwu V900, acelerador de IA com 216 GB de memória capaz de sustentar clusters de até 500 mil chips. A Alibaba também anunciou meta de elevar a capacidade de data centers a 20 GW até 2032 e multiplicar por cinco a receita de nuvem e IA, para US$100 bilhões em cinco anos.</p>
+  <div class="box yellow">
+    <strong class="box-title">📌 Por que isso importa?</strong>
+    O chip é resposta direta às restrições de exportação dos EUA e sinaliza aceleração da autossuficiência tecnológica chinesa. As ações da Alibaba chegaram a subir 5% em Hong Kong; o anúncio pressiona a Nvidia, intensifica a corrida de IA entre Alibaba, Tencent e ByteDance, e reforça a narrativa de Pequim de que as sanções americanas "não funcionam".
+  </div>
+  <div class="box green">
+    <strong class="box-title">🌍 Análise de Cobertura Global</strong>
+    <div class="region-tags">
+      <span class="tag">China ✓</span><span class="tag">EUA ✓</span><span class="tag off">Europa</span><span class="tag off">Brasil</span>
+    </div>
+    <div class="links">
+      Fontes verificadas: <a href="https://www.globaltimes.cn/page/202609/1371127.shtml" target="_blank" rel="noopener">Global Times</a> ·
+      <a href="https://technode.com/2026/09/22/t-head-unveils-zhenwu-v900-ai-chip-in-alibabas-push-to-expand-its-ai-infrastructure-stack/" target="_blank" rel="noopener">TechNode</a> ·
+      <a href="https://www.cnbc.com/2026/09/22/alibaba-ai-alibabacloud-zhenwu-v900-.html" target="_blank" rel="noopener">CNBC</a> ·
+      <a href="https://www.bloomberg.com/news/articles/2026-09-22/alibaba-unveils-ai-chip-to-drive-20gw-of-data-centers-by-2032" target="_blank" rel="noopener">Bloomberg</a>
+    </div>
+    Diferenças de narrativa: Global Times e TechNode emolduram o lançamento como prova de resiliência tecnológica chinesa diante das sanções; CNBC e Bloomberg concentram-se no impacto de mercado e na ameaça competitiva direta à Nvidia.
+    <div class="attn alto">Atenção: Alto</div>
+  </div>
+</div>
+
+<!-- CARD 4 -->
+<div class="card">
+  <div class="card-head">
+    <div class="num">4</div>
+    <h3><a href="https://finance.yahoo.com/technology/ai/articles/tencent-releases-ai-image-model-031310630.html" target="_blank" rel="noopener">Tencent lança modelo de imagem Hy Image 3.5 e ações disparam mais de 7% em Hong Kong</a></h3>
+  </div>
+  <div class="subline">22 de setembro de 2026 · Fonte primária: Bloomberg (via Yahoo Finance)</div>
+  <p class="summary">A Tencent lançou o Hy Image 3.5 Preview, já integrado ao chatbot Yuanbao e a ferramentas de edição de imagem, horas depois do grande anúncio de IA da Alibaba. A empresa afirma que o desempenho supera o Seedream 5.0 Pro da ByteDance e fica levemente à frente do Qwen-Image-3.0 Pro da Alibaba, sem publicar benchmarks externos independentes.</p>
+  <div class="box yellow">
+    <strong class="box-title">📌 Por que isso importa?</strong>
+    A disputa por modelos de geração de imagem é parte da corrida mais ampla entre as "big techs" chinesas por domínio em IA generativa aplicada a produtos de consumo — com implicações diretas para publicidade, e-commerce visual e ferramentas de criação usadas por centenas de milhões de usuários do WeChat.
+  </div>
+  <div class="box green">
+    <strong class="box-title">🌍 Análise de Cobertura Global</strong>
+    <div class="region-tags">
+      <span class="tag">China ✓</span><span class="tag">EUA ✓</span><span class="tag off">Europa</span><span class="tag off">Brasil</span>
+    </div>
+    <div class="links">
+      Fontes verificadas: <a href="https://finance.yahoo.com/technology/ai/articles/tencent-releases-ai-image-model-031310630.html" target="_blank" rel="noopener">Bloomberg / Yahoo Finance</a> ·
+      <a href="https://www.investing.com/news/stock-market-news/tencent-shares-jump-after-unveiling-new-ai-image-model-4909849" target="_blank" rel="noopener">Investing.com</a> ·
+      <a href="https://finance.biggo.com/news/b48ab6e0-9e6b-4912-993b-740f1d41f707" target="_blank" rel="noopener">BigGo Finance</a>
+    </div>
+    Diferenças de narrativa: veículos financeiros americanos tratam o lançamento como evento de mercado, destacando o salto das ações; a cobertura tecnológica dá mais peso à integração com o Yuanbao e à ausência de benchmarks comparativos independentes.
+    <div class="attn medio">Atenção: Médio</div>
+  </div>
+</div>
+
+<!-- CARD 5 -->
+<div class="card">
+  <div class="card-head">
+    <div class="num">5</div>
+    <h3><a href="https://www.bloomberg.com/news/articles/2026-09-22/china-probes-deepseek-moonshot-over-data-security-information" target="_blank" rel="noopener">Pequim investiga DeepSeek e Moonshot AI por segurança de dados após acusações da Anthropic</a></h3>
+  </div>
+  <div class="subline">22–23 de setembro de 2026 · Fonte primária: Bloomberg</div>
+  <p class="summary">A Administração do Ciberespaço da China (CAC) abriu investigação contra a DeepSeek e a Moonshot AI depois que a Anthropic acusou sete laboratórios chineses de rotear dados de usuários pelo Claude para "destilação ilegal" de modelos. A Moonshot teria enviado mais de 23 milhões de interações e a DeepSeek, 12,1 milhões, potencialmente expondo dados militares e estatais a servidores americanos.</p>
+  <div class="box yellow">
+    <strong class="box-title">📌 Por que isso importa?</strong>
+    O episódio abre uma nova frente na disputa EUA-China: segurança de dados em IA generativa. As ações da Alibaba caíram até 5%, Baidu recuou 2% e JD.com 1% em Hong Kong — e o caso veio à tona horas antes da cúpula Trump-Xi, complicando qualquer diálogo bilateral sobre governança de IA.
+  </div>
+  <div class="box green">
+    <strong class="box-title">🌍 Análise de Cobertura Global</strong>
+    <div class="region-tags">
+      <span class="tag">China ✓</span><span class="tag">EUA ✓</span><span class="tag off">Europa</span><span class="tag off">Brasil</span>
+    </div>
+    <div class="links">
+      Fontes verificadas: <a href="https://www.bloomberg.com/news/articles/2026-09-22/china-probes-deepseek-moonshot-over-data-security-information" target="_blank" rel="noopener">Bloomberg</a> ·
+      <a href="https://www.thestandard.com.hk/innovation/article/343563/DeepSeek-and-Moonshot-AI-face-Beijings-probe-over-potential-data-leaks-to-Anthropic" target="_blank" rel="noopener">The Standard (Hong Kong)</a> ·
+      <a href="https://finance.biggo.com/news/ab1b8792-9319-4139-8fc9-9b18eb52d898" target="_blank" rel="noopener">BigGo Finance</a> ·
+      <a href="https://en.sedaily.com/international/2026/09/23/china-probes-deepseek-moonshot-ai-chinese-ai-stocks-tumble" target="_blank" rel="noopener">Seoul Economic Daily</a>
+    </div>
+    Diferenças de narrativa: a mídia de Hong Kong (The Standard) enquadra o episódio como resposta regulatória à "fuga de segredos de Estado"; a mídia financeira internacional foca no impacto às ações de IA chinesas; nenhum veículo confirma se haverá punição formal.
+    <div class="attn alto">Atenção: Alto</div>
+  </div>
+</div>
+
+<!-- CARD 6 -->
+<div class="card">
+  <div class="card-head">
+    <div class="num">6</div>
+    <h3><a href="https://www.mlex.com/mlex/antitrust/articles/2527629/beijing-probes-meituan-alibaba-linked-platforms-over-suspected-unfair-practices" target="_blank" rel="noopener">Reguladores chineses abrem investigação antitruste contra unidades de viagens da Meituan e Alibaba</a></h3>
+  </div>
+  <div class="subline">19–23 de setembro de 2026 · Fonte primária: MLex</div>
+  <p class="summary">A SAMR (Administração Estatal para Regulação de Mercado) de Pequim investiga a Sankuai (Meituan), a Taomei/Fliggy (Alibaba), a Tongcheng e a Tujia por suspeita de concorrência desleal no mercado de reservas de hotéis e viagens on-line — na esteira da multa recorde de US$776 milhões aplicada à Trip.com por monopólio.</p>
+  <div class="box yellow">
+    <strong class="box-title">📌 Por que isso importa?</strong>
+    A ofensiva regulatória mostra que Pequim intensifica o escrutínio sobre plataformas digitais mesmo enquanto celebra avanços em IA — um duplo padrão monitorado de perto por investidores estrangeiros. Para Meituan e Alibaba, o risco é de novas multas bilionárias e mudanças forçadas em práticas comerciais que afetam milhões de comerciantes.
+  </div>
+  <div class="box green">
+    <strong class="box-title">🌍 Análise de Cobertura Global</strong>
+    <div class="region-tags">
+      <span class="tag">China ✓</span><span class="tag">EUA ✓</span><span class="tag off">Europa</span><span class="tag off">Brasil</span>
+    </div>
+    <div class="links">
+      Fontes verificadas: <a href="https://www.mlex.com/mlex/antitrust/articles/2527629/beijing-probes-meituan-alibaba-linked-platforms-over-suspected-unfair-practices" target="_blank" rel="noopener">MLex</a> ·
+      <a href="https://www.chinamoneynetwork.com/2026/09/20/china-launches-antitrust-probe-on-alibaba-and-meituan-units-amid-digital-platform-scrutiny" target="_blank" rel="noopener">China Money Network</a> ·
+      <a href="https://www.brecorder.com/news/40440246/china-investigates-meituan-and-alibaba-units-for-suspected-antitrust-violations" target="_blank" rel="noopener">Business Recorder</a> ·
+      <a href="http://www.thejakartapost.com/business/2026/09/19/china-investigates-meituan-alibaba-units-for-suspected-antitrust-violations" target="_blank" rel="noopener">The Jakarta Post</a>
+    </div>
+    Diferenças de narrativa: veículos regulatórios especializados (MLex) descrevem o contexto legal e os precedentes; a imprensa asiática enfatiza o objetivo declarado de Pequim de "impulsionar o consumo interno" em meio à desaceleração da economia chinesa.
+    <div class="attn medio">Atenção: Médio</div>
+  </div>
+</div>
+
+<!-- CARD 7 -->
+<div class="card">
+  <div class="card-head">
+    <div class="num">7</div>
+    <h3><a href="https://technode.com/2026/09/17/huawei-unveils-ascend-960-superpod-with-npo-technology-to-power-next-generation-ai-infrastructure/" target="_blank" rel="noopener">Huawei revela SuperPoD Atlas 960E e roadmap Ascend 970/980 para desafiar a Nvidia</a></h3>
+  </div>
+  <div class="subline">17–18 de setembro de 2026 (repercussão contínua às vésperas da cúpula) · Fonte primária: TechNode</div>
+  <p class="summary">No HUAWEI CONNECT 2026, em Xangai, a Huawei apresentou o Atlas 960E, primeiro supernó do setor baseado em ótica quase-empacotada (NPO), escalável a 4.096 NPUs Ascend 960 e 8 EFLOPS em FP8. A empresa anunciou cadência anual de lançamentos, com Ascend 970 previsto para 2028 e Ascend 980 para 2029.</p>
+  <div class="box yellow">
+    <strong class="box-title">📌 Por que isso importa?</strong>
+    O anúncio, feito dias antes da cúpula Trump-Xi, funciona como demonstração de força tecnológica chinesa diante de Washington. Reduz a dependência de Pequim em relação à Nvidia e reforça a mensagem de Xi de que os controles de exportação americanos "não sufocam" a inovação chinesa — pressionando ainda mais as ações da Nvidia.
+  </div>
+  <div class="box green">
+    <strong class="box-title">🌍 Análise de Cobertura Global</strong>
+    <div class="region-tags">
+      <span class="tag">China ✓</span><span class="tag">EUA ✓</span><span class="tag off">Europa</span><span class="tag off">Brasil</span>
+    </div>
+    <div class="links">
+      Fontes verificadas: <a href="https://technode.com/2026/09/17/huawei-unveils-ascend-960-superpod-with-npo-technology-to-power-next-generation-ai-infrastructure/" target="_blank" rel="noopener">TechNode</a> ·
+      <a href="https://www.datacenterdynamics.com/en/news/huawei-announces-annual-release-cadence-for-three-new-ascend-ai-chips-unveils-supernode-offering-company-says-will-outperform-nvidias-nvl144/" target="_blank" rel="noopener">DataCenterDynamics</a> ·
+      <a href="https://www.forbes.com/sites/jonmarkman/2026/09/22/huawei-pulls-ascend-960-ai-chip-forward-to-q1-2027-to-take-on-nvidia/" target="_blank" rel="noopener">Forbes</a>
+    </div>
+    Diferenças de narrativa: TechNode e DataCenterDynamics detalham as especificações técnicas como conquista de engenharia; a Forbes enquadra a antecipação do lançamento como manobra geopolítica calculada para a semana da cúpula.
+    <div class="attn alto">Atenção: Alto</div>
+  </div>
+</div>
+
+<!-- CARD 8 -->
+<div class="card">
+  <div class="card-head">
+    <div class="num">8</div>
+    <h3><a href="https://gulfnews.com/technology/huawei-to-double-output-of-top-ai-chip-as-nvidia-wavers-in-china-1.500287469" target="_blank" rel="noopener">Huawei dobra produção do chip Ascend 910C para ocupar o vácuo deixado pela Nvidia na China</a></h3>
+  </div>
+  <div class="subline">Setembro de 2026 · Fonte primária: Bloomberg</div>
+  <p class="summary">A Huawei planeja fabricar cerca de 600 mil unidades do Ascend 910C em 2026 — o dobro do volume de 2025 — elevando a produção total da linha Ascend a 1,6 milhão de unidades, com apoio da fundição doméstica SMIC. O 910C já está esgotado no mercado chinês, embora ainda não substitua totalmente os chips H200 da Nvidia.</p>
+  <div class="box yellow">
+    <strong class="box-title">📌 Por que isso importa?</strong>
+    O ritmo de produção da Huawei é termômetro direto da eficácia dos controles de exportação dos EUA: quanto mais a empresa consegue escalar, menor o mercado endereçável da Nvidia na China — hoje avaliado em bilhões de dólares em receita perdida anualmente pela companhia americana.
+  </div>
+  <div class="box green">
+    <strong class="box-title">🌍 Análise de Cobertura Global</strong>
+    <div class="region-tags">
+      <span class="tag">China ✓</span><span class="tag">EUA ✓</span><span class="tag off">Europa</span><span class="tag off">Brasil</span>
+    </div>
+    <div class="links">
+      Fontes verificadas: <a href="https://gulfnews.com/technology/huawei-to-double-output-of-top-ai-chip-as-nvidia-wavers-in-china-1.500287469" target="_blank" rel="noopener">Gulf News (via Bloomberg)</a> ·
+      <a href="https://www.huaweicentral.com/huawei-plans-600000-ascend-910c-chips-by-2026-to-block-nvidia-in-china/" target="_blank" rel="noopener">Huawei Central</a> ·
+      <a href="https://www.webpronews.com/huawei-to-double-ascend-910c-ai-chip-output-to-600000-in-2026-rivaling-nvidia/" target="_blank" rel="noopener">WebProNews</a>
+    </div>
+    Diferenças de narrativa: a Bloomberg enfatiza a perspectiva de mercado e a perda de receita da Nvidia; veículos especializados em hardware chinês tratam o avanço como marco de autossuficiência industrial.
+    <div class="attn medio">Atenção: Médio</div>
+  </div>
+</div>
+
+<!-- CARD 9 -->
+<div class="card">
+  <div class="card-head">
+    <div class="num">9</div>
+    <h3><a href="https://www.cnbc.com/2026/09/24/trump-xi-china-summit-ai-export-control-nvidia-huawei-alibaba-.html" target="_blank" rel="noopener">Brecha de acesso remoto permite que ByteDance, Alibaba e Tencent driblem controles de exportação dos EUA</a></h3>
+  </div>
+  <div class="subline">24 de setembro de 2026 · Fonte primária: CNBC</div>
+  <p class="summary">Big techs chinesas têm acessado remotamente capacidade computacional de chips Nvidia hospedados na Tailândia, Malásia e Japão, contornando as restrições diretas de exportação para a China. O Remote Access Security Act (RASA), que fecharia essa brecha, foi aprovado na Câmara dos EUA em janeiro, mas segue parado no Senado.</p>
+  <div class="box yellow">
+    <strong class="box-title">📌 Por que isso importa?</strong>
+    A brecha expõe os limites práticos da política de contenção tecnológica dos EUA: enquanto o Congresso debate a legislação, ByteDance, Alibaba e Tencent seguem treinando modelos de IA com hardware de ponta via nuvens no Sudeste Asiático — um vazamento estrutural que Washington tenta fechar às pressas antes da cúpula.
+  </div>
+  <div class="box green">
+    <strong class="box-title">🌍 Análise de Cobertura Global</strong>
+    <div class="region-tags">
+      <span class="tag">China ✓</span><span class="tag">EUA ✓</span><span class="tag off">Europa</span><span class="tag off">Brasil</span>
+    </div>
+    <div class="links">
+      Fontes verificadas: <a href="https://www.cnbc.com/2026/09/24/trump-xi-china-summit-ai-export-control-nvidia-huawei-alibaba-.html" target="_blank" rel="noopener">CNBC</a> ·
+      <a href="https://asiatimes.com/2026/09/nvidia-chip-export-loophole-clouds-us-china-ai-summit-talks/" target="_blank" rel="noopener">Asia Times</a> ·
+      <a href="https://fortune.com/2026/05/13/nvidia-chip-smuggling-china-russia-iran-export-controls-supermicro/" target="_blank" rel="noopener">Fortune</a>
+    </div>
+    Diferenças de narrativa: a CNBC enquadra a brecha como vitória tática chinesa que fortalece a posição de Xi na cúpula; a Asia Times detalha o impasse legislativo no Senado americano; a Fortune documenta casos específicos de contrabando de chips via mensagens criptografadas.
+    <div class="attn alto">Atenção: Alto</div>
+  </div>
+</div>
+
+<!-- CARD 10 -->
+<div class="card">
+  <div class="card-head">
+    <div class="num">10</div>
+    <h3><a href="https://www.benzinga.com/markets/tech/26/09/61807396/trump-xi-jinping-dinner-nvidia-jensen-huang-chip-war-tensions" target="_blank" rel="noopener">Jensen Huang e CEOs de tecnologia dos EUA comparecem a jantar de Estado entre Trump e Xi</a></h3>
+  </div>
+  <div class="subline">24 de setembro de 2026 · Fonte primária: Benzinga</div>
+  <p class="summary">O CEO da Nvidia, Jensen Huang, ao lado de nomes como Tim Cook (Apple), Jeff Bezos (Amazon), Sundar Pichai (Alphabet) e Elon Musk, foi convidado para o jantar de Estado em homenagem a Xi Jinping. Huang disse posteriormente estar "confiante" de que Trump e Xi tiveram uma boa conversa.</p>
+  <div class="box yellow">
+    <strong class="box-title">📌 Por que isso importa?</strong>
+    A presença simultânea da liderança do Vale do Silício ao lado de Trump e Xi simboliza o quanto as grandes techs americanas dependem do mercado chinês e da estabilidade na cadeia de suprimentos de chips — Huang consolidou-se como o principal aliado de Trump na defesa de que a IA deve avançar sem freios regulatórios.
+  </div>
+  <div class="box green">
+    <strong class="box-title">🌍 Análise de Cobertura Global</strong>
+    <div class="region-tags">
+      <span class="tag off">China</span><span class="tag">EUA ✓</span><span class="tag off">Europa</span><span class="tag off">Brasil</span>
+    </div>
+    <div class="links">
+      Fontes verificadas: <a href="https://www.benzinga.com/markets/tech/26/09/61807396/trump-xi-jinping-dinner-nvidia-jensen-huang-chip-war-tensions" target="_blank" rel="noopener">Benzinga</a> ·
+      <a href="https://techcrunch.com/2026/09/14/nvidia-ceo-jensen-huang-tells-trump-were-not-going-to-let-an-ai-slowdown-happen/" target="_blank" rel="noopener">TechCrunch</a> ·
+      <a href="https://www.cnbc.com/2026/09/20/nvidia-ceo-jensen-huang-emerges-as-trumps-top-ally-in-ai-debate.html" target="_blank" rel="noopener">CNBC</a>
+    </div>
+    Diferenças de narrativa: TechCrunch e CNBC descrevem Huang como o "aliado número um" de Trump na política de IA nos EUA; não foi localizada, nesta checagem, cobertura primária chinesa sobre sua presença específica no jantar de Estado.
+    <div class="attn medio">Atenção: Médio</div>
+  </div>
+</div>
+
+<!-- CARD 11 -->
+<div class="card">
+  <div class="card-head">
+    <div class="num">11</div>
+    <h3><a href="https://www.brecorder.com/news/40440641/china-hong-kong-stocks-gain-as-ai-shares-rally-ahead-of-xi-trump-meeting" target="_blank" rel="noopener">Ações de tecnologia chinesas sobem antes da cúpula, mas dupla investigação regulatória ofusca o otimismo</a></h3>
+  </div>
+  <div class="subline">23 de setembro de 2026 · Fonte primária: Business Recorder</div>
+  <p class="summary">O Hang Seng subiu 0,4% e o Hang Seng Tech avançou 1% na véspera da cúpula, impulsionados pelos anúncios de IA da Alibaba e da Tencent. Horas depois, a notícia da investigação de segurança de dados contra DeepSeek/Moonshot e da sonda antitruste contra Meituan/Alibaba derrubou a Alibaba em até 4%, com Baidu e JD.com também em queda.</p>
+  <div class="box yellow">
+    <strong class="box-title">📌 Por que isso importa?</strong>
+    O dia ilustra a dualidade do mercado chinês de tecnologia: otimismo com chips e IA generativa convivendo com risco regulatório doméstico crescente. Investidores internacionais reavaliam prêmios de risco sobre as big techs chinesas justamente na semana mais sensível do ano para as relações EUA-China.
+  </div>
+  <div class="box green">
+    <strong class="box-title">🌍 Análise de Cobertura Global</strong>
+    <div class="region-tags">
+      <span class="tag">China ✓</span><span class="tag">EUA ✓</span><span class="tag off">Europa</span><span class="tag off">Brasil</span>
+    </div>
+    <div class="links">
+      Fontes verificadas: <a href="https://www.brecorder.com/news/40440641/china-hong-kong-stocks-gain-as-ai-shares-rally-ahead-of-xi-trump-meeting" target="_blank" rel="noopener">Business Recorder</a> ·
+      <a href="https://moderndiplomacy.eu/2026/09/22/can-ai-optimism-strengthen-china-stocks-ahead-of-the-xi-trump-summit/" target="_blank" rel="noopener">Modern Diplomacy</a> ·
+      <a href="https://247wallst.com/investing/2026/09/23/alibaba-falls-4-as-reported-beijing-ai-probe-undercuts-chip-rally-baidu-eases-jd-com-dips/" target="_blank" rel="noopener">24/7 Wall St.</a>
+    </div>
+    Diferenças de narrativa: veículos de mercado (24/7 Wall St.) enfatizam a queda pontual da Alibaba após o noticiário regulatório; a Modern Diplomacy analisa o quadro mais amplo sobre se o "otimismo de IA" pode sustentar as ações chinesas até o fim da cúpula.
+    <div class="attn medio">Atenção: Médio</div>
+  </div>
+</div>
+
+<!-- CARD 12 -->
+<div class="card">
+  <div class="card-head">
+    <div class="num">12</div>
+    <h3><a href="https://www.aljazeera.com/news/2026/9/2/us-pushes-looser-approach-to-ai-regulation-while-eu-pushes-new-law" target="_blank" rel="noopener">União Europeia inicia fiscalizações de conformidade da AI Act em setores de alto risco</a></h3>
+  </div>
+  <div class="subline">Setembro de 2026 (fiscalizações em curso) · Fonte primária: Al Jazeera</div>
+  <p class="summary">Encerrado em 2 de agosto o período de transição para sistemas de alto risco, o AI Office europeu e 24 autoridades nacionais — incluindo a CNIL (França), a BfDI (Alemanha) e a AESIA (Espanha) — iniciaram inspeções de conformidade em ferramentas de recrutamento automatizado, crédito bancário algorítmico e triagem de IA em clínicas privadas.</p>
+  <div class="box yellow">
+    <strong class="box-title">📌 Por que isso importa?</strong>
+    A UE consolida a regulação de IA mais rígida do mundo justamente quando EUA e China avançam com desregulamentação e investimento pesado em IA generativa, ampliando o fosso regulatório entre os três blocos e criando incerteza para empresas que operam na Europa, incluindo Shein, AliExpress e Temu.
+  </div>
+  <div class="box green">
+    <strong class="box-title">🌍 Análise de Cobertura Global</strong>
+    <div class="region-tags">
+      <span class="tag off">China</span><span class="tag">EUA ✓</span><span class="tag">Europa ✓</span><span class="tag off">Brasil</span>
+    </div>
+    <div class="links">
+      Fontes verificadas: <a href="https://www.aljazeera.com/news/2026/9/2/us-pushes-looser-approach-to-ai-regulation-while-eu-pushes-new-law" target="_blank" rel="noopener">Al Jazeera</a> ·
+      <a href="https://artificialintelligenceact.eu/" target="_blank" rel="noopener">Artificial Intelligence Act (EU Observatory)</a> ·
+      <a href="https://cubbbix.com/blog/ai-regulation-september-2026-global-update" target="_blank" rel="noopener">Cubbbix</a>
+    </div>
+    Diferenças de narrativa: a Al Jazeera enquadra a divergência EUA-UE como corrida regulatória global; observatórios especializados europeus detalham prazos técnicos e penalidades; não foi localizada cobertura chinesa direta sobre esta fiscalização específica.
+    <div class="attn medio">Atenção: Médio</div>
+  </div>
+</div>
+
+<!-- CARD 13 -->
+<div class="card">
+  <div class="card-head">
+    <div class="num">13</div>
+    <h3><a href="https://www.scmp.com/tech/big-tech/article/3365491/alibaba-pushes-south-americas-ai-market-launch-brazil-data-centres" target="_blank" rel="noopener">Alibaba Cloud abre primeira região na América do Sul com data centers em São Paulo</a></h3>
+  </div>
+  <div class="subline">Agosto–setembro de 2026 (repercussão renovada nesta semana) · Fonte primária: South China Morning Post</div>
+  <p class="summary">A Alibaba Cloud inaugurou dois data centers em São Paulo, sua primeira região na América do Sul e a segunda na América Latina após o México. A empresa passa a operar 106 zonas de disponibilidade em 31 regiões globais e planeja lançar serviços de IA agêntica corporativa no Brasil.</p>
+  <div class="box yellow">
+    <strong class="box-title">📌 Por que isso importa?</strong>
+    A expansão coloca a Alibaba em concorrência direta com AWS, Google Cloud e Microsoft Azure no maior mercado de nuvem da América Latina, aprofundando a presença econômica chinesa no Brasil em meio à disputa geopolítica EUA-China por influência tecnológica no Sul Global — com potencial impacto em governança de dados e soberania digital brasileira.
+  </div>
+  <div class="box green">
+    <strong class="box-title">🌍 Análise de Cobertura Global</strong>
+    <div class="region-tags">
+      <span class="tag">China ✓</span><span class="tag">EUA ✓</span><span class="tag off">Europa</span><span class="tag">Brasil ✓</span>
+    </div>
+    <div class="links">
+      Fontes verificadas: <a href="https://www.scmp.com/tech/big-tech/article/3365491/alibaba-pushes-south-americas-ai-market-launch-brazil-data-centres" target="_blank" rel="noopener">South China Morning Post</a> ·
+      <a href="https://www.benzinga.com/markets/tech/26/09/61623955/alibaba-cloud-expands-into-brazil-with-new-data-centers-to-drive-latin-america-ai-growth" target="_blank" rel="noopener">Benzinga</a> ·
+      <a href="https://www.datacenterdynamics.com/en/news/alibaba-brazil/" target="_blank" rel="noopener">DataCenterDynamics</a>
+    </div>
+    Diferenças de narrativa: o SCMP enquadra o movimento como parte da estratégia chinesa de "IA para o Sul Global"; veículos financeiros americanos tratam o fato como notícia corporativa de expansão de mercado; a cobertura brasileira ampla sobre implicações de soberania de dados ainda é limitada.
+    <div class="attn medio">Atenção: Médio</div>
+  </div>
+</div>
+
+<!-- CARD 14 -->
+<div class="card">
+  <div class="card-head">
+    <div class="num">14</div>
+    <h3><a href="https://china.org.br/empresas-brasileiras-tecnologia-xangai-cooperacao-2026/" target="_blank" rel="noopener">Missão de seis empresas de tecnologia brasileiras visita Xangai no programa "Soft Landing Global – China 2026"</a></h3>
+  </div>
+  <div class="subline">22–26 de setembro de 2026 · Fonte primária: Agência Brasil-China (china.org.br)</div>
+  <p class="summary">Seis empresas brasileiras de tecnologia iniciaram agenda de negócios em Xangai voltada a cidades inteligentes, inteligência artificial, mobilidade e digitalização de serviços públicos, em programa promovido pela Softex Global com o Ministério da Ciência, Tecnologia e Inovação. A delegação participa do Tomorrow.City Shanghai, no Zhangjiang Science Hall.</p>
+  <div class="box yellow">
+    <strong class="box-title">📌 Por que isso importa?</strong>
+    A iniciativa reforça a estratégia brasileira de aprofundar a cooperação tecnológica com a China — via transferência de conhecimento em IA e cidades inteligentes — em um momento em que o Brasil busca equilibrar sua relação com EUA e China em meio à disputa tecnológica global, sem alinhamento automático a nenhum dos dois blocos.
+  </div>
+  <div class="box green">
+    <strong class="box-title">🌍 Análise de Cobertura Global</strong>
+    <div class="region-tags">
+      <span class="tag">China ✓</span><span class="tag off">EUA</span><span class="tag off">Europa</span><span class="tag">Brasil ✓</span>
+    </div>
+    <div class="links">
+      Fontes verificadas: <a href="https://china.org.br/empresas-brasileiras-tecnologia-xangai-cooperacao-2026/" target="_blank" rel="noopener">Agência Brasil-China (china.org.br)</a> ·
+      <a href="https://www.correiobraziliense.com.br/aqui/2026/09/16/brasil-e-china-reafirmam-interesse-em-ampliar-parceria-em-areas-de-ia-e-tecnologia/" target="_blank" rel="noopener">Correio Braziliense</a> ·
+      <a href="https://prefeitura.sp.gov.br/web/relacoes_internacionais/w/miss%C3%A3o-%C3%A0-china-amplia-oportunidades-de-coopera%C3%A7%C3%A3o-em-cidades-inteligentes-inova%C3%A7%C3%A3o-e-governan%C3%A7a-p%C3%BAblica-para-s%C3%A3o-paulo" target="_blank" rel="noopener">Prefeitura de São Paulo</a>
+    </div>
+    Diferenças de narrativa: veículos brasileiros focam nas oportunidades comerciais e de transferência tecnológica para empresas locais; a agência sino-brasileira china.org.br (vinculada à Xinhua) emoldura a missão como parte da estratégia de "diplomacia de inovação" de Pequim com a América Latina.
+    <div class="attn baixo">Atenção: Baixo</div>
+  </div>
+</div>
+
+<!-- CARD 15 -->
+<div class="card">
+  <div class="card-head">
+    <div class="num">15</div>
+    <h3><a href="https://abcnews.com/Business/shein-temu-price-increases-set-effect/story?id=121155117" target="_blank" rel="noopener">Tarifas do "de minimis" sobre Shein, Temu e AliExpress entram na pauta comercial da cúpula Trump-Xi</a></h3>
+  </div>
+  <div class="subline">Contexto vigente, com repercussão renovada na semana da cúpula · Fonte primária: ABC News</div>
+  <p class="summary">Desde o fim da isenção "de minimis" para pacotes de baixo valor vindos da China, Shein, Temu e AliExpress enfrentam tarifas de até 54%–120%, forçando reestruturação logística com estoque em armazéns americanos. O tema segue como um dos pontos de atrito comercial monitorados na cúpula desta quinta-feira.</p>
+  <div class="box yellow">
+    <strong class="box-title">📌 Por que isso importa?</strong>
+    O fim do "de minimis" atinge diretamente o modelo de negócio de baixo custo que tornou Shein, Temu e a Pinduoduo (controladora da Temu) gigantes globais do varejo digital — qualquer sinalização de flexibilização ou endurecimento na cúpula pode mover as ações da PDD Holdings e o comportamento de consumo de dezenas de milhões de consumidores nos EUA e na Europa.
+  </div>
+  <div class="box green">
+    <strong class="box-title">🌍 Análise de Cobertura Global</strong>
+    <div class="region-tags">
+      <span class="tag off">China</span><span class="tag">EUA ✓</span><span class="tag">Europa ✓</span><span class="tag off">Brasil</span>
+    </div>
+    <div class="links">
+      Fontes verificadas: <a href="https://abcnews.com/Business/shein-temu-price-increases-set-effect/story?id=121155117" target="_blank" rel="noopener">ABC News</a> ·
+      <a href="https://www.fashiondive.com/news/shein-temu-raise-prices-tariffs/746247/" target="_blank" rel="noopener">Fashion Dive</a> ·
+      <a href="https://www.cbsnews.com/amp/news/china-tariff-shein-temu-de-minimis-exemption" target="_blank" rel="noopener">CBS News</a>
+    </div>
+    Diferenças de narrativa: a imprensa de consumo americana foca no impacto direto ao bolso do consumidor; a Fashion Dive analisa a reestruturação logística das varejistas; a UE aparece como bloco que também remove isenções similares para pacotes chineses. Cobertura chinesa primária direta sobre o tema não foi localizada nesta checagem.
+    <div class="attn medio">Atenção: Médio</div>
+  </div>
+</div>
+
+<footer class="final">
+  <h2>🌐 Implicações Geopolíticas</h2>
+
+  <h3>Tensão tecnológica EUA-China</h3>
+  <p>A cúpula Trump-Xi de 24 de setembro ocorre no auge de uma corrida armamentista de IA: Alibaba, Tencent e Huawei lançaram, na mesma semana, chips e modelos que reduzem a dependência chinesa da Nvidia, enquanto Washington tenta fechar brechas de acesso remoto a chips avançados via Sudeste Asiático. O resultado é uma trégua frágil — sem recuo em controles de exportação, mas também sem escalada imediata — sustentada pela dependência mútua em terras raras (China) e em capital/tecnologia de ponta (EUA).</p>
+
+  <h3>Impacto regulatório esperado</h3>
+  <p>Nos próximos meses, espera-se: (1) na China, mais investigações antitruste e de segurança de dados contra big techs domésticas, como parte do esforço de Pequim de equilibrar inovação e controle estatal; (2) nos EUA, pressão renovada no Senado pelo Remote Access Security Act para fechar a brecha de acesso remoto a chips; (3) na Europa, aprofundamento da fiscalização da AI Act, criando um terceiro polo regulatório mais restritivo que pode encarecer a operação de Shein, Temu e AliExpress no bloco.</p>
+
+  <h3>Oportunidades e riscos geopolíticos</h3>
+  <p>Empresas chinesas que conseguirem escalar produção doméstica de chips (Huawei, Alibaba/T-Head) ganham resiliência frente a novas sanções, mas enfrentam risco regulatório interno crescente. Para investidores globais, a semana expõe um padrão: rali de curto prazo em anúncios de IA, seguido de correção por notícias regulatórias — um ciclo que deve se repetir enquanto a cúpula não produzir garantias de longo prazo sobre chips e tarifas.</p>
+
+  <h3>Perspectiva Brasil-China-Global</h3>
+  <p>O Brasil segue aprofundando laços tecnológicos com a China — com a chegada da Alibaba Cloud a São Paulo e a missão de empresas brasileiras a Xangai — em uma postura de não alinhamento automático a EUA ou China. Essa posição permite ao país captar investimento e transferência de tecnologia chinesa (nuvem, IA, cidades inteligentes) enquanto mantém relações comerciais e de segurança com Washington, mas também expõe o país a decisões de soberania digital que ainda carecem de debate público mais amplo no Brasil.</p>
+</footer>
+
+<div class="report-footer-note">
+  Relatório gerado automaticamente com base em pesquisa na web em 24/09/2026. Links verificados por meio de busca em índices de notícias ativos; recomenda-se conferência adicional antes de decisões de investimento.
+</div>
+
+</div>
+</body>
+</html>
