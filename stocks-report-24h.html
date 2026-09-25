@@ -1,0 +1,530 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Stocks Report — Últimas 24h</title>
+<style>
+  :root{
+    --bg:#f4f5f7;
+    --card:#ffffff;
+    --ink:#111318;
+    --ink-soft:#5b606b;
+    --border:#e6e8ec;
+    --yellow-bg:#fff8dd;
+    --yellow-border:#f4d35e;
+    --yellow-ink:#7a5b00;
+    --green-bg:#e9f7ef;
+    --green-border:#8fd6ae;
+    --green-ink:#1e6b45;
+    --radius:14px;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:var(--bg);
+    color:var(--ink);
+    font-family:-apple-system, BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
+    font-size:15px;
+    line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+  }
+  a{color:#0b57d0;text-decoration:none;}
+  a:hover{text-decoration:underline;}
+  .wrap{max-width:980px;margin:0 auto;padding:0 20px 60px;}
+
+  header.hero{
+    background:#0d0e12;
+    color:#fff;
+    width:100%;
+    padding:36px 20px 30px;
+    border-radius:0 0 var(--radius) var(--radius);
+    margin-bottom:30px;
+  }
+  .hero-inner{max-width:980px;margin:0 auto;}
+  .brand{display:flex;align-items:center;gap:10px;margin-bottom:14px;}
+  .brand .dot{width:10px;height:10px;border-radius:50%;background:#f4d35e;}
+  .brand h1{font-size:22px;margin:0;font-weight:700;letter-spacing:0.2px;}
+  .hero-sub{color:#b7bac2;font-size:14px;margin-bottom:18px;}
+  .regions{display:flex;flex-wrap:wrap;gap:10px;}
+  .region-chip{
+    background:rgba(255,255,255,0.08);
+    border:1px solid rgba(255,255,255,0.14);
+    padding:6px 12px;border-radius:999px;font-size:13px;color:#eee;
+  }
+
+  .disclaimer{
+    background:#fff4f4;
+    border:1px solid #f3c2c2;
+    border-radius:var(--radius);
+    padding:18px 20px;
+    margin-bottom:30px;
+    font-size:13.5px;
+    color:#6b1f1f;
+  }
+  .disclaimer strong{display:block;margin-bottom:6px;font-size:14px;color:#5a1414;}
+
+  section.section{margin-bottom:40px;}
+  .section-title{
+    display:flex;align-items:center;gap:10px;
+    font-size:19px;font-weight:700;margin:0 0 18px;
+    padding-bottom:10px;border-bottom:2px solid var(--border);
+  }
+  .section-title .badge{
+    background:#111318;color:#fff;font-size:12px;padding:3px 10px;border-radius:999px;
+  }
+
+  .card{
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:var(--radius);
+    padding:22px 24px;
+    margin-bottom:20px;
+    box-shadow:0 1px 2px rgba(16,20,30,0.04);
+  }
+  .card-head{display:flex;gap:14px;align-items:flex-start;margin-bottom:8px;}
+  .num{
+    flex:0 0 auto;
+    width:30px;height:30px;border-radius:9px;
+    background:#111318;color:#fff;
+    display:flex;align-items:center;justify-content:center;
+    font-size:13px;font-weight:700;
+  }
+  .card-head h3{margin:0;font-size:16.5px;line-height:1.4;font-weight:700;}
+  .meta{
+    display:flex;flex-wrap:wrap;gap:14px;
+    font-size:12.5px;color:var(--ink-soft);
+    margin:6px 0 12px 44px;
+  }
+  .meta span{white-space:nowrap;}
+  .summary{margin:0 0 16px 44px;color:#33363e;font-size:14.5px;}
+
+  .box{
+    margin-left:44px;
+    border-radius:12px;
+    padding:14px 16px;
+    margin-bottom:12px;
+    font-size:13.5px;
+  }
+  .box:last-of-type{margin-bottom:0;}
+  .box-title{font-weight:700;font-size:13px;margin-bottom:6px;display:flex;align-items:center;gap:6px;}
+  .box.yellow{background:var(--yellow-bg);border:1px solid var(--yellow-border);}
+  .box.yellow .box-title{color:var(--yellow-ink);}
+  .box.yellow ul{margin:4px 0 0;padding-left:18px;color:#5f4600;}
+  .box.green{background:var(--green-bg);border:1px solid var(--green-border);}
+  .box.green .box-title{color:var(--green-ink);}
+  .box.green .cov-row{display:flex;flex-wrap:wrap;gap:8px;margin:6px 0;}
+  .region-tag{
+    background:#fff;border:1px solid var(--green-border);color:var(--green-ink);
+    padding:2px 9px;border-radius:999px;font-size:12px;font-weight:600;
+  }
+  .attn{
+    display:inline-block;margin-top:4px;font-weight:700;font-size:12.5px;
+  }
+  .attn.high{color:#a83232;}
+  .attn.medium{color:#a87b12;}
+  .attn.low{color:#4a7a4a;}
+
+  .note-mini{
+    background:#f6f7f9;border:1px dashed #cfd3da;border-radius:12px;
+    padding:14px 16px;margin-bottom:12px;font-size:13.5px;color:#42454d;
+  }
+  .note-mini b{color:#111318;}
+
+  .analysis-block{
+    background:var(--card);border:1px solid var(--border);border-radius:var(--radius);
+    padding:20px 22px;margin-bottom:16px;
+  }
+  .analysis-block h4{margin:0 0 8px;font-size:15.5px;}
+  .analysis-block p{margin:0 0 8px;color:#33363e;font-size:14px;}
+  .analysis-block p:last-child{margin-bottom:0;}
+  .tag-row{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:8px;}
+  .ticker-tag{
+    background:#111318;color:#fff;font-size:11.5px;font-weight:700;
+    padding:3px 9px;border-radius:6px;
+  }
+  .no-news-tag{
+    background:#eceef1;color:#6a6e78;font-size:11.5px;font-weight:700;
+    padding:3px 9px;border-radius:6px;
+  }
+
+  footer{
+    text-align:center;color:#8b8f99;font-size:12.5px;padding:30px 0 10px;
+  }
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="hero-inner">
+    <div class="brand"><span class="dot"></span><h1>Stocks Report</h1></div>
+    <div class="hero-sub">Publicado em 25 de setembro de 2026 · 14:20 (horário de Brasília) · Janela de cobertura: últimas 24–48 horas</div>
+    <div class="regions">
+      <span class="region-chip">🇧🇷 Brasil</span>
+      <span class="region-chip">🇺🇸 EUA</span>
+      <span class="region-chip">🇨🇳 China</span>
+      <span class="region-chip">🇪🇺 Europa</span>
+    </div>
+  </div>
+</header>
+
+<div class="wrap">
+
+  <div class="disclaimer">
+    <strong>⚠️ Nota metodológica — leia antes de usar este relatório</strong>
+    Este relatório foi montado com notícias reais localizadas via busca e checadas por referência cruzada entre pelo menos duas fontes quando possível. No entanto, o ambiente de execução desta sessão bloqueou o acesso direto (fetch) aos domínios de notícias por política de rede — não foi possível abrir cada link individualmente para confirmar ausência de erro 404, como exigido pelo processo original. Os links abaixo são URLs reais retornadas por mecanismos de busca (nenhum foi inventado), mas recomenda-se conferência manual antes de decisões de investimento. Além disso, das 30 notícias-alvo (15 Brasil + 15 internacional), apenas as histórias que puderam ser efetivamente localizadas e cruzadas com fontes mandatórias nas últimas 24–48h foram incluídas — nenhuma notícia foi inventada para completar a cota. Resultado: 7 histórias do Brasil e 4 histórias internacionais principais, mais notas de mercado complementares de menor confiança de fonte, sinalizadas como tal.
+  </div>
+
+  <!-- ===================== BRAZIL ===================== -->
+  <section class="section">
+    <div class="section-title">🇧🇷 Principais notícias — Ações Brasileiras <span class="badge">7 histórias verificadas</span></div>
+
+    <div class="card">
+      <div class="card-head">
+        <div class="num">1</div>
+        <h3><a href="https://www.infomoney.com.br/mercados/petroleo-abertura-fechamento-ira-eua-24092026/" target="_blank" rel="noopener">Petrobras (PETR4) sobe quase 4% com Brent a US$107 em meio à tensão EUA–Irã</a></h3>
+      </div>
+      <div class="meta"><span>🗓️ 24/09/2026</span><span>📰 InfoMoney</span><span>🎯 PETR4 · PETR3</span></div>
+      <p class="summary">O petróleo Brent subiu a cerca de US$107 o barril em meio à incerteza sobre as negociações entre Estados Unidos e Irã e o status do Estreito de Ormuz, impulsionando as ações da Petrobras em quase 4% no pregão. O presidente chinês Xi Jinping pediu publicamente que EUA e Irã retomem as negociações. A alta do petróleo é um vento favorável direto para a receita da Petrobras, fortemente concentrada em exploração e produção (E&amp;P).</p>
+      <div class="box yellow">
+        <div class="box-title">📌 Por que isso importa?</div>
+        <ul>
+          <li>Impacto direto e imediato no preço de PETR4/PETR3</li>
+          <li>Empresa com valor dominado pela economia do pré-sal — Brent acima de US$100 melhora fluxo de caixa de curto prazo</li>
+          <li>Reforça capacidade de dividendos e momentum de recomendações dos analistas (ver notícias #2 e #3)</li>
+        </ul>
+      </div>
+      <div class="box green">
+        <div class="box-title">🌍 Cobertura global</div>
+        <div class="cov-row"><span class="region-tag">✓ Brasil</span></div>
+        Veículos: InfoMoney, ADVFN, CNN Brasil.
+        <div class="attn high">Nível de atenção: Alto</div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-head">
+        <div class="num">2</div>
+        <h3><a href="https://www.moneytimes.com.br/petrobras-petr4-itau-bba-sobe-preco-alvo-e-ve-novos-destinos-para-o-capex-da-estatal-lils/" target="_blank" rel="noopener">Itaú BBA eleva preço-alvo da Petrobras de R$63 para R$64 e vê novos destinos para o capex</a></h3>
+      </div>
+      <div class="meta"><span>🗓️ 22–24/09/2026</span><span>📰 Money Times</span><span>🎯 PETR4</span></div>
+      <p class="summary">O Itaú BBA reiterou recomendação outperform para a Petrobras e elevou o preço-alvo para o fim de 2027 para R$64 (de R$63), implicando upside de cerca de 33–35% frente ao fechamento anterior. O relatório avaliou para onde o capex da estatal pode fluir além do E&amp;P tradicional (autossuficiência em diesel, margens de refino) e projetou yield de dividendos de dois dígitos em 2027.</p>
+      <div class="box yellow">
+        <div class="box-title">📌 Por que isso importa?</div>
+        <ul>
+          <li>Visão de analistas: elevação de preço-alvo por uma das principais casas do país</li>
+          <li>Leitura estrutural sobre alocação de capital além do E&amp;P</li>
+          <li>Reforça posicionamento institucional otimista antes da temporada de resultados do 3T</li>
+        </ul>
+      </div>
+      <div class="box green">
+        <div class="box-title">🌍 Cobertura global</div>
+        <div class="cov-row"><span class="region-tag">✓ Brasil</span></div>
+        Veículos: Money Times, InfoMoney, Investing.com Brasil, NeoFeed.
+        <div class="attn medium">Nível de atenção: Médio-Alto</div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-head">
+        <div class="num">3</div>
+        <h3><a href="https://www.infomoney.com.br/mercados/petrobras-petr3-petr4-tem-petroleo-forte-producao-e-dividendos-altos-ubs-bb-recomenda-compra/" target="_blank" rel="noopener">UBS BB reitera compra para Petrobras e eleva preço-alvo para R$62, vê dividendos de até 14%</a></h3>
+      </div>
+      <div class="meta"><span>🗓️ 23/09/2026</span><span>📰 InfoMoney</span><span>🎯 PETR4 · PETR3</span></div>
+      <p class="summary">O UBS BB elevou o preço-alvo da Petrobras de R$60 para R$62 e reiterou recomendação de compra, citando produção de petróleo acima da meta e política de dividendos que o banco projeta render entre 10–11% em 2026, subindo para 13–14% em 2027. O banco descreve a Petrobras como seu veículo preferido para exposição à alta do petróleo.</p>
+      <div class="box yellow">
+        <div class="box-title">📌 Por que isso importa?</div>
+        <ul>
+          <li>Segunda elevação de preço-alvo em ~48h (após Itaú BBA) — convergência entre grandes casas</li>
+          <li>Projeção de dividend yield de dois dígitos reforça tese de renda</li>
+          <li>Impacto direto no preço de PETR4/PETR3</li>
+        </ul>
+      </div>
+      <div class="box green">
+        <div class="box-title">🌍 Cobertura global</div>
+        <div class="cov-row"><span class="region-tag">✓ Brasil</span></div>
+        Veículos: InfoMoney, Investing.com Brasil (via Reuters), CNN Brasil, Gazeta Mercantil.
+        <div class="attn high">Nível de atenção: Alto</div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-head">
+        <div class="num">4</div>
+        <h3><a href="https://www.moneytimes.com.br/magazine-luiza-mglu3-anvisa-revoga-medida-que-proibia-comercializacao-de-medicamentos-acoes-sobem-lmrs/" target="_blank" rel="noopener">Magazine Luiza (MGLU3): Anvisa revoga proibição de venda de medicamentos e ação dispara</a></h3>
+      </div>
+      <div class="meta"><span>🗓️ 23/09/2026</span><span>📰 Money Times</span><span>🎯 MGLU3</span></div>
+      <p class="summary">A Anvisa revogou medida cautelar em vigor desde dezembro de 2021 que proibia o Magazine Luiza de comercializar, distribuir ou anunciar medicamentos. Pelo novo formato, as vendas deverão ocorrer por meio de farmácias licenciadas que utilizem a plataforma e a logística da Magalu. MGLU3 liderou os ganhos do Ibovespa na sessão, subindo entre 3% e 6% intradia, negociada perto de R$6,10.</p>
+      <div class="box yellow">
+        <div class="box-title">📌 Por que isso importa?</div>
+        <ul>
+          <li>Abre nova categoria de receita recorrente (marketplace de farmácia online)</li>
+          <li>Upside de comissão, logística e tráfego para o ecossistema Magalu</li>
+          <li>Reação imediata e forte no preço da ação — reforça tese de recuperação do e-commerce</li>
+        </ul>
+      </div>
+      <div class="box green">
+        <div class="box-title">🌍 Cobertura global</div>
+        <div class="cov-row"><span class="region-tag">✓ Brasil</span></div>
+        Veículos: Money Times, Investing.com Brasil, Seu Dinheiro, ADVFN, EBC Financial Group.
+        <div class="attn high">Nível de atenção: Alto</div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-head">
+        <div class="num">5</div>
+        <h3><a href="https://www.moneytimes.com.br/magazine-luiza-mglu3-sp-reafirma-rating-braa-e-ve-recuperacao-das-vendas-com-ajuda-de-mercado-livre-e-casas-bahia-lmrs/" target="_blank" rel="noopener">Magazine Luiza (MGLU3): S&amp;P reafirma rating 'brAA-' com perspectiva estável</a></h3>
+      </div>
+      <div class="meta"><span>🗓️ 24/09/2026</span><span>📰 Money Times</span><span>🎯 MGLU3</span></div>
+      <p class="summary">A S&amp;P reafirmou o rating de crédito da Magalu em 'brAA-' na Escala Nacional Brasil, com perspectiva estável, citando expectativa de recuperação gradual das vendas no e-commerce, apoiada pela parceria com o Mercado Livre e pela redução da concorrência regional após fechamentos de lojas da Casas Bahia. A agência projeta dívida líquida/EBITDA perto de 4x ao fim de 2026, com melhora para 3–3,5x em 2027–28.</p>
+      <div class="box yellow">
+        <div class="box-title">📌 Por que isso importa?</div>
+        <ul>
+          <li>Reafirmação de rating (não rebaixamento) apesar de alavancagem mais fraca no curto prazo</li>
+          <li>Sinal de fundamentos relevante para credores e acionistas</li>
+          <li>Reforça narrativa de recuperação na mesma semana da notícia da Anvisa</li>
+        </ul>
+      </div>
+      <div class="box green">
+        <div class="box-title">🌍 Cobertura global</div>
+        <div class="cov-row"><span class="region-tag">✓ Brasil</span></div>
+        Veículos: Money Times, InfoMoney, ADVFN, BPMoney, BM&amp;C News.
+        <div class="attn medium">Nível de atenção: Médio</div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-head">
+        <div class="num">6</div>
+        <h3><a href="https://www.moneytimes.com.br/cpfl-energia-cpfe3-pagara-r-700-milhoes-em-dividendos-veja-data-pads/" target="_blank" rel="noopener">CPFL Energia (CPFE3) paga quarta parcela de dividendos de R$700 milhões</a></h3>
+      </div>
+      <div class="meta"><span>🗓️ Pagamento em 24/09/2026</span><span>📰 Money Times</span><span>🎯 CPFE3</span></div>
+      <p class="summary">A CPFL Energia pagou a quarta parcela dos dividendos aprovados na AGO de abril: R$700 milhões, ou R$0,607504711 por ação, aos acionistas titulares em 29 de abril. O total declarado para o ciclo de 2026 é de R$4,299 bilhões (R$3,73/ação); após esta parcela, restam R$1,899 bilhão a pagar até 31 de dezembro.</p>
+      <div class="box yellow">
+        <div class="box-title">📌 Por que isso importa?</div>
+        <ul>
+          <li>Confirma cronograma de distribuição entre os maiores do setor elétrico</li>
+          <li>Relevante para a tese de renda de CPFE3 e visibilidade de fluxo de caixa</li>
+          <li>Evento já programado, não uma surpresa — impacto moderado</li>
+        </ul>
+      </div>
+      <div class="box green">
+        <div class="box-title">🌍 Cobertura global</div>
+        <div class="cov-row"><span class="region-tag">✓ Brasil</span></div>
+        Veículos: Money Times, InfoMoney, Investidor10, meusdividendos.com.
+        <div class="attn low">Nível de atenção: Baixo-Médio</div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-head">
+        <div class="num">7</div>
+        <h3><a href="https://www.infomoney.com.br/mercados/ibovespa-hoje-bolsa-de-valores-ao-vivo-24092026/" target="_blank" rel="noopener">Ibovespa cai pela 2ª sessão seguida; Banco Central reduz projeção de PIB de 2026 para 1,8%</a></h3>
+      </div>
+      <div class="meta"><span>🗓️ 24/09/2026</span><span>📰 InfoMoney</span><span>🎯 VALE3 · PETR4 · BBAS3 · ITSA4</span></div>
+      <p class="summary">O Ibovespa estendeu a queda em 24/09 (após recuar 0,86% em 23/09, a 185.814 pontos), pressionado por aversão a risco em emergentes, alta do petróleo reacendendo preocupações inflacionárias e cautela diante de novas pesquisas eleitorais. Vale recuou cerca de 1% intradia; o real se enfraqueceu para perto de R$5,19/US$. No mesmo dia, o Banco Central cortou a projeção de crescimento do PIB de 2026 para 1,8% (de 2,0%) e de 2027 para 1,4% (de 1,8%), mantendo o IPCA de 2026 em 5,2%, acima da meta.</p>
+      <div class="box yellow">
+        <div class="box-title">📌 Por que isso importa?</div>
+        <ul>
+          <li>Pano de fundo macro relevante para VALE3, PETR4, BBAS3, ITSA4 e demais pesos do índice</li>
+          <li>Crescimento mais fraco + Selic elevada pressiona margens bancárias e consumo</li>
+          <li>Incerteza eleitoral é fator de risco recorrente para o índice no 4T</li>
+        </ul>
+      </div>
+      <div class="box green">
+        <div class="box-title">🌍 Cobertura global</div>
+        <div class="cov-row"><span class="region-tag">✓ Brasil</span></div>
+        Veículos: InfoMoney, Diário do Grande ABC, O Tempo, Forbes Brasil, Rio Times Online, TradeMap.
+        <div class="attn high">Nível de atenção: Alto</div>
+      </div>
+    </div>
+
+  </section>
+
+  <!-- ===================== INTERNATIONAL ===================== -->
+  <section class="section">
+    <div class="section-title">🌐 Principais notícias — Mercado Internacional <span class="badge">4 histórias verificadas</span></div>
+
+    <div class="card">
+      <div class="card-head">
+        <div class="num">1</div>
+        <h3><a href="https://www.bloomberg.com/news/articles/2026-09-24/trump-xi-buy-time-on-trade-with-neither-able-to-afford-a-fight" target="_blank" rel="noopener">EUA e China estendem trégua comercial por 2 meses, até 10 de janeiro, com Xi em visita de Estado a Washington</a></h3>
+      </div>
+      <div class="meta"><span>🗓️ 23–24/09/2026</span><span>📰 Bloomberg</span><span>🎯 MCHI · BABA · QQQ · SMH</span></div>
+      <p class="summary">O secretário do Tesouro dos EUA, Scott Bessent, afirmou que EUA e China concordaram em estender por dois meses, até 10 de janeiro, a trégua comercial firmada um ano antes, mantendo tarifas mais baixas, pausando restrições à exportação de terras raras e adiando novas taxas portuárias, enquanto Xi Jinping chegava a Washington para sua primeira visita de Estado aos EUA em mais de uma década. A extensão mais curta que o esperado foi lida por analistas como sinal de que Washington segue insatisfeito com as ofertas chinesas.</p>
+      <div class="box yellow">
+        <div class="box-title">📌 Por que isso importa?</div>
+        <ul>
+          <li>Mexe diretamente com o sentimento em ações chinesas (MCHI) e com BABA (guerra tecnológica/tarifária)</li>
+          <li>Impacto indireto em QQQ/SMH via controles à exportação de chips</li>
+          <li>Extensão curta mantém risco de nova escalada já no início de 2027</li>
+        </ul>
+      </div>
+      <div class="box green">
+        <div class="box-title">🌍 Cobertura global</div>
+        <div class="cov-row"><span class="region-tag">✓ EUA</span><span class="region-tag">✓ China</span></div>
+        Veículos: Bloomberg, CNBC (EUA); South China Morning Post (China).
+        <div class="attn high">Nível de atenção: Alto — tema dominante da semana</div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-head">
+        <div class="num">2</div>
+        <h3><a href="https://www.scmp.com/tech/tech-war/article/3368774/xi-trump-dinner-puts-us-tech-titans-spotlight-what-does-it-mean-china-ties" target="_blank" rel="noopener">Corrida chinesa por chips de IA (Alibaba, Huawei) vira carta de barganha com Washington em disputa envolvendo a Nvidia</a></h3>
+      </div>
+      <div class="meta"><span>🗓️ 24/09/2026</span><span>📰 South China Morning Post</span><span>🎯 BABA · SMH</span></div>
+      <p class="summary">A cobertura enquadra o avanço doméstico da China em chips de IA — com Alibaba e Huawei entre os nomes citados — como moeda de troca nas negociações com Washington sobre restrições à exportação de chips avançados da Nvidia para o país. Executivos de tecnologia dos EUA, incluindo Jensen Huang (Nvidia), Lisa Su (AMD), Tim Cook (Apple) e Elon Musk (Tesla), estiveram no jantar de Estado oferecido a Xi, reforçando o quanto o acesso a chips é central na pauta da cúpula.</p>
+      <div class="box yellow">
+        <div class="box-title">📌 Por que isso importa?</div>
+        <ul>
+          <li>Ambições domésticas em chips de IA reduzem dependência da Nvidia para a Alibaba (BABA)</li>
+          <li>Acesso da Nvidia ao mercado chinês segue disputado — fator oscilante para receita do setor (SMH)</li>
+          <li>Sinaliza atrito tecnológico contínuo entre EUA e China</li>
+        </ul>
+      </div>
+      <div class="box green">
+        <div class="box-title">🌍 Cobertura global</div>
+        <div class="cov-row"><span class="region-tag">✓ EUA</span><span class="region-tag">✓ China</span></div>
+        Veículos: South China Morning Post (China); CNBC (EUA).
+        <div class="attn medium">Nível de atenção: Médio-Alto</div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-head">
+        <div class="num">3</div>
+        <h3><a href="https://finance.yahoo.com/personal-finance/investing/article/bitcoin-and-ethereum-prices-today-friday-september-25-2026-is-bitcoin-finally-on-a-path-to-250000-113048042.html" target="_blank" rel="noopener">Bitcoin (BTC) sustenta faixa volátil; mercado questiona rompimento rumo a US$250 mil</a></h3>
+      </div>
+      <div class="meta"><span>🗓️ 25/09/2026</span><span>📰 Yahoo Finance</span><span>🎯 BTC</span></div>
+      <p class="summary">O Bitcoin abriu o dia 25/09 perto de US$84.378, após tocar uma máxima de 8 meses próxima a US$87.265 em 24/09, antes de recuar. O ativo é descrito como "travado" em uma faixa entre aproximadamente US$85.000 e US$88.000. Sean Farrell, da Fundstrat, afirmou que o rompimento parece crível e que o "inverno cripto acabou", ainda que o caminho até lá não deva ser linear.</p>
+      <div class="box yellow">
+        <div class="box-title">📌 Por que isso importa?</div>
+        <ul>
+          <li>Move diretamente o preço do BTC e o apetite por risco em criptoativos</li>
+          <li>Padrão de estagnação perto da resistência é o dado técnico-chave monitorado por analistas</li>
+          <li>Confirmação de rompimento poderia sinalizar nova perna de alta</li>
+        </ul>
+      </div>
+      <div class="box green">
+        <div class="box-title">🌍 Cobertura global</div>
+        <div class="cov-row"><span class="region-tag">✓ EUA</span></div>
+        Veículos: Yahoo Finance, Investing.com. Cobertura específica em fontes mandatórias de China/Europa não localizada nesta janela.
+        <div class="attn medium">Nível de atenção: Médio</div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-head">
+        <div class="num">4</div>
+        <h3><a href="https://www.investing.com/analysis/markets-split-as-semiconductor-index-accelerates-and-bitcoin-stalls-200682441" target="_blank" rel="noopener">Setor de semicondutores dispara enquanto Bitcoin patina — QQQ atinge máxima histórica</a></h3>
+      </div>
+      <div class="meta"><span>🗓️ 23–24/09/2026</span><span>📰 Investing.com</span><span>🎯 SMH · QQQ</span></div>
+      <p class="summary">Análise descreve rotação em que ações do setor de semicondutores aceleraram para novas máximas enquanto Bitcoin/criptoativos consolidavam, em cenário impulsionado pelo entusiasmo com capex em IA atraindo capital para as ações de chips. O Nasdaq-100 (base do QQQ) atingiu nova máxima histórica em 23/09, puxado pela força das fabricantes de chips.</p>
+      <div class="box yellow">
+        <div class="box-title">📌 Por que isso importa?</div>
+        <ul>
+          <li>Diretamente relevante para SMH — força setorial ampla</li>
+          <li>QQQ em máxima histórica reforça momentum de tecnologia/IA</li>
+          <li>Sugere rotação de curto prazo saindo de criptoativos</li>
+        </ul>
+      </div>
+      <div class="box green">
+        <div class="box-title">🌍 Cobertura global</div>
+        <div class="cov-row"><span class="region-tag">✓ EUA</span></div>
+        Veículos: Investing.com.
+        <div class="attn medium">Nível de atenção: Médio</div>
+      </div>
+    </div>
+
+    <div class="note-mini">
+      <b>Notas de mercado adicionais (fontes não-mandatórias ou não confirmadas por fetch — usar com cautela):</b><br>
+      • <b>China (exportações):</b> pesquisa privada citada pela CNBC apontou salto surpreendente em pedidos dos EUA a exportadores chineses às vésperas da cúpula — possível sinal positivo para MCHI, não cruzado com fonte mandatória adicional nesta janela.<br>
+      • <b>SGOV / juros:</b> matéria da Benzinga (fonte não-mandatória) discute pressão de alta nos yields do Tesouro americano em setembro/2026 — relevante para o rendimento de SGOV, mas não confirmado por fonte mandatória nesta janela; dados contraditórios sobre trajetória do Fed encontrados na busca não puderam ser resolvidos sem verificação direta (recomenda-se checar federalreserve.gov).<br>
+      • <b>Ações chinesas:</b> indícios (fonte não-mandatória) de queda em benchmarks chineses (Shanghai Composite, Shenzhen) às vésperas do feriado do Meio-Outono (25–27/09) — relevante para MCHI, não verificado por fetch direto.<br>
+      • <b>Nvidia:</b> comentários (fonte não-mandatória) sobre perda de momentum da NVDA após falas do CEO Jensen Huang sobre economia da infraestrutura de IA — fator de oscilação para SMH, não confirmado por fonte mandatória.<br>
+      • <b>OHI, VYM, VYMI:</b> nenhuma notícia de alto impacto específica localizada nas últimas 24–48h dentro das fontes mandatórias.
+    </div>
+
+  </section>
+
+  <!-- ===================== ANALYSIS ===================== -->
+  <section class="section">
+    <div class="section-title">📊 Análise Final — Panorama por Ativo</div>
+
+    <div class="analysis-block">
+      <div class="tag-row"><span class="ticker-tag">PETR4 / PETR3</span></div>
+      <h4>Petrobras</h4>
+      <p><b>Situação atual:</b> Momentum claramente positivo — alta do Brent para ~US$107 em meio à tensão EUA-Irã somada a duas elevações de preço-alvo (Itaú BBA para R$64, UBS BB para R$62) em menos de 48 horas.</p>
+      <p><b>Visão dos analistas:</b> Itaú BBA e UBS BB convergem em recomendação de compra/outperform, com foco em produção acima da meta, potencial de dividendos de dois dígitos (10–14% ao ano) e otimismo sobre alocação de capex além do E&amp;P tradicional.</p>
+      <p><b>Impacto previsto:</b> Se o Brent sustentar níveis acima de US$100, espera-se revisão positiva adicional de estimativas para o 3T26; risco principal é reversão do prêmio geopolítico do petróleo caso a tensão EUA-Irã se resolva.</p>
+      <p><b>Perspectiva Brasil-China-Global:</b> O apelo público de Xi Jinping por negociações EUA-Irã mostra como a diplomacia chinesa também influencia o preço do petróleo e, por consequência, a tese de investimento em PETR4 — conectando o noticiário brasileiro ao tabuleiro geopolítico global.</p>
+    </div>
+
+    <div class="analysis-block">
+      <div class="tag-row"><span class="ticker-tag">MGLU3</span></div>
+      <h4>Magazine Luiza</h4>
+      <p><b>Situação atual:</b> Semana de notícias positivas e simultâneas — liberação da Anvisa para venda de medicamentos e reafirmação de rating de crédito pela S&amp;P.</p>
+      <p><b>Visão dos analistas:</b> S&amp;P mantém perspectiva estável apesar de alavancagem levemente pior no curto prazo (net debt/EBITDA ~4x), citando recuperação gradual de vendas apoiada pela parceria com Mercado Livre.</p>
+      <p><b>Impacto previsto:</b> Entrada no mercado de farmácia online pode adicionar nova linha de receita recorrente de médio prazo; mercado deve monitorar ritmo de adesão de farmácias licenciadas à plataforma nos próximos trimestres.</p>
+      <p><b>Perspectiva Brasil-Global:</b> Notícia de caráter essencialmente doméstico/regulatório, sem repercussão internacional identificada nas fontes mandatórias.</p>
+    </div>
+
+    <div class="analysis-block">
+      <div class="tag-row"><span class="ticker-tag">CPFE3</span></div>
+      <h4>CPFL Energia</h4>
+      <p><b>Situação atual:</b> Distribuição de dividendos seguindo cronograma já aprovado em AGO, sem surpresas.</p>
+      <p><b>Impacto previsto:</b> Reforça atratividade para perfil de investidor de renda; impacto de curto prazo no preço tende a ser limitado por já ser evento esperado pelo mercado.</p>
+      <p><b>Perspectiva Brasil-Global:</b> Sem repercussão internacional relevante identificada.</p>
+    </div>
+
+    <div class="analysis-block">
+      <div class="tag-row"><span class="ticker-tag">VALE3</span> <span class="ticker-tag">BBAS3</span> <span class="ticker-tag">ITSA4</span></div>
+      <h4>Ibovespa — pano de fundo macro</h4>
+      <p><b>Situação atual:</b> Índice em segunda sessão consecutiva de queda, pressionado por aversão a risco em mercados emergentes e corte da projeção de PIB pelo Banco Central (2026: 1,8%; 2027: 1,4%).</p>
+      <p><b>Visão dos analistas:</b> Cautela ligada à incerteza eleitoral e à combinação de crescimento mais fraco com Selic ainda elevada, que tende a pressionar margens bancárias (BBAS3, ITSA4) e ações cíclicas/ligadas a commodities (VALE3).</p>
+      <p><b>Impacto previsto:</b> Volatilidade elevada esperada até maior clareza sobre o cenário eleitoral e sobre a trajetória de juros; recomenda-se acompanhar próximas leituras de inflação (IPCA) e atas do Copom.</p>
+      <p><b>Perspectiva Brasil-Global:</b> Alta do petróleo (positiva para PETR4) coexiste com aversão a risco em emergentes (negativa para o índice como um todo) — um exemplo de como fatores globais atingem de forma desigual diferentes setores do Ibovespa.</p>
+    </div>
+
+    <div class="analysis-block">
+      <div class="tag-row"><span class="ticker-tag">MCHI</span> <span class="ticker-tag">BABA</span></div>
+      <h4>China / Alibaba</h4>
+      <p><b>Situação atual:</b> Cúpula Trump-Xi em Washington domina o noticiário, com extensão da trégua comercial por apenas dois meses (até 10/jan) — mais curta do que analistas esperavam.</p>
+      <p><b>Visão dos analistas:</b> Especialistas (ex.: CSIS) leem a extensão curta como sinal de insatisfação americana com as ofertas chinesas; avanço doméstico em chips de IA (Alibaba, Huawei) é visto como carta de barganha de Pequim na disputa por acesso a chips da Nvidia.</p>
+      <p><b>Impacto previsto:</b> Mercado tende a permanecer em compasso de espera até as próximas reuniões Trump-Xi (Shenzhen, Miami); risco de nova escalada tarifária/tecnológica permanece latente para o início de 2027.</p>
+      <p><b>Perspectiva Brasil-China-Global:</b> Um desfecho mais favorável na relação comercial EUA-China tende a beneficiar o apetite por risco em emergentes de forma geral, incluindo ativos brasileiros — vínculo indireto, mas relevante, entre a cúpula em Washington e o desempenho do Ibovespa.</p>
+    </div>
+
+    <div class="analysis-block">
+      <div class="tag-row"><span class="ticker-tag">SMH</span> <span class="ticker-tag">QQQ</span></div>
+      <h4>Semicondutores / Nasdaq-100</h4>
+      <p><b>Situação atual:</b> Setor de chips segue como motor de alta do mercado americano, com QQQ em máxima histórica (23/09) puxado pelo entusiasmo com capex em IA.</p>
+      <p><b>Impacto previsto:</b> Acesso da Nvidia ao mercado chinês (ver notícia #2 internacional) segue como principal variável de risco/upside para o setor nos próximos meses.</p>
+      <p><b>Perspectiva Global:</b> Tema diretamente conectado à cúpula EUA-China — desfechos da negociação sobre controles de exportação devem mover o setor de forma relevante.</p>
+    </div>
+
+    <div class="analysis-block">
+      <div class="tag-row"><span class="ticker-tag">BTC</span></div>
+      <h4>Bitcoin</h4>
+      <p><b>Situação atual:</b> Consolidação entre US$85.000–US$88.000 após máxima de 8 meses; analistas veem estrutura técnica construtiva para eventual rompimento rumo a US$250 mil, mas sem confirmação ainda.</p>
+      <p><b>Impacto previsto:</b> Rompimento confirmado da faixa de resistência seria o gatilho técnico mais observado pelo mercado cripto nas próximas semanas.</p>
+    </div>
+
+    <div class="analysis-block">
+      <div class="tag-row"><span class="no-news-tag">SGOV</span> <span class="no-news-tag">OHI</span> <span class="no-news-tag">VYM</span> <span class="no-news-tag">VYMI</span> <span class="no-news-tag">BBSE3</span> <span class="no-news-tag">BRSR6</span> <span class="no-news-tag">ABCB4</span> <span class="no-news-tag">BAZA3</span> <span class="no-news-tag">SAPR4</span> <span class="no-news-tag">TAEE3/4</span> <span class="no-news-tag">CMIG4</span> <span class="no-news-tag">UNIP6</span> <span class="no-news-tag">FESA4</span> <span class="no-news-tag">AXIA3</span> <span class="no-news-tag">IRBR3</span> <span class="no-news-tag">KLBN4</span> <span class="no-news-tag">AMER3</span> <span class="no-news-tag">XPML11</span> <span class="no-news-tag">HCTR11</span> <span class="no-news-tag">GGRC11</span></div>
+      <h4>Ativos sem notícia de alto impacto nas últimas 24–48h</h4>
+      <p>Para estes tickers, a pesquisa nas fontes mandatórias não identificou notícias de alto impacto, cruzadas e datadas dentro da janela das últimas 24–48 horas. Não foram incluídas notícias mais antigas (ex.: chamadas de "overweight" de meados de setembro, notas de agosto) para preservar o rigor de atualidade do relatório. Recomenda-se nova checagem na próxima atualização.</p>
+    </div>
+
+  </section>
+
+  <footer>
+    Stocks Report · Relatório gerado automaticamente a partir de fontes públicas · Não constitui recomendação de investimento.<br>
+    Verifique sempre os links originais antes de qualquer decisão financeira.
+  </footer>
+
+</div>
+</body>
+</html>
