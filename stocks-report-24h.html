@@ -1,0 +1,862 @@
+<!doctype html><html lang="pt-BR"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Stocks Report</title><style>
+:root{--bg:#f2f2f4;--card:#fff;--ink:#1d1d1f;--mut:#6e6e73;--line:#e3e3e8;--y:#fff8d6;--yb:#f5c518;--g:#e7f7ec;--gb:#2fb457;--k:#000;--link:#0a58ca}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#111113;--card:#1c1c1f;--ink:#f2f2f4;--mut:#a1a1a6;--line:#2e2e33;--y:#3a3210;--yb:#d6ab12;--g:#10301b;--gb:#2fb457;--link:#6ea8fe}}
+:root[data-theme="dark"]{--bg:#111113;--card:#1c1c1f;--ink:#f2f2f4;--mut:#a1a1a6;--line:#2e2e33;--y:#3a3210;--yb:#d6ab12;--g:#10301b;--gb:#2fb457;--link:#6ea8fe}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;font-size:14.5px;line-height:1.6}
+.wrap{max-width:980px;margin:0 auto;padding:16px}
+header.top{background:#000;color:#fff;border-radius:16px;padding:28px 28px 22px;width:100%}
+header.top h1{margin:0;font-size:28px;letter-spacing:-.5px;font-weight:700}
+header.top h1 span{color:#f5c518}
+header.top .d{color:#c7c7cc;margin-top:6px;font-size:13.5px}
+header.top .regions{margin-top:14px;display:flex;flex-wrap:wrap;gap:8px}
+header.top .regions span{background:#1c1c1e;border:1px solid #333;border-radius:999px;padding:4px 12px;font-size:13px}
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:10px;margin-top:18px}
+.kpi{background:#1c1c1e;border-radius:12px;padding:10px 12px}.kpi b{display:block;font-size:16px}.kpi small{color:#a1a1a6}
+.sec{margin-top:28px}
+h2{font-size:20px;margin:0 0 4px;letter-spacing:-.3px}
+.lead{color:var(--mut);margin:0 0 14px}
+h3.sub{font-size:16px;margin:22px 0 10px}
+.toc{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:16px}
+.toc a{font-size:12.5px;text-decoration:none;color:var(--ink);background:var(--card);border:1px solid var(--line);border-radius:999px;padding:3px 10px}
+.toc a span{color:var(--mut)}
+.card{background:var(--card);border-radius:16px;padding:22px 24px;margin-bottom:20px;border:1px solid var(--line)}
+.meta-top{display:flex;gap:8px;align-items:center;margin-bottom:6px}
+.num{background:#000;color:#fff;border-radius:8px;padding:1px 8px;font-weight:700;font-size:13px}
+.tk{background:var(--bg);border:1px solid var(--line);border-radius:8px;padding:1px 8px;font-size:12.5px;font-weight:600}
+.card h3{font-size:17px;margin:4px 0 6px;line-height:1.35}
+.card h3 a{color:var(--ink);text-decoration:none}.card h3 a:hover{text-decoration:underline;color:var(--link)}
+.meta{color:var(--mut);font-size:12.5px;margin-bottom:10px}
+.sum{margin:0 0 14px}
+.box{border-radius:12px;padding:14px 16px;margin-top:12px}
+.box.y{background:var(--y);border-left:5px solid var(--yb)}
+.box.g{background:var(--g);border-left:5px solid var(--gb)}
+.bt{font-weight:700;margin-bottom:6px}
+.box ul{margin:0;padding-left:18px}.box li{margin:3px 0}
+.regs{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:8px}
+.reg{border-radius:999px;padding:2px 10px;font-size:12.5px;border:1px solid var(--line);background:var(--card)}
+.reg.off{opacity:.45}
+.ol ul{columns:2;column-gap:20px}.ol li{break-inside:avoid}
+.ol a{color:var(--link)}.rg{color:var(--mut);font-size:11.5px;margin-left:6px}
+.att{margin-top:8px}
+.pill{display:inline-block;border-radius:999px;padding:1px 10px;font-size:12px;font-weight:700;color:#fff}
+.pill.hi{background:#d93025}.pill.md{background:#e8a200}.pill.lo{background:#6e6e73}.pill.up{background:#2fb457}
+.an-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(290px,1fr));gap:14px}
+.an{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px 18px}
+.an p{margin:6px 0;font-size:13.8px}
+.an-h{display:flex;gap:8px;align-items:center;flex-wrap:wrap}.an-n{font-weight:600}
+.pp-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:14px}
+.pp{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px 18px}
+.pp h4{margin:0 0 6px;font-size:15px}.pp p{margin:0}
+.val{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px 18px;margin-top:28px;font-size:13px;color:var(--mut)}
+.notice{background:var(--y);border:1px solid var(--yb);border-radius:12px;padding:12px 16px;margin-top:16px;font-size:13.5px}.notice a{color:var(--link)}
+footer{color:var(--mut);font-size:12px;text-align:center;margin:30px 0 10px}
+@media (max-width:640px){.ol ul{columns:1}.card{padding:18px 16px}header.top{padding:22px 18px}}
+</style></head><body><div class="wrap">
+<header class="top"><h1>📈 Stocks <span>Report</span></h1>
+<div class="d">Publicado em 12/11/2026 às 09:17 (horário de Brasília) · Janela: últimas 24–48 horas</div>
+<div class="regions"><span>🇨🇳 China</span><span>🇺🇸 EUA</span><span>🇪🇺 Europa</span><span>🇧🇷 Brasil</span></div>
+<div class="kpis"><div class="kpi"><small>Ibovespa (11/11)</small><b>172.060 pts</b><small>+0,42%</small></div><div class="kpi"><small>Dólar (11/11)</small><b>R$ 5,56</b><small>-0,4%</small></div><div class="kpi"><small>Treasury 10 anos</small><b>~4,99%</b><small>CPI acima do esperado</small></div><div class="kpi"><small>Bitcoin (12/11)</small><b>~US$ 73 mil</b><small>mínima desde agosto</small></div><div class="kpi"><small>Brent (12/11)</small><b>US$ 91,32</b><small>em queda</small></div><div class="kpi"><small>Minério Dalian (11/11)</small><b>683,5 iuanes/t</b><small>-0,36%</small></div></div></header>
+<div class="notice">⚠️ <b>Atenção:</b> nesta edição os links não puderam ser abertos para checagem (acesso aos sites bloqueado no ambiente de execução). Veja a seção <a href="#val">Validação</a>.</div>
+<section class="sec"><h2>2. Ações Brasileiras — 15 notícias</h2><p class="lead">Principais notícias sobre os ativos monitorados na B3.</p>
+<nav class="toc"><a href="#br1"><span>01</span> BBAS3</a><a href="#br2"><span>02</span> PETR4</a><a href="#br3"><span>03</span> IBOV · BBAS3 · CMIG4 · SAPR4</a><a href="#br4"><span>04</span> MGLU3</a><a href="#br5"><span>05</span> PETR4</a><a href="#br6"><span>06</span> AMER3</a><a href="#br7"><span>07</span> TAEE3/TAEE4</a><a href="#br8"><span>08</span> CMIG4 / CPFE3 / SAPR4</a><a href="#br9"><span>09</span> VALE3</a><a href="#br10"><span>10</span> IBOV (mercado)</a><a href="#br11"><span>11</span> ITSA4</a><a href="#br12"><span>12</span> BBSE3</a><a href="#br13"><span>13</span> ABCB4</a><a href="#br14"><span>14</span> KLBN4</a><a href="#br15"><span>15</span> GGRC11</a></nav>
+<article class="card" id="br1">
+  <div class="meta-top"><span class="num">01</span><span class="tk">BBAS3</span></div>
+  <h3><a href="https://www.infomoney.com.br/mercados/banco-do-brasil-bbas3-resultados-terceiro-trimestre-2026/" target="_blank" rel="noopener">Banco do Brasil tem lucro de R$ 1,3 bilhão no 3T26 (-66,5%), corta guidance de 2026 para R$ 9-11 bi e reduz payout para 25%</a></h3>
+  <div class="meta">🕒 11/11/2026 (após o fechamento) &nbsp;·&nbsp; 📰 Fonte principal: <strong>InfoMoney</strong></div>
+  <p class="sum">O Banco do Brasil divulgou após o fechamento de quarta-feira (11/11) lucro líquido ajustado de R$ 1,27 bilhão (arredondado para R$ 1,3 bi) no 3T26, queda de 66,5% na comparação anual e de 67,5% ante o 2T26. O consenso compilado pela Bloomberg previa cerca de R$ 3,09 bilhões. O ROAE caiu para 2,8%, a inadimplência acima de 90 dias subiu para 6,08% e o custo do crédito chegou a R$ 21,2 bilhões, pressionado principalmente pelo agronegócio; a despesa com PDD subiu 23,1% em um ano. O banco cortou a projeção de lucro líquido ajustado de 2026 de R$ 18-22 bilhões para R$ 9-11 bilhões. No acumulado de nove meses o lucro é de cerca de R$ 8,6 bilhões.</p>
+  <div class="box y">
+    <div class="bt">📌 Por que isso é importante?</div>
+    <ul>
+      <li><b>Visão dos analistas:</b> XP: &#x27;decepção generalizada&#x27;, com margem financeira mais fraca, custo de crédito maior e pressões operacionais (via InfoMoney). Bradesco BBI e Morgan Stanley: a deterioração persiste e se espalha além das provisões, afetando carteira, margem e geração de capital; o BBI diz que o ponto médio do novo guidance fica cerca de 38% abaixo do consenso anterior. Genial: resultado antes de impostos negativo, lucro só positivo por crédito tributário; recomendação manter, preço-alvo de R$ 20,10 &#x27;em revisão&#x27;. Recomendações listadas em agregadores (datas não confirmadas): BTG neutro (alvo R$ 18), XP neutro (R$ 21), Bradesco BBI neutro (R$ 20), JPMorgan underweight, Morgan Stanley overweight (R$ 39). Teleconferência em 12/11.</li>
+      <li><b>Fundamentos:</b> Lucro ajustado 3T26: R$ 1,27 bi (-66,5% a/a; -67,5% t/t). ROAE: 2,8%. Inadimplência 90d: 6,08%. Custo do crédito: R$ 21,2 bi. PDD +23,1% a/a. Guidance de lucro 2026: R$ 9-11 bi (antes R$ 18-22 bi; originalmente R$ 22-26 bi). 9M26: ~R$ 8,6 bi.</li>
+      <li><b>Impacto no negócio:</b> Payout de 2026 reduzido de 30% para 25% (mínimo legal), aprovado pelo conselho em 10/11 citando alta persistente da inadimplência no agro. Os anúncios de dividendos intermediários previstos para 11 e 19/11/2026 não ocorrerão; o saldo de 2026 será anunciado em 17/02/2027, com pagamento em 10/03/2027. Payout de 2027 fixado em 25% do lucro ajustado, com lucro não distribuído destinado a reserva especial.</li>
+      <li><b>Impacto na ação:</b> Cotação de 12/11 não confirmada. Antes do balanço, a ação estava em torno de R$ 17,02-17,13 (09-11/11), após cair de R$ 24,72 para R$ 16,49 entre 23/10 e 05/11 (cerca de -33%), segundo trechos de busca.</li>
+    </ul>
+  </div>
+  <div class="box g">
+    <div class="bt">🌍 Análise de Cobertura Global</div>
+    <div class="regs"><span class="reg off">✗ 🇨🇳 China</span> <span class="reg off">✗ 🇺🇸 EUA</span> <span class="reg off">✗ 🇪🇺 Europa</span> <span class="reg on">✓ 🇧🇷 Brasil</span></div>
+    <div class="ol"><b>Veículos que noticiaram:</b><ul><li><a href="https://www.infomoney.com.br/mercados/banco-do-brasil-bbas3-resultados-terceiro-trimestre-2026/" target="_blank" rel="noopener">InfoMoney</a><span class="rg">Brasil</span></li><li><a href="https://www.infomoney.com.br/mercados/banco-do-brasil-bbas3-traz-decepcao-generalizada-alertas-e-coloca-recuperacao-em-xeque-como-mercado-leu-o-3t/" target="_blank" rel="noopener">InfoMoney (repercussão)</a><span class="rg">Brasil</span></li><li><a href="https://www.moneytimes.com.br/banco-do-brasil-bbas3-lucro-no-3t26-expectativas-rentabilidade-inadimplencia-ainda-preocupa-miql/" target="_blank" rel="noopener">Money Times</a><span class="rg">Brasil</span></li><li><a href="https://www.seudinheiro.com/2026/empresas/banco-do-brasil-bbas3-lucro-rentabilidade-roe-no-3t26-inadimplencia-ainda-desafia-recuperacao-do-banco-miql/" target="_blank" rel="noopener">Seu Dinheiro</a><span class="rg">Brasil</span></li><li><a href="https://analisa.genialinvestimentos.com.br/acoes/BBAS3/Banco-do-Brasil-BBAS3--Resultado-3T26-Lucro-Antes-do-Imposto-Negativo-e-Corte-Relevante-no-Guidance/" target="_blank" rel="noopener">Genial Analisa</a><span class="rg">Brasil</span></li><li><a href="https://www.spacemoney.com.br/investimentos/acoes/banco-do-brasil-lucro-3t26-guidance-cortado-payout" target="_blank" rel="noopener">SpaceMoney</a><span class="rg">Brasil</span></li></ul></div>
+    <div class="att">Nível de atenção: <span class="pill hi">Alta</span></div>
+  </div>
+</article>
+<article class="card" id="br2">
+  <div class="meta-top"><span class="num">02</span><span class="tk">PETR4</span></div>
+  <h3><a href="https://www.infomoney.com.br/mercados/petrobras-petr3-petr4-analise-3t26-entrega-lucro-forte-mas-capex-maior-e-dividendo-menor-frustram-mercado-acoes/" target="_blank" rel="noopener">Petrobras tem lucro forte, mas capex e provento frustram: o que mercado achou do 3T?</a></h3>
+  <div class="meta">🕒 10–11/11/2026 (após o fechamento) &nbsp;·&nbsp; 📰 Fonte principal: <strong>InfoMoney</strong></div>
+  <p class="sum">A Petrobras reportou lucro líquido de R$ 39,7 bilhões no 3T26, alta de 21,5% sobre o 3T25 e queda de cerca de 24% frente ao 2T26. O conselho aprovou R$ 15,3 bilhões em dividendos e JCP (R$ 1,18732774 por ação), pagos em duas parcelas em fevereiro e março de 2027, valor abaixo do esperado pelo mercado. A estatal elevou o capex total da carteira em implantação para 2026 de US$ 19,4 bilhões para US$ 24 bilhões a US$ 25,5 bilhões, dizendo que não há aumento do custo total dos projetos. O fluxo de caixa livre do trimestre foi de R$ 34 bilhões, pressionado por capex e capital de giro. O Plano de Negócios 2027-2031 deve ser apresentado em 23 de novembro.</p>
+  <div class="box y">
+    <div class="bt">📌 Por que isso é importante?</div>
+    <ul>
+      <li><b>Visão dos analistas:</b> JPMorgan manteve outperform e preço-alvo de R$ 58 para PETR4, mas reduziu projeções pelo capex maior em 2026-27; Itaú BBA manteve compra e ve o investimento elevado como obstaculo de curto prazo; BTG Pactual classificou os anuncios como ligeiramente negativos (dividend yield 2027 cairia de ~12% para ~11% com Brent a US$ 70); XP questiona se o capex e antecipação ou mudanca estrutural; Bradesco BBI previu reação negativa de curto prazo; Morgan Stanley ve o capex reforcando a tese de crescimento. Antes do balanço, BTG e XP projetavam US$ 3,6 bi em proventos e Itaú BBA US$ 4,2 bi.</li>
+      <li><b>Fundamentos:</b> Lucro R$ 39,7 bi (+21,5% a/a); lucro ex-eventos exclusivos R$ 47,9 bi; receita líquida R$ 169,4 bi; Ebitda ajustado R$ 94,5 bi; FCL R$ 34 bi; proventos R$ 15,3 bi (fontes de busca: Suno/SpaceMoney/Money Times/InfoMoney).</li>
+      <li><b>Impacto no negócio:</b> Produção recorde no trimestre; meta de produção 2026 revisada para cima; capex 2026 elevado para US$ 24-25,5 bi; ex-direito dos proventos previsto para 22/12 segundo cobertura.</li>
+      <li><b>Impacto na ação:</b> PETR4 caiu 3,11% a R$ 43,55 e PETR3 recuou 2,08% a R$ 49,78 em 11/11/2026 (InfoMoney, fechamento do Ibovespa); CNN Brasil relatou perda de R$ 32 bi em valor de mercado.</li>
+    </ul>
+  </div>
+  <div class="box g">
+    <div class="bt">🌍 Análise de Cobertura Global</div>
+    <div class="regs"><span class="reg off">✗ 🇨🇳 China</span> <span class="reg on">✓ 🇺🇸 EUA</span> <span class="reg off">✗ 🇪🇺 Europa</span> <span class="reg on">✓ 🇧🇷 Brasil</span></div>
+    <div class="ol"><b>Veículos que noticiaram:</b><ul><li><a href="https://www.infomoney.com.br/mercados/petrobras-petr3-petr4-analise-3t26-entrega-lucro-forte-mas-capex-maior-e-dividendo-menor-frustram-mercado-acoes/" target="_blank" rel="noopener">InfoMoney</a><span class="rg">Brasil</span></li><li><a href="https://www.moneytimes.com.br/petrobras-petr4-vai-pagar-menos-dividendos-acoes-lideram-quedas-do-ibovespa-apos-aumento-do-capex-no-3t26-bdap/" target="_blank" rel="noopener">Money Times</a><span class="rg">Brasil</span></li><li><a href="https://br.investing.com/news/stock-market-news/petrobras-cai-petr4-apos-balanco-dividendos-menores-e-gastos-maiores-pesam-2124251" target="_blank" rel="noopener">Investing.com Brasil</a><span class="rg">Brasil</span></li><li><a href="https://www.cnnbrasil.com.br/economia/money/negocios/um-dia-apos-balanco-petrobras-perde-r-32-bi-de-valor-de-mercado/" target="_blank" rel="noopener">CNN Brasil</a><span class="rg">Brasil</span></li><li><a href="https://investnews.com.br/investimentos/petrobras-aprova-dividendos-de-r-15-bilhoes-mas-o-mercado-esperava-mais/" target="_blank" rel="noopener">InvestNews</a><span class="rg">Brasil</span></li><li><a href="https://www.investing.com/news/company-news/petrobras-q3-2026-slides-production-hits-records-guidance-raised-93CH-5019729" target="_blank" rel="noopener">Investing.com (EN)</a><span class="rg">EUA</span></li><li><a href="https://finance.yahoo.com/energy/articles/petrobras-q3-profit-rises-22-023000217.html" target="_blank" rel="noopener">Yahoo Finance</a><span class="rg">EUA</span></li></ul></div>
+    <div class="att">Nível de atenção: <span class="pill hi">Alta</span></div>
+  </div>
+</article>
+<article class="card" id="br3">
+  <div class="meta-top"><span class="num">03</span><span class="tk">IBOV · BBAS3 · CMIG4 · SAPR4</span></div>
+  <h3><a href="https://www.spacemoney.com.br/economia/macroeconomia/senado-pacote-fiscal-60-bilhoes" target="_blank" rel="noopener">Senado adia votação do pacote de ajuste fiscal de até R$ 60 bilhões para esta quinta (12/11); mercado acompanha</a></h3>
+  <div class="meta">🕒 12/11/2026 (manhã) &nbsp;·&nbsp; 📰 Fonte principal: <strong>SpaceMoney</strong></div>
+  <p class="sum">A sessão do Senado de quarta-feira (11/11) foi suspensa e a votação do PLP 299/2026, o pacote de ajuste fiscal do governo, foi remarcada para quinta-feira (12/11), a partir das 16h. A oposição pediu mais tempo para analisar o texto e, sem consenso, a análise pode ficar para a próxima semana. O projeto tem impacto estimado entre R$ 50 bilhões e R$ 60 bilhões no Orçamento de 2027: reduz de 2,5% para 2% o limite de crescimento real das despesas em anos com medidas de contenção e amplia de 10% para 20% o corte em benefícios tributários. O governo mira superávit primário de R$ 73 bilhões em 2027. A expectativa de aprovação ajudou o Ibovespa a subir 0,42% (172.060 pontos) e o dólar a cair para R$ 5,56 em 11/11.</p>
+  <div class="box y">
+    <div class="bt">📌 Por que isso é importante?</div>
+    <ul>
+      <li><b>Visão dos analistas:</b> Felipe Salto (Warren Investimentos) calcula efeito de até R$ 49,6 bilhões no próximo ano, abaixo das estimativas de R$ 70–80 bilhões que circularam na imprensa. A ata do Copom de 10/11 já havia ligado os juros altos à desconfiança no ajuste fiscal; a aprovação é vista como condição para alívio na curva de juros.</li>
+      <li><b>Fundamentos:</b> Juros futuros mais baixos reduzem o custo de capital de setores intensivos em dívida (elétricas como Cemig, Sanepar, Taesa) e aliviam a inadimplência no crédito — tema central após o balanço do Banco do Brasil.</li>
+      <li><b>Impacto no negócio:</b> O corte de benefícios tributários pode afetar setores incentivados; a trava de despesas reforça a credibilidade do arcabouço e a percepção de risco-país.</li>
+      <li><b>Impacto na ação:</b> Ibovespa +0,42% a 172.060 pontos e dólar a R$ 5,56 em 11/11, com o pacote no radar; um adiamento para a próxima semana tende a devolver parte do prêmio.</li>
+    </ul>
+  </div>
+  <div class="box g">
+    <div class="bt">🌍 Análise de Cobertura Global</div>
+    <div class="regs"><span class="reg off">✗ 🇨🇳 China</span> <span class="reg on">✓ 🇺🇸 EUA</span> <span class="reg off">✗ 🇪🇺 Europa</span> <span class="reg on">✓ 🇧🇷 Brasil</span></div>
+    <div class="ol"><b>Veículos que noticiaram:</b><ul><li><a href="https://www.spacemoney.com.br/economia/macroeconomia/senado-pacote-fiscal-60-bilhoes" target="_blank" rel="noopener">SpaceMoney</a><span class="rg">Brasil</span></li><li><a href="https://www.seudinheiro.com/2026/colunistas/conta-chega-investidores-repercutem-ajuste-fiscal-ipca-balancos-banco-do-brasil-btg-pactual-rsgp/" target="_blank" rel="noopener">Seu Dinheiro</a><span class="rg">Brasil</span></li><li><a href="https://jornaldebrasilia.com.br/noticias/politica-e-poder/senado-deve-votar-pacote-de-ajuste-fiscal-do-governo-lula-nesta-quinta-feira" target="_blank" rel="noopener">Jornal de Brasília</a><span class="rg">Brasil</span></li><li><a href="https://safras.com.br/radar-do-dia-pacote-fiscal-pode-ser-votado-no-senado-ipca-e-balancos-no-foco" target="_blank" rel="noopener">Safras &amp; Mercado</a><span class="rg">Brasil</span></li><li><a href="https://br.investing.com/news/stock-market-news/ibovespa-e-dolar-hoje-pacote-fiscal-petrobras-e-servicos-no-radar-2123596" target="_blank" rel="noopener">Investing.com Brasil</a><span class="rg">Brasil</span></li><li><a href="https://www.riotimesonline.com/sao-paulo-daily-brief-for-thursday-november-12-2026/" target="_blank" rel="noopener">The Rio Times</a><span class="rg">EUA</span></li></ul></div>
+    <div class="att">Nível de atenção: <span class="pill hi">Alta</span></div>
+  </div>
+</article>
+<article class="card" id="br4">
+  <div class="meta-top"><span class="num">04</span><span class="tk">MGLU3</span></div>
+  <h3><a href="https://www.infomoney.com.br/mercados/mglu3-bofa-eleva-magalu-para-compra-apos-melhora-das-vendas-e-ganho-de-mercado/" target="_blank" rel="noopener">MGLU3: BofA eleva Magalu para compra após melhora das vendas e ganho de mercado</a></h3>
+  <div class="meta">🕒 11/11/2026 &nbsp;·&nbsp; 📰 Fonte principal: <strong>InfoMoney</strong></div>
+  <p class="sum">O Magazine Luiza divulgou prévia de outubro com receita bruta das lojas físicas +16% a/a (ante +12% em setembro e +8% de janeiro a agosto) e e-commerce 1P +14% (ante +5% em setembro). A ação fechou em alta de 11,64% a R$ 6,52 em 10/11, após chegar a subir quase 17% no intradia, e registrou a quarta sessão seguida de alta em 11/11, com a segunda alta seguida acima de 10%. O Bank of América elevou a recomendação de underperform para compra, com preço-alvo de R$ 11. No 3T26, a companhia teve prejuízo líquido de R$ 10,7 milhões (lucro ajustado de cerca de R$ 14 milhões, -34,6% a/a). Analistas atribuem a melhora a reorganização do setor após a recuperação judicial do Grupo Casas Bahia.</p>
+  <div class="box y">
+    <div class="bt">📌 Por que isso é importante?</div>
+    <ul>
+      <li><b>Visão dos analistas:</b> BofA: duplo upgrade de underperform para compra, preço-alvo R$ 11 (potencial ~88% sobre R$ 5,84 de 09/11), cortou LPA 2026 de R$ 0,22 para R$ 0,13; XP e Bradesco BBI ligam a melhora a menor pressão promocional após a RJ da Casas Bahia.</li>
+      <li><b>Fundamentos:</b> 3T26: prejuízo líquido de R$ 10,7 mi (consenso esperava lucro de R$ 8,9 mi); BofA cita redução de quase 29% na dívida líquida em um ano.</li>
+      <li><b>Impacto no negócio:</b> Aceleração de vendas em outubro nas lojas físicas e no 1P; ganho de participação com o fechamento de lojas da Casas Bahia; parceria com marketplaces.</li>
+      <li><b>Impacto na ação:</b> MGLU3 +11,64% a R$ 6,52 em 10/11/2026; nova alta em 11/11 (quarta sessão seguida, segunda acima de 10%); cerca de +26,7% em dois pregões até 11/11 segundo trecho de busca. Fechamento exato de 11/11 não confirmado.</li>
+    </ul>
+  </div>
+  <div class="box g">
+    <div class="bt">🌍 Análise de Cobertura Global</div>
+    <div class="regs"><span class="reg off">✗ 🇨🇳 China</span> <span class="reg off">✗ 🇺🇸 EUA</span> <span class="reg off">✗ 🇪🇺 Europa</span> <span class="reg on">✓ 🇧🇷 Brasil</span></div>
+    <div class="ol"><b>Veículos que noticiaram:</b><ul><li><a href="https://www.infomoney.com.br/mercados/mglu3-bofa-eleva-magalu-para-compra-apos-melhora-das-vendas-e-ganho-de-mercado/" target="_blank" rel="noopener">InfoMoney</a><span class="rg">Brasil</span></li><li><a href="https://www.infomoney.com.br/mercados/magalu-mglu3-acao-tem-nova-disparada-apos-outubro-mostrar-ponto-de-virada/" target="_blank" rel="noopener">InfoMoney</a><span class="rg">Brasil</span></li><li><a href="https://br.investing.com/news/stock-market-news/magalu-mglu3-dispara-pelo-segundo-dia-com-bofa-e-aposta-em-ganho-de-mercado-2124140" target="_blank" rel="noopener">Investing.com Brasil</a><span class="rg">Brasil</span></li><li><a href="https://www.moneytimes.com.br/rearranjo-nas-placas-tectonicas-fred-trajano-comenta-disparada-das-vendas-do-magazine-luiza-mlgu3-apos-crise-da-casas-bahia-bdap/" target="_blank" rel="noopener">Money Times</a><span class="rg">Brasil</span></li><li><a href="https://www.seudinheiro.com/2026/bolsa-dolar/o-micro-vai-salvar-o-macro-fred-trajano-abre-o-jogo-sobre-ganhos-do-magazine-luiza-mglu3-apos-crise-na-casas-bahia-bdap/" target="_blank" rel="noopener">Seu Dinheiro</a><span class="rg">Brasil</span></li><li><a href="https://investnews.com.br/negocios/crise-varejo-abre-espaco-para-magalu/" target="_blank" rel="noopener">InvestNews</a><span class="rg">Brasil</span></li><li><a href="https://exame.com/invest/mercados/magazine-luiza-sobe-ate-17-na-bolsa-o-que-o-mercado-viu-de-bom-no-balanco/" target="_blank" rel="noopener">Exame</a><span class="rg">Brasil</span></li></ul></div>
+    <div class="att">Nível de atenção: <span class="pill hi">Alta</span></div>
+  </div>
+</article>
+<article class="card" id="br5">
+  <div class="meta-top"><span class="num">05</span><span class="tk">PETR4</span></div>
+  <h3><a href="https://www.seudinheiro.com/2026/empresas/por-que-a-petrobras-petr4-decidiu-acelerar-os-investimentos-para-este-ano-ceo-responde-e-tenta-acalmar-preocupacao-do-mercado-bdap/" target="_blank" rel="noopener">Petrobras: o que esperar do Plano Estratégico 2027-2031 (23/11) após capex maior e proventos abaixo do esperado</a></h3>
+  <div class="meta">🕒 11/11/2026 &nbsp;·&nbsp; 📰 Fonte principal: <strong>Seu Dinheiro</strong></div>
+  <p class="sum">Depois do balanço do 3T26, a presidente da Petrobras justificou a elevação da projeção de investimentos de 2026 — de US$ 19,4 bilhões para até US$ 25,5 bilhões — com a alta do petróleo, que tornou atraente antecipar projetos. O mercado agora volta as atenções para o Plano Estratégico 2027-2031, que será apresentado em 23/11 e deve esclarecer prioridades de investimento, geração de caixa e a política de remuneração. Em comunicado à SEC de 10/11, a companhia detalhou a antecipação de remuneração aos acionistas, com data-base em 21/12/2026 e ações ex-direitos a partir de 22/12/2026. A dúvida central é se o capex maior é antecipação pontual ou mudança estrutural que reduz o dividend yield futuro.</p>
+  <div class="box y">
+    <div class="bt">📌 Por que isso é importante?</div>
+    <ul>
+      <li><b>Visão dos analistas:</b> JPMorgan mantém outperform com alvo de R$ 58, aguardando o plano de 23/11. BTG vê o yield de 2027 caindo de cerca de 12% para 11%. XP questiona se o capex é antecipação ou mudança estrutural; Bradesco BBI esperava reação negativa no curto prazo.</li>
+      <li><b>Fundamentos:</b> Mais capex com Brent em torno de US$ 91 preserva a geração de caixa, mas reduz o fluxo livre distribuível; a fórmula de dividendos (45% do FCL) torna o capex o principal determinante do payout.</li>
+      <li><b>Impacto no negócio:</b> O plano 2027-31 definirá o ritmo de novos FPSOs, a margem equatorial e refino; um capex anual permanentemente acima de US$ 20 bilhões mudaria a tese de dividendos.</li>
+      <li><b>Impacto na ação:</b> PETR4 caiu 3,11%, a R$ 43,55, em 11/11; a ação acumula queda de cerca de 12% em novembro até 09/11.</li>
+    </ul>
+  </div>
+  <div class="box g">
+    <div class="bt">🌍 Análise de Cobertura Global</div>
+    <div class="regs"><span class="reg off">✗ 🇨🇳 China</span> <span class="reg on">✓ 🇺🇸 EUA</span> <span class="reg off">✗ 🇪🇺 Europa</span> <span class="reg on">✓ 🇧🇷 Brasil</span></div>
+    <div class="ol"><b>Veículos que noticiaram:</b><ul><li><a href="https://www.seudinheiro.com/2026/empresas/por-que-a-petrobras-petr4-decidiu-acelerar-os-investimentos-para-este-ano-ceo-responde-e-tenta-acalmar-preocupacao-do-mercado-bdap/" target="_blank" rel="noopener">Seu Dinheiro</a><span class="rg">Brasil</span></li><li><a href="https://www.sec.gov/Archives/edgar/data/0001119639/000129281426005229/pbr20261110_6k.htm" target="_blank" rel="noopener">SEC (Form 6-K, 10/11)</a><span class="rg">EUA</span></li><li><a href="https://www.infomoney.com.br/mercados/petrobras-petr3-petr4-desempenho-acoes-resultados-3t26-proventos-novas-projecoes/" target="_blank" rel="noopener">InfoMoney</a><span class="rg">Brasil</span></li><li><a href="https://content.btgpactual.com/research/ativo/PETR4" target="_blank" rel="noopener">BTG Pactual Research</a><span class="rg">Brasil</span></li></ul></div>
+    <div class="att">Nível de atenção: <span class="pill hi">Alta</span></div>
+  </div>
+</article>
+<article class="card" id="br6">
+  <div class="meta-top"><span class="num">06</span><span class="tk">AMER3</span></div>
+  <h3><a href="https://www.infomoney.com.br/mercados/americanas-amer3-resultados-terceiro-trimestre-2026/" target="_blank" rel="noopener">Americanas (AMER3) reverte lucro e registra prejuízo de R$ 352 milhões no 3º tri</a></h3>
+  <div class="meta">🕒 11/11/2026 (noite) &nbsp;·&nbsp; 📰 Fonte principal: <strong>InfoMoney (com Reuters)</strong></div>
+  <p class="sum">A Americanas teve prejuízo líquido de R$ 352 milhões no 3T26, revertendo lucro de R$ 367 milhões no 3T25. A receita líquida subiu cerca de 10%, para R$ 2,97 bilhões, com vendas mesmas lojas de +7,3% (Exame cita 8,7%). O Ebitda ajustado caiu 90,7%, para R$ 52 milhões, ante R$ 558 milhões, e o resultado financeiro passou de +R$ 88 mi para -R$ 190 mi. No acumulado de nove meses o prejuízo chega a R$ 955 milhões; a dívida líquida era de R$ 1,16 bilhão em setembro, ante caixa líquido de R$ 488 milhões no fim de 2025. E o primeiro balanço após o fim da recuperação judicial, encerrada pela Justiça do Rio em 19 de outubro.</p>
+  <div class="box y">
+    <div class="bt">📌 Por que isso é importante?</div>
+    <ul>
+      <li><b>Visão dos analistas:</b> Nenhuma recomendação ou preço-alvo de banco encontrado na busca.</li>
+      <li><b>Fundamentos:</b> Prejuizo R$ 352 mi; receita R$ 2,97 bi (+10%); Ebitda aj. R$ 52 mi (-90,7%); ganhos extraordinarios cairam de R$ 474 mi para R$ 16 mi; dívida líquida R$ 1,16 bi.</li>
+      <li><b>Impacto no negócio:</b> Saida da RJ em outubro; trimestre ainda capturado majoritariamente sob proteção judicial; administração atribui comparação a efeitos tributarios/financeiros extraordinarios de 2025.</li>
+      <li><b>Impacto na ação:</b> Reação da ação em 12/11 ainda não disponível na busca (balanço saiu após o fechamento de 11/11).</li>
+    </ul>
+  </div>
+  <div class="box g">
+    <div class="bt">🌍 Análise de Cobertura Global</div>
+    <div class="regs"><span class="reg off">✗ 🇨🇳 China</span> <span class="reg off">✗ 🇺🇸 EUA</span> <span class="reg off">✗ 🇪🇺 Europa</span> <span class="reg on">✓ 🇧🇷 Brasil</span></div>
+    <div class="ol"><b>Veículos que noticiaram:</b><ul><li><a href="https://www.infomoney.com.br/mercados/americanas-amer3-resultados-terceiro-trimestre-2026/" target="_blank" rel="noopener">InfoMoney</a><span class="rg">Brasil</span></li><li><a href="https://www.cnnbrasil.com.br/noticias/americanas-tem-prejuizo-de-r352-mi-no-3o-trimestre/" target="_blank" rel="noopener">CNN Brasil</a><span class="rg">Brasil</span></li><li><a href="https://www.moneytimes.com.br/americanas-amer3-tem-prejuizo-de-r-352-milhoes-no-3o-trimestre-lmrs/" target="_blank" rel="noopener">Money Times</a><span class="rg">Brasil</span></li><li><a href="https://exame.com/invest/mercados/alta-nas-vendas-nao-salva-balanco-e-americanas-tem-prejuizo-de-r-352-mi-no-3o-tri/" target="_blank" rel="noopener">Exame</a><span class="rg">Brasil</span></li></ul></div>
+    <div class="att">Nível de atenção: <span class="pill md">Média</span></div>
+  </div>
+</article>
+<article class="card" id="br7">
+  <div class="meta-top"><span class="num">07</span><span class="tk">TAEE3/TAEE4</span></div>
+  <h3><a href="https://www.infomoney.com.br/mercados/taesa-taee11-resultados-terceiro-trimestre-2026/" target="_blank" rel="noopener">Taesa tem lucro 12,5% maior no 3º tri, a R$ 363,8 mi, com impulso de novos projetos</a></h3>
+  <div class="meta">🕒 11/11/2026 (após o fechamento) &nbsp;·&nbsp; 📰 Fonte principal: <strong>InfoMoney</strong></div>
+  <p class="sum">A Taesa reportou lucro líquido regulatório de R$ 363,8 milhões no 3T26, alta de 12,5% a/a; no IFRS o lucro foi de R$ 360,7 milhões (+5,9%). O Ebitda regulatório somou R$ 687,2 milhões (+25,2%) e a receita líquida R$ 798,4 milhões (+22,7%), impulsionados por novos projetos e pelos ativos comprados da Energisa. O conselho aprovou dividendos intercalares de R$ 363,8 milhões (R$ 1,06 por unit), 100% do lucro regulatório, com data-base 16/11/2026 e pagamento em 27/01/2027. A alavancagem subiu para 4,7x dívida líquida/Ebitda, ante 4,2x no 2T26. A empresa informou que não participara do leilão de baterias por incertezas regulatorias.</p>
+  <div class="box y">
+    <div class="bt">📌 Por que isso é importante?</div>
+    <ul>
+      <li><b>Visão dos analistas:</b> Nenhuma recomendação pos-balanco encontrada na busca.</li>
+      <li><b>Fundamentos:</b> Lucro regulatório R$ 363,8 mi (+12,5%); IFRS R$ 360,7 mi (+5,9%); Ebitda reg. R$ 687,2 mi (+25,2%); receita R$ 798,4 mi (+22,7%); DL/Ebitda 4,7x.</li>
+      <li><b>Impacto no negócio:</b> Entrada em operação de novos projetos de transmissão e incorporação de ativos da Energisa; fora do leilão de baterias; teleconferência em 12/11 as 11h.</li>
+      <li><b>Impacto na ação:</b> Reação da ação em 12/11 ainda não disponível.</li>
+    </ul>
+  </div>
+  <div class="box g">
+    <div class="bt">🌍 Análise de Cobertura Global</div>
+    <div class="regs"><span class="reg off">✗ 🇨🇳 China</span> <span class="reg off">✗ 🇺🇸 EUA</span> <span class="reg off">✗ 🇪🇺 Europa</span> <span class="reg on">✓ 🇧🇷 Brasil</span></div>
+    <div class="ol"><b>Veículos que noticiaram:</b><ul><li><a href="https://www.infomoney.com.br/mercados/taesa-taee11-resultados-terceiro-trimestre-2026/" target="_blank" rel="noopener">InfoMoney</a><span class="rg">Brasil</span></li><li><a href="https://www.moneytimes.com.br/taesa-taee11-tem-lucro-125-maior-no-3o-trimestre-com-impulso-de-novos-projetos-fets/" target="_blank" rel="noopener">Money Times</a><span class="rg">Brasil</span></li><li><a href="https://www.cnnbrasil.com.br/infra/taesa-tem-lucro-125-maior-no-3o-trimestre-com-impulso-de-novos-projetos/" target="_blank" rel="noopener">CNN Brasil</a><span class="rg">Brasil</span></li></ul></div>
+    <div class="att">Nível de atenção: <span class="pill md">Média</span></div>
+  </div>
+</article>
+<article class="card" id="br8">
+  <div class="meta-top"><span class="num">08</span><span class="tk">CMIG4 / CPFE3 / SAPR4</span></div>
+  <h3><a href="https://www.moneytimes.com.br/calendario-de-resultados-do-3t26-balancos-vale-vale3-petrobras-petr4-itau-itub4-mlem/" target="_blank" rel="noopener">Calendário de resultados do 3T26: Cemig, CPFL e Sanepar divulgam balanços em 12/11 após o fechamento</a></h3>
+  <div class="meta">🕒 Divulgação em 12/11/2026 (após o fechamento) &nbsp;·&nbsp; 📰 Fonte principal: <strong>Money Times</strong></div>
+  <p class="sum">Cemig, CPFL e Sanepar estão previstas para divulgar o 3T26 em 12/11/2026, após o fechamento. A Cemig tem teleconferência marcada para 13/11 e retirou o Investor Day do calendário (segundo página do BTG); estimativas de terceiros (ADVFN, sem fonte clara) apontam lucro de ~R$ 838 mi e Ebitda de ~R$ 1,92 bi. A CPFL alterou a data da teleconferência de 13/11 para 16/11, mantendo a data de divulgação. A Sanepar divulga em 12/11 com conferência em 13/11; no 2T26 teve prejuízo reportado de R$ 505,2 mi por reversão de precatório, mas lucro ajustado de R$ 447,5 mi (+35%). Não há resultados publicados ainda no momento da pesquisa.</p>
+  <div class="box y">
+    <div class="bt">📌 Por que isso é importante?</div>
+    <ul>
+      <li><b>Visão dos analistas:</b> Sanepar: BTG neutro, alvo R$ 41 (agosto). Cemig: Itaú BBA alertou para dividendos menores com consumo de caixa; Genial espera payout ~50%. CPFL: Itaú BBA elevou preço-alvo (data não confirmada).</li>
+      <li><b>Fundamentos:</b> Cemig 2T26: lucro R$ 945 mi (-20,4%). CPFL 2T26: lucro R$ 1,44 bi (+21,3%), 1S26 R$ 3,34 bi. Sanepar 2T26: Ebitda aj. R$ 799,9 mi (+15,1%).</li>
+      <li><b>Impacto no negócio:</b> Sanepar: efeito integral do reajuste tarifário de 2,4993% a partir do 3T26. Cemig: ciclo de capex de R$ 59 bi até 2029.</li>
+      <li><b>Impacto na ação:</b> Sem movimento relevante identificado em 11/11.</li>
+    </ul>
+  </div>
+  <div class="box g">
+    <div class="bt">🌍 Análise de Cobertura Global</div>
+    <div class="regs"><span class="reg off">✗ 🇨🇳 China</span> <span class="reg off">✗ 🇺🇸 EUA</span> <span class="reg off">✗ 🇪🇺 Europa</span> <span class="reg on">✓ 🇧🇷 Brasil</span></div>
+    <div class="ol"><b>Veículos que noticiaram:</b><ul><li><a href="https://www.moneytimes.com.br/calendario-de-resultados-do-3t26-balancos-vale-vale3-petrobras-petr4-itau-itub4-mlem/" target="_blank" rel="noopener">Money Times</a><span class="rg">Brasil</span></li><li><a href="https://ri.sanepar.com.br/pt/servicos-aos-investidores/agenda-de-ri" target="_blank" rel="noopener">Sanepar RI (agenda)</a><span class="rg">Brasil</span></li><li><a href="https://forbes.com.br/forbes-money/2026/10/calendario-balancos-terceiro-trimestre-2026/" target="_blank" rel="noopener">Forbes Brasil</a><span class="rg">Brasil</span></li><li><a href="https://content.btgpactual.com/research/home/acoes/ativo/CMIG4" target="_blank" rel="noopener">BTG Pactual Research (CMIG4)</a><span class="rg">Brasil</span></li></ul></div>
+    <div class="att">Nível de atenção: <span class="pill hi">Alta</span></div>
+  </div>
+</article>
+<article class="card" id="br9">
+  <div class="meta-top"><span class="num">09</span><span class="tk">VALE3</span></div>
+  <h3><a href="https://infomoney.com.br/mercados/ibovespa-hoje-bolsa-de-valores-ao-vivo-11112026" target="_blank" rel="noopener">Minério de ferro recua em Dalian com cortes de produção de aço em Hebei; Vale (VALE3) cai 0,57%</a></h3>
+  <div class="meta">🕒 11/11/2026 (fechamento) &nbsp;·&nbsp; 📰 Fonte principal: <strong>InfoMoney</strong></div>
+  <p class="sum">O minério de ferro negociado na bolsa de Dalian recuou 0,36% em 11/11, para 683,50 iuanes por tonelada (cerca de US$ 102), pressionado pela expectativa de cortes na produção de aço em polos siderúrgicos da província de Hebei e pela falta de melhora nas margens das siderúrgicas chinesas. A Vale acompanhou e fechou em queda de 0,57%, perto de R$ 64,5, mesmo com o Ibovespa em alta. As importações chinesas de minério somaram 105,7 milhões de toneladas em outubro e 1,06 bilhão no ano (+3,1%), sinal de demanda ainda firme, mas com estoques elevados. Até 09/11 a Vale acumulava alta de cerca de 9,5% em novembro, superando a Petrobras.</p>
+  <div class="box y">
+    <div class="bt">📌 Por que isso é importante?</div>
+    <ul>
+      <li><b>Visão dos analistas:</b> Itaú BBA rebaixou Vale para neutro citando pressão de fretes, custos e margens; Safra mais positivo; Goldman havia projetado Ebitda 3T26 de US$ 3,3 bi (-20% t/t) em outubro.</li>
+      <li><b>Fundamentos:</b> 3T26: lucro US$ 1,255 bi (-53% a/a); Ebitda ajustado pro forma US$ 3,5 bi (-20%) segundo trechos de busca (fontes secundarias).</li>
+      <li><b>Impacto no negócio:</b> Meta de minério 2026 no piso de 335-345 Mt; cobre na parte alta de 360-380 mil t; sem dividendo extraordinário, foco em recompra.</li>
+      <li><b>Impacto na ação:</b> VALE3 -0,57% em 11/11, perto de R$ 64,5; acumula cerca de +9,5% em novembro até 09/11. ADRs operavam em alta na manhã de 12/11.</li>
+    </ul>
+  </div>
+  <div class="box g">
+    <div class="bt">🌍 Análise de Cobertura Global</div>
+    <div class="regs"><span class="reg off">✗ 🇨🇳 China</span> <span class="reg off">✗ 🇺🇸 EUA</span> <span class="reg off">✗ 🇪🇺 Europa</span> <span class="reg on">✓ 🇧🇷 Brasil</span></div>
+    <div class="ol"><b>Veículos que noticiaram:</b><ul><li><a href="https://infomoney.com.br/mercados/ibovespa-hoje-bolsa-de-valores-ao-vivo-11112026" target="_blank" rel="noopener">InfoMoney</a><span class="rg">Brasil</span></li><li><a href="https://investnews.com.br/investimentos/petrobras-cai-ibovespa-hoje-sobe" target="_blank" rel="noopener">InvestNews</a><span class="rg">Brasil</span></li><li><a href="https://www.infomoney.com.br/mercados/vale-vale3-supera-petrobras-petr4-novembro-2026-jogo-virou-gigantes-da-bolsa-brasileira/" target="_blank" rel="noopener">InfoMoney (Vale supera Petrobras)</a><span class="rg">Brasil</span></li><li><a href="https://www.seudinheiro.com/2026/empresas/minerio-mais-barato-estrategia-da-vale-vale3-para-blindar-caixa-e-dividendos-passa-por-cobre-e-chega-ao-litio-ccgg/" target="_blank" rel="noopener">Seu Dinheiro</a><span class="rg">Brasil</span></li><li><a href="https://diariodosudoeste.com.br/ibovespa-sobe-042-e-dolar-cai-a-r-556-com-pacote-fiscal" target="_blank" rel="noopener">Diário do Sudoeste</a><span class="rg">Brasil</span></li></ul></div>
+    <div class="att">Nível de atenção: <span class="pill md">Média</span></div>
+  </div>
+</article>
+<article class="card" id="br10">
+  <div class="meta-top"><span class="num">10</span><span class="tk">IBOV (mercado)</span></div>
+  <h3><a href="https://www.infomoney.com.br/mercados/ibovespa-hoje-bolsa-de-valores-ao-vivo-11112026/" target="_blank" rel="noopener">Ibovespa fecha em alta, com fiscal e exterior; Petrobras cai mais de 3% com balanço</a></h3>
+  <div class="meta">🕒 11/11/2026 (fechamento) &nbsp;·&nbsp; 📰 Fonte principal: <strong>InfoMoney</strong></div>
+  <p class="sum">O Ibovespa fechou 11/11/2026 em alta de 0,42%, a 172.060,43 pontos (+723,44 pontos), apoiado pelo exterior e pelo noticiário fiscal. O pacote de ajuste fiscal do governo estava no radar e, segundo o Money Times, seria enviado no mesmo dia. A Petrobras foi o principal peso, com PETR4 -3,11% a R$ 43,55 e PETR3 -2,08% a R$ 49,78. A Vale também não ajudou, com queda de 0,57%. O InvestNews registrou queda de 0,4% do dólar.</p>
+  <div class="box y">
+    <div class="bt">📌 Por que isso é importante?</div>
+    <ul>
+      <li><b>Visão dos analistas:</b> Não se aplica.</li>
+      <li><b>Fundamentos:</b> Não se aplica.</li>
+      <li><b>Impacto no negócio:</b> Pacote fiscal no Congresso/Senado e temporada de balanços do 3T26.</li>
+      <li><b>Impacto na ação:</b> Ibovespa +0,42% a 172.060,43 pts em 11/11/2026; PETR4 -3,11% (R$ 43,55); VALE3 -0,57%.</li>
+    </ul>
+  </div>
+  <div class="box g">
+    <div class="bt">🌍 Análise de Cobertura Global</div>
+    <div class="regs"><span class="reg off">✗ 🇨🇳 China</span> <span class="reg off">✗ 🇺🇸 EUA</span> <span class="reg off">✗ 🇪🇺 Europa</span> <span class="reg on">✓ 🇧🇷 Brasil</span></div>
+    <div class="ol"><b>Veículos que noticiaram:</b><ul><li><a href="https://www.infomoney.com.br/mercados/ibovespa-hoje-bolsa-de-valores-ao-vivo-11112026/" target="_blank" rel="noopener">InfoMoney</a><span class="rg">Brasil</span></li><li><a href="https://forbes.com.br/forbes-money/2026/11/ibovespa-fecha-em-alta-com-apoio-de-ny-mas-petrobras-atenua-impeto/" target="_blank" rel="noopener">Forbes Brasil</a><span class="rg">Brasil</span></li><li><a href="https://www.moneytimes.com.br/ibovespa-acompanha-wall-street-e-fecha-em-alta-com-ajuste-fiscal-no-radar-davs/" target="_blank" rel="noopener">Money Times</a><span class="rg">Brasil</span></li><li><a href="https://investnews.com.br/investimentos/ibovespa-fecha-alta-11-11-2026/" target="_blank" rel="noopener">InvestNews</a><span class="rg">Brasil</span></li><li><a href="https://br.investing.com/news/stock-market-news/ibovespa-e-dolar-hoje-pacote-fiscal-petrobras-e-servicos-no-radar-2123596" target="_blank" rel="noopener">Investing.com Brasil</a><span class="rg">Brasil</span></li></ul></div>
+    <div class="att">Nível de atenção: <span class="pill md">Média</span></div>
+  </div>
+</article>
+<article class="card" id="br11">
+  <div class="meta-top"><span class="num">11</span><span class="tk">ITSA4</span></div>
+  <h3><a href="https://www.moneytimes.com.br/itausa-itsa4-tem-alta-de-25-no-lucro-recorrente-para-r-51-bi-no-3t26/" target="_blank" rel="noopener">Itaúsa tem lucro recorrente de R$ 5,1 bilhões no 3T26, alta de 25%</a></h3>
+  <div class="meta">🕒 09–10/11/2026 (fora da janela de 24h) &nbsp;·&nbsp; 📰 Fonte principal: <strong>Money Times</strong></div>
+  <p class="sum">A Itaúsa reportou lucro líquido recorrente de R$ 5,062 bilhões no 3T26, alta de 25% sobre o 3T25, com ROE recorrente de 21,1% (+3,3 p.p.). O lucro contábil foi de R$ 4,955 bilhões, alta de 20% sobre R$ 4,145 bilhões. O Itaú Unibanco contribuiu com R$ 4,693 bilhões, enquanto o resultado recorrente atribuível das investidas não financeiras foi de R$ 593 milhões (+121,7%), puxado pela NTS (R$ 213 milhões, +153%, com efeito de valor justo). No acumulado de nove meses, o lucro recorrente somou R$ 13,859 bilhões (+16%).</p>
+  <div class="box y">
+    <div class="bt">📌 Por que isso é importante?</div>
+    <ul>
+      <li><b>Visão dos analistas:</b> Nenhuma recomendação específica de ITSA4 pós-3T26 encontrada. Para o Itaú (ITUB4, principal ativo), BTG Pactual e XP mantiveram compra após o 3T26 (lucro de R$ 12,6 bi); o BTG tem o Itaú como única compra entre os grandes bancos. Uma análise (Acionista) chama atenção para a alta da dívida líquida.</li>
+      <li><b>Fundamentos:</b> Lucro recorrente: R$ 5,062 bi (+25% a/a). Lucro contábil: R$ 4,955 bi (+20%). ROE recorrente: 21,1%. Dívida líquida: R$ 901 mi (+29% a/a). NAV: R$ 199,2 bi; valor de mercado R$ 163,6 bi; desconto de holding 17,9%.</li>
+      <li><b>Impacto no negócio:</b> Próxima data-com de JCP trimestral em 30/11/2026 (R$ 0,0242425 bruto por ação), pagamento em 04/01/2027. Proventos aprovados para 2026: R$ 0,351 por ação, segundo trecho de busca.</li>
+      <li><b>Impacto na ação:</b> Sem dado de cotação confirmado na janela.</li>
+    </ul>
+  </div>
+  <div class="box g">
+    <div class="bt">🌍 Análise de Cobertura Global</div>
+    <div class="regs"><span class="reg off">✗ 🇨🇳 China</span> <span class="reg off">✗ 🇺🇸 EUA</span> <span class="reg off">✗ 🇪🇺 Europa</span> <span class="reg on">✓ 🇧🇷 Brasil</span></div>
+    <div class="ol"><b>Veículos que noticiaram:</b><ul><li><a href="https://www.moneytimes.com.br/itausa-itsa4-tem-alta-de-25-no-lucro-recorrente-para-r-51-bi-no-3t26/" target="_blank" rel="noopener">Money Times</a><span class="rg">Brasil</span></li><li><a href="https://investidor10.com.br/noticias/itausa-itsa4-supera-r-5-bilhoes-em-lucro-e-revela-os-destaques-do-trimestre-123790/" target="_blank" rel="noopener">Investidor10</a><span class="rg">Brasil</span></li><li><a href="https://br.advfn.com/jornal/2026/11/itausa-registra-lucro-recorrente-de-r-5-1-bilhoes-no-3t26-alta-de-25-em-um-ano" target="_blank" rel="noopener">ADVFN</a><span class="rg">Brasil</span></li><li><a href="https://www.seudinheiro.com/2026/empresas/itau-itub4-com-lucro-roe-rentabilidade-banco-balanco-do-3t26-miql/" target="_blank" rel="noopener">Seu Dinheiro (ITUB4 3T26, contexto)</a><span class="rg">Brasil</span></li></ul></div>
+    <div class="att">Nível de atenção: <span class="pill lo">Baixa</span></div>
+  </div>
+</article>
+<article class="card" id="br12">
+  <div class="meta-top"><span class="num">12</span><span class="tk">BBSE3</span></div>
+  <h3><a href="https://www.infomoney.com.br/mercados/bb-seguridade-lucra-acima-do-esperado-mas-3t-e-de-baixa-qualidade-e-acao-cai-forte/" target="_blank" rel="noopener">BB Seguridade lucra R$ 2,43 bi no 3T26, acima do consenso, mas ação cai 7,45% com resultado de &#x27;baixa qualidade&#x27; e corte na projeção de prêmios</a></h3>
+  <div class="meta">🕒 03–04/11/2026 (fora da janela de 24h) &nbsp;·&nbsp; 📰 Fonte principal: <strong>InfoMoney</strong></div>
+  <p class="sum">A BB Seguridade divulgou na noite de 03/11 lucro líquido gerencial recorrente de R$ 2,432 bilhões no 3T26, queda de 5,1% (R$ 129,8 milhões) sobre o 3T25 e alta de 13% ante o 2T26. O número ficou cerca de 8% acima do consenso (LSEG esperava R$ 2,2 bilhões). A queda anual veio principalmente da Brasilseg, com menos prêmios e índice combinado mais alto, e da BB Corretora. A companhia manteve as projeções de reservas de previdência e de resultado operacional, mas reduziu a estimativa de prêmios emitidos da Brasilseg. No acumulado de nove meses, o lucro recorrente foi de R$ 6,804 bilhões (+0,1%).</p>
+  <div class="box y">
+    <div class="bt">📌 Por que isso é importante?</div>
+    <ul>
+      <li><b>Visão dos analistas:</b> Bradesco BBI: surpresa veio de equivalência mais forte de Brasilprev e Brasilcap e receitas financeiras na holding, sem melhora consistente da operação. Morgan Stanley: resultado de &#x27;baixa qualidade&#x27;, sustentado por carga tributária menor e receitas financeiras. Itaú BBA: balanço sem surpresa negativa, mas mercado dará mais peso a prêmios e corte de projeções; mantém venda. Morgan Stanley, Itaú BBA e JPMorgan com recomendação de venda; BTG neutro com preço-alvo de R$ 40 e queda de LPA de ~5% esperada para 2027.</li>
+      <li><b>Fundamentos:</b> Lucro recorrente 3T26: R$ 2,432 bi (-5,1% a/a; +13% t/t). 9M26: R$ 6,804 bi (+0,1%). Consenso LSEG: R$ 2,2 bi.</li>
+      <li><b>Impacto no negócio:</b> Corte na projeção de prêmios emitidos da Brasilseg; múltiplo da ação embute renovação do contrato de distribuição com o Banco do Brasil (risco apontado por analistas). O corte de payout do controlador BB não foi ligado diretamente à BBSE3 nas fontes encontradas.</li>
+      <li><b>Impacto na ação:</b> BBSE3 fechou em queda de 7,45%, a R$ 37,75, no pregão seguinte ao balanço (04/11); no intradia chegou a ser negociada a R$ 38,96 (-4,49%).</li>
+    </ul>
+  </div>
+  <div class="box g">
+    <div class="bt">🌍 Análise de Cobertura Global</div>
+    <div class="regs"><span class="reg off">✗ 🇨🇳 China</span> <span class="reg off">✗ 🇺🇸 EUA</span> <span class="reg off">✗ 🇪🇺 Europa</span> <span class="reg on">✓ 🇧🇷 Brasil</span></div>
+    <div class="ol"><b>Veículos que noticiaram:</b><ul><li><a href="https://www.infomoney.com.br/mercados/bb-seguridade-lucra-acima-do-esperado-mas-3t-e-de-baixa-qualidade-e-acao-cai-forte/" target="_blank" rel="noopener">InfoMoney</a><span class="rg">Brasil</span></li><li><a href="https://www.infomoney.com.br/mercados/bb-seguridade-bbse3-resultados-terceiro-trimestre-2026/" target="_blank" rel="noopener">InfoMoney (resultado)</a><span class="rg">Brasil</span></li><li><a href="https://www.suno.com.br/noticias/bb-seguridade-bbse3-balanco-3t26/" target="_blank" rel="noopener">Suno</a><span class="rg">Brasil</span></li><li><a href="https://www.spacemoney.com.br/investimentos/acoes/bb-seguridade-lucro-3t26-acao-cai-baixa-qualidade" target="_blank" rel="noopener">SpaceMoney</a><span class="rg">Brasil</span></li><li><a href="https://investidor10.com.br/noticias/lucro-da-bb-seguridade-bbse3-recua-5-1-no-3t26-para-r-2-43-bilhoes-123670/" target="_blank" rel="noopener">Investidor10</a><span class="rg">Brasil</span></li></ul></div>
+    <div class="att">Nível de atenção: <span class="pill md">Média</span></div>
+  </div>
+</article>
+<article class="card" id="br13">
+  <div class="meta-top"><span class="num">13</span><span class="tk">ABCB4</span></div>
+  <h3><a href="https://www.prnewswire.com/br/comunicados-para-a-imprensa/abc-brasil-registra-lucro-liquido-r273-7-milhoes-no-3t26--com-expansao-da-carteira-e-manutencao-da-qualidade-de-credito-302931220.html" target="_blank" rel="noopener">ABC Brasil lucra R$ 273,7 milhões no 3T26, alta de 6,6%, com ROAE de 15%</a></h3>
+  <div class="meta">🕒 05/11/2026 (fora da janela de 24h) &nbsp;·&nbsp; 📰 Fonte principal: <strong>PR Newswire (comunicado da empresa)</strong></div>
+  <p class="sum">O Banco ABC Brasil reportou lucro líquido recorrente de R$ 273,7 milhões no 3T26, alta de 6,6% sobre o 3T25 (R$ 256,8 milhões) e de 6,4% sobre o 2T26 (R$ 257,3 milhões). A margem financeira gerencial foi de R$ 697,7 milhões e o ROAE de 15,0%. A carteira expandida atingiu R$ 60,4 bilhões, com crescimento de 15,5% em 12 meses, acima da expansão do lucro. Os índices de Basileia e Capital Principal ficaram em 16,2% e 11,2%. No acumulado do ano, o lucro soma R$ 761,2 milhões (+4,8%).</p>
+  <div class="box y">
+    <div class="bt">📌 Por que isso é importante?</div>
+    <ul>
+      <li><b>Visão dos analistas:</b> Nenhuma reação de analistas pós-3T26 encontrada. BTG Pactual (16/10/2026): neutro, preço-alvo R$ 27 (ação a R$ 28,66). BB Investimentos (fev/2026): compra, preço-alvo R$ 30 para dez/2026.</li>
+      <li><b>Fundamentos:</b> Lucro recorrente 3T26: R$ 273,7 mi (+6,6% a/a). ROAE: 15,0%. Margem financeira gerencial: R$ 697,7 mi. Carteira expandida: R$ 60,4 bi (+15,5% a/a). Basileia 16,2%; Capital Principal 11,2%. 9M26: R$ 761,2 mi (+4,8%).</li>
+      <li><b>Impacto no negócio:</b> Resultado apresentado junto ao ABC Day (Investor Day) em 06/11/2026. Um veículo nota que o balanço não garante dividendo extra.</li>
+      <li><b>Impacto na ação:</b> Sem dado de cotação confirmado na janela.</li>
+    </ul>
+  </div>
+  <div class="box g">
+    <div class="bt">🌍 Análise de Cobertura Global</div>
+    <div class="regs"><span class="reg off">✗ 🇨🇳 China</span> <span class="reg off">✗ 🇺🇸 EUA</span> <span class="reg off">✗ 🇪🇺 Europa</span> <span class="reg on">✓ 🇧🇷 Brasil</span></div>
+    <div class="ol"><b>Veículos que noticiaram:</b><ul><li><a href="https://www.prnewswire.com/br/comunicados-para-a-imprensa/abc-brasil-registra-lucro-liquido-r273-7-milhoes-no-3t26--com-expansao-da-carteira-e-manutencao-da-qualidade-de-credito-302931220.html" target="_blank" rel="noopener">PR Newswire</a><span class="rg">Brasil</span></li><li><a href="https://br.advfn.com/jornal/2026/11/banco-abc-brasil-registra-lucro-de-r-273-7-milhoes-no-3t26-e-amplia-carteira-de-credito" target="_blank" rel="noopener">ADVFN</a><span class="rg">Brasil</span></li><li><a href="https://www.letsmoney.com.br/credito/abc-brasil-lucro-2737-milhoes-3t26/" target="_blank" rel="noopener">Let&#x27;s Money</a><span class="rg">Brasil</span></li></ul></div>
+    <div class="att">Nível de atenção: <span class="pill lo">Baixa</span></div>
+  </div>
+</article>
+<article class="card" id="br14">
+  <div class="meta-top"><span class="num">14</span><span class="tk">KLBN4</span></div>
+  <h3><a href="https://www.moneytimes.com.br/klabin-klbn11-capta-us-150-milhoes-com-agencia-canadense-para-gestao-da-divida-pads/" target="_blank" rel="noopener">Klabin (KLBN11) capta US$ 150 milhões com agência canadense para gestão da dívida</a></h3>
+  <div class="meta">🕒 09/11/2026 (fora da janela de 24h) &nbsp;·&nbsp; 📰 Fonte principal: <strong>Money Times</strong></div>
+  <p class="sum">A Klabin contratou um term loan de US$ 150 milhões com a Export Development Canada (EDC), comunicado em 09/11/2026. O custo médio e de SOFR + 1,77% ao ano, com amortizações no sexto e setimo anos. A companhia diz que a operação faz parte da gestão do passivo, alongando o perfil da dívida. No 3T26 (28/10), o lucro foi de R$ 393 mi (-18%), acima do consenso de R$ 329,5 mi, mas a ação caiu 6,37% a R$ 17,48 pelo custo-caixa de R$ 3.483/t. O Safra rebaixou a units para neutra e cortou o alvo de R$ 21,40 para R$ 20,60 (data não confirmada).</p>
+  <div class="box y">
+    <div class="bt">📌 Por que isso é importante?</div>
+    <ul>
+      <li><b>Visão dos analistas:</b> Safra: neutro, alvo R$ 20,60 (de R$ 21,40); BB Investimentos: compra, alvo 2027 R$ 23; Itaú BBA, JPMorgan e Goldman: neutro.</li>
+      <li><b>Fundamentos:</b> 3T26: receita R$ 5,57 bi (+3%); Ebitda aj. R$ 1,856 bi (-12%), margem 33%; dívida líquida R$ 23,977 bi, 3,3x Ebitda; FCL R$ 73 mi.</li>
+      <li><b>Impacto no negócio:</b> Pressão de custos (El Nino, insumos, frete) e real mais forte.</li>
+      <li><b>Impacto na ação:</b> KLBN11 -6,37% a R$ 17,48 em 28/10/2026; sem cotação confirmada para 11/11.</li>
+    </ul>
+  </div>
+  <div class="box g">
+    <div class="bt">🌍 Análise de Cobertura Global</div>
+    <div class="regs"><span class="reg off">✗ 🇨🇳 China</span> <span class="reg off">✗ 🇺🇸 EUA</span> <span class="reg off">✗ 🇪🇺 Europa</span> <span class="reg on">✓ 🇧🇷 Brasil</span></div>
+    <div class="ol"><b>Veículos que noticiaram:</b><ul><li><a href="https://www.moneytimes.com.br/klabin-klbn11-capta-us-150-milhoes-com-agencia-canadense-para-gestao-da-divida-pads/" target="_blank" rel="noopener">Money Times</a><span class="rg">Brasil</span></li><li><a href="https://timesbrasil.com.br/empresas-e-negocios/klabin-financiamento-term-loan-150-milhoes/" target="_blank" rel="noopener">Times Brasil (CNBC)</a><span class="rg">Brasil</span></li><li><a href="https://www.seudinheiro.com/2026/empresas/nem-a-celulose-salva-safra-perde-otimismo-com-klabin-klbn11-rebaixa-acao-e-corta-preco-alvo-pads/" target="_blank" rel="noopener">Seu Dinheiro</a><span class="rg">Brasil</span></li><li><a href="https://www.infomoney.com.br/mercados/klabin-klbn11-analise-resultados-terceiro-trimestre-2026-desempenho-acoes/" target="_blank" rel="noopener">InfoMoney</a><span class="rg">Brasil</span></li></ul></div>
+    <div class="att">Nível de atenção: <span class="pill lo">Baixa</span></div>
+  </div>
+</article>
+<article class="card" id="br15">
+  <div class="meta-top"><span class="num">15</span><span class="tk">GGRC11</span></div>
+  <h3><a href="https://fiis.com.br/noticias/ggrc11-anuncia-dividendos-para-novembro-com-yield-de-118-veja-valor/" target="_blank" rel="noopener">GGRC11 anuncia dividendos para novembro com yield de 1,18%; veja valor</a></h3>
+  <div class="meta">🕒 03–10/11/2026 (fora da janela de 24h) &nbsp;·&nbsp; 📰 Fonte principal: <strong>FIIs.com.br</strong></div>
+  <p class="sum">O GGRC11 anunciou rendimento de R$ 0,10 por cota, com data-base em 03/11 e pagamento em 10/11/2026. O yield mensal foi de cerca de 1,18% sobre a cota de fechamento de outubro, de R$ 8,48. O fundo também trata da venda de dez imóveis, com lucro estimado de R$ 75 milhões segundo outra fonte. Não foi encontrada notícia nova de 11-12/11.</p>
+  <div class="box y">
+    <div class="bt">📌 Por que isso é importante?</div>
+    <ul>
+      <li><b>Visão dos analistas:</b> Nenhuma.</li>
+      <li><b>Fundamentos:</b> Rendimento R$ 0,10/cota; cota R$ 8,48 (fim de outubro).</li>
+      <li><b>Impacto no negócio:</b> Venda de portfolio de imóveis logisticos/industriais em andamento.</li>
+      <li><b>Impacto na ação:</b> Não confirmado.</li>
+    </ul>
+  </div>
+  <div class="box g">
+    <div class="bt">🌍 Análise de Cobertura Global</div>
+    <div class="regs"><span class="reg off">✗ 🇨🇳 China</span> <span class="reg off">✗ 🇺🇸 EUA</span> <span class="reg off">✗ 🇪🇺 Europa</span> <span class="reg on">✓ 🇧🇷 Brasil</span></div>
+    <div class="ol"><b>Veículos que noticiaram:</b><ul><li><a href="https://fiis.com.br/noticias/ggrc11-anuncia-dividendos-para-novembro-com-yield-de-118-veja-valor/" target="_blank" rel="noopener">FIIs.com.br</a><span class="rg">Brasil</span></li><li><a href="https://fiis.com.br/noticias/fundo-imobiliario-ggrc11-dividendos-novembro-2026-carteira-imoveis/" target="_blank" rel="noopener">FIIs.com.br</a><span class="rg">Brasil</span></li><li><a href="https://www.clubefii.com.br/fundos-imobiliarios/61818/tabela-de-dividendos" target="_blank" rel="noopener">Clube FII</a><span class="rg">Brasil</span></li></ul></div>
+    <div class="att">Nível de atenção: <span class="pill lo">Baixa</span></div>
+  </div>
+</article></section>
+<section class="sec"><h2>3. Ações Internacionais — 15 notícias</h2><p class="lead">ETFs, cripto e ações internacionais monitoradas.</p>
+<nav class="toc"><a href="#in1"><span>01</span> SMH, QQQ</a><a href="#in2"><span>02</span> QQQ, SMH</a><a href="#in3"><span>03</span> SGOV, QQQ, BTC</a><a href="#in4"><span>04</span> SGOV, BTC</a><a href="#in5"><span>05</span> BTC</a><a href="#in6"><span>06</span> BTC</a><a href="#in7"><span>07</span> BABA, MCHI</a><a href="#in8"><span>08</span> BABA</a><a href="#in9"><span>09</span> BABA, MCHI</a><a href="#in10"><span>10</span> MCHI</a><a href="#in11"><span>11</span> MCHI, SMH</a><a href="#in12"><span>12</span> SMH</a><a href="#in13"><span>13</span> OHI</a><a href="#in14"><span>14</span> VYM</a><a href="#in15"><span>15</span> VYMI</a></nav>
+<article class="card" id="in1">
+  <div class="meta-top"><span class="num">01</span><span class="tk">SMH, QQQ</span></div>
+  <h3><a href="https://www.cbsnews.com/news/nvidia-stock-dives-report-board-prepares-oust-jensen-huang/" target="_blank" rel="noopener">Conselho da Nvidia avalia afastar Jensen Huang; ação cai cerca de 8% no after-market</a></h3>
+  <div class="meta">🕒 11/11/2026 &nbsp;·&nbsp; 📰 Fonte principal: <strong>CBS News</strong></div>
+  <p class="sum">Na noite de quarta-feira (11/11), a Nvidia despencou no after-market após reportagens de que o conselho avalia destituir o CEO Jensen Huang. O WSJ informou que conselheiros se preparavam para removê-lo e o New York Times relatou um segundo caso extraconjugal de Huang, desta vez com uma executiva subordinada a ele. A ação foi a cerca de US$ 159,51, queda superior a 8% ante o fechamento regular de US$ 173,73. As quedas reportadas variam conforme a fonte: perto de 7% às 19h ET, segundo a Axios, e 8,6% em outros relatos. A empresa já tinha aberto uma investigação independente em 8/11 e, desde então, perdeu mais de US$ 450 bilhões em valor de mercado. O FT descreve a reunião como uma discussão sobre o futuro de Huang, sem decisão anunciada.</p>
+  <div class="box y">
+    <div class="bt">📌 Por que isso é importante?</div>
+    <ul>
+      <li><b>Visão dos analistas:</b> Segundo a Investing.com Brasil, analistas da Yorkville Ives estimam que a Nvidia poderia perder um quarto do valor de mercado se Huang sair. Há relatos de que não existe sucessor óbvio. Não encontrei rebaixamentos formais de rating.</li>
+      <li><b>Fundamentos:</b> O balanço trimestral está marcado para 17/11. Segundo o InfoMoney, Huang precisa responder a questionamentos de parlamentares americanos até 18/11.</li>
+      <li><b>Impacto no negócio:</b> Há risco de governança e de sucessão na maior empresa do SMH e uma das maiores do QQQ. O caso também tem dimensão geopolítica, pela suposta ligação de uma das relações com a inteligência chinesa.</li>
+      <li><b>Impacto na ação:</b> NVDA: fechamento regular de US$ 173,73 em 11/11 e cerca de US$ 159,51 no after-market (-8% ou mais). Na terça-feira (10/11) já tinha caído cerca de 5,8%, para US$ 168,37.</li>
+    </ul>
+  </div>
+  <div class="box g">
+    <div class="bt">🌍 Análise de Cobertura Global</div>
+    <div class="regs"><span class="reg off">✗ 🇨🇳 China</span> <span class="reg on">✓ 🇺🇸 EUA</span> <span class="reg off">✗ 🇪🇺 Europa</span> <span class="reg on">✓ 🇧🇷 Brasil</span></div>
+    <div class="ol"><b>Veículos que noticiaram:</b><ul><li><a href="https://www.cbsnews.com/news/nvidia-stock-dives-report-board-prepares-oust-jensen-huang/" target="_blank" rel="noopener">CBS News</a><span class="rg">EUA</span></li><li><a href="https://www.axios.com/2026/11/11/nvidia-jensen-huang-affair-shares" target="_blank" rel="noopener">Axios</a><span class="rg">EUA</span></li><li><a href="https://www.aljazeera.com/economy/2026/11/12/nvidia-shares-plunge-amid-reports-board-to-discuss-ceo-huangs-future" target="_blank" rel="noopener">Al Jazeera</a><span class="rg">Internacional</span></li><li><a href="https://finance.yahoo.com/markets/stocks/articles/nvidias-stock-dives-board-weighs-234215054.html" target="_blank" rel="noopener">Yahoo Finance</a><span class="rg">EUA</span></li><li><a href="https://www.infomoney.com.br/mercados/nvidia-se-prepara-para-destituir-ceo-jensen-huang-diz-wsj-acao-desaba-8/" target="_blank" rel="noopener">InfoMoney</a><span class="rg">Brasil</span></li><li><a href="https://br.investing.com/news/economy-news/nvidia-pode-demitir-jensen-huang-alibaba-despenca--o-que-move-os-mercados-2124685" target="_blank" rel="noopener">Investing.com Brasil</a><span class="rg">Brasil</span></li></ul></div>
+    <div class="att">Nível de atenção: <span class="pill hi">Alta</span></div>
+  </div>
+</article>
+<article class="card" id="in2">
+  <div class="meta-top"><span class="num">02</span><span class="tk">QQQ, SMH</span></div>
+  <h3><a href="https://www.cnbc.com/2026/11/11/stock-market-today-live-updates.html" target="_blank" rel="noopener">Nasdaq-100 sobe 2,28% em 11/11 com CoreWeave reacendendo a tese de IA, antes da virada da Nvidia</a></h3>
+  <div class="meta">🕒 11/11/2026 &nbsp;·&nbsp; 📰 Fonte principal: <strong>CNBC</strong></div>
+  <p class="sum">Wall Street teve uma forte alta na quarta-feira (11/11), com os fabricantes de chips na liderança depois de o resultado da CoreWeave aliviar o temor sobre gastos com IA. Segundo a Saxo, o S&amp;P 500 fechou a 7.619,38 (+1,31%) e o Nasdaq 100 a 28.374,25 (+2,28%). A CoreWeave subiu 24,7% e a Nvidia, 2,87% no pregão regular. O Dow avançou 0,49%, segundo a Trading Economics. Na pré-abertura de 12/11, os futuros do Nasdaq-100 caíam cerca de 0,7% após a queda da Nvidia no after-market.</p>
+  <div class="box y">
+    <div class="bt">📌 Por que isso é importante?</div>
+    <ul>
+      <li><b>Visão dos analistas:</b> A Saxo relaciona a queda do after-market às notícias sobre o conselho da Nvidia. Não há alterações de recomendação de bancos associadas a esta notícia.</li>
+      <li><b>Fundamentos:</b> Os papéis de IA se recuperaram com a meta de rentabilidade da CoreWeave. O mercado continua precificando uma alta de juros do Fed em 9/12.</li>
+      <li><b>Impacto no negócio:</b> A alta do dia e a queda posterior mostram a dependência do QQQ e do SMH em relação ao noticiário da Nvidia e ao ciclo de capex de IA.</li>
+      <li><b>Impacto na ação:</b> Nasdaq 100: 28.374,25 (+2,28%) em 11/11. S&amp;P 500: 7.619,38 (+1,31%). Futuros do Nasdaq-100: cerca de -0,7% na pré-abertura de 12/11.</li>
+    </ul>
+  </div>
+  <div class="box g">
+    <div class="bt">🌍 Análise de Cobertura Global</div>
+    <div class="regs"><span class="reg off">✗ 🇨🇳 China</span> <span class="reg on">✓ 🇺🇸 EUA</span> <span class="reg on">✓ 🇪🇺 Europa</span> <span class="reg on">✓ 🇧🇷 Brasil</span></div>
+    <div class="ol"><b>Veículos que noticiaram:</b><ul><li><a href="https://www.cnbc.com/2026/11/11/stock-market-today-live-updates.html" target="_blank" rel="noopener">CNBC</a><span class="rg">EUA</span></li><li><a href="https://www.home.saxo/en-sg/content/articles/options/volatility-drains-then-nvidia-slips-after-hours---options-brief---12-november-2026-12112026" target="_blank" rel="noopener">Saxo</a><span class="rg">Europa</span></li><li><a href="https://tradingeconomics.com/united-states/stock-market" target="_blank" rel="noopener">Trading Economics</a><span class="rg">EUA</span></li><li><a href="https://www.infomoney.com.br/mercados/nasdaq-futuro-recua-pressionado-pela-forte-queda-das-acoes-da-nvidia/" target="_blank" rel="noopener">InfoMoney</a><span class="rg">Brasil</span></li></ul></div>
+    <div class="att">Nível de atenção: <span class="pill hi">Alta</span></div>
+  </div>
+</article>
+<article class="card" id="in3">
+  <div class="meta-top"><span class="num">03</span><span class="tk">SGOV, QQQ, BTC</span></div>
+  <h3><a href="https://www.cnbc.com/2026/11/10/us-bonds-treasurys-yields.html" target="_blank" rel="noopener">CPI de outubro vem acima do esperado e Treasury de 10 anos volta a 5%; mercado precifica alta do Fed em dezembro</a></h3>
+  <div class="meta">🕒 10/11/2026 &nbsp;·&nbsp; 📰 Fonte principal: <strong>CNBC</strong></div>
+  <p class="sum">O CPI de outubro subiu 0,4% no mês, acima da projeção de 0,3%, mas abaixo do avanço de 0,6% de setembro. O núcleo subiu 0,3%, contra 0,2% esperado. O rendimento do Treasury de 10 anos voltou à faixa de 5% (5,021% em um dos registros), e o de 2 anos subiu cerca de 18 pontos-base, para perto de 4,74%, a maior alta diária desde abril de 2025. Pelo CME FedWatch, citado por uma das reportagens, o mercado vê 91% de chance de alta de 25 pb e 9% de alta de 50 pb em dezembro. Outros relatos falam em 100% de chance de alguma alta.</p>
+  <div class="box y">
+    <div class="bt">📌 Por que isso é importante?</div>
+    <ul>
+      <li><b>Visão dos analistas:</b> O governador do Fed Christopher Waller disse que se inclina por uma alta de 25 pb em dezembro e que 50 pb deveriam ser considerados se o núcleo ficasse em 0,3% ou mais, patamar que foi atingido. Não encontrei bancos nomeados nos resultados.</li>
+      <li><b>Fundamentos:</b> Para o SGOV, juros mais altos de T-bills elevam o rendimento corrente do fundo. Há divergência entre as fontes sobre a faixa atual dos Fed funds, que precisa ser checada.</li>
+      <li><b>Impacto no negócio:</b> Um choque de juros pesa nos ativos de duration longa (tecnologia, REITs como OHI) e nos ativos de risco como o bitcoin, e favorece os T-bills.</li>
+      <li><b>Impacto na ação:</b> Treasury de 10 anos a cerca de 5,02% em 10/11 e 4,99% em 11/11 (Saxo); 2 anos a cerca de 4,74% em 10/11 e 4,77% em 11/11.</li>
+    </ul>
+  </div>
+  <div class="box g">
+    <div class="bt">🌍 Análise de Cobertura Global</div>
+    <div class="regs"><span class="reg on">✓ 🇨🇳 China</span> <span class="reg on">✓ 🇺🇸 EUA</span> <span class="reg off">✗ 🇪🇺 Europa</span> <span class="reg off">✗ 🇧🇷 Brasil</span></div>
+    <div class="ol"><b>Veículos que noticiaram:</b><ul><li><a href="https://www.cnbc.com/2026/11/10/us-bonds-treasurys-yields.html" target="_blank" rel="noopener">CNBC</a><span class="rg">EUA</span></li><li><a href="https://www.axios.com/2026/11/10/federal-reserve-rate-hikes" target="_blank" rel="noopener">Axios</a><span class="rg">EUA</span></li><li><a href="https://www.theglobeandmail.com/investing/article-us-yields-jump-after-hotter-than-expected-inflation-data/" target="_blank" rel="noopener">The Globe and Mail (Reuters)</a><span class="rg">EUA</span></li><li><a href="https://finance.yahoo.com/markets/live/stock-market-today-tuesday-november-10-dow-sp-500-nasdaq-inflation-data-cpi-090627830.html" target="_blank" rel="noopener">Yahoo Finance</a><span class="rg">EUA</span></li><li><a href="https://en.sedaily.com/economy/2026/11/12/us-cpi-fuels-talk-of-half-point-fed-hike-as-treasury-yields" target="_blank" rel="noopener">Seoul Economic Daily</a><span class="rg">China</span></li></ul></div>
+    <div class="att">Nível de atenção: <span class="pill hi">Alta</span></div>
+  </div>
+</article>
+<article class="card" id="in4">
+  <div class="meta-top"><span class="num">04</span><span class="tk">SGOV, BTC</span></div>
+  <h3><a href="https://www.bls.gov/ppi/" target="_blank" rel="noopener">PPI de outubro sai na sexta (13/11); consenso projeta a maior alta anual desde 2022</a></h3>
+  <div class="meta">🕒 12/11/2026 &nbsp;·&nbsp; 📰 Fonte principal: <strong>U.S. Bureau of Labor Statistics</strong></div>
+  <p class="sum">O BLS divulga o índice de preços ao produtor (PPI) de outubro na sexta-feira, 13/11, às 8h30 (ET). Em setembro, a demanda final subiu 1,3% no mês e 6,3% em 12 meses. Segundo a Stocktitan, o consenso Dow Jones prevê alta anual de 6,6% em outubro. Depois do CPI acima do esperado, o dado pode confirmar ou enfraquecer as apostas de alta de 50 pb do Fed em dezembro.</p>
+  <div class="box y">
+    <div class="bt">📌 Por que isso é importante?</div>
+    <ul>
+      <li><b>Visão dos analistas:</b> O consenso Dow Jones é de +6,6% a/a, segundo a Stocktitan. Análises de cripto citam o PPI como o próximo vetor para o bitcoin.</li>
+      <li><b>Fundamentos:</b> A inflação ao produtor é elevada (6,3% a/a em setembro), o que pressiona os juros curtos.</li>
+      <li><b>Impacto no negócio:</b> O dado é importante para as taxas dos T-bills (SGOV) e para o apetite a risco.</li>
+      <li><b>Impacto na ação:</b> Ainda não aplicável; o evento é futuro.</li>
+    </ul>
+  </div>
+  <div class="box g">
+    <div class="bt">🌍 Análise de Cobertura Global</div>
+    <div class="regs"><span class="reg off">✗ 🇨🇳 China</span> <span class="reg on">✓ 🇺🇸 EUA</span> <span class="reg on">✓ 🇪🇺 Europa</span> <span class="reg off">✗ 🇧🇷 Brasil</span></div>
+    <div class="ol"><b>Veículos que noticiaram:</b><ul><li><a href="https://www.bls.gov/ppi/" target="_blank" rel="noopener">BLS</a><span class="rg">EUA</span></li><li><a href="https://www.investing.com/economic-calendar/ppi-734" target="_blank" rel="noopener">Investing.com</a><span class="rg">EUA</span></li><li><a href="https://financefeeds.com/bitcoin-price-etf-outflows-five-sessions-ppi/" target="_blank" rel="noopener">FinanceFeeds</a><span class="rg">Europa</span></li></ul></div>
+    <div class="att">Nível de atenção: <span class="pill md">Média</span></div>
+  </div>
+</article>
+<article class="card" id="in5">
+  <div class="meta-top"><span class="num">05</span><span class="tk">BTC</span></div>
+  <h3><a href="https://www.forbes.com/sites/digital-assets/2026/11/10/bitcoin-falls-below-73000-to-reach-lowest-since-august/" target="_blank" rel="noopener">Bitcoin perde os US$ 73 mil, menor nível desde agosto, com a inflação reacendendo o medo de alta do Fed</a></h3>
+  <div class="meta">🕒 10/11/2026 &nbsp;·&nbsp; 📰 Fonte principal: <strong>Forbes</strong></div>
+  <p class="sum">O bitcoin caiu abaixo de US$ 73 mil pela primeira vez em quase três meses, o menor nível desde cerca de 21 de agosto, segundo a Forbes. Os gatilhos citados são o CPI acima do esperado, a venda generalizada em ações de IA e um relatório de emprego forte, com 165 mil vagas contra cerca de 59 mil esperadas. Pelo CoinMarketCap, o BTC estava em US$ 72.832,83 às 20h50 (horário da Coreia) de 12/11, queda de 1,49% em 24 horas. Outra cotação de 12/11 mostrava US$ 73.344,71 (-0,4%).</p>
+  <div class="box y">
+    <div class="bt">📌 Por que isso é importante?</div>
+    <ul>
+      <li><b>Visão dos analistas:</b> Uma análise do crypto.news aponta risco de queda a US$ 65 mil após o rompimento de um canal de baixa. Segundo relatos, a Glassnode vê demanda fraca e US$ 75.600 como nível de recuperação. Os suportes citados são US$ 72 mil e US$ 70 mil.</li>
+      <li><b>Fundamentos:</b> Juros reais mais altos e resgates em ETFs reduzem a demanda marginal pelo ativo.</li>
+      <li><b>Impacto no negócio:</b> O BTC está se comportando como ativo de risco correlacionado ao Nasdaq e à expectativa de juros.</li>
+      <li><b>Impacto na ação:</b> Cerca de US$ 72,8 mil a US$ 73,3 mil em 12/11 (-0,4% a -1,5% em 24 horas), mínima desde agosto.</li>
+    </ul>
+  </div>
+  <div class="box g">
+    <div class="bt">🌍 Análise de Cobertura Global</div>
+    <div class="regs"><span class="reg on">✓ 🇨🇳 China</span> <span class="reg on">✓ 🇺🇸 EUA</span> <span class="reg off">✗ 🇪🇺 Europa</span> <span class="reg off">✗ 🇧🇷 Brasil</span></div>
+    <div class="ol"><b>Veículos que noticiaram:</b><ul><li><a href="https://www.forbes.com/sites/digital-assets/2026/11/10/bitcoin-falls-below-73000-to-reach-lowest-since-august/" target="_blank" rel="noopener">Forbes</a><span class="rg">EUA</span></li><li><a href="https://crypto.news/bitcoin-price-slides-near-73k-as-analyst-flags-65k/" target="_blank" rel="noopener">crypto.news</a><span class="rg">EUA</span></li><li><a href="https://cryptobriefing.com/bitcoin-falls-below-73k-solana-hits-3-month-low-amid-crypto-sell-off/" target="_blank" rel="noopener">Crypto Briefing</a><span class="rg">EUA</span></li><li><a href="https://en.bloomingbit.io/feed/news/124285" target="_blank" rel="noopener">Bloomingbit</a><span class="rg">China</span></li></ul></div>
+    <div class="att">Nível de atenção: <span class="pill hi">Alta</span></div>
+  </div>
+</article>
+<article class="card" id="in6">
+  <div class="meta-top"><span class="num">06</span><span class="tk">BTC</span></div>
+  <h3><a href="https://www.fxempire.com/forecasts/article/gold-vs-bitcoin-bitcoin-slips-as-etf-outflows-jump-1644068" target="_blank" rel="noopener">ETFs de bitcoin à vista têm o 5º dia seguido de resgates; IBIT lidera saída de US$ 299,8 milhões em 11/11</a></h3>
+  <div class="meta">🕒 12/11/2026 &nbsp;·&nbsp; 📰 Fonte principal: <strong>FXEmpire</strong></div>
+  <p class="sum">Os ETFs de bitcoin à vista nos EUA tiveram resgates líquidos de US$ 299,8 milhões na quarta-feira (11/11), segundo dados da Farside citados pela FXEmpire. O IBIT, da BlackRock, respondeu por US$ 269,73 milhões dessa saída. São cinco pregões seguidos de saídas, que somam cerca de US$ 1,44 bilhão desde 5/11. Na semana até 6/11, os fundos já tinham perdido US$ 1,28 bilhão, o pior resultado semanal desde junho, e o saldo de 2026 ficou negativo (cerca de US$ 405,6 milhões), segundo o The Block.</p>
+  <div class="box y">
+    <div class="bt">📌 Por que isso é importante?</div>
+    <ul>
+      <li><b>Visão dos analistas:</b> Os números variam entre os provedores: a SoSoValue registra cerca de US$ 95 milhões de saída na terça-feira. Ainda não saíram números de fluxo para 12/11.</li>
+      <li><b>Fundamentos:</b> Os fluxos de ETFs viraram negativos no acumulado do ano, o que tira um dos principais pilares de demanda.</li>
+      <li><b>Impacto no negócio:</b> Os resgates institucionais coincidem com a rotação para defensivos e com a alta dos juros.</li>
+      <li><b>Impacto na ação:</b> BTC perto de US$ 73 mil em 12/11.</li>
+    </ul>
+  </div>
+  <div class="box g">
+    <div class="bt">🌍 Análise de Cobertura Global</div>
+    <div class="regs"><span class="reg off">✗ 🇨🇳 China</span> <span class="reg on">✓ 🇺🇸 EUA</span> <span class="reg on">✓ 🇪🇺 Europa</span> <span class="reg off">✗ 🇧🇷 Brasil</span></div>
+    <div class="ol"><b>Veículos que noticiaram:</b><ul><li><a href="https://www.fxempire.com/forecasts/article/gold-vs-bitcoin-bitcoin-slips-as-etf-outflows-jump-1644068" target="_blank" rel="noopener">FXEmpire</a><span class="rg">EUA</span></li><li><a href="https://crypto.news/blackrock-leads-300-million-bitcoin-etf-outflows-as-btc-struggles-near-73k/" target="_blank" rel="noopener">crypto.news</a><span class="rg">EUA</span></li><li><a href="https://theblock.co/news/markets/2026-11-07-bitcoin-etfs-flip-negative-for-2026-after-1-28-billion-outflow-week-worst-since-june-435984" target="_blank" rel="noopener">The Block</a><span class="rg">EUA</span></li><li><a href="https://financefeeds.com/bitcoin-price-etf-outflows-five-sessions-ppi/" target="_blank" rel="noopener">FinanceFeeds</a><span class="rg">Europa</span></li></ul></div>
+    <div class="att">Nível de atenção: <span class="pill md">Média</span></div>
+  </div>
+</article>
+<article class="card" id="in7">
+  <div class="meta-top"><span class="num">07</span><span class="tk">BABA, MCHI</span></div>
+  <h3><a href="https://www.bloomberg.com/news/articles/2026-11-12/alibaba-shares-drop-7-as-nvidia-saga-triggers-chip-access-fears" target="_blank" rel="noopener">Alibaba despenca até 7,3% em Hong Kong com relato de que os EUA vão barrar o acesso remoto chinês a chips de IA no exterior</a></h3>
+  <div class="meta">🕒 12/11/2026 &nbsp;·&nbsp; 📰 Fonte principal: <strong>Bloomberg</strong></div>
+  <p class="sum">A ação da Alibaba em Hong Kong caiu até 7,3% nesta quinta-feira (12/11) e fechou em baixa de cerca de 6,8%, a HK$ 93,80. O gatilho foi uma reportagem do The Information segundo a qual o Departamento de Comércio dos EUA prepara regras que impedem empresas chinesas de IA de acessar remotamente chips avançados em data centers no exterior. A medida pode ser anunciada ainda este mês e estenderia os controles a mais sete países, entre eles Malásia, Singapura e Tailândia. A Bloomberg liga o caso ao aluguel de chips Nvidia via Megaspeed International, de Singapura. A Tencent caiu cerca de 2,6% e o índice Hang Seng Tech, 2,36%.</p>
+  <div class="box y">
+    <div class="bt">📌 Por que isso é importante?</div>
+    <ul>
+      <li><b>Visão dos analistas:</b> Julia Pan, analista da UOB Kay Hian, disse que as empresas chinesas de nuvem acumularam estoques de chips desde o início de 2026. Analistas também citam a incerteza sobre o plano de cisão da subsidiária de chips T-Head e sobre o balanço de 19/11.</li>
+      <li><b>Fundamentos:</b> Alibaba, Tencent e ByteDance têm contratos de capacidade offshore com acesso a GPUs Nvidia de ponta para treinar modelos. A regra ainda não é final.</li>
+      <li><b>Impacto no negócio:</b> A medida ameaça o crescimento da Alibaba Cloud, que depende de capacidade de GPU, e o treinamento dos modelos Qwen. Também reforça a aposta em chips próprios (T-Head).</li>
+      <li><b>Impacto na ação:</b> Alibaba (9988.HK): HK$ 93,80 (-6,8%) em 12/11. BABA (NYSE) fechou a US$ 101,52 em 11/11 (dado do briefing, não verificado), e a pré-abertura deve refletir a queda.</li>
+    </ul>
+  </div>
+  <div class="box g">
+    <div class="bt">🌍 Análise de Cobertura Global</div>
+    <div class="regs"><span class="reg on">✓ 🇨🇳 China</span> <span class="reg on">✓ 🇺🇸 EUA</span> <span class="reg off">✗ 🇪🇺 Europa</span> <span class="reg on">✓ 🇧🇷 Brasil</span></div>
+    <div class="ol"><b>Veículos que noticiaram:</b><ul><li><a href="https://www.bloomberg.com/news/articles/2026-11-12/alibaba-shares-drop-7-as-nvidia-saga-triggers-chip-access-fears" target="_blank" rel="noopener">Bloomberg</a><span class="rg">EUA</span></li><li><a href="https://finance.yahoo.com/technology/ai/articles/alibaba-tencent-shares-fall-report-054436336.html" target="_blank" rel="noopener">Yahoo Finance (Reuters)</a><span class="rg">EUA</span></li><li><a href="https://www.investing.com/news/stock-market-news/why-is-alibaba-stock-sliding-today-93CH-5020456" target="_blank" rel="noopener">Investing.com</a><span class="rg">EUA</span></li><li><a href="https://thestandard.com.hk/finance/article/348274/Hang-Seng-falls-223-points-by-midday-Alibaba-dips-nearly-5-percent" target="_blank" rel="noopener">The Standard (HK)</a><span class="rg">China</span></li><li><a href="https://br.investing.com/news/economy-news/nvidia-pode-demitir-jensen-huang-alibaba-despenca--o-que-move-os-mercados-2124685" target="_blank" rel="noopener">Investing.com Brasil</a><span class="rg">Brasil</span></li></ul></div>
+    <div class="att">Nível de atenção: <span class="pill hi">Alta</span></div>
+  </div>
+</article>
+<article class="card" id="in8">
+  <div class="meta-top"><span class="num">08</span><span class="tk">BABA</span></div>
+  <h3><a href="https://www.tipranks.com/news/why-is-alibaba-stock-baba-falling-in-premarket-ahead-of-november-19-earnings" target="_blank" rel="noopener">Prévia do balanço da Alibaba (19/11): analistas projetam crescimento de mais de 50% na nuvem; preço-alvo médio perto de US$ 184-191</a></h3>
+  <div class="meta">🕒 12/11/2026 &nbsp;·&nbsp; 📰 Fonte principal: <strong>TipRanks</strong></div>
+  <p class="sum">A Alibaba divulga o resultado do trimestre de setembro em 19/11. O Morgan Stanley espera alta de 55% a/a na receita externa de nuvem, contra 45% no trimestre anterior. O Citi projeta crescimento de 52% na nuvem, para RMB 60,5 bilhões, e elevou a estimativa de margem de 12% para 12,5%. O consenso varia entre as fontes: a TipRanks cita LPA de US$ 1,63 e receita de US$ 40,46 bilhões, e a Benzinga cita US$ 1,39 e US$ 40,35 bilhões.</p>
+  <div class="box y">
+    <div class="bt">📌 Por que isso é importante?</div>
+    <ul>
+      <li><b>Visão dos analistas:</b> Citi (Alicia Yap): Compra, alvo elevado de US$ 190 para US$ 193. Aletheia Capital: Compra, alvo de US$ 190. Bank of America (Joyce Ju): Compra, alvo de US$ 178 (cerca de 22x o lucro futuro, contra média de 13x em cinco anos). StoneX: Compra, alvo de US$ 220. Média da TipRanks: US$ 190,74 (potencial de 88%). Média da TIKR: US$ 184 entre 41 analistas (faixa de US$ 96 a US$ 222).</li>
+      <li><b>Fundamentos:</b> A demanda por aluguel de GPU sustenta a nuvem de IA (Aletheia). A ação está abaixo das médias de 20, 50 e 200 dias.</li>
+      <li><b>Impacto no negócio:</b> Nuvem/IA é o motor da tese, agora sob risco regulatório dos EUA (veja a notícia sobre acesso remoto a chips).</li>
+      <li><b>Impacto na ação:</b> Ação abaixo das médias móveis. O alvo médio implica alta de 69% a 88%, segundo as fontes.</li>
+    </ul>
+  </div>
+  <div class="box g">
+    <div class="bt">🌍 Análise de Cobertura Global</div>
+    <div class="regs"><span class="reg off">✗ 🇨🇳 China</span> <span class="reg on">✓ 🇺🇸 EUA</span> <span class="reg off">✗ 🇪🇺 Europa</span> <span class="reg off">✗ 🇧🇷 Brasil</span></div>
+    <div class="ol"><b>Veículos que noticiaram:</b><ul><li><a href="https://www.tipranks.com/news/why-is-alibaba-stock-baba-falling-in-premarket-ahead-of-november-19-earnings" target="_blank" rel="noopener">TipRanks</a><span class="rg">EUA</span></li><li><a href="https://finance.yahoo.com/markets/stocks/articles/alibaba-disappointed-why-bank-america-154435719.html" target="_blank" rel="noopener">Yahoo Finance (TIKR)</a><span class="rg">EUA</span></li><li><a href="https://ca.investing.com/news/stock-market-news/aletheia-capital-raises-alibaba-stock-price-target-on-ai-cloud-strength-93CH-4942317" target="_blank" rel="noopener">Investing.com</a><span class="rg">EUA</span></li><li><a href="https://www.benzinga.com/markets/tech/26/11/63174214/why-is-alibaba-stock-falling-thursday" target="_blank" rel="noopener">Benzinga</a><span class="rg">EUA</span></li></ul></div>
+    <div class="att">Nível de atenção: <span class="pill md">Média</span></div>
+  </div>
+</article>
+<article class="card" id="in9">
+  <div class="meta-top"><span class="num">09</span><span class="tk">BABA, MCHI</span></div>
+  <h3><a href="https://www.prnewswire.com/news-releases/syntun--2026-double-11-promotion-report-gmv-during-chinas-double-11-shopping-festival-reached-rmb-1-776-4-billion-approx-us264-4-billion-302937680.html" target="_blank" rel="noopener">Singles&#x27; Day: vendas do festival 11.11 sobem 4,8%, para RMB 1,78 trilhão, segundo a Syntun; Alibaba não divulga GMV</a></h3>
+  <div class="meta">🕒 12/11/2026 &nbsp;·&nbsp; 📰 Fonte principal: <strong>PR Newswire (Syntun) / Reuters</strong></div>
+  <p class="sum">Segundo a Syntun, o GMV do festival Double 11 (de 7/10 a 11/11) chegou a RMB 1.776,4 bilhões (cerca de US$ 264,4 bilhões), alta de 4,8% a/a, somando e-commerce, varejo instantâneo e compras comunitárias. Antes do evento, a Syntun previa alta de 4,4%, o menor ritmo desde 2023. No recorte de 7/10 a 31/10, o crescimento foi de apenas 2,4%. A Alibaba e a JD não divulgam mais o GMV total. No Tmall, 124 marcas passaram de RMB 100 milhões nas quatro primeiras horas, e as vendas de brinquedos com IA superaram RMB 100 milhões.</p>
+  <div class="box y">
+    <div class="bt">📌 Por que isso é importante?</div>
+    <ul>
+      <li><b>Visão dos analistas:</b> Não há analistas nomeados. A AP descreve consumidores &#x27;hesitantes&#x27;, e a mídia estatal (People&#x27;s Daily) destaca o consumo de serviços e os assistentes de IA.</li>
+      <li><b>Fundamentos:</b> Os eletrodomésticos lideram (15,7% das vendas), seguidos de celulares e eletrônicos (13,9%) e vestuário (13,5%). Os subsídios de troca do governo ainda sustentam as compras de maior valor.</li>
+      <li><b>Impacto no negócio:</b> O consumo chinês moderado limita o crescimento do comércio eletrônico (Taobao/Tmall) da Alibaba e o setor de consumo do MCHI.</li>
+      <li><b>Impacto na ação:</b> Não houve impacto isolado identificado. A ação foi dominada pelo noticiário sobre chips.</li>
+    </ul>
+  </div>
+  <div class="box g">
+    <div class="bt">🌍 Análise de Cobertura Global</div>
+    <div class="regs"><span class="reg on">✓ 🇨🇳 China</span> <span class="reg on">✓ 🇺🇸 EUA</span> <span class="reg off">✗ 🇪🇺 Europa</span> <span class="reg off">✗ 🇧🇷 Brasil</span></div>
+    <div class="ol"><b>Veículos que noticiaram:</b><ul><li><a href="https://www.prnewswire.com/news-releases/syntun--2026-double-11-promotion-report-gmv-during-chinas-double-11-shopping-festival-reached-rmb-1-776-4-billion-approx-us264-4-billion-302937680.html" target="_blank" rel="noopener">PR Newswire (Syntun)</a><span class="rg">China</span></li><li><a href="https://1027wbow.com/2026/11/12/chinas-singles-day-sales-rise-4-8-to-1-78-trillion-ai-takes-larger-role/" target="_blank" rel="noopener">Reuters (via 1027wbow)</a><span class="rg">EUA</span></li><li><a href="https://en.people.cn/n3/2026/1112/c90000-20518244.html" target="_blank" rel="noopener">People&#x27;s Daily Online</a><span class="rg">China</span></li><li><a href="https://www.nwaonline.com/news/2026/nov/12/chinas-singles-day-sees-hesitant-shoppers/" target="_blank" rel="noopener">AP (via NWA Online)</a><span class="rg">EUA</span></li></ul></div>
+    <div class="att">Nível de atenção: <span class="pill md">Média</span></div>
+  </div>
+</article>
+<article class="card" id="in10">
+  <div class="meta-top"><span class="num">10</span><span class="tk">MCHI</span></div>
+  <h3><a href="https://www.scmp.com/economy/china-economy/article/3374160/china-signals-focus-shift-policy-delivery-pboc-drops-stimulus-language" target="_blank" rel="noopener">PBoC promete mais apoio contracíclico, mas retira a menção a &#x27;políticas incrementais&#x27;; foco vai para a reunião de dezembro</a></h3>
+  <div class="meta">🕒 12/11/2026 &nbsp;·&nbsp; 📰 Fonte principal: <strong>South China Morning Post</strong></div>
+  <p class="sum">No relatório de política monetária do 3º trimestre, divulgado em 11/11, o Banco do Povo da China prometeu intensificar a ação contracíclica e o apoio à demanda doméstica, mantendo a política &#x27;adequadamente frouxa&#x27; e o custo de crédito baixo, segundo a Reuters. O banco descreveu um descompasso entre oferta forte e demanda fraca. O SCMP observa que o PBoC retirou a promessa anterior de novas políticas incrementais. Analistas leem isso como foco na execução das medidas já existentes, com a conferência econômica de dezembro vista como a próxima janela para estímulos.</p>
+  <div class="box y">
+    <div class="bt">📌 Por que isso é importante?</div>
+    <ul>
+      <li><b>Visão dos analistas:</b> Os analistas citados pelo SCMP veem dezembro como a janela para novos estímulos. Um comentário da Caixin (14/10) argumenta que estímulos ao consumo têm multiplicador baixo (0,2 a 0,4), contra cerca de 1 para o investimento público.</li>
+      <li><b>Fundamentos:</b> Os dados de crédito de outubro (TSF, novos empréstimos) e o CPI/PPI de outubro não foram localizados nos resultados de busca. As vendas no varejo subiram 2,6% a/a nos três primeiros trimestres de 2026 (Xinhua/People&#x27;s Daily).</li>
+      <li><b>Impacto no negócio:</b> Sem estímulo novo no curto prazo, o MCHI depende de lucros das empresas de internet e da relação EUA-China. A cúpula da APEC em Shenzhen será em 18 e 19/11.</li>
+      <li><b>Impacto na ação:</b> Hang Seng a -0,98% em 11/11 (24.315,92) e cerca de -1,26% em 12/11.</li>
+    </ul>
+  </div>
+  <div class="box g">
+    <div class="bt">🌍 Análise de Cobertura Global</div>
+    <div class="regs"><span class="reg on">✓ 🇨🇳 China</span> <span class="reg on">✓ 🇺🇸 EUA</span> <span class="reg off">✗ 🇪🇺 Europa</span> <span class="reg off">✗ 🇧🇷 Brasil</span></div>
+    <div class="ol"><b>Veículos que noticiaram:</b><ul><li><a href="https://www.scmp.com/economy/china-economy/article/3374160/china-signals-focus-shift-policy-delivery-pboc-drops-stimulus-language" target="_blank" rel="noopener">South China Morning Post</a><span class="rg">China</span></li><li><a href="https://www.investing.com/news/economy-news/chinas-central-bank-vows-to-step-up-policy-support-for-the-economy-5018404" target="_blank" rel="noopener">Investing.com (Reuters)</a><span class="rg">EUA</span></li><li><a href="https://www.caixinglobal.com/2026-10-14/commentary-why-consumption-stimulus-wont-close-chinas-demand-gap-102493415.html" target="_blank" rel="noopener">Caixin Global</a><span class="rg">China</span></li></ul></div>
+    <div class="att">Nível de atenção: <span class="pill md">Média</span></div>
+  </div>
+</article>
+<article class="card" id="in11">
+  <div class="meta-top"><span class="num">11</span><span class="tk">MCHI, SMH</span></div>
+  <h3><a href="https://www.thestandard.com.hk/finance/article/348184/Hang-Seng-closes-down-241-points-as-tech-and-EV-shares-weigh-SMIC-jumps-37" target="_blank" rel="noopener">Hang Seng cai 0,98% em 11/11 e 1,26% em 12/11; SMIC sobe 3,7% com a busca por substitutos a fornecedores estrangeiros</a></h3>
+  <div class="meta">🕒 11/11/2026 &nbsp;·&nbsp; 📰 Fonte principal: <strong>The Standard (Hong Kong)</strong></div>
+  <p class="sum">O índice Hang Seng fechou 11/11 a 24.315,92 pontos, queda de 241,12 pontos (-0,98%), puxado por internet, consumo e veículos elétricos. O Hang Seng Tech caiu 1,41%, com BYD -3,8% e Li Auto -3,4%. A SMIC foi a melhor blue chip (+3,7%), seguida de CATL (+2,5%) e Lenovo (+2,4%), e a Hua Hong subiu 2,46%. Em 12/11, o índice caiu cerca de 1,26%, com o setor de tecnologia pressionado pelo noticiário de chips, e o Link REIT liderou as altas com o resultado semestral.</p>
+  <div class="box y">
+    <div class="bt">📌 Por que isso é importante?</div>
+    <ul>
+      <li><b>Visão dos analistas:</b> A Trading Economics atribui a queda à realização de lucros, à fraqueza da tecnologia global e ao temor de juros mais altos nos EUA. A SMIC ganha com a demanda de projetistas chineses que buscam alternativas a fornecedores restritos.</li>
+      <li><b>Fundamentos:</b> A substituição doméstica de semicondutores ganha força com cada nova restrição americana.</li>
+      <li><b>Impacto no negócio:</b> No MCHI, a pressão é maior em internet e consumo, enquanto os fabricantes de chips locais têm desempenho relativo melhor.</li>
+      <li><b>Impacto na ação:</b> HSI 24.315,92 (-0,98%) em 11/11 e cerca de -1,26% em 12/11. SMIC +3,7% em 11/11.</li>
+    </ul>
+  </div>
+  <div class="box g">
+    <div class="bt">🌍 Análise de Cobertura Global</div>
+    <div class="regs"><span class="reg on">✓ 🇨🇳 China</span> <span class="reg on">✓ 🇺🇸 EUA</span> <span class="reg on">✓ 🇪🇺 Europa</span> <span class="reg off">✗ 🇧🇷 Brasil</span></div>
+    <div class="ol"><b>Veículos que noticiaram:</b><ul><li><a href="https://www.thestandard.com.hk/finance/article/348184/Hang-Seng-closes-down-241-points-as-tech-and-EV-shares-weigh-SMIC-jumps-37" target="_blank" rel="noopener">The Standard (HK)</a><span class="rg">China</span></li><li><a href="https://www.thestandard.com.hk/finance/article/348316/Hang-Seng-falls-126-as-tech-stocks-slide-Link-REIT-leads-gains-on-interim-results" target="_blank" rel="noopener">The Standard (HK) 12/11</a><span class="rg">China</span></li><li><a href="https://tradingeconomics.com/hong-kong/stock-market" target="_blank" rel="noopener">Trading Economics</a><span class="rg">EUA</span></li><li><a href="https://finimize.com/content/hong-kong-tech-stocks-slipped-on-fresh-us-chip-access-talk" target="_blank" rel="noopener">Finimize</a><span class="rg">Europa</span></li></ul></div>
+    <div class="att">Nível de atenção: <span class="pill md">Média</span></div>
+  </div>
+</article>
+<article class="card" id="in12">
+  <div class="meta-top"><span class="num">12</span><span class="tk">SMH</span></div>
+  <h3><a href="https://www.sec.gov/Archives/edgar/data/0001046179/000104617926000796/tsm-revenue20261110.htm" target="_blank" rel="noopener">TSMC tem receita recorde de NT$ 586,9 bilhões em outubro, alta de 59,7% a/a</a></h3>
+  <div class="meta">🕒 10/11/2026 &nbsp;·&nbsp; 📰 Fonte principal: <strong>TSMC / SEC Form 6-K</strong></div>
+  <p class="sum">A TSMC informou receita de cerca de NT$ 586,89 bilhões em outubro de 2026, alta de 14,7% sobre setembro e de 59,7% sobre outubro de 2025. O valor é recorde, acima do pico anterior de agosto (NT$ 514,81 bilhões) e da expectativa de NT$ 560-570 bilhões. Em 10 meses, a receita soma NT$ 4.485,62 bilhões (+43,3%). O mês corresponde a cerca de um terço da projeção do 4º trimestre (US$ 52,3-54,3 bilhões).</p>
+  <div class="box y">
+    <div class="bt">📌 Por que isso é importante?</div>
+    <ul>
+      <li><b>Visão dos analistas:</b> As fontes não trazem analistas nomeados. O resultado ficou acima do intervalo esperado de NT$ 560-570 bilhões, segundo a Hardware Busters.</li>
+      <li><b>Fundamentos:</b> A demanda por chips de IA segue forte, com a receita de outubro em cerca de US$ 17,9 bilhões.</li>
+      <li><b>Impacto no negócio:</b> A TSMC é a 2ª maior posição do SMH, e o dado contrasta com o risco de governança da Nvidia. O Taiex caiu cerca de 3% em 12/11 com o caso Nvidia, segundo relatos (fonte agregadora).</li>
+      <li><b>Impacto na ação:</b> Taiex com queda de cerca de 3% em 12/11, com a TSMC entre as maiores quedas (relato agregado, não confirmado).</li>
+    </ul>
+  </div>
+  <div class="box g">
+    <div class="bt">🌍 Análise de Cobertura Global</div>
+    <div class="regs"><span class="reg off">✗ 🇨🇳 China</span> <span class="reg on">✓ 🇺🇸 EUA</span> <span class="reg on">✓ 🇪🇺 Europa</span> <span class="reg off">✗ 🇧🇷 Brasil</span></div>
+    <div class="ol"><b>Veículos que noticiaram:</b><ul><li><a href="https://www.sec.gov/Archives/edgar/data/0001046179/000104617926000796/tsm-revenue20261110.htm" target="_blank" rel="noopener">SEC (6-K TSMC)</a><span class="rg">EUA</span></li><li><a href="https://www.tipranks.com/news/company-announcements/tsmc-reports-approximately-nt586-89-billion-october-revenue" target="_blank" rel="noopener">TipRanks</a><span class="rg">EUA</span></li><li><a href="https://hwbusters.com/news/tsmc-posts-record-nt586-9-billion-october-already-a-third-of-the-way-to-its-q4-target/" target="_blank" rel="noopener">Hardware Busters</a><span class="rg">Europa</span></li></ul></div>
+    <div class="att">Nível de atenção: <span class="pill md">Média</span></div>
+  </div>
+</article>
+<article class="card" id="in13">
+  <div class="meta-top"><span class="num">13</span><span class="tk">OHI</span></div>
+  <h3><a href="https://www.marketbeat.com/instant-alerts/analyst-omega-healthcare-investors-nyse-ohi-price-target-raised-to-5600-2026-11-11/" target="_blank" rel="noopener">UBS eleva o preço-alvo da Omega Healthcare de US$ 52 para US$ 56 e mantém Compra</a></h3>
+  <div class="meta">🕒 11/11/2026 &nbsp;·&nbsp; 📰 Fonte principal: <strong>MarketBeat</strong></div>
+  <p class="sum">O UBS elevou o preço-alvo da Omega Healthcare Investors de US$ 52 para US$ 56 em 11/11 e manteve recomendação de Compra. O movimento vem depois do resultado do 3º trimestre (3/11), quando o AFFO ajustado por ação superou as expectativas e a guidance de AFFO de 2026 foi elevada. No trimestre, a receita subiu para US$ 340,55 milhões, mas o lucro líquido caiu 53,8%, para US$ 83,09 milhões. O dividendo trimestral de US$ 0,68 (data-ex em 5/11) será pago em 16/11.</p>
+  <div class="box y">
+    <div class="bt">📌 Por que isso é importante?</div>
+    <ul>
+      <li><b>Visão dos analistas:</b> UBS: Compra, alvo de US$ 56 (antes US$ 52). Consenso MarketBeat: 7 Compra, 7 Manutenção e 2 Venda. A GuruFocus considera esticado o payout de 97%.</li>
+      <li><b>Fundamentos:</b> No trimestre até 30/9, a empresa comprou 17 imóveis por US$ 167,3 milhões e vendeu 31 por US$ 597,0 milhões em nove meses. Dividend yield de cerca de 5,5%.</li>
+      <li><b>Impacto no negócio:</b> REIT de casas de repouso (SNF) e assistência a idosos. Juros de 10 anos perto de 5% pressionam o valuation de REITs, mas a rotação para saúde e defensivos ajuda.</li>
+      <li><b>Impacto na ação:</b> US$ 48,19 (+0,42%) em 6/11, alta de 9,18% em um mês. Não encontrei cotação de 11/11.</li>
+    </ul>
+  </div>
+  <div class="box g">
+    <div class="bt">🌍 Análise de Cobertura Global</div>
+    <div class="regs"><span class="reg off">✗ 🇨🇳 China</span> <span class="reg on">✓ 🇺🇸 EUA</span> <span class="reg off">✗ 🇪🇺 Europa</span> <span class="reg off">✗ 🇧🇷 Brasil</span></div>
+    <div class="ol"><b>Veículos que noticiaram:</b><ul><li><a href="https://www.marketbeat.com/instant-alerts/analyst-omega-healthcare-investors-nyse-ohi-price-target-raised-to-5600-2026-11-11/" target="_blank" rel="noopener">MarketBeat</a><span class="rg">EUA</span></li><li><a href="https://www.thestockobserver.com/2026/11/11/omega-healthcare-investors-nyseohi-stock-price-expected-to-rise-ubs-group-analyst-says.html" target="_blank" rel="noopener">The Stock Observer</a><span class="rg">EUA</span></li><li><a href="https://www.gurufocus.com/news/9167125/omega-healthcare-investors-ohi-shares-rise-after-q3-earnings-beat-and-raised-guidance" target="_blank" rel="noopener">GuruFocus</a><span class="rg">EUA</span></li><li><a href="https://www.omegahealthcare.com/investors" target="_blank" rel="noopener">Omega Healthcare (IR)</a><span class="rg">EUA</span></li></ul></div>
+    <div class="att">Nível de atenção: <span class="pill lo">Baixa</span></div>
+  </div>
+</article>
+<article class="card" id="in14">
+  <div class="meta-top"><span class="num">14</span><span class="tk">VYM</span></div>
+  <h3><a href="https://www.cnbc.com/2026/11/11/tech-selloff-defensive-pivot.html" target="_blank" rel="noopener">Investidores migram para setores defensivos (saúde, consumo básico, utilities) com a volatilidade em tecnologia</a></h3>
+  <div class="meta">🕒 11/11/2026 &nbsp;·&nbsp; 📰 Fonte principal: <strong>CNBC</strong></div>
+  <p class="sum">Segundo a CNBC, os investidores estão migrando para setores defensivos como saúde, consumo básico e utilities diante da volatilidade renovada em tecnologia. O índice MSCI de TI dos EUA cai 11,5% desde outubro. Em 5/11, o Dow caiu 1.833 pontos (-3,44%), para 51.523,06, e o Nasdaq caiu 5,52% depois das eleições de meio de mandato. Um analista ouvido pela reportagem considera o movimento extremo: o Walmart negocia a 40x o lucro futuro, perto do recorde, e a Nvidia a 13x, perto da mínima.</p>
+  <div class="box y">
+    <div class="bt">📌 Por que isso é importante?</div>
+    <ul>
+      <li><b>Visão dos analistas:</b> Estrategistas recomendam consumo básico e energia, setores com fluxo de caixa estável e histórico de aumento de dividendos. A CNBC não nomeia banco específico no trecho obtido.</li>
+      <li><b>Fundamentos:</b> A rotação favorece os setores com peso alto no VYM (saúde, consumo básico, utilities, energia, financeiro).</li>
+      <li><b>Impacto no negócio:</b> O VYM tende a ter desempenho melhor que o QQQ em fases de rotação defensiva, mas sofre com o Treasury de 10 anos perto de 5%, que concorre com o dividend yield.</li>
+      <li><b>Impacto na ação:</b> Dow +0,49% em 11/11, segundo a Trading Economics. Não obtive cotação do VYM.</li>
+    </ul>
+  </div>
+  <div class="box g">
+    <div class="bt">🌍 Análise de Cobertura Global</div>
+    <div class="regs"><span class="reg off">✗ 🇨🇳 China</span> <span class="reg on">✓ 🇺🇸 EUA</span> <span class="reg off">✗ 🇪🇺 Europa</span> <span class="reg off">✗ 🇧🇷 Brasil</span></div>
+    <div class="ol"><b>Veículos que noticiaram:</b><ul><li><a href="https://www.cnbc.com/2026/11/11/tech-selloff-defensive-pivot.html" target="_blank" rel="noopener">CNBC</a><span class="rg">EUA</span></li><li><a href="https://www.foxbusiness.com/markets/stocks-nov-5-2026" target="_blank" rel="noopener">Fox Business</a><span class="rg">EUA</span></li><li><a href="https://www.morningstar.com/stocks/ai-stock-selloff-gains-steam-election-fallout-spreads" target="_blank" rel="noopener">Morningstar</a><span class="rg">EUA</span></li></ul></div>
+    <div class="att">Nível de atenção: <span class="pill md">Média</span></div>
+  </div>
+</article>
+<article class="card" id="in15">
+  <div class="meta-top"><span class="num">15</span><span class="tk">VYMI</span></div>
+  <h3><a href="https://www.marketscreener.com/news/europe-s-stoxx-600-near-record-high-as-siemens-energy-coreweave-outlooks-lift-sentiment-ce785edbda88f720" target="_blank" rel="noopener">STOXX 600 fecha em recorde (663,05) com Siemens Energy e o otimismo com IA; DAX sobe 1,2%</a></h3>
+  <div class="meta">🕒 11/11/2026 &nbsp;·&nbsp; 📰 Fonte principal: <strong>MarketScreener (Reuters)</strong></div>
+  <p class="sum">O pan-europeu STOXX 600 fechou 11/11 em recorde, a 663,05 pontos (+0,72%), perto da máxima intradiária de 663,41. A Siemens Energy subiu 10,8% após elevar a projeção de margem, e a meta de rentabilidade da CoreWeave reanimou os papéis de IA. O EURO STOXX 50 subiu 1,04%, para 6.393,39, e o DAX avançou 1,2%. Em 12/11, uma cotação da MarketScreener mostrava o STOXX 600 a 665,98.</p>
+  <div class="box y">
+    <div class="bt">📌 Por que isso é importante?</div>
+    <ul>
+      <li><b>Visão dos analistas:</b> A Société Générale avalia que o STOXX 600 já está perto da meta de risco de alta e vê espaço limitado até o fim do ano. Morningstar e BofA citam a vantagem dos mercados ex-EUA em 2026, liderada por emergentes, e Schwab cita os valuations e dividend yields mais atrativos fora dos EUA.</li>
+      <li><b>Fundamentos:</b> Os mercados desenvolvidos ex-EUA têm valuations menores e dividend yields maiores, a base do VYMI.</li>
+      <li><b>Impacto no negócio:</b> A Europa (financeiro, energia, indústria) tem peso relevante no VYMI. A máxima histórica sustenta o fundo, enquanto o Japão (Nikkei cerca de -0,7% em 12/11, relato agregado) e Hong Kong pesaram.</li>
+      <li><b>Impacto na ação:</b> STOXX 600: 663,05 (+0,72%) em 11/11, recorde de fechamento.</li>
+    </ul>
+  </div>
+  <div class="box g">
+    <div class="bt">🌍 Análise de Cobertura Global</div>
+    <div class="regs"><span class="reg off">✗ 🇨🇳 China</span> <span class="reg on">✓ 🇺🇸 EUA</span> <span class="reg on">✓ 🇪🇺 Europa</span> <span class="reg off">✗ 🇧🇷 Brasil</span></div>
+    <div class="ol"><b>Veículos que noticiaram:</b><ul><li><a href="https://www.marketscreener.com/news/europe-s-stoxx-600-near-record-high-as-siemens-energy-coreweave-outlooks-lift-sentiment-ce785edbda88f720" target="_blank" rel="noopener">MarketScreener (Reuters)</a><span class="rg">Europa</span></li><li><a href="https://www.aol.com/articles/europes-stoxx-600-near-record-081454000.html" target="_blank" rel="noopener">AOL (Reuters)</a><span class="rg">EUA</span></li><li><a href="https://www.morningstar.com/stocks/why-international-stocks-are-having-strong-year" target="_blank" rel="noopener">Morningstar</a><span class="rg">EUA</span></li></ul></div>
+    <div class="att">Nível de atenção: <span class="pill md">Média</span></div>
+  </div>
+</article></section>
+<section class="sec"><h2>4. Análise Final</h2><p class="lead">Resumo da situação de cada ativo monitorado, com a visão das casas de análise encontradas nas reportagens e o impacto esperado nos próximos resultados. Recomendações e preços-alvo são citados conforme publicados pelos veículos e podem ter sido revisados depois.</p>
+<h3 class="sub">Situação de cada ativo</h3><div class="an-grid"><div class="an">
+  <div class="an-h"><span class="tk">BBAS3</span><span class="an-n">Banco do Brasil</span>
+  <span class="pill hi">Negativo</span></div>
+  <p><b>Situação atual:</b> Lucro ajustado de R$ 1,27 bi no 3T26 (-66,5% a/a), contra consenso Bloomberg de ~R$ 3,09 bi; ROAE de 2,8% e inadimplência 90d de 6,08%, puxada pelo agronegócio. A ação caiu ~33% entre 23/10 e 05/11 e estava perto de R$ 17 antes do balanço.</p>
+  <p><b>Analistas:</b> XP fala em &#x27;decepção generalizada&#x27;; Bradesco BBI e Morgan Stanley veem a deterioração se espalhando; Genial em manter (alvo R$ 20,10, em revisão); BTG neutro (R$ 18); XP neutro (R$ 21); JPMorgan underweight.</p>
+  <p><b>Impacto previsto nos resultados:</b> Guidance de lucro 2026 cortado para R$ 9–11 bi (de R$ 18–22 bi), payout de 25% em 2026 e 2027 e dividendos intermediários de novembro cancelados. Revisões de LPA para baixo devem continuar; a reação de 12/11 é o primeiro teste.</p></div><div class="an">
+  <div class="an-h"><span class="tk">BBSE3</span><span class="an-n">BB Seguridade</span>
+  <span class="pill md">Neutro/Negativo</span></div>
+  <p><b>Situação atual:</b> 3T26 com lucro de R$ 2,43 bi (-5,1% a/a), 8% acima do consenso, mas de &#x27;baixa qualidade&#x27; (receita financeira e tributação). Ação caiu 7,45% em 04/11, a R$ 37,75.</p>
+  <p><b>Analistas:</b> Morgan Stanley, Itaú BBA e JPMorgan em venda; BTG neutro com alvo de R$ 40 e LPA de 2027 ~5% menor.</p>
+  <p><b>Impacto previsto nos resultados:</b> Prêmios da Brasilseg em queda (-19% a/a, rural -24%) e corte de payout do controlador pesam sobre a percepção de dividendos. Atenção à renovação do acordo de distribuição com o BB.</p></div><div class="an">
+  <div class="an-h"><span class="tk">ITSA4</span><span class="an-n">Itaúsa</span>
+  <span class="pill up">Positivo</span></div>
+  <p><b>Situação atual:</b> Lucro recorrente de R$ 5,06 bi (+25%) no 3T26, ROE de 21,1%; Itaú respondeu por R$ 4,69 bi e as não financeiras por R$ 593 mi (efeito contábil na NTS/Aegea). Desconto de holding de 17,9%.</p>
+  <p><b>Analistas:</b> Sem recomendação específica pós-balanço; para o Itaú, BTG e XP mantêm compra.</p>
+  <p><b>Impacto previsto nos resultados:</b> Resultado segue ancorado no Itaú (lucro de R$ 12,6 bi no 3T26). Próxima data-com de JCP em 30/11; dívida líquida subiu 29% para R$ 901 mi com aportes na Aegea.</p></div><div class="an">
+  <div class="an-h"><span class="tk">BRSR6</span><span class="an-n">Banrisul</span>
+  <span class="pill md">Cautela</span></div>
+  <p><b>Situação atual:</b> 3T26 não confirmado por veículo de primeira linha nesta edição. Em 2026 o banco vem com rentabilidade pressionada (1T26 R$ 221,6 mi; 2T26 R$ 325,4 mi) por provisões e inadimplência no RS.</p>
+  <p><b>Analistas:</b> BTG projetava lucro de ~R$ 160 mi e ROE de ~5,5% no 3T26; Genial vê lucro tendendo ao piso do guidance revisado.</p>
+  <p><b>Impacto previsto nos resultados:</b> Sem alíquota de imposto baixa no 2º semestre, o lucro de 2026 tende ao piso da faixa projetada.</p></div><div class="an">
+  <div class="an-h"><span class="tk">ABCB4</span><span class="an-n">ABC Brasil</span>
+  <span class="pill up">Neutro/Positivo</span></div>
+  <p><b>Situação atual:</b> Lucro recorrente de R$ 273,7 mi no 3T26 (+6,6%), ROAE de 15%, carteira de R$ 60,4 bi (+15,5%) e Basileia de 16,2%.</p>
+  <p><b>Analistas:</b> BTG neutro (alvo R$ 27); BB Investimentos compra (alvo R$ 30).</p>
+  <p><b>Impacto previsto nos resultados:</b> Foco em atacado/middle market protege do estresse do agro; crescimento de carteira acima dos pares sustenta lucro estável.</p></div><div class="an">
+  <div class="an-h"><span class="tk">BAZA3</span><span class="an-n">Banco da Amazônia</span>
+  <span class="pill md">Cautela</span></div>
+  <p><b>Situação atual:</b> Sem notícias na janela; 3T26 previsto para 13/11. O 1T26 teve lucro de R$ 47,5 mi (-84,5% a/a).</p>
+  <p><b>Analistas:</b> Sem cobertura de analistas encontrada.</p>
+  <p><b>Impacto previsto nos resultados:</b> Juros altos, câmbio e recuperações judiciais seguem pressionando; risco de contágio do tema agro visto no BB.</p></div><div class="an">
+  <div class="an-h"><span class="tk">IRBR3</span><span class="an-n">IRB Re</span>
+  <span class="pill up">Neutro/Positivo</span></div>
+  <p><b>Situação atual:</b> 3T26 sai em 12/11 após o fechamento (teleconferência em 13/11). 2T26 com lucro de R$ 157,5 mi, acima do consenso; agosto teve sinistralidade maior.</p>
+  <p><b>Analistas:</b> Genial projeta lucro de R$ 622 mi em 2026 (payout 25%, yield ~3,7%); Safra mantém compra.</p>
+  <p><b>Impacto previsto nos resultados:</b> Sinistralidade e efeitos da reforma tributária (CBS zero para resseguro a partir de 2027) são os pontos-chave do balanço.</p></div><div class="an">
+  <div class="an-h"><span class="tk">PETR4</span><span class="an-n">Petrobras</span>
+  <span class="pill md">Neutro</span></div>
+  <p><b>Situação atual:</b> Lucro de R$ 39,7 bi no 3T26 (+21,5% a/a), mas proventos de R$ 15,3 bi abaixo do esperado e capex 2026 elevado para até US$ 25,5 bi. PETR4 caiu 3,11% em 11/11, a R$ 43,55.</p>
+  <p><b>Analistas:</b> JPMorgan outperform (alvo R$ 58); Itaú BBA compra, com ressalva sobre capex; BTG &#x27;ligeiramente negativo&#x27; (yield 2027 de ~12% para ~11%); XP e Bradesco BBI cautelosos.</p>
+  <p><b>Impacto previsto nos resultados:</b> Plano Estratégico 2027-31 em 23/11 é o grande catalisador: capex estrutural mais alto reduziria dividendos futuros; Brent perto de US$ 91 sustenta a geração de caixa.</p></div><div class="an">
+  <div class="an-h"><span class="tk">VALE3</span><span class="an-n">Vale</span>
+  <span class="pill md">Neutro</span></div>
+  <p><b>Situação atual:</b> Caiu 0,57% em 11/11 (~R$ 64,5) com o minério em Dalian recuando a 683,5 iuanes/t; acumulava ~+9,5% em novembro até 09/11. 3T26 com lucro de US$ 1,255 bi (-53% a/a).</p>
+  <p><b>Analistas:</b> Itaú BBA rebaixou para neutro (alvo US$ 14) por fretes, custos e margens; Safra elevou para compra (alvo US$ 15,10).</p>
+  <p><b>Impacto previsto nos resultados:</b> Sem dividendo extraordinário em 2026 (foco em recompra); produção de minério no piso de 335–345 Mt e cobre na parte alta do guidance. Cortes de aço em Hebei limitam o preço do minério.</p></div><div class="an">
+  <div class="an-h"><span class="tk">CMIG4</span><span class="an-n">Cemig</span>
+  <span class="pill md">Neutro</span></div>
+  <p><b>Situação atual:</b> 3T26 sai em 12/11 após o fechamento; 2T26 teve lucro de R$ 945 mi (-20,4%) e alavancagem de ~2,6x. Já declarou ~R$ 0,52/ação em JCP em 2026.</p>
+  <p><b>Analistas:</b> Itaú BBA alerta para dividendos menores com capex de R$ 59 bi até 2029; Genial espera payout de ~50%.</p>
+  <p><b>Impacto previsto nos resultados:</b> Estimativas de terceiros apontam lucro de ~R$ 838 mi e Ebitda de ~R$ 1,92 bi; a mensagem sobre dividendos tende a pesar mais que o número.</p></div><div class="an">
+  <div class="an-h"><span class="tk">CPFE3</span><span class="an-n">CPFL Energia</span>
+  <span class="pill up">Positivo</span></div>
+  <p><b>Situação atual:</b> 3T26 em 12/11; teleconferência adiada para 16/11. 1S26 com lucro de R$ 3,34 bi (+19,5%); dívida líquida de ~R$ 32,5 bi.</p>
+  <p><b>Analistas:</b> Itaú BBA elevou preço-alvo (data não confirmada).</p>
+  <p><b>Impacto previsto nos resultados:</b> Distribuição com reajustes e transmissão com receita indexada sustentam crescimento; juros futuros são o principal risco ao valuation.</p></div><div class="an">
+  <div class="an-h"><span class="tk">SAPR4</span><span class="an-n">Sanepar</span>
+  <span class="pill md">Neutro</span></div>
+  <p><b>Situação atual:</b> 3T26 em 12/11 após o fechamento. No 2T26, prejuízo contábil de R$ 505,2 mi (reversão de precatório), mas lucro ajustado de R$ 447,5 mi (+35%).</p>
+  <p><b>Analistas:</b> BTG neutro, alvo R$ 41.</p>
+  <p><b>Impacto previsto nos resultados:</b> Primeiro trimestre com efeito integral do reajuste de 2,4993%; Ebitda ajustado deve seguir crescendo, com o regulatório como risco.</p></div><div class="an">
+  <div class="an-h"><span class="tk">ISAE4</span><span class="an-n">ISA Energia</span>
+  <span class="pill up">Neutro/Positivo</span></div>
+  <p><b>Situação atual:</b> 3T26 (04/11) com lucro regulatório de ~R$ 1,9 bi, inflado por ganho não caixa de ~R$ 1,94 bi na troca de ativos com a Axia; pró-forma de R$ 625 mi (+14%).</p>
+  <p><b>Analistas:</b> Genial destaca alavancagem de 3,5x.</p>
+  <p><b>Impacto previsto nos resultados:</b> Receita de transmissão indexada e entrada de novos projetos sustentam crescimento; alavancagem limita dividendos no curto prazo.</p></div><div class="an">
+  <div class="an-h"><span class="tk">TAEE3/TAEE4</span><span class="an-n">Taesa</span>
+  <span class="pill up">Neutro/Positivo</span></div>
+  <p><b>Situação atual:</b> 3T26 (11/11) com lucro regulatório de R$ 363,8 mi (+12,5%), Ebitda regulatório +25,2% e dividendos de R$ 1,06/unit (100% do lucro), data-base 16/11.</p>
+  <p><b>Analistas:</b> Sem visão de analistas publicada após o balanço.</p>
+  <p><b>Impacto previsto nos resultados:</b> Payout integral mantém a tese de renda, mas a alavancagem subiu para 4,7x (de 4,2x); empresa não participará do leilão de baterias.</p></div><div class="an">
+  <div class="an-h"><span class="tk">UNIP6</span><span class="an-n">Unipar</span>
+  <span class="pill md">Cautela</span></div>
+  <p><b>Situação atual:</b> 3T26 ainda não divulgado (datas divergem entre 12 e 13/11). 1T26 com lucro de R$ 37 mi (-75%) e Ebitda recorrente de R$ 145 mi (-59%); dívida líquida/Ebitda de 2,5x no 2T26.</p>
+  <p><b>Analistas:</b> Nord neutra.</p>
+  <p><b>Impacto previsto nos resultados:</b> Spreads de cloro-soda pressionados globalmente; troca de auditor a partir de 2027.</p></div><div class="an">
+  <div class="an-h"><span class="tk">FESA4</span><span class="an-n">Ferbasa</span>
+  <span class="pill md">Cautela</span></div>
+  <p><b>Situação atual:</b> Sem notícia recente nem data confirmada do 3T26. 1T26 com prejuízo de R$ 2,4 mi e Ebitda ajustado de R$ 44,1 mi (-27,8%).</p>
+  <p><b>Analistas:</b> Sem cobertura recente encontrada.</p>
+  <p><b>Impacto previsto nos resultados:</b> Preços de ferroligas dependem do aço inoxidável chinês, que segue fraco.</p></div><div class="an">
+  <div class="an-h"><span class="tk">AXIA3</span><span class="an-n">Axia Energia (ex-Eletrobras)</span>
+  <span class="pill up">Neutro/Positivo</span></div>
+  <p><b>Situação atual:</b> 3T26 (04/11) com lucro de R$ 1,11 bi, abaixo dos R$ 1,5 bi esperados (LSEG); lucro ajustado de R$ 1,76 bi (-19,1%). Ação caiu 18,22% na semana do balanço, a R$ 47,69.</p>
+  <p><b>Analistas:</b> Bradesco BBI mantém compra com alvo de R$ 73.</p>
+  <p><b>Impacto previsto nos resultados:</b> Cancelamento do registro na SEC (05/11) e simplificação societária; mercado aguarda clareza sobre preços de energia e dividendos.</p></div><div class="an">
+  <div class="an-h"><span class="tk">KLBN4</span><span class="an-n">Klabin</span>
+  <span class="pill md">Neutro</span></div>
+  <p><b>Situação atual:</b> Captou US$ 150 mi com a agência canadense EDC (SOFR + 1,77%) em 09/11. 3T26 com lucro de R$ 393 mi, acima do consenso, mas ação caiu 6,37% por custo-caixa de R$ 3.483/t.</p>
+  <p><b>Analistas:</b> Safra rebaixou para neutro (alvo R$ 20,60); BB Investimentos compra (R$ 23); Itaú BBA, JPMorgan e Goldman neutros.</p>
+  <p><b>Impacto previsto nos resultados:</b> Desalavancagem e preços de celulose são os vetores; o dólar mais fraco reduz a receita em reais.</p></div><div class="an">
+  <div class="an-h"><span class="tk">MGLU3</span><span class="an-n">Magazine Luiza</span>
+  <span class="pill up">Positivo (curto prazo)</span></div>
+  <p><b>Situação atual:</b> Prévia de outubro com lojas físicas +16% e 1P +14% levou a ação a +11,64% em 10/11 (R$ 6,52) e a nova alta forte em 11/11. 3T26 teve prejuízo contábil de R$ 10,7 mi.</p>
+  <p><b>Analistas:</b> BofA fez duplo upgrade para compra (alvo R$ 11), apesar de cortar o LPA 2026 para R$ 0,13; XP e Bradesco BBI destacam ganho de mercado com a recuperação judicial da Casas Bahia.</p>
+  <p><b>Impacto previsto nos resultados:</b> O 4T26 (Black Friday e Natal) testará se a retomada é estrutural; juros altos seguem pesando no crédito ao consumidor e nas despesas financeiras.</p></div><div class="an">
+  <div class="an-h"><span class="tk">AMER3</span><span class="an-n">Americanas</span>
+  <span class="pill hi">Negativo</span></div>
+  <p><b>Situação atual:</b> Primeiro balanço após o fim da recuperação judicial (19/10): prejuízo de R$ 352 mi no 3T26, receita de R$ 2,97 bi (+10%) e Ebitda ajustado de R$ 52 mi (-90,7%).</p>
+  <p><b>Analistas:</b> Sem visão de analistas publicada após o balanço.</p>
+  <p><b>Impacto previsto nos resultados:</b> Vendas crescendo (SSS +7,3%), mas margens muito comprimidas; dívida líquida de R$ 1,16 bi exige geração de caixa no 4T.</p></div><div class="an">
+  <div class="an-h"><span class="tk">XPML11</span><span class="an-n">XP Malls FII</span>
+  <span class="pill md">Neutro</span></div>
+  <p><b>Situação atual:</b> Último rendimento encontrado de R$ 0,92/cota (pago em 23/10), repetido há vários meses.</p>
+  <p><b>Analistas:</b> Artigo questiona a sustentabilidade do rendimento por dependência de reservas e ganhos não recorrentes.</p>
+  <p><b>Impacto previsto nos resultados:</b> Vendas de Natal nos shoppings e Selic alta ditam o desconto da cota; anúncio de novembro ainda não localizado.</p></div><div class="an">
+  <div class="an-h"><span class="tk">HCTR11</span><span class="an-n">Hectare CE FII</span>
+  <span class="pill hi">Negativo</span></div>
+  <p><b>Situação atual:</b> Sem relatório novo; fontes divergem sobre o último rendimento (R$ 0,18 a R$ 0,26/cota) e a cota está perto de R$ 16,88.</p>
+  <p><b>Analistas:</b> Fundo segue sob desconfiança por desvalorização patrimonial.</p>
+  <p><b>Impacto previsto nos resultados:</b> Qualidade da carteira de CRIs e eventuais novas provisões continuam sendo o risco central.</p></div><div class="an">
+  <div class="an-h"><span class="tk">GGRC11</span><span class="an-n">GGR Covepi Renda FII</span>
+  <span class="pill md">Neutro</span></div>
+  <p><b>Situação atual:</b> Rendimento de R$ 0,10/cota pago em 10/11 (yield de ~1,18% sobre R$ 8,48); venda de dez imóveis com lucro estimado de ~R$ 75 mi (fonte secundária).</p>
+  <p><b>Analistas:</b> Sem cobertura específica de casas de análise encontrada.</p>
+  <p><b>Impacto previsto nos resultados:</b> Ganho com a venda de imóveis pode gerar distribuição extraordinária, mas reduz a receita recorrente.</p></div><div class="an">
+  <div class="an-h"><span class="tk">SGOV</span><span class="an-n">iShares 0-3 Month Treasury</span>
+  <span class="pill up">Positivo (renda)</span></div>
+  <p><b>Situação atual:</b> CPI de outubro acima do esperado (cheio +0,4% m/m; núcleo +0,3%) e Treasury de 10 anos perto de 5%; mercado precifica alta do Fed em dezembro.</p>
+  <p><b>Analistas:</b> Christopher Waller (Fed) defende alta em dezembro e admite 50 pb; FedWatch indica ~91% de chance de 25 pb.</p>
+  <p><b>Impacto previsto nos resultados:</b> Uma alta do Fed eleva diretamente o rendimento dos T-bills e do SGOV, sem risco relevante de duration. PPI de 13/11 é o próximo dado.</p></div><div class="an">
+  <div class="an-h"><span class="tk">BTC</span><span class="an-n">Bitcoin</span>
+  <span class="pill hi">Negativo</span></div>
+  <p><b>Situação atual:</b> Abaixo de US$ 73 mil, mínima desde agosto, com cinco dias de resgates em ETFs à vista (~US$ 1,44 bi; US$ 299,8 mi em 11/11, US$ 269,7 mi do IBIT).</p>
+  <p><b>Analistas:</b> Suportes em US$ 72 mil e US$ 70 mil, risco de US$ 65 mil; resistência em US$ 75,6 mil (Glassnode).</p>
+  <p><b>Impacto previsto nos resultados:</b> Juros reais mais altos e dólar forte pesam; a reversão depende de inflação mais benigna no PPI e da volta dos fluxos aos ETFs.</p></div><div class="an">
+  <div class="an-h"><span class="tk">OHI</span><span class="an-n">Omega Healthcare Investors</span>
+  <span class="pill up">Positivo</span></div>
+  <p><b>Situação atual:</b> UBS elevou o alvo de US$ 52 para US$ 56 (Compra) em 11/11; AFFO do 3º tri acima do esperado e guidance 2026 elevado; dividendo de US$ 0,68 pago em 16/11 (yield ~5,5%).</p>
+  <p><b>Analistas:</b> Consenso dividido: 7 Compra, 7 Manutenção, 2 Venda (MarketBeat).</p>
+  <p><b>Impacto previsto nos resultados:</b> Rotação para saúde e defensivos ajuda; Treasury de 10 anos perto de 5% é o principal risco ao valuation de REITs.</p></div><div class="an">
+  <div class="an-h"><span class="tk">MCHI</span><span class="an-n">iShares MSCI China</span>
+  <span class="pill hi">Negativo (curto prazo)</span></div>
+  <p><b>Situação atual:</b> Hang Seng caiu 0,98% em 11/11 e ~1,26% em 12/11, puxado por internet após relato de restrição americana ao acesso remoto a chips de IA; PBoC retirou a menção a &#x27;políticas incrementais&#x27;.</p>
+  <p><b>Analistas:</b> Goldman projeta alta de 9% nos lucros da internet chinesa no 3º trimestre; mercado empurra estímulos para a conferência econômica de dezembro.</p>
+  <p><b>Impacto previsto nos resultados:</b> Balanços de JD (17/11), Tencent (18/11) e Alibaba (19/11) e a APEC em Shenzhen (18–19/11) são os catalisadores.</p></div><div class="an">
+  <div class="an-h"><span class="tk">QQQ</span><span class="an-n">Invesco QQQ (Nasdaq-100)</span>
+  <span class="pill md">Neutro</span></div>
+  <p><b>Situação atual:</b> Nasdaq-100 subiu 2,28% em 11/11 (28.374) com CoreWeave, mas os futuros caem em 12/11 após a Nvidia recuar ~8% no after-market com a crise de governança.</p>
+  <p><b>Analistas:</b> MSCI de TI dos EUA acumula -11,5% desde outubro; juros perto de 5% comprimem múltiplos.</p>
+  <p><b>Impacto previsto nos resultados:</b> Balanço da Nvidia em 17/11 e a decisão do Fed em dezembro definem a direção do índice.</p></div><div class="an">
+  <div class="an-h"><span class="tk">SMH</span><span class="an-n">VanEck Semiconductor</span>
+  <span class="pill md">Neutro</span></div>
+  <p><b>Situação atual:</b> Nvidia em crise de governança (conselho discute o futuro de Jensen Huang); TSMC com receita recorde de NT$ 586,9 bi em outubro (+59,7% a/a).</p>
+  <p><b>Analistas:</b> Yorkville vê risco de perda de um quarto do valor da Nvidia se Huang sair; demanda por IA segue intacta segundo os números da TSMC.</p>
+  <p><b>Impacto previsto nos resultados:</b> Regras americanas sobre acesso chinês a chips adicionam risco regulatório; fundamentos de demanda continuam fortes.</p></div><div class="an">
+  <div class="an-h"><span class="tk">VYMI</span><span class="an-n">Vanguard Intl High Dividend</span>
+  <span class="pill up">Positivo</span></div>
+  <p><b>Situação atual:</b> STOXX 600 em recorde (663,05, +0,72%) em 11/11; DAX +1,2%. Japão e Hong Kong pesaram em 12/11.</p>
+  <p><b>Analistas:</b> Société Générale vê espaço limitado até o fim do ano; Morningstar e BofA apontam vantagem dos mercados ex-EUA em 2026.</p>
+  <p><b>Impacto previsto nos resultados:</b> Valuations e dividend yields mais atrativos fora dos EUA favorecem o ETF; dólar forte reduz o retorno em moeda americana.</p></div><div class="an">
+  <div class="an-h"><span class="tk">VYM</span><span class="an-n">Vanguard High Dividend Yield</span>
+  <span class="pill up">Positivo</span></div>
+  <p><b>Situação atual:</b> Rotação para saúde, consumo básico, utilities e energia (CNBC, 11/11) favorece a composição de valor/dividendos do ETF.</p>
+  <p><b>Analistas:</b> Estrategistas citados pela CNBC destacam busca por setores defensivos em meio à volatilidade da tecnologia.</p>
+  <p><b>Impacto previsto nos resultados:</b> Treasury de 10 anos a 5% compete com o dividend yield, mas a menor exposição a tecnologia reduz a volatilidade relativa.</p></div><div class="an">
+  <div class="an-h"><span class="tk">BABA</span><span class="an-n">Alibaba</span>
+  <span class="pill md">Neutro (evento)</span></div>
+  <p><b>Situação atual:</b> Caiu até 7,3% em Hong Kong (HK$ 93,80, -6,8%) com risco de restrição americana a GPUs remotas; Singles&#x27; Day morno (+4,8% no setor, sem GMV próprio divulgado).</p>
+  <p><b>Analistas:</b> Citi US$ 193, Aletheia US$ 190, BofA US$ 178 e StoneX US$ 220 (todos Compra); Morgan Stanley projeta nuvem externa +55% e Citi +52%.</p>
+  <p><b>Impacto previsto nos resultados:</b> Balanço de 19/11 será o teste de crescimento da nuvem, capex em IA e acesso a chips; incerteza sobre a cisão da T-Head.</p></div></div>
+<h3 class="sub">Perspectiva Brasil – China – Global</h3><div class="pp-grid"><div class="pp"><h4>🇧🇷 Brasil</h4><p>A temporada de balanços expôs a deterioração do crédito agro (Banco do Brasil) e a disciplina de capital da Petrobras, enquanto o varejo (Magalu) surpreende com ganho de mercado. O pacote fiscal no Senado é o divisor de águas para a curva de juros: aprovado, favorece bancos, elétricas, saneamento e FIIs; adiado ou desidratado, reforça a pressão sobre ativos sensíveis a juros. Ibovespa a 172 mil pontos segue ~13% abaixo da máxima histórica.</p></div><div class="pp"><h4>🇨🇳 China</h4><p>Estímulo apenas &#x27;em execução&#x27;, sem novos pacotes até dezembro, limita a demanda por aço e minério; cortes de produção em Hebei e importações elevadas (105,7 Mt em outubro) mantêm o minério perto de US$ 92/t, negativo para Vale e Ferbasa. A restrição americana a chips de IA pesa sobre Alibaba e MCHI, enquanto fabricantes locais como a SMIC ganham com a substituição.</p></div><div class="pp"><h4>🌐 Global</h4><p>Inflação americana acima do esperado e Treasury de 10 anos perto de 5% fortalecem o dólar e encarecem o capital para emergentes; o Fed caminha para alta em dezembro. A crise de governança da Nvidia adiciona volatilidade à tecnologia, enquanto a Europa renova máximas e investidores migram para dividendos e defensivos (VYM, VYMI, OHI). O petróleo em queda (Brent ~US$ 91) com esperança de cessar-fogo Rússia-Ucrânia reduz o suporte à Petrobras.</p></div><div class="pp"><h4>🔗 Conexão Brasil–China–EUA</h4><p>Para o Brasil, a combinação de minério fraco, petróleo em queda e juros americanos altos é desfavorável a exportadoras de commodities e ao real; o contraponto é o ajuste fiscal doméstico. Uma eventual cúpula Trump–Xi e as regras sobre chips são catalisadores binários para China, commodities e emergentes nas próximas semanas.</p></div></div></section>
+<div class="val" id="val"><b>Validação:</b> A pesquisa usou buscas na web em 12/11/2026. Nesta execução, a política de rede do ambiente bloqueou o acesso direto a todos os sites de notícias (proxy 403), então NÃO foi possível abrir cada link para confirmar que carrega (sem 404) nem ler o horário exato de publicação na página. Os links, títulos e números vêm dos resultados de busca, e os horários exibidos são datas aproximadas. Nem todas as notícias estão dentro da janela de 24h: as que estão fora foram marcadas no campo de data. A cobertura de veículos chineses e europeus foi limitada (SCMP e The Standard na China; FT apenas citado indiretamente). Confira os números antes de tomar decisões.</div>
+<footer>Stocks Report · conteúdo informativo, não constitui recomendação de investimento.</footer>
+</div></body></html>
